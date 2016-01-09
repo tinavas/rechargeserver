@@ -649,7 +649,7 @@ class Ion_auth_model extends CI_Model {
 
         $update = array(
             'forgotten_password_code' => $key,
-            'forgotten_password_time' => time()
+            'forgotten_password_time' => now()
         );
 
         $this->db->update($this->tables['users'], $update, array($this->identity_column => $identity));
@@ -685,7 +685,7 @@ class Ion_auth_model extends CI_Model {
             if ($this->config->item('forgot_password_expiration', 'ion_auth') > 0) {
                 //Make sure it isn't expired
                 $expiration = $this->config->item('forgot_password_expiration', 'ion_auth');
-                if (time() - $profile->forgotten_password_time > $expiration) {
+                if (now() - $profile->forgotten_password_time > $expiration) {
                     //it has expired
                     $this->set_error('forgot_password_expired');
                     $this->trigger_events(array('post_forgotten_password_complete', 'post_forgotten_password_complete_unsuccessful'));
@@ -751,8 +751,8 @@ class Ion_auth_model extends CI_Model {
             'password' => $password,
             'email' => $email,
             'ip_address' => $ip_address,
-            'created_on' => time(),
-            'last_login' => time(),
+            'created_on' => now(),
+            'last_login' => now(),
             'account_status_id' => ($manual_activation === false ? $this->account_status_list['active_id'] : $this->account_status_list['inactive_id'])
         );
 
@@ -782,10 +782,43 @@ class Ion_auth_model extends CI_Model {
         if ((isset($default_group->id) && !isset($groups)) || (empty($groups) && !in_array($default_group->id, $groups))) {
             $this->add_to_group($default_group->id, $id);
         }
+        
+        $this->add_relation($additional_data['parent_user_id'], $id);
+        $this->add_user_services($id, $additional_data['user_service_list']);
 
         $this->trigger_events('post_register');
 
         return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function add_relation($parent_id, $child_id)
+    {
+        $relation_data = array(
+            'parent_user_id' => $parent_id,
+            'child_user_id' => $child_id
+        );
+        $this->db->insert($this->tables['relations'], $relation_data);
+    }
+    
+    public function add_user_services($user_id, $user_service_list)
+    {
+        $service_list = array();
+        foreach($user_service_list as $service_info)
+        {
+            $service_info['user_id'] = $user_id;
+            $service_list[] = $service_info;
+        }
+        $this->db->insert_batch($this->tables['users_services'], $service_list); 
+    }
+    
+    public function update_user_service($user_id, $user_service_list)
+    {
+        foreach($user_service_list as $service_info)
+        {
+            $this->db->where('user_id', $user_id);
+            $this->db->where('service_id', $service_info['service_id']);
+            $this->db->update($this->tables['users_services'], $service_info);
+        }
     }
 
     /**
@@ -908,7 +941,7 @@ class Ion_auth_model extends CI_Model {
      */
     public function is_time_locked_out($identity) {
 
-        return $this->is_max_login_attempts_exceeded($identity) && $this->get_last_attempt_time($identity) > time() - $this->config->item('lockout_time', 'ion_auth');
+        return $this->is_max_login_attempts_exceeded($identity) && $this->get_last_attempt_time($identity) > now() - $this->config->item('lockout_time', 'ion_auth');
     }
 
     /**
@@ -944,7 +977,7 @@ class Ion_auth_model extends CI_Model {
     public function increase_login_attempts($identity) {
         if ($this->config->item('track_login_attempts', 'ion_auth')) {
             $ip_address = $this->_prepare_ip($this->input->ip_address());
-            return $this->db->insert($this->tables['login_attempts'], array('ip_address' => $ip_address, 'login' => $identity, 'time' => time()));
+            return $this->db->insert($this->tables['login_attempts'], array('ip_address' => $ip_address, 'login' => $identity, 'time' => now()));
         }
         return FALSE;
     }
@@ -961,7 +994,7 @@ class Ion_auth_model extends CI_Model {
 
             $this->db->where(array('ip_address' => $ip_address, 'login' => $identity));
             // Purge obsolete login attempts
-            $this->db->or_where('time <', time() - $expire_period, FALSE);
+            $this->db->or_where('time <', now() - $expire_period, FALSE);
 
             return $this->db->delete($this->tables['login_attempts']);
         }
@@ -1326,7 +1359,9 @@ class Ion_auth_model extends CI_Model {
         $user = $this->user($id)->row();
 
         $this->db->trans_begin();
-
+        
+        $this->update_user_service($id, $data['user_service_list']);
+        
         if (array_key_exists($this->identity_column, $data) && $this->identity_check($data[$this->identity_column]) && $user->{$this->identity_column} !== $data[$this->identity_column]) {
             $this->db->trans_rollback();
             $this->set_error('account_creation_duplicate_' . $this->identity_column);
@@ -1361,7 +1396,7 @@ class Ion_auth_model extends CI_Model {
             $this->set_error('update_unsuccessful');
             return FALSE;
         }
-
+        
         $this->db->trans_commit();
 
         $this->trigger_events(array('post_update_user', 'post_update_user_successful'));
@@ -1418,7 +1453,7 @@ class Ion_auth_model extends CI_Model {
 
         $this->trigger_events('extra_where');
 
-        $this->db->update($this->tables['users'], array('last_login' => time()), array('id' => $id));
+        $this->db->update($this->tables['users'], array('last_login' => now()), array('id' => $id));
 
         return $this->db->affected_rows() == 1;
     }

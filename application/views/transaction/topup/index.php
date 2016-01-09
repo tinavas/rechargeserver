@@ -1,4 +1,4 @@
-<div class="ezttle"><span class="text">BKash CashIn</span></div>
+<div class="ezttle"><span class="text">Topup</span></div>
 <div class="mypage">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
@@ -6,7 +6,7 @@
                 <table style="width:100%;">
                     <tbody><tr>
                             <td style="width:50%;vertical-align:top;padding-right:20px;">
-                                <?php echo form_open("transaction/bkash", array('id' => 'form_create_bkash', 'class' => 'form-horizontal')); ?>
+                                <?php echo form_open("transaction/topup", array('id' => 'form_create_topup', 'class' => 'form-horizontal')); ?>
                                 <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
                                     <div class ="row">
                                         <div class="col-md-12"> <?php echo $message; ?> </div>
@@ -25,6 +25,22 @@
                                         </label>
                                         <label for="amount" class="col-md-6 control-label requiredField">
                                             <?php echo form_input($amount + array('class' => 'form-control')); ?>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="type" class="col-md-6 control-label requiredField">
+                                            Type
+                                        </label>
+                                        <label for="type" class="col-md-6 control-label requiredField">
+                                            <?php echo form_dropdown('topup_type_list', $topup_type_list, '', 'class=form-control id=topup_type_list'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="operator" class="col-md-6 control-label requiredField">
+                                            Operator
+                                        </label>
+                                        <label for="operator" class="col-md-6 control-label requiredField">
+                                            <?php echo form_dropdown('topup_operator_list', $topup_operator_list, '', 'class=form-control id=topup_operator_list'); ?>
                                         </label>
                                     </div>
                                     <div class="form-group">

@@ -38,14 +38,27 @@ $config['collections']['login_attempts'] = 'login_attempts';
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users']           = 'users';
-$config['tables']['groups']          = 'groups';
-$config['tables']['users_groups']    = 'users_groups';
-$config['tables']['login_attempts']  = 'login_attempts';
-
+$config['tables']['users']                  = 'users';
+$config['tables']['groups']                 = 'groups';
+$config['tables']['users_groups']           = 'users_groups';
+$config['tables']['login_attempts']         = 'login_attempts';
+$config['tables']['relations']              = 'relations';
+$config['tables']['services']                               = 'services';
+$config['tables']['users_services']                         = 'users_services';
 $config['tables']['user_transaction_statuses']              = 'user_transaction_statuses';
 $config['tables']['user_transactions']                      = 'user_transactions';
+$config['tables']['user_payment_types']                     = 'user_payment_types';
+$config['tables']['user_payments']                          = 'user_payments';
 
+$config['successor_group_id']['admin'] = '3';
+$config['successor_group_id']['type1'] = '4';
+$config['successor_group_id']['type2'] = '5';
+$config['successor_group_id']['type3'] = '6';
+
+$config['successor_group_title']['admin'] = 'Resellers I';
+$config['successor_group_title']['type1'] = 'Resellers II';
+$config['successor_group_title']['type2'] = 'Resellers III';
+$config['successor_group_title']['type3'] = 'Resellers IV';
 /*
  | Users table column and Group table column you want to join WITH.
  |

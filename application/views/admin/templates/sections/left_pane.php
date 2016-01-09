@@ -6,11 +6,11 @@
                 <a class="chld" href="javascript:void(0)">New Request</a>
                 <ul id="baby">
                     <li><a href="#">Bulk Flexiload</a></li>
-                    <li><a href="#">Flexiload</a></li>
+                    <li><a href="<?php echo base_url().'transaction/topup'?>">Topup</a></li>
                     <li><a href="<?php echo base_url().'transaction/bkash'?>">bKash</a></li>
-                    <li><a href="#">DBBL</a></li>
-                    <li><a href="#">M-Cash</a></li>
-                    <li><a href="#">U-Cash</a></li>
+                    <li><a href="<?php echo base_url().'transaction/dbbl'?>">DBBL</a></li>
+                    <li><a href="<?php echo base_url().'transaction/mcash'?>">M-Cash</a></li>
+                    <li><a href="<?php echo base_url().'transaction/ucash'?>">U-Cash</a></li>
                     <li><a href="#">Global Topup</a></li>
                 </ul>
             </li>
@@ -40,17 +40,17 @@
             </li>
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
-                    <li><a href="#">All History</a></li>
-                    <li><a href="#">Flexiload</a></li>						
+                    <li><a href="<?php echo base_url().'history/all'?>">All History</a></li>
+                    <li><a href="<?php echo base_url().'history/topup'?>">Topup</a></li>						
                     <li><a href="<?php echo base_url().'history/bkash'?>">bKash</a></li>						
-                    <li><a href="#">DBBL</a></li>						
-                    <li><a href="#">M-Cash</a></li>						
-                    <li><a href="#">U-Cash</a></li>						
+                    <li><a href="<?php echo base_url().'history/dbbl'?>">DBBL</a></li>						
+                    <li><a href="<?php echo base_url().'history/mcash'?>">M-Cash</a></li>						
+                    <li><a href="<?php echo base_url().'history/ucash'?>">U-Cash</a></li>						
                     <li><a href="#">Global Topup</a></li>					
                 </ul>
             </li>
 
-            <li><a href="#">Resellers</a></li>		
+            <li><a href="<?php echo base_url().'reseller'?>">Resellers</a></li>		
             <li><a href="#">Payment History</a></li>
             <li><a href="#">Receive History</a></li>	
             <li><a href="javascript:void(0)" class="chld">Report </a>

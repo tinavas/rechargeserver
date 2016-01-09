@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Auth extends CI_Controller {
+class Auth extends Role_Controller {
 
     function __construct() {
         parent::__construct();
@@ -30,16 +30,19 @@ class Auth extends CI_Controller {
         } else {
             $user_group = $this->ion_auth->get_current_user_types();
             foreach ($user_group as $group) {
-                if($group == ADMIN){
+                $this->session->set_userdata(array('group'=>$group));
+                if($group == ADMIN || $group == TYPE1 || $group == TYPE2 || $group == TYPE3 || $group == TYPE4){
                     //set the flash data error message if there is one
                     $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
                     //list the users
-                    $this->data['users'] = $this->ion_auth->users()->result();
-                    foreach ($this->data['users'] as $k => $user) {
-                        $this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-                    }
-
+//                    $this->data['users'] = $this->ion_auth->users()->result();
+//                    foreach ($this->data['users'] as $k => $user) {
+//                        $this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
+//                    }
+                    $user_id = $this->session->userdata('user_id');
+                    $this->load->library('reseller_library');
+                    $this->data = array_merge($this->reseller_library->get_user_dashboard_data($user_id), $this->data);
                     //$this->_render_page('auth/index', $this->data);
                     //$this->template->load(NULL, ADMIN_LOGIN_SUCCESS_VIEW, $this->data);
                     $this->template->load('admin/templates/admin_tmpl', "admin/index", $this->data);

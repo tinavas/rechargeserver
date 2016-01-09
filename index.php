@@ -5,10 +5,17 @@ include './constants/general.php';
 include './constants/response_code.php';
 include './constants/service.php';
 include './constants/transaction.php';
+include './constants/payment.php';
+
+define('ADMIN', 'admin');
+define('TYPE1', 'type1');
+define('TYPE2', 'type2');
+define('TYPE3', 'type3');
+define('TYPE4', 'type4');
 
 define('MEMBER', 'members');
 define('MANAGER', 'manager');
-define('ADMIN', 'admin');
+
 define('NON_MEMBER', 'non_member');
 
 define('LOGIN_URI', 'auth/login');

@@ -43,7 +43,7 @@ class Transaction_library {
     public function add_user_transaction($transaction_data)
     {
         //adding user transaction
-        $this->transaction_model->add_transaction($transaction_data);
+        return $this->transaction_model->add_transaction($transaction_data);
        
     }    
 }

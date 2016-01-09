@@ -1,4 +1,4 @@
-<div class="ezttle"><span class="text">BKash CashIn</span></div>
+<div class="ezttle"><span class="text">DBBL</span></div>
 <div class="mypage">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
@@ -6,7 +6,7 @@
                 <table style="width:100%;">
                     <tbody><tr>
                             <td style="width:50%;vertical-align:top;padding-right:20px;">
-                                <?php echo form_open("transaction/bkash", array('id' => 'form_create_bkash', 'class' => 'form-horizontal')); ?>
+                                <?php echo form_open("transaction/dbbl", array('id' => 'form_create_dbbl', 'class' => 'form-horizontal')); ?>
                                 <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
                                     <div class ="row">
                                         <div class="col-md-12"> <?php echo $message; ?> </div>

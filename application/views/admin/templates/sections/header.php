@@ -4,7 +4,7 @@
     </div> 
     <div class="head-right">
         <ul class="rsmenu">
-            <!--<li><a href="" class="white">User: <b>moon</b> (IV) | Balance: <b>0.00</b></a></li>-->
+            <li><a href="" class="white">User: <b><?php echo $user_title;?></b> | Balance: <b><?php echo $current_balance;?></b></a></li>
         </ul>
     </div>
     <div class="clear"></div>
