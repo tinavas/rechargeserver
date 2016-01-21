@@ -26,4 +26,20 @@ While creating a new user parent will be able to assign any number of services. 
 User(Parent) will able to forward balance to his child(Balance validation must be check after balance transfer).he will able to return back balance from his child if needed. Parent able to set service rate to his child and  also will be able to change serive rate any time of his child.
 
 
-**Home Page History: ** Shows all services short views that are provided by that side. 
+**Home Page History:** Shows all services short views that are provided by that site. 
+User able to show total bkash uses of current day
+and
+Latest x number of payments,
+Latest y number of payments.
+**Service :**
+the service that are provide by this site are
+* bkash cashin
+* dbbl cashin
+* mcash cashin
+* ucash cashin
+* gp topup
+* robi topup
+* bl topup
+* airtel topup
+* teletalk topup 
+Note:Since local server is not ready so only bkash cashin will be supported
