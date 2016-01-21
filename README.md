@@ -14,12 +14,16 @@
        * Level II
        * Level III
        * Level IV
-Higher level of user(parent) will be able to create lower level user(child).
+       
+Higher level of user(parent) will be able to create lower level user(child):
+
         * Admin will create Level I
         * Level I will create Level II
         * Level II will create Level III
         * Level III will create Level IV
 User can see his child user list including current available of that child.
+
+
 **User Creation :** User will be able to create his child by giving child email, password, service list (Mandatory).
 While creating a new user parent will be able to assign any number of services. Parent will be able to update child informations. Any new service may be added or existing service may be disabled by the parent.
 
@@ -48,6 +52,7 @@ Note:Since local server is not ready so only bkash cashin will be supported
  bkash able to cashin by giving bkash number and amount and also show the last 10 transctions .
 
 **Service History :** 
-All transction will be displayed by user
+All transction will be displayed by user.
+
 User will able to choose a specfic service transctions.
 
