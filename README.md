@@ -43,3 +43,11 @@ the service that are provide by this site are
 * airtel topup
 * teletalk topup 
 Note:Since local server is not ready so only bkash cashin will be supported
+
+**bkash :**
+ bkash able to cashin by giving bkash number and amount and also show the last 10 transctions .
+
+**Service History :** 
+All transction will be displayed by user
+User will able to choose a specfic service transctions.
+
