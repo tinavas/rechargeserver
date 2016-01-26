@@ -90,6 +90,7 @@ ALTER TABLE `relations`
   ADD CONSTRAINT `fk_relations_users1` FOREIGN KEY (`parent_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_relations_users2` FOREIGN KEY (`child_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
 CREATE TABLE IF NOT EXISTS `services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
@@ -105,7 +106,6 @@ INSERT INTO `services` (`id`, `title`) VALUES
 (103, 'Topup BanglaLink'),
 (104, 'Topup Airtel'),
 (105, 'Topup TeleTalk');
-
 CREATE TABLE IF NOT EXISTS `users_services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
@@ -133,11 +133,38 @@ INSERT INTO `user_transaction_statuses` (`id`, `title`) VALUES
 (3, 'Failed'),
 (4, 'Cancelled');
 
+
+
+ CREATE TABLE IF NOT EXISTS `operators` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   
+INSERT INTO `operators` (`id`, `title`) VALUES
+(101, 'GP'),
+(102, 'Robi'),
+(103, 'BanglaLink'),
+(104, 'Airtel'),
+(105, 'TeleTalk');
+
+  CREATE TABLE IF NOT EXISTS `operator_types` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   
+INSERT INTO `operator_types` (`id`, `title`) VALUES
+(1, 'Prepaid'),
+(2, 'Postpaid');
+
+
+
 CREATE TABLE IF NOT EXISTS `user_transactions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `transaction_id` varchar(200),
   `service_id` int(11) unsigned NOT NULL,
+  `operator_id` int(11) unsigned   DEFAULT NULL,
+  `operator_type_id` int(11) unsigned  DEFAULT NULL,
   `cell_no` varchar(20),
   `description` varchar(200),
   `amount` double,
@@ -146,11 +173,15 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   `modified_on` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_transactions_users1_idx` (`user_id`),
+  KEY `fk_user_transactions_operator_idx` (`operator_id`),
+  KEY `fk_user_transactions_operator_type_idx` (`operator_type_id`),
   KEY `fk_user_transactions_user_transaction_statuses1_idx` (`status_id`),
   KEY `fk_user_transactions_services1_idx` (`service_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
 ALTER TABLE `user_transactions`
   ADD CONSTRAINT `fk_user_transactions_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_transactions_operator_idx` FOREIGN KEY (`operator_id`) REFERENCES `operator_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_transactions_operator_type_idx` FOREIGN KEY (`operator_type_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_transactions_uts1` FOREIGN KEY (`status_id`) REFERENCES `user_transaction_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_transactions_services1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -182,4 +213,10 @@ CREATE TABLE IF NOT EXISTS `user_payments` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
 ALTER TABLE `user_payments`
   ADD CONSTRAINT `fk_user_payments_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
+  
+
+ 
+
+
+
