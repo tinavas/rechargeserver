@@ -21,7 +21,7 @@ class Payment extends Role_Controller {
     }
 
     public function create_payment($child_id = 0) {
-        $parent_id = $this->session->userdata('use_id');
+        $parent_id = $this->session->userdata('user_id');
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
