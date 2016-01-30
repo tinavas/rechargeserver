@@ -1,17 +1,12 @@
 <script>
     function create_payment(paymentInfo) {
-        var userId = '<?php echo $user_id; ?>';
         if (typeof paymentInfo.amount == "undefined" || paymentInfo.amount.length == 0) {
             alert("Please give an amount !");
             return;
         }
-        if (typeof paymentInfo.payment_type == "undefined" || paymentInfo.payment_type.length == 0) {
-            alert("Please Select Payment Type! ");
-            return;
-        }
-        angular.element($('#submit_create_payment')).scope().createPayment(userId , function(data){
+        angular.element($('#submit_create_payment')).scope().loadBalance(function(data){
             alert(data.message);
-            window.location = '<?php echo base_url() ?>reseller';
+            window.location = '<?php echo base_url() ?>admin/load_balance';
 
         });
     }

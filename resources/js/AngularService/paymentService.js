@@ -12,6 +12,16 @@ angular.module('services.Payment', []).
                     }
                 });
             }
+            paymentService.loadBalance = function (paymentInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/admin/load_balance',
+                    data: {
+                        paymentInfo: paymentInfo
+                    }
+                });
+            }
 
             return paymentService;
         });

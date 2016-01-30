@@ -9,6 +9,12 @@ angular.module('controller.Payment', ['services.Payment']).
                             callbackFunction(data);
                         });
             }
+            $scope.loadBalance = function (callbackFunction) {
+                paymentService.loadBalance($scope.paymentInfo).
+                        success(function (data, status, headers, config) {
+                            callbackFunction(data);
+                        });
+            }
 
             $scope.setPaymentTypeList = function (paymentTypeList) {
                 $scope.paymentTypeList = JSON.parse(paymentTypeList);
