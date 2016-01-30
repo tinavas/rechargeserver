@@ -47,13 +47,17 @@ class Template {
     }
     
     function getUserTemplate($group_name){
-        if($group_name == MEMBER){
-            $this->selected_user_group = MEMBER;
-            return MEMBER_LOGIN_SUCCESS_TEMPLATE;
-        }
-        else if($group_name == ADMIN){
+//        if($group_name == MEMBER){
+//            $this->selected_user_group = MEMBER;
+//            return MEMBER_LOGIN_SUCCESS_TEMPLATE;
+//        }
+        if($group_name == ADMIN){
             $this->selected_user_group = ADMIN;
             return ADMIN_LOGIN_SUCCESS_TEMPLATE;
+        }
+        else if($group_name == TYPE1 || $group_name == TYPE2 || $group_name == TYPE3 || $group_name == TYPE4){
+            $this->selected_user_group = $group_name;
+            return RESELLER_LOGIN_SUCCESS_TEMPLATE;
         }
         else false;
     }

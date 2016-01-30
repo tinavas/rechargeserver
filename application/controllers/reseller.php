@@ -19,27 +19,28 @@ class Reseller extends Role_Controller {
         $this->data['message'] = "";
         $user_id = $this->session->userdata('user_id');
         $this->load->library('reseller_library');
-        $reseller_list = $this->reseller_library->get_reseller_list($user_id);
+        $maximum_children = $this->reseller_library->get_maximum_children();
+        $reseller_list = array();
+        $current_children = 0;
+        if($maximum_children > 0)
+        {
+            $reseller_list = $this->reseller_library->get_reseller_list($user_id);
+            $current_children = count($reseller_list);
+        }        
         $this->data['reseller_list'] = json_encode($reseller_list);
+        if($current_children < $maximum_children)
+        {
+            $this->data['allow_user_create'] = TRUE;
+        }
+        else
+        {
+            $this->data['allow_user_create'] = FALSE;
+        }        
         $group = $this->session->userdata('group');
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
-        $this->data['group'] = $this->session->userdata('group');
-        $allowable_user_array = $this->reseller_library->get_reseller_available_users($this->session->userdata('user_id'))->result_array();
-        $allow_user_create = FALSE;
-        if (!empty($allowable_user_array)) {
-            $max_user_no = $allowable_user_array[0]['max_user_no'];
-            if ($max_user_no > NULL) {
-                $current_user_no = $this->reseller_library->get_current_users($this->session->userdata('user_id'));
-                if ($current_user_no >= $max_user_no) {
-                    
-                } else if ($current_user_no < $max_user_no) {
-                    $allow_user_create = True;
-                }
-            }
-        }
-        $this->data['allow_user_create'] = $allow_user_create;
+        $this->data['group'] = $group;
         $this->template->load('admin/templates/admin_tmpl', 'reseller/index', $this->data);
     }
 

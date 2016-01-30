@@ -23,7 +23,8 @@ define('LOGIN_TEMPLATE', 'auth/login');
 define('LOGIN_VIEW', 'auth/login');
 
 define('ADMIN_LOGIN_SUCCESS_URI', 'auth');
-define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'auth/admin/templates/main');
+//define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'auth/admin/templates/main');
+define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'admin/templates/admin_tmpl');
 define('ADMIN_LOGIN_SUCCESS_VIEW', 'auth/index');
 
 define('MEMBER_LOGIN_SUCCESS_URI', 'auth');
@@ -31,6 +32,8 @@ define('MEMBER_LOGIN_SUCCESS_TEMPLATE', 'auth/member/templates/main');
 define('MEMBER_LOGIN_SUCCESS_VIEW', 'auth/member/index');
 
 define('NON_MEMBER_TEMPLATE', 'nonmember/templates/main');
+
+define('RESELLER_LOGIN_SUCCESS_TEMPLATE', 'templates/reseller_tmpl');
 /***************** Custom constant End **********************/
 /*
  *---------------------------------------------------------------

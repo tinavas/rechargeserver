@@ -13,27 +13,18 @@ class Reseller_model extends Ion_auth_model
             ->join($this->tables['relations'], $this->tables['relations'] . '.child_user_id=' . $this->tables['users'] . '.id')
             ->get();
     }
-    
+    /*
+     * This method will return user info from users table
+     * @param $user_id, user id
+     * @return user info
+     * @author nazmul hasan on 30th Janaury 2016
+     */
     public function get_reseller_info($user_id)
     {
         $this->db->where($this->tables['users'].'.id', $user_id);
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['users'].'.*')
             ->from($this->tables['users'])
             ->get();
-    }
-    public function get_reseller_available_users($user_id)
-    {
-        $this->db->where($this->tables['users'].'.id', $user_id);
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['users'].'.max_user_no')
-            ->from($this->tables['users'])
-            ->get();
-    }
-    public function get_current_users($user_id)
-    {
-       $this->db->where($this->tables['relations'] . '.parent_user_id', $user_id);
-        return $this->db->select('parent_user_id, count(*) as user_no')
-                        ->from($this->tables['relations'])
-                        ->get();
     }
     
     public function get_user_title_info($user_id)

@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(80) NOT NULL,
   `salt` varchar(40) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
-  `max_user_no` int(11) unsigned DEFAULT NULL,
+  `max_user_no` int(11) unsigned DEFAULT 0,
   `activation_code` varchar(40) DEFAULT NULL,
   `forgotten_password_code` varchar(40) DEFAULT NULL,
   `forgotten_password_time` int(11) unsigned DEFAULT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_laccount_status1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `max_user_no`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `mobile`) VALUES
-(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com',  NULL, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0');
+(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com',  100000, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0');
 
 CREATE TABLE IF NOT EXISTS `users_groups` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -214,10 +214,4 @@ CREATE TABLE IF NOT EXISTS `user_payments` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
 ALTER TABLE `user_payments`
   ADD CONSTRAINT `fk_user_payments_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
-  
-
- 
-
-
-
+  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

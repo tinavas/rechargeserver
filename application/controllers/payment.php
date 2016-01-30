@@ -12,40 +12,16 @@ class Payment extends Role_Controller {
         $this->load->library('ion_auth');
         $this->load->model('payment_model');
         if (!$this->ion_auth->logged_in()) {
-            //redirect('auth/login', 'refresh');
+            redirect('auth/login', 'refresh');
         }
-    }
-
-    public function test() {
-        $user_id = $this->session->userdata('user_id');
-        $result = $this->payment_model->get_user_current_balance($user_id)->result_array();
-        var_dump($result);
-        exit;
-
-
-//        $this->load->library('Date_utils');
-//            $this->date_utils->server_start_unix_time_of_today();
     }
 
     public function index() {
         
     }
 
-    public function amount_validation($user_id, $amount) {
-        $current_balance = $this->payment_model->get_user_current_balance($user_id)->result_array();
-        if ($current_balance != null) {
-            $current_balance = $current_balance[0];
-            $current_available_blance = $current_balance['current_balance'];
-            $balance_after_transction = $current_available_blance - $amount;
-            if ($amount > $current_available_blance || $balance_after_transction < USER_MINIMUM_REQUIRED_BALANCE) {
-                return FALSE;
-            } else {
-                return TRUE;
-            }
-        }
-    }
-
-    public function create_payment($user_id = 0) {
+    public function create_payment($child_id = 0) {
+        $parent_id = $this->session->userdata('use_id');
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -75,28 +51,29 @@ class Payment extends Role_Controller {
                     $sender_data['description'] = $description;
                     $receiver_data['description'] = $description;
                 }
+                $this->load->library('reseller_library');
                 if ($payment_type_id == PAYMENT_TYPE_ID_SEND_CREDIT) {
-                    if ($this->amount_validation($this->session->userdata('user_id'), $amount) == FALSE) {
+                    if ($amount > $this->reseller_library->get_user_current_balance($parent_id)) {
                         $response['message'] = 'Sorry! Insaficient Balance !';
                         echo json_encode($response);
                         return;
                     };
 
-                    $sender_data['user_id'] = $this->session->userdata('user_id');
+                    $sender_data['user_id'] = $parent_id;
                     $sender_data['type_id'] = PAYMENT_TYPE_ID_SEND_CREDIT;
 
-                    $receiver_data['user_id'] = $user_id;
+                    $receiver_data['user_id'] = $child_id;
                     $receiver_data['type_id'] = PAYMENT_TYPE_ID_RECEIVE_CREDIT;
                 } else if ($payment_type_id == PAYMENT_TYPE_ID_RETURN_CREDIT) {
-                  if ($this->amount_validation($user_id, $amount) == FALSE) {
+                    if ($amount > $this->reseller_library->get_user_current_balance($child_id)) {
                         $response['message'] = 'Sorry! Insaficient Balance !';
                         echo json_encode($response);
                         return;
                     };
-                    $sender_data['user_id'] = $user_id;
+                    $sender_data['user_id'] = $child_id;
                     $sender_data['type_id'] = PAYMENT_TYPE_ID_RETURN_CREDIT;
 
-                    $receiver_data['user_id'] = $this->session->userdata('user_id');
+                    $receiver_data['user_id'] = $parent_id;
                     $receiver_data['type_id'] = PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT;
                 }
 
@@ -106,7 +83,6 @@ class Payment extends Role_Controller {
                     $response['message'] = 'Error while updating the payment. Please try later.';
                 }
             }
-
             echo json_encode($response);
             return;
         }
@@ -117,7 +93,7 @@ class Payment extends Role_Controller {
         );
 
         $this->data['payment_type_list'] = json_encode($payment_type_list);
-        $this->data['user_id'] = $user_id;
+        $this->data['user_id'] = $child_id;
         $this->template->load('admin/templates/admin_tmpl', 'payment/create_payment', $this->data);
     }
 

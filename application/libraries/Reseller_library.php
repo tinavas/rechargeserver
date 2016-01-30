@@ -74,20 +74,6 @@ class Reseller_library {
         return $reseller_list;
     }   
     
-    public function get_user_current_balance($user_id = 0)
-    {
-        $current_balance = 0;
-        if($user_id == 0)
-        {
-            $user_id = $this->session->userdata('user_id');
-        }
-        $this->load->model('payment_model');
-        $user_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
-        if(!empty($user_balance_array)){
-            $current_balance = $user_balance_array[0]['current_balance'];
-        }
-        return $current_balance;
-    }
     public function get_user_title($user_id = 0)
     {
         $user_title = "";
@@ -128,14 +114,44 @@ class Reseller_library {
         $data['bkash_total_transactions'] = $bkash_total_transactions;
         return $data;
     }
-    
-    public function get_current_users($user_id){
-       $available_current_users =  $this->reseller_model->get_current_users($user_id)->result_array();
-       $available_current_user_no = 0;
-       if(!empty($available_current_users)){
-           $available_current_users = $available_current_users[0];
-           $available_current_user_no = $available_current_users['user_no'];
-       }
-       return $available_current_user_no ;
+    /*
+     * This method will return current available balance of a user
+     * @param $user_id, user id
+     * @return current available balance of the user 
+     * @author nazmul hasan on 30th January 2016
+     */
+    public function get_user_current_balance($user_id = 0)
+    {
+        $current_balance = 0;
+        if($user_id == 0)
+        {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $this->load->model('payment_model');
+        $user_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
+        if(!empty($user_balance_array)){
+            $current_balance = $user_balance_array[0]['current_balance'];
+        }
+        return $current_balance;
+    }
+    /*
+     * This method will return maximum allowable users to be created under that user
+     * @param $user_id, user id
+     * @return int, maximum allowable users to be created under this user
+     * @author nazmul hasan on 30th January 2016
+     */
+    public function get_maximum_children($user_id = 0)
+    {
+        if($user_id == 0)
+        {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $reseller_info_array = $this->reseller_model->get_reseller_info($user_id)->result_array();
+        if(!empty($reseller_info_array))
+        {
+            $reseller_info = $reseller_info_array[0];
+            return $reseller_info['max_user_no'];
+        }
+        return 0;
     }
 }
