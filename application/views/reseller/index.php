@@ -1,6 +1,6 @@
 <div class="ezttle"><span class="text"><?php echo $title; ?></span></div>
 <div class="mypage" ng-app="app.Reseller" ng-controller="resellerController">
-    <?php if ($group !== TYPE4) { ?>
+    <?php if ($group !== TYPE4 && $allow_user_create !== FALSE) { ?>
         <div class="btn-group">
             <a href="<?php echo base_url() . 'reseller/create_reseller' ?>" class="btn btn-primary btn-sm" href="reSellersAdd.html"><span class="glyphicon glyphicon-plus-sign"></span> Add Reseller</a>
         </div>

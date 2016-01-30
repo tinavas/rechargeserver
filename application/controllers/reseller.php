@@ -26,6 +26,20 @@ class Reseller extends Role_Controller {
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
         $this->data['group'] = $this->session->userdata('group');
+        $allowable_user_array = $this->reseller_library->get_reseller_available_users($this->session->userdata('user_id'))->result_array();
+        $allow_user_create = FALSE;
+        if (!empty($allowable_user_array)) {
+            $max_user_no = $allowable_user_array[0]['max_user_no'];
+            if ($max_user_no > NULL) {
+                $current_user_no = $this->reseller_library->get_current_users($this->session->userdata('user_id'));
+                if ($current_user_no >= $max_user_no) {
+                    
+                } else if ($current_user_no < $max_user_no) {
+                    $allow_user_create = True;
+                }
+            }
+        }
+        $this->data['allow_user_create'] = $allow_user_create;
         $this->template->load('admin/templates/admin_tmpl', 'reseller/index', $this->data);
     }
 
@@ -51,6 +65,9 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "email")) {
                     $email = $resellerInfo->email;
                 }
+                if (property_exists($resellerInfo, "max_user_no")) {
+                    $max_user_no = $resellerInfo->max_user_no;
+                }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
                 $user_service_list = array();
                 foreach ($service_list as $service_info) {
@@ -69,6 +86,7 @@ class Reseller extends Role_Controller {
                     'last_name' => $resellerInfo->last_name,
                     'mobile' => $resellerInfo->mobile,
                     'note' => $resellerInfo->note,
+                    'max_user_no' => $max_user_no,
                     'parent_user_id' => $this->session->userdata('user_id'),
                     'user_service_list' => $user_service_list
                 );
@@ -80,9 +98,9 @@ class Reseller extends Role_Controller {
             );
             $user_id = $this->ion_auth->register($username, $password, $email, $additional_data, $group_ids);
             if ($user_id !== FALSE) {
-               $response['message'] = 'User is created successfully.';
+                $response['message'] = 'User is created successfully.';
             } else {
-              $response['message'] = 'Error while creating the user. Please try again later.';
+                $response['message'] = 'Error while creating the user. Please try again later.';
             }
 
             echo json_encode($response);
@@ -172,7 +190,8 @@ class Reseller extends Role_Controller {
             }
         }
 
-        $this->data['rate_list'] = $this->reseller_model->get_reseller_services($user_id)->result_array();
+        $rate_list = $this->reseller_model->get_reseller_services($user_id)->result_array();
+        $this->data['rate_list'] = $rate_list;
         $this->data['user_id'] = $user_id;
         $this->template->load('admin/templates/admin_tmpl', 'reseller/update_rate', $this->data);
     }

@@ -95,6 +95,11 @@
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
+                                    <label for="max_no" class="control-label">Max Allowable Users No</label>
+                                    <input type="text" value="" placeholder="Maximum Allowable Users No" class="form-control input-sm" id="max_user_no" name="max_user_no" ng-model="resellerInfo.max_user_no">
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
                                     <label for="note">Note</label>
                                     <textarea rows="2" name="note" id="note" class="form-control input-sm" ng-model="resellerInfo.note"></textarea>
                                     <p class="help-block form_error"></p>

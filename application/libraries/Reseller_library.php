@@ -128,4 +128,14 @@ class Reseller_library {
         $data['bkash_total_transactions'] = $bkash_total_transactions;
         return $data;
     }
+    
+    public function get_current_users($user_id){
+       $available_current_users =  $this->reseller_model->get_current_users($user_id)->result_array();
+       $available_current_user_no = 0;
+       if(!empty($available_current_users)){
+           $available_current_users = $available_current_users[0];
+           $available_current_user_no = $available_current_users['user_no'];
+       }
+       return $available_current_user_no ;
+    }
 }

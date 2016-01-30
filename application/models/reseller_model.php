@@ -21,6 +21,20 @@ class Reseller_model extends Ion_auth_model
             ->from($this->tables['users'])
             ->get();
     }
+    public function get_reseller_available_users($user_id)
+    {
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['users'].'.max_user_no')
+            ->from($this->tables['users'])
+            ->get();
+    }
+    public function get_current_users($user_id)
+    {
+       $this->db->where($this->tables['relations'] . '.parent_user_id', $user_id);
+        return $this->db->select('parent_user_id, count(*) as user_no')
+                        ->from($this->tables['relations'])
+                        ->get();
+    }
     
     public function get_user_title_info($user_id)
     {

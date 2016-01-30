@@ -1,55 +1,77 @@
+
+<script>
+
+    function create_payment(paymentInfo) {
+        var userId = '<?php echo $user_id; ?>';
+        if (typeof paymentInfo.amount == "undefined" || paymentInfo.amount.length == 0) {
+            alert("Please give an amount !");
+            return;
+        }
+        if (typeof paymentInfo.payment_type == "undefined" || paymentInfo.payment_type.length == 0) {
+            alert("Please Select Payment Type! ");
+            return;
+        }
+        angular.element($('#submit_create_payment')).scope().createPayment(userId , function(data){
+            alert(data.message);
+            window.location = '<?php echo base_url() ?>reseller';
+
+        });
+    }
+</script>
+
 <div class="ezttle"><span class="text">Payment</span></div>
-<div class="mypage">
+<div class="mypage" ng-app="app.Payment" ng-controller="paymentController">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
-                <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
-                <table style="width:100%;">
-                    <tbody><tr>
-                            <td style="width:50%;vertical-align:top;padding-right:20px;">
-                                <?php echo form_open("payment/create_payment/".$user_id, array('id' => 'form_create_payment', 'class' => 'form-horizontal')); ?>
-                                <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
-                                    <div class ="row">
-                                        <div class="col-md-12"> <?php echo $message; ?> </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="amount" class="col-md-6 control-label requiredField">
-                                            Amount
-                                        </label>
-                                        <label for="amount" class="col-md-6 control-label requiredField">
-                                            <?php echo form_input($amount + array('class' => 'form-control')); ?>
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="payment_type_list" class="col-md-6 control-label requiredField">
-                                            Type
-                                        </label>
-                                        <label for="payment_type_list" class="col-md-6 control-label requiredField">
-                                            <?php echo form_dropdown('payment_type_list', $payment_type_list, '', 'class=form-control id=payment_type_list'); ?>
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description" class="col-md-6 control-label requiredField">
-                                            Description
-                                        </label>
-                                        <label for="description" class="col-md-6 control-label requiredField">
-                                            <?php echo form_input($description + array('class' => 'form-control')); ?>
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="submit_create_payment" class="col-md-6 control-label requiredField">
+            <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
+            <table style="width:100%;">
+                <tbody><tr>
+                        <td style="width:50%;vertical-align:top;padding-right:20px;">
+                <ng-form>
+                    <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
+                        <div class ="row">
+                            <div class="col-md-12">  </div>
+                        </div>
+                        <div class=" row form-group">
+                            <label for="amount" class="col-md-6 control-label requiredField">
+                                Amount
+                            </label>
+                            <label for="amount" class="col-md-6 control-label requiredField">
+                                <input type="text" name="amount" ng-model="paymentInfo.amount" class="form-control" placeholder='eg: 100'>              
+                            </label>
+                        </div>
+                        <div class=" row form-group" ng-init="setPaymentTypeList(<?php echo htmlspecialchars(json_encode($payment_type_list)); ?>)">
+                            <label for="payment_type_list" class="col-md-6 control-label requiredField">
+                                Type
+                            </label>
+                            <select class="col-md-6" name="seleted_payment_type" id="seleted_payment_type" ng-model="paymentInfo.payment_type">
+                                <option value="">Please select</option>
+                                <option class=form-control ng-repeat="(key,paymentType) in paymentTypeList" value="{{key}}">{{paymentType}}</option>
+                            </select>
+                        </div>
+                        <div class="row form-group">
+                            <label for="description" class="col-md-6 control-label requiredField">
+                                Description
+                            </label>
+                            <label for="description" class="col-md-6 control-label requiredField">
+                                <input type="text" name="description" ng-model="paymentInfo.description" class="form-control" >              
+                            </label>
+                        </div>
+                        <div class="row form-group">
+                            <label for="submit_create_payment" class="col-md-6 control-label requiredField">
 
-                                        </label>
-                                        <div class ="col-md-3 pull-right">
-                                            <?php echo form_submit($submit_create_payment + array('class' => 'form-control button')); ?>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <?php echo form_close(); ?>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                    </tbody></table>
-            		</div> 
+                            </label>
+                            <div class ="col-md-3 pull-right">
+                                <button id="submit_create_payment" class="form-control button"  onclick="create_payment(angular.element(this).scope().paymentInfo)">Send</button>
+                            </div> 
+                        </div>
+                    </div>
+                </ng-form>
+                </td>
+                <td>
+                </td>
+                </tr>
+                </tbody></table>
+        </div> 
     </div>
 </div>
