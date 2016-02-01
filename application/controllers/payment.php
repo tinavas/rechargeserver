@@ -94,7 +94,7 @@ class Payment extends Role_Controller {
 
         $this->data['payment_type_list'] = json_encode($payment_type_list);
         $this->data['user_id'] = $child_id;
-        $this->template->load('admin/templates/admin_tmpl', 'payment/create_payment', $this->data);
+        $this->template->load(null, 'payment/create_payment', $this->data);
     }
 
 }

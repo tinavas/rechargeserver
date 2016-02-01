@@ -4,17 +4,21 @@
     function create_payment(paymentInfo) {
         var userId = '<?php echo $user_id; ?>';
         if (typeof paymentInfo.amount == "undefined" || paymentInfo.amount.length == 0) {
-            alert("Please give an amount !");
+            $("#content").html("Please give an amount !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof paymentInfo.payment_type == "undefined" || paymentInfo.payment_type.length == 0) {
-            alert("Please Select Payment Type! ");
+            $("#content").html("Please Select Payment Type!");
+            $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#submit_create_payment')).scope().createPayment(userId , function(data){
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>reseller';
-
+        angular.element($('#submit_create_payment')).scope().createPayment(userId, function (data) {
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+             $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>reseller';
+            });
         });
     }
 </script>
@@ -45,8 +49,8 @@
                                 Type
                             </label>
                             <select class="col-md-6" name="seleted_payment_type" id="seleted_payment_type" ng-model="paymentInfo.payment_type">
-                                <option value="">Please select</option>
-                                <option class=form-control ng-repeat="(key,paymentType) in paymentTypeList" value="{{key}}">{{paymentType}}</option>
+                                <option class="form-control" value="">Please select</option>
+                                <option class="form-control" ng-repeat="(key,paymentType) in paymentTypeList" value="{{key}}">{{paymentType}}</option>
                             </select>
                         </div>
                         <div class="row form-group">
