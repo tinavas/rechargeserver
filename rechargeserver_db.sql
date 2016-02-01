@@ -122,6 +122,16 @@ CREATE TABLE IF NOT EXISTS `users_services` (
 ALTER TABLE `users_services`
   ADD CONSTRAINT `fk_users_services_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_users_services_services1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `users_services` (`id`, `user_id`, `service_id`, `rate`, `commission`, `charge`, `status`) VALUES
+(1, 1, 1, 1.0, 0.0, 0.0,  1),
+(2, 1, 2, 1.0, 0.0, 0.0,  1),
+(3, 1, 3, 1.0, 0.0, 0.0,  1),
+(4, 1, 4, 1.0, 0.0, 0.0,  1),
+(5, 1, 101, 1.0, 0.0, 0.0,  1),
+(6, 1, 102, 1.0, 0.0, 0.0,  1),
+(7, 1, 103, 1.0, 0.0, 0.0,  1),
+(8, 1, 104, 1.0, 0.0, 0.0,  1),
+(9, 1, 105, 1.0, 0.0, 0.0,  1);
   
 CREATE TABLE IF NOT EXISTS `user_transaction_statuses` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

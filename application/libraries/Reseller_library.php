@@ -162,5 +162,34 @@ class Reseller_library {
         }
         return $parent_user_id;
     }
+    
+    public function get_bfs_user_id_list($user_id)
+    {
+        $user_id_list = array();
+        $flag = true;
+        $parent_id_list = array($user_id);
+        while($flag)
+        {
+            $child_list_array = $this->reseller_model->get_child_user_id_list($parent_id_list)->result_array();
+            $parent_id_list = array();
+            foreach($child_list_array as $child_info)
+            {
+                if(!in_array($child_info['child_user_id'], $parent_id_list))
+                {
+                    $parent_id_list[] = $child_info['child_user_id'];
+                }
+                if(!in_array($child_info['child_user_id'], $user_id_list))
+                {
+                    $user_id_list[] = $child_info['child_user_id'];
+                }                
+            }
+            if(empty($child_list_array))
+            {
+                $flag = false;
+            }
+        }
+        
+        return $user_id_list;
+    }
 
 }

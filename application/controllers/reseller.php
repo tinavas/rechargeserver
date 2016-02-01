@@ -41,15 +41,23 @@ class Reseller extends Role_Controller {
         $this->template->load(null, 'reseller/index', $this->data);
     }
 
+    function test() {
+        //$this->load->model('reseller_model');
+        //$parent_id_array = array();
+        $user_id = $this->session->userdata('user_id'); 
+        //$result = $this->reseller_model->get_user_id_list($parent_id_array, $user_list=array());
+        $result = $this->reseller_library->get_bfs_user_id_list($user_id);
+        var_dump($result);
+    }
+
     /*
      * This method will create a new reseller
      */
 
     public function create_reseller() {
         $this->load->library('utils');
-        $this->load->model('service_model');
         $user_is_admin = FALSE;
-        $service_list = $this->reseller_model->get_user_services($this->session->userdata('user_id'))->result_array();
+        $service_list = $this->service_model->get_user_all_services($this->session->userdata('user_id'))->result_array();
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -128,7 +136,7 @@ class Reseller extends Role_Controller {
     public function update_reseller($user_id = 0) {
         $this->load->library('utils');
         $this->load->model('service_model');
-        $service_list = $this->reseller_model->get_user_services($this->session->userdata('user_id'))->result_array();
+        $service_list = $this->service_model->get_user_services($this->session->userdata('user_id'))->result_array();
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -197,7 +205,7 @@ class Reseller extends Role_Controller {
         }
 
         $user_available_services = array();
-        $child_services = $this->reseller_model->get_user_services($user_id)->result_array();
+        $child_services = $this->service_model->get_user_services($user_id)->result_array();
         foreach ($service_list as $user_service) {
             $user_service['selected'] = FALSE;
             foreach ($child_services as $service) {
@@ -242,5 +250,4 @@ class Reseller extends Role_Controller {
         $this->template->load(null, 'reseller/update_rate', $this->data);
     }
 
-   
 }

@@ -123,7 +123,11 @@
                                     <label for="allper" style="cursor:pointer;">Reseller Permission</label> </p>
                                 <div class="form-group" ng-init="setServiceList(<?php echo htmlspecialchars(json_encode($service_list)); ?>)">
                                     <div ng-repeat="serviceInfo in serviceList">
-                                        <div class="checkbox"><label><input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}</label></div>
+                                        <div class="checkbox" ng-if="serviceInfo.status == 1">
+                                            <label>
+                                                <input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}
+                                            </label>
+                                        </div>
                                     </div>
                                     <p class="help-block form_error"></p>
                                 </div>
