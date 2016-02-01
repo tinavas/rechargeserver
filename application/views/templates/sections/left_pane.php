@@ -62,6 +62,7 @@
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>
                 <ul id="baby">
+                    <li><a href="<?php echo base_url();?>reseller/return_balance">Return Balance</a></li>
                     <li><a href="#">My Rates</a></li>
                     <li><a href="#">My Profile</a></li>
                     <li><a href="#">Access Logs</a></li>

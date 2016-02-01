@@ -97,4 +97,68 @@ class Payment extends Role_Controller {
         $this->template->load(null, 'payment/create_payment', $this->data);
     }
 
+    /**
+     * this method return balance from child to parent
+     * 
+     * 
+     *  */
+    public function reseller_return_balance() {
+        $user_id = $this->session->userdata('user_id');
+        $this->load->library('reseller_library');
+        $response = array();
+        if (file_get_contents("php://input") != null) {
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "paymentInfo") != FALSE) {
+                $paymentInfo = $requestInfo->paymentInfo;
+
+                if (property_exists($paymentInfo, "amount")) {
+                    $amount = $paymentInfo->amount;
+                }
+                if (property_exists($paymentInfo, "description")) {
+                    $description = $paymentInfo->description;
+                }
+                if ($amount > $this->reseller_library->get_user_current_balance($user_id)) {
+                    $response['message'] = 'Sorry! Insaficient Balance !';
+                    echo json_encode($response);
+                    return;
+                };
+
+                $parent_user_id = $this->reseller_library->get_parent_user_id($user_id);
+                if ($parent_user_id == 0) {
+                    $response['message'] = 'Error !Parent information not found  !';
+                    echo json_encode($response);
+                    return;
+                }
+                // child payment info
+                $user_data = array(
+                    'balance_in' => 0,
+                    'balance_out' => $amount
+                );
+                $user_data['user_id'] = $user_id;
+                $user_data['type_id'] = PAYMENT_TYPE_ID_SEND_CREDIT;
+                // parent payment info
+                $parent_data = array(
+                    'balance_in' => $amount,
+                    'balance_out' => 0
+                );
+                $parent_data['user_id'] = $parent_user_id;
+                $parent_data['type_id'] = PAYMENT_TYPE_ID_RECEIVE_CREDIT;
+                if (isset($description)) {
+                    $user_data['description'] = $description;
+                    $parent_data['description'] = $description;
+                }
+                $this->load->model('payment_model');
+                if ($this->payment_model->transfer_user_payment($user_data, $parent_data) !== FALSE) {
+                    $response['message'] = 'Return balance successfully.';
+                } else {
+                    $response['message'] = 'Error while return the balance. Please try later.';
+                }
+            }
+            echo json_encode($response);
+            return;
+        }
+        $this->template->load(null, 'reseller/return_balance', $this->data);
+    }
+
 }

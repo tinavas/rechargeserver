@@ -26,7 +26,7 @@ angular.module('services.Payment', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/reseller/return_balance',
+                    url: $location.path() + $app_name + '/payment/reseller_return_balance',
                     data: {
                         paymentInfo: paymentInfo
                     }
