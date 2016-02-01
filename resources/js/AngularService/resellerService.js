@@ -12,6 +12,16 @@ angular.module('services.Reseller', []).
                     }
                 });
             }
+            resellerService.updateReseller = function (resellerInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/reseller/update_reseller',
+                    data: {
+                        resellerInfo: resellerInfo
+                    }
+                });
+            }
 
             return resellerService;
         });

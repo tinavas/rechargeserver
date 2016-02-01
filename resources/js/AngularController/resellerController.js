@@ -4,6 +4,10 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.resellerList = [];
             $scope.serviceList = [];
             $scope.serviceRateList = [];
+            $scope.allow_reseller_action = true;
+            $scope.setResellerInfo = function (resellerInfo) {
+                $scope.resellerInfo = JSON.parse(resellerInfo);
+            }
             $scope.setResellerList = function (resellerList) {
                 $scope.resellerList = JSON.parse(resellerList);
             }
@@ -15,16 +19,45 @@ angular.module('controller.Reseller', ['services.Reseller']).
                 console.log($scope.serviceRateList);
             }
             $scope.createReseller = function (callbackFunction) {
+
                 angular.forEach($scope.serviceList, function (service) {
                     if (typeof $scope.resellerInfo.selected_service_id_list == "undefined") {
                         $scope.resellerInfo.selected_service_id_list = [];
                     }
                     if (service.selected == true) {
-                        $scope.resellerInfo.selected_service_id_list.push(service.id);
+                        $scope.resellerInfo.selected_service_id_list.push(service.service_id);
                     }
                 });
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
                 resellerService.createReseller($scope.resellerInfo).
                         success(function (data, status, headers, config) {
+                            angular.forEach($scope.serviceList, function (service) {
+                                service.selected = false;
+                            });
+                            $scope.allow_reseller_action = true;
+                            callbackFunction(data);
+                        });
+            }
+
+            $scope.updateReseller = function (callbackFunction) {
+                angular.forEach($scope.serviceList, function (service) {
+                    if (typeof $scope.resellerInfo.selected_service_id_list == "undefined") {
+                        $scope.resellerInfo.selected_service_id_list = [];
+                    }
+                    if (service.selected == true) {
+                        $scope.resellerInfo.selected_service_id_list.push(service.service_id);
+                    }
+                });
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
+                resellerService.updateReseller($scope.resellerInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.allow_reseller_action = true;
                             callbackFunction(data);
                         });
             }
@@ -66,6 +99,7 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.toggleSelection = function toggleSelection(service) {
                 var serviceIndex = $scope.serviceList.indexOf(service);
                 $scope.serviceList[serviceIndex] = service;
+                console.log(service);
             };
 
 

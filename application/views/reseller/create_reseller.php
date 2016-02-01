@@ -5,41 +5,52 @@
     }
     function create_reseller(resellerInfo) {
         if (typeof resellerInfo.username == "undefined" || resellerInfo.username.length == 0) {
-            alert("Please give a User Name !");
+            $("#content").html("Please give a User Name !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof resellerInfo.password == "undefined" || resellerInfo.password.length == 0) {
-            alert("Please give Password ");
+            $("#content").html("Please give Password  !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-            alert("Please give First Name !");
+            $("#content").html("Please give First Name !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
-            alert("Please give Last Name !");
+            $("#content").html("Please give Last Name !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-            alert("Please give Mobile Number !");
+            $("#content").html("Please give Mobile Number !");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-            alert("Please give Email address !");
+            $("#content").html("Please give Email address !");
+            $('#common_modal').modal('show');
             return;
         }
         var varificationResult = validateEmail(resellerInfo.email);
         if (varificationResult == false) {
-            alert("Please Enter a valid Email Address!");
+            $("#content").html("Please Enter a valid Email Address!");
+            $('#common_modal').modal('show');
             return false;
         }
         if (typeof resellerInfo.note == "undefined" || resellerInfo.note.length == 0) {
-            alert("Please Give  n Note !");
+            $("#content").html("Please Give a Note !");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#submit_create_reseller')).scope().createReseller(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>reseller/create_reseller';
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>reseller';
+            });
         });
 
 
