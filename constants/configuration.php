@@ -14,13 +14,13 @@ define("API_KEY_CASHIN_TELETALK",                          "key105");
 
 
 define("BKASH_MINIMUM_CASH_IN_AMOUNT",                     "50");
-define("BKASH_MAXIMUM_CASH_IN_AMOUNT",                     "5000");
+define("BKASH_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 define("DBBL_MINIMUM_CASH_IN_AMOUNT",                      "50");
-define("DBBL_MAXIMUM_CASH_IN_AMOUNT",                      "5000");
+define("DBBL_MAXIMUM_CASH_IN_AMOUNT",                      "50000");
 define("MCASH_MINIMUM_CASH_IN_AMOUNT",                     "50");
-define("MCASH_MAXIMUM_CASH_IN_AMOUNT",                     "5000");
+define("MCASH_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 define("UCASH_MINIMUM_CASH_IN_AMOUNT",                     "50");
-define("UCASH_MAXIMUM_CASH_IN_AMOUNT",                     "5000");
+define("UCASH_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 
 define("WEBSERVICE_URL_REGISTER_MEMBER",                   "http://localhost:4040/registermember");
 define("WEBSERVICE_URL_CREATE_TRANSACTION",                "http://localhost:3030/addtransaction");

@@ -59,3 +59,8 @@ $lang['group_name_required'] 		= 'Group name is a required field';
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
 $lang['email_new_password_subject']          = 'New Password';
 $lang['email_activation_subject']            = 'Account Activation';
+
+// Transaction
+$lang['error_insaficient_balance'] = 'Sorry! Insaficient Balance !';
+$lang['error_while_processing_the_transaction'] = 'Error While Processing the Transaction';
+$lang['null_pointer_exception_while_processing_the_transaction'] = 'Null Pointer Exception While Processing the Transaction';
