@@ -22,6 +22,16 @@ angular.module('services.Payment', []).
                     }
                 });
             }
+            paymentService.returnBalance = function (paymentInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/reseller/return_balance',
+                    data: {
+                        paymentInfo: paymentInfo
+                    }
+                });
+            }
 
             return paymentService;
         });

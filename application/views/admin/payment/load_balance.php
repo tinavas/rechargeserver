@@ -4,10 +4,12 @@
             alert("Please give an amount !");
             return;
         }
-        angular.element($('#submit_create_payment')).scope().loadBalance(function(data){
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>admin/load_balance';
-
+        angular.element($('#submit_create_payment')).scope().loadBalance(function (data) {
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>admin/load_balance';
+            });
         });
     }
 </script>

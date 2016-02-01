@@ -63,3 +63,4 @@
         <?php $this->load->view('admin/templates/sections/footer'); ?>
     </body>
 </html>
+<?php $this->load->view('common/common_modal'); ?>
