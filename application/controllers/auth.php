@@ -9,6 +9,7 @@ class Auth extends Role_Controller {
         $this->load->library('ion_auth');
         $this->load->library('form_validation');
         $this->load->helper('url');
+       
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -45,6 +46,8 @@ class Auth extends Role_Controller {
                     $this->data = array_merge($this->reseller_library->get_user_dashboard_data($user_id), $this->data);
                     //$this->_render_page('auth/index', $this->data);
                     //$this->template->load(NULL, ADMIN_LOGIN_SUCCESS_VIEW, $this->data);
+
+                    $this->data['user_group'] = $group;
                     $this->template->load(null, "admin/index", $this->data);
                     break;
                 }
@@ -59,6 +62,8 @@ class Auth extends Role_Controller {
             
         }
     }
+    
+   
 
     //log the user in
     function login() {

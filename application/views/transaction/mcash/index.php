@@ -3,17 +3,21 @@
     function m_cash(mCashInfo) {
         console.log(mCashInfo.number);
         if (typeof mCashInfo.number == "undefined" || mCashInfo.number.length == 0) {
-            alert("Please give a M-CASH Number");
+            $("#content").html("Please give a M-CASH Number");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof mCashInfo.amount == "undefined" || mCashInfo.amount.length == 0) {
-            alert("Please give an amount ");
+            $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#m_cash_in_id')).scope().mCash(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>transaction/m_cash' ;
-
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>transaction/m_cash';
+            });
         });
     }
 </script>

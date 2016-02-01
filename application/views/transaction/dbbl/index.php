@@ -3,16 +3,21 @@
     function dbbl(dbblInfo) {
         console.log(dbblInfo.number);
         if (typeof dbblInfo.number == "undefined" || dbblInfo.number.length == 0) {
-            alert("Please give a DBBL Number");
+            $("#content").html("Please give a DBBL Number");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof dbblInfo.amount == "undefined" || dbblInfo.amount.length == 0) {
-            alert("Please give an amount ");
+            $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#dbbl_cash_in_id')).scope().dbbl(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>transaction/dbbl';
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>transaction/dbbl';
+            });
 
         });
     }
@@ -29,7 +34,7 @@
                     <?php // echo form_open("transaction/dbbl", array('id' => 'form_create_dbbl', 'class' => 'form-horizontal')); ?>
                     <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
                         <div class ="row">
-                            <div class="col-md-12"> <?php // echo $message;   ?> </div>
+                            <div class="col-md-12"> <?php // echo $message;      ?> </div>
                         </div>
                         <div class="form-group">
                             <label for="number" class="col-md-6 control-label requiredField">

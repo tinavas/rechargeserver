@@ -1,19 +1,22 @@
 <script>
 
     function bkash(bkashInfo) {
-        console.log(bkashInfo.number);
         if (typeof bkashInfo.number == "undefined" || bkashInfo.number.length == 0) {
-            alert("Please give a bkash Number");
+            $("#content").html("Please give a bkash Number");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof bkashInfo.amount == "undefined" || bkashInfo.amount.length == 0) {
-            alert("Please give an amount ");
+            $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#bkash_cash_in_id')).scope().bkash(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url()?>transaction/bkash' ;
-
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>transaction/bkash';
+            });
         });
     }
 </script>

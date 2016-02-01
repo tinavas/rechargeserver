@@ -3,16 +3,21 @@
     function u_cash(uCashInfo) {
         console.log(uCashInfo.number);
         if (typeof uCashInfo.number == "undefined" || uCashInfo.number.length == 0) {
-            alert("Please give a U-CASH Number");
+            $("#content").html("Please give a U-CASH Number");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof uCashInfo.amount == "undefined" || uCashInfo.amount.length == 0) {
-            alert("Please give an amount ");
+             $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#u_cash_in_id')).scope().uCash(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>transaction/u_cash' ;
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>transaction/u_cash';
+            });
 
         });
     }

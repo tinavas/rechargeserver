@@ -7,28 +7,49 @@ angular.module('controller.Transction', ['services.Transction']).
             $scope.transctionList = [];
             $scope.topupTypeList = [];
             $scope.topupOperatorList = [];
+            $scope.allow_transction = true;
 
             $scope.bkash = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
                 transctionService.bkash($scope.bkashInfo).
                         success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
             $scope.dbbl = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
                 transctionService.dbbl($scope.dbblInfo).
                         success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
             $scope.mCash = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
                 transctionService.mCash($scope.mCashInfo).
                         success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
             $scope.uCash = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
                 transctionService.uCash($scope.uCashInfo).
                         success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
