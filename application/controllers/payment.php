@@ -94,6 +94,7 @@ class Payment extends Role_Controller {
 
         $this->data['payment_type_list'] = json_encode($payment_type_list);
         $this->data['user_id'] = $child_id;
+        $this->data['app'] = PAYMENT_APP;
         $this->template->load(null, 'payment/create_payment', $this->data);
     }
 
@@ -158,6 +159,7 @@ class Payment extends Role_Controller {
             echo json_encode($response);
             return;
         }
+        $this->data['app'] = PAYMENT_APP;
         $this->template->load(null, 'reseller/return_balance', $this->data);
     }
 

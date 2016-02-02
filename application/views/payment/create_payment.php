@@ -16,15 +16,15 @@
         angular.element($('#submit_create_payment')).scope().createPayment(userId, function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-             $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>reseller';
             });
         });
     }
 </script>
-
+<div class="loader"></div>
 <div class="ezttle"><span class="text">Payment</span></div>
-<div class="mypage" ng-app="app.Payment" ng-controller="paymentController">
+<div class="mypage"  ng-controller="paymentController">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
@@ -45,13 +45,17 @@
                             </label>
                         </div>
                         <div class=" row form-group" ng-init="setPaymentTypeList(<?php echo htmlspecialchars(json_encode($payment_type_list)); ?>)">
-                            <label for="payment_type_list" class="col-md-6 control-label requiredField">
-                                Type
-                            </label>
-                            <select class="col-md-6" name="seleted_payment_type" id="seleted_payment_type" ng-model="paymentInfo.payment_type">
-                                <option class="form-control" value="">Please select</option>
-                                <option class="form-control" ng-repeat="(key,paymentType) in paymentTypeList" value="{{key}}">{{paymentType}}</option>
-                            </select>
+                            <div class="col-md-6">
+                                <label for="payment_type_list" class="control-label requiredField">
+                                    Type
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <select  class="form-control "name="seleted_payment_type" id="seleted_payment_type" ng-model="paymentInfo.payment_type">
+                                    <option class="form-control" value="">Please select</option>
+                                    <option class="form-control" ng-repeat="(key,paymentType) in paymentTypeList" value="{{key}}">{{paymentType}}</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row form-group">
                             <label for="description" class="col-md-6 control-label requiredField">

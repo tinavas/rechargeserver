@@ -104,12 +104,10 @@ class Reseller_library {
             $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
         }
         $data['bkash_total_transactions'] = $bkash_total_transactions;
-        $user_services = $this->service_model->get_user_service_ids($user_id)->result_array();
-        if (!empty($user_services)) {
-            $data['user_services'] = $user_services;
-        }
+       
         return $data;
     }
+    
 
     /*
      * This method will return current available balance of a user
@@ -162,33 +160,27 @@ class Reseller_library {
         }
         return $parent_user_id;
     }
-    
-    public function get_bfs_user_id_list($user_id)
-    {
+
+    public function get_bfs_user_id_list($user_id) {
         $user_id_list = array();
         $flag = true;
         $parent_id_list = array($user_id);
-        while($flag)
-        {
+        while ($flag) {
             $child_list_array = $this->reseller_model->get_child_user_id_list($parent_id_list)->result_array();
             $parent_id_list = array();
-            foreach($child_list_array as $child_info)
-            {
-                if(!in_array($child_info['child_user_id'], $parent_id_list))
-                {
+            foreach ($child_list_array as $child_info) {
+                if (!in_array($child_info['child_user_id'], $parent_id_list)) {
                     $parent_id_list[] = $child_info['child_user_id'];
                 }
-                if(!in_array($child_info['child_user_id'], $user_id_list))
-                {
+                if (!in_array($child_info['child_user_id'], $user_id_list)) {
                     $user_id_list[] = $child_info['child_user_id'];
-                }                
+                }
             }
-            if(empty($child_list_array))
-            {
+            if (empty($child_list_array)) {
                 $flag = false;
             }
         }
-        
+
         return $user_id_list;
     }
 

@@ -13,9 +13,9 @@
         });
     }
 </script>
-
+ <div class="loader"></div>
 <div class="ezttle"><span class="text">Payment</span></div>
-<div class="mypage" ng-app="app.Payment" ng-controller="paymentController">
+<div class="mypage" ng-controller="paymentController">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">

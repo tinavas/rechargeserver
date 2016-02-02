@@ -54,6 +54,7 @@ class Admin extends Role_Controller {
 
 
         $this->data['message'] = "";
+        $this->data['app'] = PAYMENT_APP;
         $this->template->load('admin/templates/admin_tmpl', 'admin/payment/load_balance', $this->data);
     }
 

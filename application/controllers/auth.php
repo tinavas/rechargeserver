@@ -48,6 +48,7 @@ class Auth extends Role_Controller {
                     //$this->template->load(NULL, ADMIN_LOGIN_SUCCESS_VIEW, $this->data);
 
                     $this->data['user_group'] = $group;
+                    $this->data['app'] = RESELLER_APP;
                     $this->template->load(null, "admin/index", $this->data);
                     break;
                 }
@@ -63,6 +64,7 @@ class Auth extends Role_Controller {
         }
     }
     
+ 
    
 
     //log the user in

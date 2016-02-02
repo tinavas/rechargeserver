@@ -6,6 +6,7 @@ include './constants/response_code.php';
 include './constants/service.php';
 include './constants/transaction.php';
 include './constants/payment.php';
+include './constants/app_configaration.php';
 
 define('ADMIN', 'admin');
 define('TYPE1', 'type1');

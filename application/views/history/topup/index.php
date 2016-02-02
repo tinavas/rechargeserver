@@ -1,3 +1,4 @@
+  <div class="loader"></div>
 <div class="ezttle"><span class="text">Topup History</span></div>
 <div class="mypage">
     <!--<div class="top10">&nbsp;</div>-->

@@ -84,6 +84,7 @@ class Transaction extends Role_Controller {
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/bkash/index', $this->data);
     }
 
@@ -148,6 +149,7 @@ class Transaction extends Role_Controller {
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/dbbl/index', $this->data);
     }
 
@@ -213,6 +215,7 @@ class Transaction extends Role_Controller {
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/mcash/index', $this->data);
     }
 
@@ -264,7 +267,8 @@ class Transaction extends Role_Controller {
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
             if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
-                $response['message'] = "Transaction is created successfully.";;
+                $response['message'] = "Transaction is created successfully.";
+                ;
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
             }
@@ -280,6 +284,7 @@ class Transaction extends Role_Controller {
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/ucash/index', $this->data);
     }
 
@@ -426,7 +431,7 @@ class Transaction extends Role_Controller {
             SERVICE_TYPE_ID_TOPUP_AIRTEL => 'Airtel',
             SERVICE_TYPE_ID_TOPUP_TELETALK => 'TeleTalk'
         );
-
+        $this->data['app'] = TRANSCATION_APP;
         $this->data['topup_type_list'] = json_encode($topup_type_list);
         $this->data['topup_operator_list'] = json_encode($topup_operator_list);
 

@@ -63,23 +63,15 @@ class Reseller_model extends Ion_auth_model {
                         ->from($this->tables['relations'])
                         ->get();
     }
-    
 
-    public function get_user_id_list($parent_id_array = array(), $user_list) {
-        $child_list = $this->get_child_user_id_list($parent_id_array)->result_array();
-        $parent_id_array = array();
-        if (!empty($child_list)) {
-            foreach ($child_list as $child) {
-                $parent_id_array[] = $child['child_user_id'];
-                if (!in_array($child['child_user_id'], $user_list)) {
-
-                    $user_list[] = $child['child_user_id'];
-                }
+    public function update_reseller_services($child_id_list, $reseller_inactive_service_List = array()) {
+        foreach ($child_id_list as $child_id) {
+            foreach ($reseller_inactive_service_List as $service_id) {
+                $this->db->where($this->tables['users_services'] . '.user_id', $child_id);
+                $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
+                $this->db->update($this->tables['users_services'], array('status' => 0));
             }
-            $this->get_user_id_list($parent_id_array, $user_list);
         }
-
-        return $user_list;
     }
 
 }

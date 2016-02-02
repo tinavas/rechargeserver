@@ -38,16 +38,25 @@ class Reseller extends Role_Controller {
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
         $this->data['group'] = $group;
+        $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/index', $this->data);
     }
 
-    function test() {
-        //$this->load->model('reseller_model');
-        //$parent_id_array = array();
-        $user_id = $this->session->userdata('user_id'); 
-        //$result = $this->reseller_model->get_user_id_list($parent_id_array, $user_list=array());
-        $result = $this->reseller_library->get_bfs_user_id_list($user_id);
-        var_dump($result);
+    function get_user_service_list() {
+        $user_id = $this->session->userdata('user_id');
+        $response = array();
+        $topup_service_allow_flag = FALSE;
+        $service_list = $this->service_model->get_user_services($user_id)->result_array();
+        if (!empty($service_list)) {
+            foreach ($service_list as $service) {
+                if ($service['service_id'] == SERVICE_TYPE_ID_TOPUP_GP || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_ROBI || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_BANGLALINK || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_BANGLALINK || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_AIRTEL) {
+                    $topup_service_allow_flag = TRUE;
+                }
+            }
+        }
+        $response['service_list'] = $service_list;
+        $response['topup_service_allow_flag'] = $topup_service_allow_flag;
+        echo json_encode($response);
     }
 
     /*
@@ -130,6 +139,7 @@ class Reseller extends Role_Controller {
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
         $this->data['service_list'] = json_encode($service_list);
+        $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/create_reseller', $this->data);
     }
 
@@ -169,6 +179,7 @@ class Reseller extends Role_Controller {
                 }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
                 $user_service_list = array();
+                $reseller_inactive_service_List = array();
                 foreach ($service_list as $service_info) {
                     $user_service_info = array(
                         'service_id' => $service_info['service_id']
@@ -177,6 +188,7 @@ class Reseller extends Role_Controller {
                         $user_service_info['status'] = 1;
                     } else {
                         $user_service_info['status'] = 0;
+                        $reseller_inactive_service_List[] = $service_info['service_id'];
                     }
                     $user_service_list[] = $user_service_info;
                 }
@@ -190,6 +202,8 @@ class Reseller extends Role_Controller {
                 );
             }
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
+                $child_id_list = $this->reseller_library->get_bfs_user_id_list($user_id);
+                $result = $this->reseller_model->update_reseller_services($child_id_list, $reseller_inactive_service_List);
                 $response['message'] = 'User is updated successfully.';
             } else {
                 $response['message'] = 'Error while updating the user. Please try again later.';
@@ -220,6 +234,7 @@ class Reseller extends Role_Controller {
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
+        $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_reseller', $this->data);
     }
 
@@ -247,6 +262,7 @@ class Reseller extends Role_Controller {
         $rate_list = $this->reseller_model->get_user_services($user_id)->result_array();
         $this->data['rate_list'] = $rate_list;
         $this->data['user_id'] = $user_id;
+        $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_rate', $this->data);
     }
 

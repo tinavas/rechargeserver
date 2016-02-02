@@ -58,9 +58,9 @@
 
 </script>
 
-
+<div class="loader"></div>
 <div class="ezttle"><span class="text"><?php echo $title; ?></span></div>
-<div class="mypage" ng-app="app.Reseller" ng-controller="resellerController">
+<div class="mypage" ng-controller="resellerController">
     <div class="top10">&nbsp;</div>
     <div class="row">
         <div class="col-md-12 fleft">	

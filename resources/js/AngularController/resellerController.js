@@ -5,6 +5,7 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.serviceList = [];
             $scope.serviceRateList = [];
             $scope.allow_reseller_action = true;
+            $scope.topup_service_allow_flag = false;
             $scope.setResellerInfo = function (resellerInfo) {
                 $scope.resellerInfo = JSON.parse(resellerInfo);
             }
@@ -17,6 +18,18 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.setServiceRateList = function (serviceRateList) {
                 $scope.serviceRateList = JSON.parse(serviceRateList);
                 console.log($scope.serviceRateList);
+            }
+            $scope.getUserServiceList = function () {
+                resellerService.getUserServiceList().
+                        success(function (data, status, headers, config) {
+                            if (typeof data.service_list != "undefined") {
+                                $scope.serviceList = data.service_list;
+                            }
+                            if (typeof data.topup_service_allow_flag != "undefined") {
+                                $scope.topup_service_allow_flag = data.topup_service_allow_flag;
+                            }
+                        });
+
             }
             $scope.createReseller = function (callbackFunction) {
 

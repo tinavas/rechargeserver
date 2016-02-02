@@ -4,22 +4,28 @@
     function top_up(topUpInfo) {
         console.log(topUpInfo.number);
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
-            alert("Please give a TopUP Number");
+            $("#content").html("Please give a TopUP Number");
+            $('#common_modal').modal('show');
             return;
         }
         if (typeof topUpInfo.amount == "undefined" || topUpInfo.amount.length == 0) {
-            alert("Please give an amount ");
+            $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#top_up_id')).scope().topUp(function (data) {
-            alert(data.message);
-            window.location = '<?php echo base_url() ?>transaction/top_up' ;
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>transaction/top_up';
+            });
 
         });
     }
 </script>
+ <div class="loader"></div>
 <div class="ezttle"><span class="text">Topup</span></div>
-<div class="mypage" ng-app="app.Transction" ng-controller="transctionController">
+<div class="mypage"  ng-controller="transctionController">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">

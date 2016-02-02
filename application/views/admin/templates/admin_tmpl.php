@@ -39,6 +39,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/transactionController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/resellerController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/paymentController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/leftController.js"></script>
 
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/transctionApp.js"></script>
@@ -46,14 +47,13 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/paymentApp.js"></script>
 
     </head>
-    <body>
+    <body ng-app="<?php echo $app; ?>">
         <div id="wrap">
             <!-- Fixed navbar -->
             <?php $this->load->view('admin/templates/sections/header'); ?>
             <!--<div class="clrGap">&nbsp;</div>-->
             <div class="container-fluid mybody">
                 <?php $this->load->view('admin/templates/sections/left_pane'); ?>
-
                 <div class="main">
                     <?php echo $contents; ?>
                 </div>
@@ -64,3 +64,4 @@
     </body>
 </html>
 <?php $this->load->view('common/common_modal'); ?>
+<?php $this->load->view('wating_loader'); ?>

@@ -1,3 +1,4 @@
+ <div class="loader"></div>
 <div class="ezttle"><span class="text">bKash History</span></div>
 <div class="mypage">
     <!--<div class="top10">&nbsp;</div>-->
@@ -81,6 +82,7 @@
         </div>
     </form>			-->
     <!--<div class="top10">&nbsp;</div>-->
+   
     <table class="table table-striped table-hover">
         <thead>
             <tr>

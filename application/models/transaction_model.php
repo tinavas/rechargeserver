@@ -91,7 +91,7 @@ class Transaction_model extends Ion_auth_model {
                 }
             }
         }
-        $this->ion_auth->set_message('null_pointer_exception_while_processing_the_transaction');
+        $this->ion_auth->set_message('error_while_processing_the_transaction');
         return FALSE;
     }
 

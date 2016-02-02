@@ -18,7 +18,7 @@
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-offset-9 col-md-2">
-                        <input id="modal_ok_click_id" type="button" class="close btn button-custom close_button_custom" data-dismiss="modal" aria-hidden="true" value="Ok">
+                        <input id="modal_ok_click_id" type="button" class="btn button-custom" data-dismiss="modal" aria-hidden="true" value="Ok">
                     </div>
                 </div>
             </div>
