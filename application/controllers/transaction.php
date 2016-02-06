@@ -22,6 +22,7 @@ class Transaction extends Role_Controller {
     public function index() {
         
     }
+    
 
     public function bkash() {
         $response = array();
@@ -135,7 +136,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
+            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
@@ -201,7 +202,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
+            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
@@ -266,7 +267,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
+            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
                 ;
             } else {
@@ -290,20 +291,21 @@ class Transaction extends Role_Controller {
 
     public function topup() {
         $response = array();
+        $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
-            if (property_exists($requestInfo, "uCashInfo")) {
-                $uCashInfo = $requestInfo->uCashInfo;
-                if (property_exists($uCashInfo, "number")) {
-                    $cell_no = $uCashInfo->number;
+            if (property_exists($requestInfo, "topUpInfo")) {
+                $topUpInfo = $requestInfo->topUpInfo;
+                if (property_exists($topUpInfo, "number")) {
+                    $cell_no = $topUpInfo->number;
                 } else {
                     $response["message"] = "Cell Number is Required !!";
                     echo json_encode($response);
                     return;
                 }
-                if (property_exists($uCashInfo, "amount")) {
-                    $amount = $uCashInfo->amount;
+                if (property_exists($topUpInfo, "amount")) {
+                    $amount = $topUpInfo->amount;
                 } else {
                     $response["message"] = "Amount is Required !!";
                     echo json_encode($response);
@@ -311,7 +313,7 @@ class Transaction extends Role_Controller {
                 }
             }
             if (isset($amount)) {
-                if ($amount < UCASH_MINIMUM_CASH_IN_AMOUNT || $amount > UCASH_MAXIMUM_CASH_IN_AMOUNT) {
+                if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT || $amount > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
                     $response["message"] = "Please Give a Valid Amount !!";
                     echo json_encode($response);
                     return;
@@ -322,100 +324,42 @@ class Transaction extends Role_Controller {
                 echo json_encode($response);
                 return;
             }
-            $user_id = $this->session->userdata('user_id');
-            $api_key = API_KEY_UCASH_CASHIN;
+            if (property_exists($topUpInfo, "topupOperatorId")) {
+                $service_id = $topUpInfo->topupOperatorId;
+            }
+            if ($service_id == SERVICE_TYPE_ID_TOPUP_GP) {
+                $api_key = API_KEY_CASHIN_GP;
+            } else if ($service_id == SERVICE_TYPE_ID_TOPUP_ROBI) {
+                $api_key = API_KEY_CASHIN_ROBI;
+            } else if ($service_id == SERVICE_TYPE_ID_TOPUP_BANGLALINK) {
+                $api_key = API_KEY_CASHIN_BANGLALINK;
+            } else if ($service_id == SERVICE_TYPE_ID_TOPUP_AIRTEL) {
+                $api_key = API_KEY_CASHIN_AIRTEL;
+            } else if ($service_id == SERVICE_TYPE_ID_TOPUP_TELETALK) {
+                $api_key = API_KEY_CASHIN_TELETALK;
+            }
             $description = "test";
             $transaction_id = "";
             $transaction_data = array(
-                'user_id' => $this->session->userdata('user_id'),
+                'user_id' => $user_id,
                 'transaction_id' => $transaction_id,
-                'service_id' => SERVICE_TYPE_ID_UCASH_CASHIN,
+                'service_id' => $service_id,
+                'operator_type_id' => $topUpInfo->topupType,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
+            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
             }
-
             echo json_encode($response);
             return;
         }
-//        $this->data['message'] = "";
-//        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-//        $this->form_validation->set_rules('number', 'Number', 'xss_clean|required');
-//        $this->form_validation->set_rules('amount', 'Amount', 'xss_clean|required');
-//        if ($this->input->post('submit_create_transaction')) {
-//            if ($this->form_validation->run() == true) {
-//                $amount = $this->input->post('amount');
-//                $api_key = API_KEY_UKASH_CASHIN;
-//                $cell_no = $this->input->post('number');
-//                $description = "test";
-//
-//                $transaction_id = "";
-        //calling the webservice for the transaction
-//                $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
-//                $this->curl->post(array("APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "description" => $description ));
-//                $result_event = json_decode($this->curl->execute());
-//                if (!empty($result_event)) {
-//                    $response_code = '';
-//                    if (property_exists($result_event, "responseCode") != FALSE) {
-//                        $response_code = $result_event->responseCode;
-//                    }
-//                    if($response_code == RESPONSE_CODE_SUCCESS)
-//                    {
-//                        if (property_exists($result_event, "result") != FALSE) {
-//                            $transaction_info = $result_event->result;
-//                            $transaction_id = $transaction_info->transactionId;
-//                            if(empty($transaction_id) || $transaction_id == "")
-//                            {
-//                                //Handle a message if there is no transaction id
-//                                $this->data['message'] = $this->message_codes[$response_code];
-//                            }
-//                            else
-//                            {
-//                $transaction_data = array(
-//                    'user_id' => $this->session->userdata('user_id'),
-//                    'transaction_id' => $transaction_id,
-//                    'service_id' => $this->input->post('topup_operator_list'),
-//                    'amount' => $this->input->post('amount'),
-//                    'cell_no' => $this->input->post('number'),
-//                    'description' => $description,
-//                    'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
-//                );
-//                if ($this->transaction_model->add_transaction($transaction_data) !== FALSE) {
-//                    $this->data['message'] = "Transaction is created successfully.";
-//                } else {
-//                    $this->data['message'] = 'Error while processing the transaction.';
-//                }
-//                            }
-//                        }
-//                        else
-//                        {
-//                            //Handle a message if there is no result even though response code is success
-//                            $this->data['message'] = $this->message_codes[$response_code];
-//                        }
-//                    }
-//                    else
-//                    {
-//                        //Add a message for this response code
-//                        $this->data['message'] = $this->message_codes[$response_code];
-//                    }
-//                } 
-//                else
-//                {
-//                    $this->data['message'] = 'Server is unavailable. Please try later.';
-//                }
-//            } else {
-//                $this->data['message'] = validation_errors();
-//            }
-//        }
-
         $where = array(
-            'user_id' => $this->session->userdata('user_id')
+            'user_id' => $user_id
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
@@ -423,6 +367,7 @@ class Transaction extends Role_Controller {
             '1' => 'Prepaid',
             '2' => 'Postpaid'
         );
+        
         //this list will be dynamic based on api subscription of the user
         $topup_operator_list = array(
             SERVICE_TYPE_ID_TOPUP_GP => 'GP',

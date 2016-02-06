@@ -4,6 +4,7 @@ angular.module('controller.Transction', ['services.Transction']).
             $scope.dbblInfo = {};
             $scope.mCashInfo = {};
             $scope.uCashInfo = {};
+            $scope.topUpInfo = {};
             $scope.transctionList = [];
             $scope.topupTypeList = [];
             $scope.topupOperatorList = [];
@@ -48,6 +49,17 @@ angular.module('controller.Transction', ['services.Transction']).
                 }
                 $scope.allow_transction = false;
                 transctionService.uCash($scope.uCashInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
+                            callbackFunction(data);
+                        });
+            };
+            $scope.topUp = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
+                transctionService.topUp($scope.topUpInfo).
                         success(function (data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);

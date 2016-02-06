@@ -43,6 +43,16 @@ angular.module('services.Transction', []).
                     }
                 });
             }
+            transctionService.topUp = function (topUpInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/topup',
+                    data: {
+                        topUpInfo: topUpInfo
+                    }
+                });
+            }
             return transctionService;
         });
 

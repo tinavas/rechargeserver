@@ -2,7 +2,6 @@
 <script>
 
     function top_up(topUpInfo) {
-        console.log(topUpInfo.number);
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
             $('#common_modal').modal('show');
@@ -13,17 +12,27 @@
             $('#common_modal').modal('show');
             return;
         }
+        if (typeof topUpInfo.topupType == "undefined" || topUpInfo.topupType.length == 0) {
+            $("#content").html("Please Select a Operator Type ");
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (typeof topUpInfo.topupOperatorId == "undefined" || topUpInfo.topupOperatorId.length == 0) {
+            $("#content").html("Please Select an Operator ");
+            $('#common_modal').modal('show');
+            return;
+        }
         angular.element($('#top_up_id')).scope().topUp(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
             $('#modal_ok_click_id').on("click", function () {
-                window.location = '<?php echo base_url() ?>transaction/top_up';
+                window.location = '<?php echo base_url() ?>transaction/topup';
             });
 
         });
     }
 </script>
- <div class="loader"></div>
+<div class="loader"></div>
 <div class="ezttle"><span class="text">Topup</span></div>
 <div class="mypage"  ng-controller="transctionController">
     <div class="row" style="margin-top:5px;">
@@ -54,28 +63,37 @@
                             </label>
                         </div>
                         <div class="row form-group">
-                            <label for="type" class="col-md-6 control-label requiredField">
-                                Type
-                            </label>
-                            <select for="type" class="col-md-6 control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
-                                <option class=form-control ng-repeat="topupType in topupTypeList" value="{{topupType}}">{{topupType}}</option>
-                            </select>
+                            <div class="col-md-6">
+                                <label for="type" class="col-md-6 control-label requiredField">
+                                    Type
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <select  for="type"  ng-model="topUpInfo.topupType" class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
+                                    <option class="form-control" value="">Please select</option>
+                                    <option class=form-control ng-repeat="(topupKey, topupType) in topupTypeList" value="{{topupKey}}">{{topupType}}</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row form-group">
-                            <label for="operator" class="col-md-6 control-label requiredField">
-                                Operator
-                            </label>
-                            <select for="operator" class="col-md-6 control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
-                                <option class=form-control ng-repeat="topupOperator in topupOperatorList" value="{{topupOperator}}">{{topupOperator}}</option>
-                            </select>
+                            <div class="col-md-6">
+                                <label for="operator" class="col-md-6 control-label requiredField">
+                                    Operator
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <select for="operator" ng-model="topUpInfo.topupOperatorId" class=" form-control control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
+                                    <option class="form-control" value="">Please select</option>
+                                    <option class=form-control ng-repeat="(key, topupOperator) in topupOperatorList" value="{{key}}">{{topupOperator}}</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="submit_update_api" class="col-md-6 control-label requiredField">
 
                             </label>
                             <div class ="col-md-3 pull-right">
-                                <button id="top_up_id" class="form-control button"  onclick="topup(angular.element(this).scope().topUpInfo)">Send</button>
-                                <?php // echo form_submit($submit_create_transaction + array('class' => 'form-control button')); ?>
+                                <button id="top_up_id" class="form-control button"  onclick="top_up(angular.element(this).scope().topUpInfo)">Send</button>
                             </div> 
                         </div>
                     </div>
