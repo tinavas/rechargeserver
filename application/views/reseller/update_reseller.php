@@ -52,9 +52,9 @@
 
 </script>
 
-
+<div class="loader"></div>
 <div class="ezttle"><span class="text"><?php echo $title; ?></span></div>
-<div class="mypage" ng-app="app.Reseller" ng-controller="resellerController">
+<div class="mypage"  ng-controller="resellerController">
     <div class="top10">&nbsp;</div>
     <div class="row" ng-init="setResellerInfo(<?php echo htmlspecialchars(json_encode($reseller_info)); ?>)">
         <div class="col-md-12 fleft">	
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="form-group ">
                                     <label for="password" class="control-label">Password</label>
-                                    <input type="password" autocomplete="off" value="" placeholder="Password" class="form-control input-sm" id="password" name="password" ng-model="resellerInfo.password">
+                                    <input type="password" autocomplete="off" value="" placeholder="********" class="form-control input-sm" id="password" name="password">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">

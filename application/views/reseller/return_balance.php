@@ -8,7 +8,7 @@
             $("#content").html(data.message);
             $('#common_modal').modal('show');
             $('#modal_ok_click_id').on("click", function () {
-                window.location = '<?php echo base_url() ?>reseller/return_balance';
+                window.location = '<?php echo base_url() ?>payment/reseller_return_balance';
             })
         });
     }
