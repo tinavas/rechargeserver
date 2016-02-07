@@ -71,7 +71,7 @@
                             <div class="col-md-6">
                                 <select  for="type"  ng-model="topUpInfo.topupType" class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
                                     <option class="form-control" value="">Please select</option>
-                                    <option class=form-control ng-repeat="(topupKey, topupType) in topupTypeList" value="{{topupKey}}">{{topupType}}</option>
+                                    <option class=form-control ng-repeat="topupType in topupTypeList" value="{{topupType.id}}">{{topupType.title}}</option>
                                 </select>
                             </div>
                         </div>

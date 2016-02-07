@@ -41,20 +41,32 @@ class Service_model extends Ion_auth_model {
                         ->get();
     }
 
-    public function get_user_service_ids($user_id) {
+    /**
+     * this method will retun a user  operator services
+     * @param  $user_id  user id
+     * @author Rashida on 31 jan 2016
+     * 
+     */
+    public function get_user_topup_services($user_id) {
         $this->db->where($this->tables['users_services'] . '.user_id', $user_id);
-        return $this->db->select($this->tables['users_services'] . '.service_id')
+        $this->db->where($this->tables['users_services'] . '.status', 1);
+        return $this->db->select($this->tables['operators'] . '.*')
                         ->from($this->tables['users_services'])
+                        ->join($this->tables['operators'], $this->tables['operators'] . '.id=' . $this->tables['users_services'] . '.service_id')
                         ->get();
-        }
-        
-        
+    }
+
+    /**
+     * this method will retun a operator types
+     * @param  $user_id  user id
+     * @author Rashida on 31 jan 2016
+     * 
+     */
+    public function get_all_operator_types() {
+        return $this->db->select($this->tables['operator_types'] . '.*')
+                        ->from($this->tables['operator_types'])
+                        ->get();
+    }
 
 
-//    public function get_user_available_services($service_id_list = array()) {
-//        $this->db->where_in($this->tables['services'] . '.id', $service_id_list);
-//          return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
-//                        ->from($this->tables['services'])
-//                        ->get();
-//    }
 }

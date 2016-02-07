@@ -22,7 +22,6 @@ class Transaction extends Role_Controller {
     public function index() {
         
     }
-    
 
     public function bkash() {
         $response = array();
@@ -274,8 +273,6 @@ class Transaction extends Role_Controller {
                 $response['message'] = $this->ion_auth->messages_array();
             }
 
-            var_dump($this->ion_auth->messages());
-
             echo json_encode($response);
             return;
         }
@@ -363,19 +360,9 @@ class Transaction extends Role_Controller {
         );
         $transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), 10)->result_array();
         $this->data['transaction_list'] = json_encode($transaction_list);
-        $topup_type_list = array(
-            '1' => 'Prepaid',
-            '2' => 'Postpaid'
-        );
-        
-        //this list will be dynamic based on api subscription of the user
-        $topup_operator_list = array(
-            SERVICE_TYPE_ID_TOPUP_GP => 'GP',
-            SERVICE_TYPE_ID_TOPUP_ROBI => 'Robi',
-            SERVICE_TYPE_ID_TOPUP_BANGLALINK => 'BanglaLink',
-            SERVICE_TYPE_ID_TOPUP_AIRTEL => 'Airtel',
-            SERVICE_TYPE_ID_TOPUP_TELETALK => 'TeleTalk'
-        );
+        $this->load->model('service_model');
+        $topup_type_list = $this->service_model->get_all_operator_types()->result_array();
+        $topup_operator_list = $this->service_model->get_user_topup_services($user_id)->result_array();
         $this->data['app'] = TRANSCATION_APP;
         $this->data['topup_type_list'] = json_encode($topup_type_list);
         $this->data['topup_operator_list'] = json_encode($topup_operator_list);
