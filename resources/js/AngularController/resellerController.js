@@ -17,7 +17,6 @@ angular.module('controller.Reseller', ['services.Reseller']).
             }
             $scope.setServiceRateList = function (serviceRateList) {
                 $scope.serviceRateList = JSON.parse(serviceRateList);
-                console.log($scope.serviceRateList);
             }
             $scope.getUserServiceList = function () {
                 resellerService.getUserServiceList().
@@ -75,17 +74,19 @@ angular.module('controller.Reseller', ['services.Reseller']).
                         });
             }
 
-            $scope.updateRate = function () {
-//                console.log($scope.serviceRateList);
+            $scope.updateRate = function (userId, callbackFunction) {
                 var updateServiceList = [];
                 angular.forEach($scope.serviceRateList, function (serviceRate) {
                     if (serviceRate.enable == true) {
                         updateServiceList.push(serviceRate);
                     }
                 });
-                console.log(updateServiceList);
-
-
+                if (updateServiceList.length < 1) {
+                    return;
+                }
+                resellerService.updateServiceRate(userId, updateServiceList).success(function (data, status, headers, config) {
+                    callbackFunction(data);
+                });
             }
             $scope.checkallbox = function () {
                 if ($scope.selectedAll) {
@@ -95,7 +96,7 @@ angular.module('controller.Reseller', ['services.Reseller']).
                 }
                 angular.forEach($scope.serviceRateList, function (service) {
                     service.enable = $scope.selectedAll;
-                });
+                }, $scope.serviceRateList);
             };
 
             $scope.checkAll = function () {
@@ -105,14 +106,19 @@ angular.module('controller.Reseller', ['services.Reseller']).
                     $scope.selectedAll = false;
                 }
                 angular.forEach($scope.serviceList, function (service) {
-                    service.selected = $scope.selectedAll;
-                });
+                    if (service.status != 0 || service.status != "0") {
+                        service.selected = $scope.selectedAll;
+                    }
+                }, $scope.serviceList);
             };
 
             $scope.toggleSelection = function toggleSelection(service) {
                 var serviceIndex = $scope.serviceList.indexOf(service);
                 $scope.serviceList[serviceIndex] = service;
-                console.log(service);
+            };
+            $scope.toggleSelectionRate = function toggleSelection(serviceRate) {
+                var serviceIndex = $scope.serviceRateList.indexOf(serviceRate);
+                $scope.serviceRateList[serviceIndex] = serviceRate;
             };
 
 

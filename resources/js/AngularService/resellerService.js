@@ -31,6 +31,16 @@ angular.module('services.Reseller', []).
                     }
                 });
             }
+            resellerService.updateServiceRate = function (userId, updateRate) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/reseller/update_rate/' +userId,
+                    data: {
+                        updateRate: updateRate
+                    }
+                });
+            }
 
             return resellerService;
         });

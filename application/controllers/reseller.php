@@ -17,22 +17,60 @@ class Reseller extends Role_Controller {
     }
 
     public function index() {
+//        $this->data['message'] = "";
+//        $this->load->library('reseller_library');
+//        $allow_user_create = FALSE;
+//        if ($child_user_id == 0) {
+//            $user_id = $this->session->userdata('user_id');
+//            $maximum_children = $this->reseller_library->get_maximum_children();
+//            $reseller_list = array();
+//            $current_children = 0;
+//            if ($maximum_children > 0) {
+//                $reseller_list = $this->reseller_library->get_reseller_list($user_id);
+//                $current_children = count($reseller_list);
+//            }
+//            if ($current_children < $maximum_children) {
+//                $allow_user_create = TRUE;
+//            }
+//        } else {
+//            $reseller_list = $this->reseller_library->get_reseller_list($child_user_id);
+//        }
+//        $this->data['allow_user_create'] = $allow_user_create;
+//        $this->data['reseller_list'] = json_encode($reseller_list);
+//        $group = $this->session->userdata('group');
+//        $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
+//        $title = $successor_group_title[$group];
+//        $this->data['title'] = $title;
+//        $this->data['group'] = $group;
+//        $this->data['app'] = RESELLER_APP;
+//        $this->template->load(null, 'reseller/index', $this->data);
+    }
+
+    function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
-        $user_id = $this->session->userdata('user_id');
         $this->load->library('reseller_library');
-        $maximum_children = $this->reseller_library->get_maximum_children();
-        $reseller_list = array();
-        $current_children = 0;
-        if ($maximum_children > 0) {
-            $reseller_list = $this->reseller_library->get_reseller_list($user_id);
-            $current_children = count($reseller_list);
-        }
-        $this->data['reseller_list'] = json_encode($reseller_list);
-        if ($current_children < $maximum_children) {
-            $this->data['allow_user_create'] = TRUE;
+        $allow_user_create = FALSE;
+        $allow_user_edit = FALSE;
+        $user_id = $this->session->userdata('user_id');
+        if ($parent_user_id == 0 && $parent_user_id != $user_id) {
+            $maximum_children = $this->reseller_library->get_maximum_children();
+            $reseller_list = array();
+            $current_children = 0;
+            if ($maximum_children > 0) {
+                $reseller_list = $this->reseller_library->get_reseller_list($user_id);
+                $current_children = count($reseller_list);
+            }
+            if ($current_children < $maximum_children) {
+                $allow_user_create = TRUE;
+            }
+            $allow_user_edit = TRUE;
         } else {
-            $this->data['allow_user_create'] = FALSE;
+
+            $reseller_list = $this->reseller_library->get_reseller_list($parent_user_id);
         }
+        $this->data['allow_user_create'] = $allow_user_create;
+        $this->data['allow_user_edit'] = $allow_user_edit;
+        $this->data['reseller_list'] = json_encode($reseller_list);
         $group = $this->session->userdata('group');
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
@@ -145,7 +183,6 @@ class Reseller extends Role_Controller {
 
     public function update_reseller($user_id = 0) {
         $this->load->library('utils');
-        $this->load->model('service_model');
         $service_list = $this->service_model->get_user_services($this->session->userdata('user_id'))->result_array();
         $response = array();
         if (file_get_contents("php://input") != null) {
@@ -238,32 +275,84 @@ class Reseller extends Role_Controller {
         $this->template->load(null, 'reseller/update_reseller', $this->data);
     }
 
-    public function update_rate($user_id) {
-        $this->data['message'] = "";
+    public function update_rate($user_id = 0) {
+        $parent_user_id = $this->session->userdata("user_id");
         $this->load->model('reseller_model');
-        if ($this->input->post('submit_update_rate')) {
+        $response = array();
+        if (file_get_contents("php://input") != null) {
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
             $new_rate_list = array();
-            foreach ($this->input->post('update') as $rate_info) {
-                if (array_key_exists("enable", $rate_info)) {
+            if (property_exists($requestInfo, "updateRate")) {
+                $new_rate_list = $requestInfo->updateRate;
+            }
+            $new_updated_rate_list = array();
+            if ($parent_user_id != $user_id && $user_id != 0) {
+                $parent_rate_list = $this->service_model->get_user_services($parent_user_id)->result_array();
+                if (!empty($parent_rate_list)) {
+                    foreach ($new_rate_list as $rate_info) {
+                        if (isset($user_id) && $user_id != 0) {
+                            foreach ($parent_rate_list as $paraent_rate_info) {
+                                if ($rate_info->service_id == $paraent_rate_info['service_id']) {
+                                    if ($rate_info->rate >= $paraent_rate_info['rate']) {
+                                        $response['message'] = "You assign Rate Gaterden You at " . $rate_info->title;
+                                        echo json_encode($response);
+                                        return;
+                                    }
+                                    if ($rate_info->commission >= $paraent_rate_info['commission']) {
+                                        $response['message'] = "You assign Commission Gaterden You at " . $rate_info->title;
+                                        echo json_encode($response);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        $new_rate_info = array(
+                            'id' => $rate_info->id,
+                            'rate' => $rate_info->rate,
+                            'commission' => $rate_info->commission,
+                            'charge' => $rate_info->charge
+                        );
+                        $new_updated_rate_list[] = $new_rate_info;
+                    }
+                }
+            } else {
+                foreach ($new_rate_list as $rate_info) {
                     $new_rate_info = array(
-                        'id' => $rate_info['key'],
-                        'rate' => $rate_info['rate'],
-                        'commission' => $rate_info['commission'],
-                        'charge' => $rate_info['charge']
+                        'id' => $rate_info->id,
+                        'rate' => $rate_info->rate,
+                        'commission' => $rate_info->commission,
+                        'charge' => $rate_info->charge
                     );
-                    $new_rate_list[] = $new_rate_info;
+                    $new_updated_rate_list[] = $new_rate_info;
                 }
             }
-            if (!empty($new_rate_list)) {
-                $this->reseller_model->update_reseller_rates($new_rate_list);
+
+            if ($this->reseller_model->update_reseller_rates($new_updated_rate_list) == True) {
+                $response['message'] = "User Rate Updated successfully !";
+            } else {
+                $response['message'] = "Error! while User Rate Update !";
             }
+            echo json_encode($response);
+            return;
         }
 
-        $rate_list = $this->reseller_model->get_user_services($user_id)->result_array();
-        $this->data['rate_list'] = $rate_list;
+        if (!isset($user_id) || $user_id == 0) {
+            $user_id = $parent_user_id;
+        }
+        $rate_list = $this->service_model->get_user_services($user_id)->result_array();
+        $this->data['rate_list'] = json_encode($rate_list);
         $this->data['user_id'] = $user_id;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_rate', $this->data);
+    }
+
+    function get_reseller_service_rate() {
+        $user_id = $this->session->userdata("user_id");
+        $rate_list = $this->service_model->get_user_services($user_id)->result_array();
+        $this->data['rate_list'] = json_encode($rate_list);
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/show_rate', $this->data);
     }
 
 }

@@ -1,9 +1,25 @@
+<script>
+
+    function updateRate() {
+        var userId = '<?php echo $user_id; ?>';
+         angular.element($('#submit_update_rate')).scope().updateRate(userId, function (data) {
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function () {
+                window.location = '<?php echo base_url() ?>reseller/update_rate/' +userId;
+            });
+        });
+
+    }
+
+</script>
+<div class="loader"></div>
 <div class="ezttle"><span class="text">Rates</span>
     <span class="acton"></span>
 </div>
-<div class="mypage">
-    <?php echo form_open("reseller/update_rate/".$user_id, array('id' => 'form_create_reseller', 'class' => 'form-inline')); ?>
-        <table class="rates">
+<div class="mypage" ng-controller="resellerController">
+    <ng-form>
+        <table class="rates" ng-init="setServiceRateList(<?php echo htmlspecialchars(json_encode($rate_list)); ?>)">
             <thead>
                 <tr>
                     <th>Service</th>
@@ -11,25 +27,24 @@
                     <th>Rate</th>
                     <th>Comm. (%)</th>
                     <th>Charge (%)</th>
-                    <th><input type="checkbox" checked="" onclick="checkallbox(this);" name="checkAll"></th>
+                    <th>
+                        <input type="checkbox" ng-model="selectedAll" ng-click="checkallbox()" />
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($rate_list as $rate_info){?>
-                <tr> 
-                    <td><?php echo $rate_info['title']?></td>
+                <tr ng-repeat="rateInfo in serviceRateList"> 
+                    <td>{{rateInfo.title}}</td>
                     <td>01</td>
-                    <input type="hidden" name="update[<?php echo $rate_info['service_id']?>][key]" value="<?php echo $rate_info['user_service_id']?>">
-                    <td class="edit"><input type="text" style="width:100%" name="update[<?php echo $rate_info['service_id']?>][rate]" value="<?php echo $rate_info['rate']?>"></td>
-                    <td class="edit"><input type="text" style="width:100%" name="update[<?php echo $rate_info['service_id']?>][commission]" value="<?php echo $rate_info['commission']?>"></td>
-                    <td class="edit"><input type="text" style="width:100%" name="update[<?php echo $rate_info['service_id']?>][charge]" value="<?php echo $rate_info['charge']?>"></td>
-                    <td class="enable last"><input type="checkbox" checked="" value="1" name="update[<?php echo $rate_info['service_id']?>][enable]"></td>
+                    <td class="edit"><input type="text" style="width:100%" ng-model="rateInfo.rate"></td>
+                    <td class="edit"><input type="text" ng-model="rateInfo.commission" style="width:100%" name="" value=""></td>
+                    <td class="edit"><input type="text" style="width:100%" ng-model="rateInfo.charge" ></td>
+                    <td class="enable last"><input type="checkbox" checked="" value="{{rateInfo.id}}" ng-model="rateInfo.enable" ng-click="toggleSelectionRate(rateInfo)" ></td>
                 </tr>
-                <?php }?>
             </tbody>
         </table>
         <div class="top10">&nbsp;</div>
-        <input id="submit_update_rate" name="submit_update_rate" class="btn btn-primary btn-sm" type="submit" value="Update Rates"/>
+        <input id="submit_update_rate" name="submit_update_rate" class="btn btn-primary btn-sm" type="submit" value="Update Rates" onclick="updateRate()"/>
         <p class="help-block form_error"></p>
-    <?php echo form_close(); ?>	
+    </ng-form>
 </div>

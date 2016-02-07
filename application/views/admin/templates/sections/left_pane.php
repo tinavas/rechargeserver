@@ -65,7 +65,7 @@
                 </ul>
             </li>
 
-            <li><a href="<?php echo base_url() . 'reseller' ?>">Resellers</a></li>		
+            <li><a href="<?php echo base_url() . 'reseller/get_reseller_list' ?>">Resellers</a></li>		
             <li><a href="#">Payment History</a></li>
             <li><a href="#">Receive History</a></li>	
             <li><a href="javascript:void(0)" class="chld">Report </a>
@@ -77,7 +77,7 @@
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>
                 <ul id="baby">
-                    <li><a href="#">My Rates</a></li>
+                    <li><a href="<?php echo base_url(); ?>reseller/update_rate">My Rates</a></li>
                     <li><a href="#">API Key</a></li>
                     <li><a href="<?php echo base_url(); ?>admin/load_balance">Add Balance</a></li>
                     <li><a href="#">My Profile</a></li>
