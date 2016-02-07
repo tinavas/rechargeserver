@@ -84,7 +84,7 @@
                             <div class="col-md-6">
                                 <select for="operator" ng-model="topUpInfo.topupOperatorId" class=" form-control control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
                                     <option class="form-control" value="">Please select</option>
-                                    <option class=form-control ng-repeat="(key, topupOperator) in topupOperatorList" value="{{key}}">{{topupOperator}}</option>
+                                    <option class=form-control ng-repeat="topupOperator in topupOperatorList" value="{{topupOperator.id}}">{{topupOperator.title}}</option>
                                 </select>
                             </div>
                         </div>

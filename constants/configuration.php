@@ -21,6 +21,8 @@ define("MCASH_MINIMUM_CASH_IN_AMOUNT",                     "50");
 define("MCASH_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 define("UCASH_MINIMUM_CASH_IN_AMOUNT",                     "50");
 define("UCASH_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
+define("TOPUP_MINIMUM_CASH_IN_AMOUNT",                     "50");
+define("TOPUP_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 
 define("WEBSERVICE_URL_REGISTER_MEMBER",                   "http://localhost:4040/registermember");
 define("WEBSERVICE_URL_CREATE_TRANSACTION",                "http://localhost:3030/addtransaction");
