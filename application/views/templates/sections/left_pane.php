@@ -65,7 +65,7 @@
                 </ul>
             </li>
 
-            <li><a href="<?php echo base_url() . 'reseller' ?>">Resellers</a></li>		
+            <li><a href="<?php echo base_url() . 'reseller/get_reseller_list' ?>">Resellers</a></li>		
             <li><a href="#">Payment History</a></li>
             <li><a href="#">Receive History</a></li>	
             <li><a href="javascript:void(0)" class="chld">Report </a>
