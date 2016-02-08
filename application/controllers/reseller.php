@@ -46,12 +46,14 @@ class Reseller extends Role_Controller {
 //        $this->template->load(null, 'reseller/index', $this->data);
     }
 
+
     function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
         $this->load->library('reseller_library');
         $allow_user_create = FALSE;
         $allow_user_edit = FALSE;
         $user_id = $this->session->userdata('user_id');
+        $group = $this->session->userdata('group');
         if ($parent_user_id == 0 && $parent_user_id != $user_id) {
             $maximum_children = $this->reseller_library->get_maximum_children();
             $reseller_list = array();
@@ -64,16 +66,19 @@ class Reseller extends Role_Controller {
                 $allow_user_create = TRUE;
             }
             $allow_user_edit = TRUE;
+            $user_group_name = $group;
         } else {
-
             $reseller_list = $this->reseller_library->get_reseller_list($parent_user_id);
+            $child_group_array = $this->reseller_model->get_users_groups($parent_user_id)->result_array();
+            if (!empty($child_group_array)) {
+                $user_group_name = $child_group_array[0]['name'];
+            }
         }
+        $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
+        $title = $successor_group_title[$user_group_name];
         $this->data['allow_user_create'] = $allow_user_create;
         $this->data['allow_user_edit'] = $allow_user_edit;
         $this->data['reseller_list'] = json_encode($reseller_list);
-        $group = $this->session->userdata('group');
-        $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
-        $title = $successor_group_title[$group];
         $this->data['title'] = $title;
         $this->data['group'] = $group;
         $this->data['app'] = RESELLER_APP;

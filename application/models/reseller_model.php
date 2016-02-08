@@ -43,6 +43,7 @@ class Reseller_model extends Ion_auth_model {
             $this->db->where($this->tables['users_services'] . '.id', $new_rate_info['id']);
             $this->db->update($this->tables['users_services'], $new_rate_info);
         }
+        return True;
     }
 
     /**
@@ -72,6 +73,18 @@ class Reseller_model extends Ion_auth_model {
                 $this->db->update($this->tables['users_services'], array('status' => 0));
             }
         }
+    }
+     /**
+     * this methord return user groups
+     * @ $user_id
+     * @return array
+     * @author Rashida Sultana
+     * */
+    public function get_users_groups($user_id ) {
+        return $this->db->select($this->tables['users_groups'] . '.' . $this->join['groups'] . ' as id, ' . $this->tables['groups'] . '.name, ' . $this->tables['groups'] . '.description')
+                        ->where($this->tables['users_groups'] . '.user_id' , $user_id)
+                        ->join($this->tables['groups'], $this->tables['users_groups'] . '.' . $this->join['groups'] . '=' . $this->tables['groups'] . '.id')
+                        ->get($this->tables['users_groups']);
     }
 
 }
