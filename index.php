@@ -7,6 +7,10 @@ include './constants/service.php';
 include './constants/transaction.php';
 include './constants/payment.php';
 include './constants/app_configaration.php';
+include './constants/superadmin/configuration.php';
+include './constants/superadmin/app_configaration.php';
+include './constants/superadmin/response_code.php';
+include './constants/superadmin/admin_templates.php';
 
 define('ADMIN', 'admin');
 define('TYPE1', 'type1');
@@ -21,11 +25,13 @@ define('NON_MEMBER', 'non_member');
 
 define('LOGIN_URI', 'auth/login');
 define('LOGIN_TEMPLATE', 'auth/login');
+//define('SUPER_ADMIN_LOGIN_TMPL', 'superadmin/non_member/templates/main_tmpl');
 define('LOGIN_VIEW', 'auth/login');
 
 define('ADMIN_LOGIN_SUCCESS_URI', 'auth');
 //define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'auth/admin/templates/main');
 define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'admin/templates/admin_tmpl');
+//define('SUPER_ADMIN_TEMPLATE', 'superadmin/templates/main_tmpl');
 define('ADMIN_LOGIN_SUCCESS_VIEW', 'auth/index');
 
 define('MEMBER_LOGIN_SUCCESS_URI', 'auth');

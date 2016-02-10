@@ -49,7 +49,7 @@
             $("#content").html(data.message);
             $('#common_modal').modal('show');
             $('#modal_ok_click_id').on("click", function () {
-                window.location = '<?php echo base_url() ?>reseller';
+                window.location = '<?php echo base_url() ?>reseller/get_reseller_list';
             });
         });
 

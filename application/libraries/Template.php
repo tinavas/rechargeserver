@@ -51,7 +51,11 @@ class Template {
 //            $this->selected_user_group = MEMBER;
 //            return MEMBER_LOGIN_SUCCESS_TEMPLATE;
 //        }
-        if($group_name == ADMIN){
+        if($group_name == SUPER_ADMIN){
+            $this->selected_user_group = SUPER_ADMIN;
+            return SUPER_ADMIN_TEMPLATE;
+        }
+        else if($group_name == ADMIN){
             $this->selected_user_group = ADMIN;
             return ADMIN_LOGIN_SUCCESS_TEMPLATE;
         }

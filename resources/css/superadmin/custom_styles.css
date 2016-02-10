@@ -1,0 +1,333 @@
+@import url("bootstrap.min.css");
+.form-background
+{
+/*    background-color: #E4F2D9;*/
+}
+.table td {
+    text-align: center;   
+}
+.table th {
+    text-align: center;   
+}
+.navbar-top {
+    background: #ffffff url('../../images/bg2.png') top repeat-x;
+    min-height:80px;
+    border:0px;
+}
+.header_background_color{
+    background-color: #3A5795;
+    min-height: 80px;
+}
+.logo{
+    height:100px;
+    width:100%;
+}
+.logo-text{
+    color: #ffffff;
+    font-size: 30px;
+}
+.login-text{
+    color: #ffffff;
+    font-size: 14px;
+}
+.top-bottom-padding
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.input-width-table
+{
+    width:100%;
+}
+/******************************   Slide show Home page  *********************************************************/
+#slider2,
+#slider3 {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 0 auto;
+}
+.callbacks_container {
+    margin-bottom: 50px;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+.callbacks {
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.callbacks li {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+.callbacks img {
+    display: block;
+    position: relative;
+    z-index: 1;
+    height: auto;
+    width: 100%;
+    border: 0;
+}
+
+.callbacks .caption {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    font-size: 20px;
+    text-shadow: none;
+    color: #fff;
+    background: #000;
+    background: rgba(0,0,0, .8);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 20px;
+    margin: 0;
+    max-width: none;
+}
+
+.callbacks_nav {
+    position: absolute;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    top: 52%;
+    left: 0;
+    opacity: 0.7;
+    z-index: 3;
+    text-indent: -9999px;
+    overflow: hidden;
+    text-decoration: none;
+    height: 61px;
+    width: 38px;
+    background: transparent url("../../slide/themes.gif") no-repeat left top;
+    margin-top: -45px;
+}
+
+.callbacks_nav:active {
+    opacity: 1.0;
+}
+
+.callbacks_nav.next {
+    left: auto;
+    background-position: right top;
+    right: 0;
+}
+#wrapper1 .callbacks_container{
+    width: 48%;
+    float: left;
+    margin: 0 1%;
+    border: 1px solid #d5d5d5;
+    -webkit-border: 1px solid #d5d5d5;
+    -moz-border: 1px solid #d5d5d5;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 8px #888;
+    -webkit-box-shadow: 1px 1px 8px #888;
+    -moz-box-shadow: 1px 1px 8px #888;
+}
+#wrapper1 img{
+    width: 25%;
+    float: left;
+    margin-left: 50px;
+    height:150px;
+}
+#wrapper1 p{
+    position: relative;
+    width: 52%;
+    float: right;
+    margin-right: 39px;
+}
+#wrapper,
+#wrapper img,
+#wrapper .callbacks{
+    height:350px !important;
+}
+#wrapper h2,
+#wrapper1 h2,
+#wrapper2 h2{
+    color:#000 !important;
+    font-size:24.5px !important;
+}
+#wrapper1 .callbacks,
+#wrapper2 .callbacks,
+#wrapper1 .callbacks ul,
+#wrapper1 .callbacks ul li{
+    height:150px;
+}
+#wrapper1 .callbacks .caption,
+#wrapper2 .callbacks .caption{
+    display: block;
+    position: relative;
+    z-index: 2;
+    font-size: 14px;
+    text-shadow: none;
+    color: #000;
+    background: transparent;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 3px 50px;
+    margin: 0;
+    max-width: none;
+    margin-right: 46px;
+    width: 46%;
+}
+#wrapper1 .callbacks_nav,
+#wrapper2 .callbacks_nav{
+    top:55%;
+}
+@media screen and (max-width: 600px) {
+    h1 {
+        font: 24px/50px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .callbacks_nav {
+        top: 47%;
+    }
+}
+.custom-col{color:#FCEEFD; }
+.custom-col:hover{background-color:#7FCB8E; }
+.custom-col:active{background-color:#E5D92B; }
+
+
+/*-----------------------------------------Login page (Redoy) -------------------------------------------*/
+
+.header_background{
+    background-color:#3A5795;
+    padding-top: 10px;
+    line-height: 11px;
+}
+.left_text_style, .right_text_style{
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.footer_style{ 
+    background-color: #ffffff; 
+    width: 100%;
+    padding: 10px 0;
+}
+.user_login_style{ 
+    color: white; 
+    font-family:verdana; 
+    font-size:11px; 
+}
+.user_password_style{ 
+    color: white; 
+    font-size:14px; 
+    vertical-align: top;
+    border-left: -35px;
+   
+}
+.message_style{ 
+    color: red; 
+    font-size:14px; 
+    vertical-align: top!important;
+}
+.user_password_style a { 
+    color: white; 
+    font-size:14px; 
+} 
+.text_padding_top{
+    padding-top: 4px!important;
+    vertical-align: top!important;
+}
+.text_padding_top a{
+    padding-top: 5px!important;
+}
+input[type="radio"], input[type="checkbox"] {
+    margin: 0;
+}
+.login_button_style {
+    background-color: #607cad;
+    border: 1px solid #5d6477;
+    color: white;
+    height: 20px;
+    margin-top: 20px;
+    margin-left: -28px;
+    text-align: center;
+    width: 48px;
+    font-weight: bold;
+}
+.padding_before_image{
+    padding: 25px 0!important;
+}
+
+
+@media all and (max-width: 991px){
+    .left_h1_style{
+        padding-left: 0!important;
+    }
+    .padding_image{
+        padding: 0!important;
+    }
+    .header_background{
+        padding-top: 0!important;
+    }
+    .login_button_style {
+        margin-left: 0!important;
+    }
+    input[type="radio"], input[type="checkbox"] {
+    margin: 4px!important;
+}
+}
+
+.btn_success_staff_style{
+  width: 124px;  
+}
+.btn_success_manager_style{
+  width: 111px;  
+}
+.btn_success_admin_style{
+  width: 92px;  
+}
+
+/*******************************************************************************************/
+
+.btn_custom_button{
+
+    background-color: #0072C6; 
+    border: 1px solid #0072C6;
+    color:#fff;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 4px!important;
+}
+.btn_btn_custom_button{
+
+    background-color: #0072C6; 
+    border: 1px solid #0072C6;
+    color:#fff;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 4px!important;
+}
+
+.table_row_style{
+    color: #843534;
+    font-weight: bold; 
+    font-size: 14px;
+}
+.admin_header_text_style{
+    font-size: 20px;
+    font-weight: bold;
+    color:#fff;
+    font-family: verdana;
+}
+
+

@@ -46,7 +46,6 @@ class Reseller extends Role_Controller {
 //        $this->template->load(null, 'reseller/index', $this->data);
     }
 
-
     function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
         $this->load->library('reseller_library');
@@ -296,19 +295,17 @@ class Reseller extends Role_Controller {
                 $parent_rate_list = $this->service_model->get_user_services($parent_user_id)->result_array();
                 if (!empty($parent_rate_list)) {
                     foreach ($new_rate_list as $rate_info) {
-                        if (isset($user_id) && $user_id != 0) {
-                            foreach ($parent_rate_list as $paraent_rate_info) {
-                                if ($rate_info->service_id == $paraent_rate_info['service_id']) {
-                                    if ($rate_info->rate >= $paraent_rate_info['rate']) {
-                                        $response['message'] = "You assign Rate Gaterden You at " . $rate_info->title;
-                                        echo json_encode($response);
-                                        return;
-                                    }
-                                    if ($rate_info->commission >= $paraent_rate_info['commission']) {
-                                        $response['message'] = "You assign Commission Gaterden You at " . $rate_info->title;
-                                        echo json_encode($response);
-                                        return;
-                                    }
+                        foreach ($parent_rate_list as $paraent_rate_info) {
+                            if ($rate_info->service_id == $paraent_rate_info['service_id']) {
+                                if ($rate_info->rate != $paraent_rate_info['rate']) {
+                                    $response['message'] = "Please assign rate ".$paraent_rate_info['rate'] ."for the service". $rate_info->title;
+                                    echo json_encode($response);
+                                    return;
+                                }
+                                if ($rate_info->commission > $paraent_rate_info['commission']) {
+                                    $response['message'] = "Assigned Commission is higher then your service  " . $rate_info->title;
+                                    echo json_encode($response);
+                                    return;
                                 }
                             }
                         }

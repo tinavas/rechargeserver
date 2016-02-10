@@ -71,10 +71,10 @@ angular.module('controller.Transction', ['services.Transction']).
             }
             $scope.setTopUpTypeList = function (topupTypeList) {
                 $scope.topupTypeList = JSON.parse(topupTypeList);
-                console.log($scope.topupTypeList);
             }
             $scope.setTopupOperatorList = function (topupOperatorList) {
                 $scope.topupOperatorList = JSON.parse(topupOperatorList);
+                console.log( $scope.topupOperatorList);
             }
 
         });
