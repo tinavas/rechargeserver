@@ -1,12 +1,9 @@
 
 <script type="text/javascript">
 
-    $(function () {
+    $(function() {
         angular.element($('#set_user_service_id')).scope().getUserServiceList();
     });
-
-
-
 </script>
 
 <div class="left_menu" ng-controller="leftController">
@@ -54,7 +51,7 @@
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
                     <li><a href="<?php echo base_url() . 'history/all' ?>">All History</a></li>
-                    <li  ng-if="topup_service_allow_flag != false "> <a href ="<?php echo base_url() . 'history/topup' ?>">Topup</a></li>						
+                    <li  ng-if="topup_service_allow_flag != false"> <a href ="<?php echo base_url() . 'history/topup' ?>">Topup</a></li>						
                     <div ng-repeat="service in serviceList">
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/bkash' ?>">bKash</a></li>						
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl' ?>">DBBL</a></li>						
@@ -80,7 +77,7 @@
                     <li><a href="<?php echo base_url(); ?>reseller/update_rate">My Rates</a></li>
                     <li><a href="#">API Key</a></li>
                     <li><a href="<?php echo base_url(); ?>admin/load_balance">Add Balance</a></li>
-                    <li><a href="#">My Profile</a></li>
+                    <li><a href="<?php echo base_url(); ?>admin/profile">My Profile</a></li>
                     <li><a href="#">Access Logs</a></li>
                     <li><a href="#">Change Pin</a></li>                
                     <li><a href="#">Change Password</a></li>
@@ -92,7 +89,6 @@
                     <b>Logout</b>
                 </a>
             </li>
-
         </ul>
         <div class="clrGap">&nbsp;</div>
     </div>

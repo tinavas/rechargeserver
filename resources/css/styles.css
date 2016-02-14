@@ -1,5 +1,3 @@
-
-
 .left_menu{
     background-color: #F3F3F3;
 }
@@ -15,4 +13,16 @@
 }
 .common_modal_content{
     font-size: 17px;
+}
+
+.profileCustomResellerList{
+    list-style-type: circle;
+}
+
+.paymentHistorySearch li{
+    display: inline-block!important;
+}
+
+.customInputMargin{
+    margin-bottom: -8px;
 }
