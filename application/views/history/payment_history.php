@@ -10,10 +10,10 @@
         <li><input id="date2" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>Type</li>
         <li><select id="type" name="type" class="form-control input-xs">
-                <option value="">--Any--</option>
+                <!--<option value="">--Any--</option>-->
                 <option value="transfer">Payment</option>
-                <option value="return">Return</option>
-                <option value="canceled">Cancelled</option>
+                <!--                <option value="return">Return</option>
+                                <option value="canceled">Cancelled</option>-->
             </select>
         </li>
         <li><input id="submit" type="submit" size="18" value="Submit" class="btn btn-xs btn-default"></li>
@@ -44,6 +44,21 @@
             </tr>
         </tfoot>
     </table>
+    <div class="form-group">
+        <div class="col-md-12 fleft">
+            <div class="summery">
+                <p>Summary</p>
+                <table>
+                    <tbody>
+                        <tr><td>Total Payment :</td><td class="amt">0.00</td></tr>
+<!--                        <tr><td>Total Return :</td><td class="amt">0.00</td></tr>
+                        <tr><td>Total Canceled :</td><td class="amt">0.00</td></tr>
+                        <tr><td>Total :</td><td class="amt">0.00</td></tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+    </div> 
     <ul class="pagination pull-right">
         <li>
             <a href="#" aria-label="Previous">
