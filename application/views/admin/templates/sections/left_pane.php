@@ -66,8 +66,8 @@
             </li>
 
             <li><a href="<?php echo base_url() . 'reseller/get_reseller_list' ?>">Resellers</a></li>		
-            <li><a href="#">Payment History</a></li>
-            <li><a href="#">Receive History</a></li>	
+            <li><a href="<?php echo base_url(); ?>history/get_payment_history">Payment History</a></li>
+            <li><a href="<?php echo base_url(); ?>history/get_receive_history">Receive History</a></li>	
             <li><a href="javascript:void(0)" class="chld">Report </a>
                 <ul id="baby">
                     <li><a href="#">Cost &amp; Profit</a></li>
