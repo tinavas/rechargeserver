@@ -45,7 +45,8 @@ class Reseller extends Role_Controller {
 //        $this->data['app'] = RESELLER_APP;
 //        $this->template->load(null, 'reseller/index', $this->data);
     }
-
+    
+  
     function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
         $this->load->library('reseller_library');
@@ -137,10 +138,13 @@ class Reseller extends Role_Controller {
                     return;
                 }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
+
                 $user_service_list = array();
                 foreach ($service_list as $service_info) {
                     $user_service_info = array(
-                        'service_id' => $service_info['service_id']
+                        'service_id' => $service_info['service_id'],
+                        'rate' => $service_info['rate'],
+                        'commission' => $service_info['commission']
                     );
                     if (in_array($service_info['service_id'], $selected_service_id_list)) {
                         $user_service_info['status'] = 1;
@@ -186,6 +190,7 @@ class Reseller extends Role_Controller {
     }
 
     public function update_reseller($user_id = 0) {
+       
         $this->load->library('utils');
         $service_list = $this->service_model->get_user_services($this->session->userdata('user_id'))->result_array();
         $response = array();
@@ -270,6 +275,36 @@ class Reseller extends Role_Controller {
             }
             $user_available_services[] = $user_service;
         }
+        $this->data['allow_user_edit'] = TRUE;
+        $this->data['service_list'] = json_encode($user_available_services);
+        $group = $this->session->userdata('group');
+        $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
+        $title = $successor_group_title[$group];
+        $this->data['title'] = $title;
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/update_reseller', $this->data);
+    }
+
+    public function show_reseller($user_id = 0) {
+        $this->load->library('utils');
+        $service_list = $this->service_model->get_user_services($this->session->userdata('user_id'))->result_array();
+        $this->load->model('reseller_model');
+        $reseller_info = $this->reseller_model->get_reseller_info($user_id)->result_array();
+        if (!empty($reseller_info)) {
+            $this->data['reseller_info'] = json_encode($reseller_info[0]);
+        }
+        $user_available_services = array();
+        $child_services = $this->service_model->get_user_services($user_id)->result_array();
+        foreach ($service_list as $user_service) {
+            $user_service['selected'] = FALSE;
+            foreach ($child_services as $service) {
+                if ($user_service['service_id'] == $service['service_id']) {
+                    $user_service['selected'] = TRUE;
+                }
+            }
+            $user_available_services[] = $user_service;
+        }
+        $this->data['allow_user_edit'] = FALSE;
         $this->data['service_list'] = json_encode($user_available_services);
         $group = $this->session->userdata('group');
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
@@ -298,7 +333,7 @@ class Reseller extends Role_Controller {
                         foreach ($parent_rate_list as $paraent_rate_info) {
                             if ($rate_info->service_id == $paraent_rate_info['service_id']) {
                                 if ($rate_info->rate != $paraent_rate_info['rate']) {
-                                    $response['message'] = "Please assign rate ".$paraent_rate_info['rate'] ."for the service". $rate_info->title;
+                                    $response['message'] = "Please assign rate " . $paraent_rate_info['rate'] . "for the service" . $rate_info->title;
                                     echo json_encode($response);
                                     return;
                                 }
@@ -355,6 +390,23 @@ class Reseller extends Role_Controller {
         $this->data['rate_list'] = json_encode($rate_list);
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/show_rate', $this->data);
+    }
+
+    function get_reseller_profile_info() {
+        $this->load->model('service_model');
+        $user_id = $this->session->userdata('user_id');
+        $service_list = $this->service_model->get_user_services($user_id)->result_array();
+        $this->load->model('reseller_model');
+        $user_profile_info = array();
+        $profile_info = $this->reseller_model->get_profile_info($user_id)->result_array();
+        if (!empty($profile_info)) {
+            $profile_info = $profile_info[0];
+            $user_profile_info = $profile_info;
+        }
+        $this->data['profile_info'] = $user_profile_info;
+        $this->data['service_list'] = $service_list;
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/profile', $this->data);
     }
 
 }

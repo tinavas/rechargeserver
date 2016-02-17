@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <div class="row form-group">
                 <div class="col-md-12">
-                    <label>Basic Information</label>
+                     <label>Basic Information</label>
                 </div>
             </div>
             <div class="row form-group">

@@ -124,7 +124,9 @@
                     </tbody>
                 </table>
                 <p class="help-block line">&nbsp;</p>
-                <input id="submit_create_reseller" name="submit_update_reseller" class="btn btn-primary btn-sm" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Reseller"/>
+                <?php if ($allow_user_edit !== FALSE) { ?> 
+                    <input id="submit_create_reseller" name="submit_update_reseller" class="btn btn-primary btn-sm" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Reseller"/>
+                <?php } ?>
             </ng-from>
         </div> 
     </div> 

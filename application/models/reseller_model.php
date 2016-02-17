@@ -28,12 +28,26 @@ class Reseller_model extends Ion_auth_model {
                         ->get();
     }
 
+    public function get_profile_info($user_id) {
+        $this->db->where($this->tables['users'] . '.id', $user_id);
+        return $this->db->select('id as user_id,username,first_name,last_name,email,mobile,max_user_no,note')
+                        ->from($this->tables['users'])
+                        ->get();
+    }
+
     public function get_user_title_info($user_id) {
         $this->db->where($this->tables['users'] . '.id', $user_id);
         return $this->db->select($this->tables['users'] . '.username,' . $this->tables['groups'] . '.description')
                         ->from($this->tables['users'])
                         ->join($this->tables['users_groups'], $this->tables['users_groups'] . '.user_id=' . $this->tables['users'] . '.id')
                         ->join($this->tables['groups'], $this->tables['groups'] . '.id=' . $this->tables['users_groups'] . '.group_id')
+                        ->get();
+    }
+
+    public function get_child_user_id_list($parent_id_array = array()) {
+        $this->db->where_in($this->tables['relations'] . '.parent_user_id', $parent_id_array);
+        return $this->db->select($this->tables['relations'] . '.child_user_id')
+                        ->from($this->tables['relations'])
                         ->get();
     }
 
@@ -58,13 +72,6 @@ class Reseller_model extends Ion_auth_model {
                         ->get();
     }
 
-    public function get_child_user_id_list($parent_id_array = array()) {
-        $this->db->where_in($this->tables['relations'] . '.parent_user_id', $parent_id_array);
-        return $this->db->select($this->tables['relations'] . '.child_user_id')
-                        ->from($this->tables['relations'])
-                        ->get();
-    }
-
     public function update_reseller_services($child_id_list, $reseller_inactive_service_List = array()) {
         foreach ($child_id_list as $child_id) {
             foreach ($reseller_inactive_service_List as $service_id) {
@@ -74,17 +81,27 @@ class Reseller_model extends Ion_auth_model {
             }
         }
     }
-     /**
+
+    /**
      * this methord return user groups
      * @ $user_id
      * @return array
      * @author Rashida Sultana
      * */
-    public function get_users_groups($user_id ) {
+    public function get_users_groups($user_id) {
         return $this->db->select($this->tables['users_groups'] . '.' . $this->join['groups'] . ' as id, ' . $this->tables['groups'] . '.name, ' . $this->tables['groups'] . '.description')
-                        ->where($this->tables['users_groups'] . '.user_id' , $user_id)
+                        ->where($this->tables['users_groups'] . '.user_id', $user_id)
                         ->join($this->tables['groups'], $this->tables['users_groups'] . '.' . $this->join['groups'] . '=' . $this->tables['groups'] . '.id')
                         ->get($this->tables['users_groups']);
+    }
+
+    public function get_users_service_info($user_ids = array(), $service_id) {
+        $this->db->order_by("user_id", "asc");
+        $this->db->where_in($this->tables['users_services'] . '.user_id', $user_ids);
+        $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
+        return $this->db->select($this->tables['users_services'] . '.*')
+                        ->from($this->tables['users_services'])
+                        ->get();
     }
 
 }

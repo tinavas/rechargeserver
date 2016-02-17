@@ -1,12 +1,15 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+
 /**
  * Name:  Date_utils
  * Added in Class Diagram
  * Requirements: PHP5 or above
  */
 class Date_utils {
+
     /**
      * __construct
      *
@@ -21,8 +24,8 @@ class Date_utils {
         } else {
             $this->load->driver('session');
         }
-
     }
+
     /**
      * __get
      *
@@ -36,53 +39,55 @@ class Date_utils {
      */
     public function __get($var) {
         return get_instance()->$var;
-    }    
-    
-    public function server_start_unix_time_of_today()
-    {
+    }
+
+    public function server_start_unix_time_of_today() {
         $date = unix_to_human(now());
         $date_array = explode(" ", $date);
-        return human_to_unix($date_array[0].' 00:00 AM');
+        return human_to_unix($date_array[0] . ' 00:00 AM');
     }
-    
-    public function server_end_unix_time_of_today()
-    {
+
+    public function server_end_unix_time_of_today() {
         $date = unix_to_human(now());
         $date_array = explode(" ", $date);
-        return human_to_unix($date_array[0].' 00:00 AM')+86400;
+        return human_to_unix($date_array[0] . ' 00:00 AM') + 86400;
     }
-    
-    public function server_start_unix_time_of_date($date, $country_code = 'BD')
-    {
-        $date_start_unix = human_to_unix($date.' 00:00 AM');
-        
+
+    public function convert_date_to_unix_time($date){
+        $date = date_parse_from_format('Y-m-d', $date);
+        $timestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+        return  $timestamp + 86400;
+    }
+
+    public function server_start_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);
         $dateTime = new DateTime("now", $dateTimeZone);
         $offset = $dateTime->getOffset();
-        
+
         return $date_start_unix - $offset;
     }
-    
-    public function server_end_unix_time_of_date($date, $country_code = 'BD')
-    {
-        $date_start_unix = human_to_unix($date.' 00:00 AM');
-        
+
+    public function server_end_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);
         $dateTime = new DateTime("now", $dateTimeZone);
         $offset = $dateTime->getOffset();
-        
+
         return $date_start_unix - $offset + 86400;
     }
-    
-    public function get_unix_to_display($time, $country_code = 'BD')
-    {
+
+    public function get_unix_to_display($time, $country_code = 'BD') {
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);
         $dateTime = new DateTime("now", $dateTimeZone);
         $offset = $dateTime->getOffset();
-        
+
         return unix_to_human($time + $offset);
     }
+
 }

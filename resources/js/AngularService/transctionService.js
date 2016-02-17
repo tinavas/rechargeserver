@@ -53,6 +53,68 @@ angular.module('services.Transction', []).
                     }
                 });
             }
+            transctionService.getAllHistory = function (startDate, endDate) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/all',
+                    data: {
+                        fromDate: startDate,
+                        toDate : endDate
+                    }
+                });
+            }
+            transctionService.getPaymentHistory = function (searchParam) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/get_payment_history',
+                    data: {
+                        searchParam: searchParam
+                    }
+                });
+            }
+            transctionService.getPaymentHistoryByPagination = function (offset) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/get_payment_history',
+                    data: {
+                        offset: offset
+                    }
+                });
+            }
+            transctionService.getReceiveHistory = function (searchParam) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/get_receive_history',
+                    data: {
+                        searchParam: searchParam
+                      
+                    }
+                });
+            }
+            transctionService.getReceiveHistoryByPagination = function (offset) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/get_receive_history',
+                    data: {
+                        offset: offset
+                    }
+                });
+            }
+            transctionService.getTransctionByPagination = function (offset) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/all',
+                    data: {
+                        offset: offset
+                    }
+                });
+            }
             return transctionService;
         });
 

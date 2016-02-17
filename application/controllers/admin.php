@@ -39,8 +39,10 @@ class Admin extends Role_Controller {
                     $user_data['description'] = $description;
                 }
                 $user_data['user_id'] = $user_id;
+                $user_data['reference_id'] = $user_id;
                 $user_data['type_id'] = PAYMENT_TYPE_ID_LOAD_BALANCE;
-
+                $this->load->library('utils');
+                $user_data['transaction_id'] = $this->utils->get_transaction_id();
                 $this->load->model('admin/admin_payment_model');
                 if ($this->admin_payment_model->load_balance($user_data) !== FALSE) {
                     $response['message'] = 'Load Balance successfully.';
@@ -57,9 +59,27 @@ class Admin extends Role_Controller {
         $this->data['app'] = PAYMENT_APP;
         $this->template->load('admin/templates/admin_tmpl', 'admin/payment/load_balance', $this->data);
     }
-    function profile() {
-        $this->data['app'] = PAYMENT_APP;
-         $this->template->load(null, 'admin/account/profile', $this->data);
+
+    /**
+     * this method return admin profile info and used services
+     * 
+     */
+
+    function get_profile_info() {
+        $this->load->model('service_model');
+        $user_id = $this->session->userdata('user_id');
+        $service_list = $this->service_model->get_user_services($user_id)->result_array();
+        $this->load->model('reseller_model');
+        $user_profile_info = array();
+        $profile_info = $this->reseller_model->get_profile_info($user_id)->result_array();
+        if (!empty($profile_info)) {
+            $profile_info = $profile_info[0];
+            $user_profile_info = $profile_info;
+        }
+        $this->data['profile_info'] = $user_profile_info;
+        $this->data['service_list'] = $service_list;
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'admin/account/profile', $this->data);
     }
 
 }

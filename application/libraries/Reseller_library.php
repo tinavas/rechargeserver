@@ -104,10 +104,9 @@ class Reseller_library {
             $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
         }
         $data['bkash_total_transactions'] = $bkash_total_transactions;
-       
+
         return $data;
     }
-    
 
     /*
      * This method will return current available balance of a user
@@ -161,6 +160,32 @@ class Reseller_library {
         return $parent_user_id;
     }
 
+    /**
+     * this method will return all parents list of a user
+     * @param  $user_id 
+     * @author  Rashida Sultana 17 jan 2016
+     * 
+     *  */
+    public function get_user_parent_id_list($user_id = 0) {
+        $user_id_list = array($user_id);
+        $flag = true;
+        while ($flag) {
+            $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
+            foreach ($parent_info_array as $parent_info) {
+                $user_id = $parent_info['parent_user_id'];
+                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
+                    $user_id_list[] = $parent_info['parent_user_id'];
+                }
+            }
+            if (empty($parent_info_array)) {
+                $flag = false;
+            }
+        }
+
+        return $user_id_list;
+    }
+
+    
     public function get_bfs_user_id_list($user_id) {
         $user_id_list = array();
         $flag = true;

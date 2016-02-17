@@ -27,9 +27,9 @@
         <tbody ng-init="setResellerList(<?php echo htmlspecialchars(json_encode($reseller_list)); ?>)">
             <tr ng-repeat="resellerInfo in resellerList">
                 <?php if ($allow_user_edit !== FALSE) { ?> 
-                    <td><a href="<?php echo base_url() . 'reseller/update_reseller/'; ?>{{resellerInfo.user_id}}">{{resellerInfo.username}}</a></td>
+                    <td><a href="<?php echo base_url() . 'reseller/update_reseller/'; ?>{{resellerInfo.user_id}}"> {{resellerInfo.username}}</a></td>
                 <?php } else if ($allow_user_edit == FALSE) { ?>
-                    <td><a>{{resellerInfo.username}}</a></td>
+                    <td><a href="<?php echo base_url() . 'reseller/show_reseller/'; ?>{{resellerInfo.user_id}}"> {{resellerInfo.username}}</a></td>
                 <?php } ?>
                 <td>{{resellerInfo.first_name}} &nbsp; {{resellerInfo.last_name}}</td>
                 <td>{{resellerInfo.email}}</td>

@@ -1,0 +1,19 @@
+angular.module('services.Report', []).
+        factory('reportService', function ($http, $location) {
+            var $app_name = "/rechargeserver";
+            var reportService = {};
+
+            reportService.bkash = function (bkashInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/bkash',
+                    data: {
+                        bkashInfo: bkashInfo
+                    }
+                });
+            }
+           
+            return reportService;
+        });
+

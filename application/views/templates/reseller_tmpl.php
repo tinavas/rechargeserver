@@ -16,6 +16,9 @@
         <link href="<?php echo base_url(); ?>resources/css/menu.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>resources/css/styles.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>resources/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">
+
 
 
         <script src="<?php echo base_url(); ?>resources/js/jquery.min.js" type="text/javascript"></script>
@@ -25,7 +28,8 @@
         <script src="<?php echo base_url(); ?>resources/js/smscounter.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/recharge.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/wating_loader.js" type="text/javascript"></script>
-
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular-animate.js"></script>
@@ -35,17 +39,20 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularService/transctionService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularService/resellerService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularService/paymentService.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularService/reportService.js"></script>
 
         <!--<angular Controller>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/transactionController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/resellerController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/paymentController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/leftController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/reportController.js"></script>
 
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/transctionApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/resellerApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/paymentApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/reportApp.js"></script>
 
     </head>
     <body ng-app="<?php echo $app; ?>">

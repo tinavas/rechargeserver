@@ -1,6 +1,7 @@
 angular.module('controller.Reseller', ['services.Reseller']).
         controller('resellerController', function ($scope, resellerService) {
             $scope.resellerInfo = {};
+            $scope.profileInfo = {};
             $scope.resellerList = [];
             $scope.serviceList = [];
             $scope.serviceRateList = [];
@@ -8,6 +9,9 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.topup_service_allow_flag = false;
             $scope.setResellerInfo = function (resellerInfo) {
                 $scope.resellerInfo = JSON.parse(resellerInfo);
+            }
+            $scope.setProfileInfo = function (profileInfo) {
+                $scope.profileInfo = JSON.parse(profileInfo);
             }
             $scope.setResellerList = function (resellerList) {
                 $scope.resellerList = JSON.parse(resellerList);

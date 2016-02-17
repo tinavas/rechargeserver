@@ -71,6 +71,7 @@
                                     <th>Number</th>
                                     <th>Amount</th>
                                     <th>Status</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,6 +79,7 @@
                                     <td>{{transactionInfo.cell_no}}</td>
                                     <td>{{transactionInfo.amount}}</td>
                                     <td>{{transactionInfo.status}}</td>
+                                    <td>{{transactionInfo.created_on}}</td>
                                 </tr>
                             </tbody>
                         </table>

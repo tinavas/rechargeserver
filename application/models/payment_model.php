@@ -18,8 +18,11 @@ class Payment_model extends Ion_auth_model {
         $current_time = now();
         $sender_data['created_on'] = $current_time;
         $sender_data['modified_on'] = $current_time;
+      
         $receiver_data['created_on'] = $current_time;
         $receiver_data['modified_on'] = $current_time;
+       
+        
 
         $s_payment_data = $this->_filter_data($this->tables['user_payments'], $sender_data);
         $this->db->insert($this->tables['user_payments'], $s_payment_data);

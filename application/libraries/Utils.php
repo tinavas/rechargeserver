@@ -49,5 +49,12 @@ class Utils {
             RETURN True;
         }
     }
+    /**
+     * this method return a unique random 32 bit string
+     * 
+     */
+    public function get_transaction_id(){
+        return random_string('unique', 32);
+    }
    
 }

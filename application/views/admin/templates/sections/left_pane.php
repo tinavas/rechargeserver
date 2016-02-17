@@ -1,7 +1,7 @@
 
 <script type="text/javascript">
 
-    $(function() {
+    $(function () {
         angular.element($('#set_user_service_id')).scope().getUserServiceList();
     });
 </script>
@@ -67,9 +67,9 @@
             <li><a href="<?php echo base_url(); ?>history/get_receive_history">Receive History</a></li>	
             <li><a href="javascript:void(0)" class="chld">Report </a>
                 <ul id="baby">
-                    <li><a href="#">Cost &amp; Profit</a></li>
-                    <li><a href="#">Balance Report</a></li>
-                    <li><a href="#">Total Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_cost_and_profit' ?>">Cost &amp; Profit</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_balance_report' ?>">Balance Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_total_report' ?>">Total Report</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>
@@ -77,7 +77,7 @@
                     <li><a href="<?php echo base_url(); ?>reseller/update_rate">My Rates</a></li>
                     <li><a href="#">API Key</a></li>
                     <li><a href="<?php echo base_url(); ?>admin/load_balance">Add Balance</a></li>
-                    <li><a href="<?php echo base_url(); ?>admin/profile">My Profile</a></li>
+                    <li><a href="<?php echo base_url(); ?>admin/get_profile_info">My Profile</a></li>
                     <li><a href="#">Access Logs</a></li>
                     <li><a href="#">Change Pin</a></li>                
                     <li><a href="#">Change Password</a></li>

@@ -54,7 +54,7 @@
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
                     <li><a href="<?php echo base_url() . 'history/all' ?>">All History</a></li>
-                    <li  ng-if="topup_service_allow_flag != false "> <a href ="<?php echo base_url() . 'history/topup' ?>">Topup</a></li>						
+                    <li  ng-if="topup_service_allow_flag != false"> <a href ="<?php echo base_url() . 'history/topup' ?>">Topup</a></li>						
                     <div ng-repeat="service in serviceList">
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/bkash' ?>">bKash</a></li>						
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl' ?>">DBBL</a></li>						
@@ -66,13 +66,13 @@
             </li>
 
             <li><a href="<?php echo base_url() . 'reseller/get_reseller_list' ?>">Resellers</a></li>		
-            <li><a href="#">Payment History</a></li>
-            <li><a href="#">Receive History</a></li>	
+            <li><a href="<?php echo base_url(); ?>history/get_payment_history">Payment History</a></li>
+            <li><a href="<?php echo base_url(); ?>history/get_receive_history">Receive History</a></li>		
             <li><a href="javascript:void(0)" class="chld">Report </a>
                 <ul id="baby">
-                    <li><a href="#">Cost &amp; Profit</a></li>
-                    <li><a href="#">Balance Report</a></li>
-                    <li><a href="#">Total Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_cost_and_profit' ?>">Cost &amp; Profit</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_balance_report' ?>">Balance Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_total_report' ?>">Total Report</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>
@@ -80,7 +80,7 @@
                     <li><a href="<?php echo base_url(); ?>reseller/get_reseller_service_rate">My Rates</a></li>
                     <li><a href="#">API Key</a></li>
                     <li><a href="<?php echo base_url(); ?>payment/reseller_return_balance">Return Balance</a></li>
-                    <li><a href="#">My Profile</a></li>
+                    <li><a href="<?php echo base_url(); ?>reseller/get_reseller_profile_info">My Profile</a></li>
                     <li><a href="#">Access Logs</a></li>
                     <li><a href="#">Change Pin</a></li>                
                     <li><a href="#">Change Password</a></li>

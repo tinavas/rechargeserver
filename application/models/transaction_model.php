@@ -30,7 +30,7 @@ class Transaction_model extends Ion_auth_model {
         return $current_balance;
     }
 
-    public function add_transaction($api_key, $transaction_data) {
+    public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
         $description = $transaction_data['description'];
@@ -65,10 +65,10 @@ class Transaction_model extends Ion_auth_model {
                         $additional_data = $this->_filter_data($this->tables['user_transactions'], $transaction_data);
                         $this->db->insert($this->tables['user_transactions'], $additional_data);
                         $insert_id = $this->db->insert_id();
-
                         if (isset($insert_id)) {
                             $data = array(
                                 'user_id' => $user_id,
+                                'reference_id' => $user_id,
                                 'transaction_id' => $transaction_id,
                                 'balance_in' => 0,
                                 'balance_out' => $transaction_data['amount'],
@@ -80,6 +80,7 @@ class Transaction_model extends Ion_auth_model {
                             $this->db->insert($this->tables['user_payments'], $payment_data);
                             $insert_id = $this->db->insert_id();
                             if (isset($insert_id)) {
+                                $this->db->insert_batch($this->tables['user_profits'], $users_profit_data);
                                 $this->db->trans_commit();
                                 return TRUE;
                             }
@@ -95,7 +96,7 @@ class Transaction_model extends Ion_auth_model {
         return FALSE;
     }
 
-    public function get_user_transaction_list($service_id_list = array(), $limit = 0) {
+    public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -106,6 +107,13 @@ class Transaction_model extends Ion_auth_model {
         }
         if ($limit > 0) {
             $this->db->limit($limit);
+        }
+        if ($offset > 0) {
+            $this->db->offset($offset);
+        }
+        if ($from_date != 0 && $to_date != 0) {
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
+            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -125,4 +133,48 @@ class Transaction_model extends Ion_auth_model {
                         ->get();
     }
 
+    /**
+     * this method return payment or receive history of a user
+     * @$user_id
+     * @$payment_type_ids
+     * return payment history
+     * @author Rashida on 17 feb 2016
+     */
+    public function get_payment_history($user_id = 0, $payment_type_ids = array(), $limit = 0, $offset = 0, $start_date = 0, $end_date = 0) {
+        $this->db->where($this->tables['user_payments'] . '.user_id', $user_id);
+        $this->db->where_in($this->tables['user_payments'] . '.type_id', $payment_type_ids);
+        if ($start_date != 0 && $end_date != 0) {
+            $this->db->where($this->tables['user_payments'] . '.created_on >=', $start_date);
+            $this->db->where($this->tables['user_payments'] . '.created_on <=', $end_date);
+        }
+        if ($limit > 0) {
+            $this->db->limit($limit);
+        }
+        if ($offset > 0) {
+            $this->db->offset($offset);
+        }
+        return $this->db->select($this->tables['user_payments'] . '.*,' . $this->tables['users'] . '.username')
+                        ->from($this->tables['users'])
+                        ->join($this->tables['user_payments'], $this->tables['users'] . '.id=' . $this->tables['user_payments'] . '.reference_id')
+                        ->get();
+    }
+
+    /**
+     * this method will return user profit
+     * @$user_id
+     * @$service_ids
+     * return profit history
+     * @author Rashida on 17 feb 2016
+     */
+    public function get_user_profit($user_id, $service_ids) {
+        $this->db->where($this->tables['user_profits'] . '.user_id', $user_id);
+        $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_ids);
+        $this->db->group_by('service_id');
+        return $this->db->select($this->tables['user_profits'] . '.service_id, sum(rate) as total_used_amount, sum(amount) as total_profit,' . $this->tables['services'] . '.title')
+                        ->from($this->tables['user_profits'])
+                        ->join($this->tables['services'], $this->tables['user_profits'] . '.service_id=' . $this->tables['services'] . '.id')
+                        ->get();
+    }
+
+  
 }

@@ -60,9 +60,11 @@ class Payment extends Role_Controller {
                     };
 
                     $sender_data['user_id'] = $parent_id;
+                    $sender_data['reference_id'] = $child_id;
                     $sender_data['type_id'] = PAYMENT_TYPE_ID_SEND_CREDIT;
 
                     $receiver_data['user_id'] = $child_id;
+                    $receiver_data['reference_id'] = $parent_id;
                     $receiver_data['type_id'] = PAYMENT_TYPE_ID_RECEIVE_CREDIT;
                 } else if ($payment_type_id == PAYMENT_TYPE_ID_RETURN_CREDIT) {
                     if ($amount > $this->reseller_library->get_user_current_balance($child_id)) {
@@ -71,12 +73,17 @@ class Payment extends Role_Controller {
                         return;
                     };
                     $sender_data['user_id'] = $child_id;
+                    $sender_data['reference_id'] = $parent_id;
                     $sender_data['type_id'] = PAYMENT_TYPE_ID_RETURN_CREDIT;
 
                     $receiver_data['user_id'] = $parent_id;
+                    $receiver_data['reference_id'] = $child_id;
                     $receiver_data['type_id'] = PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT;
                 }
-
+                $this->load->library('utils');
+                $transaction_id = $this->utils->get_transaction_id();
+                $sender_data['transaction_id'] = $transaction_id;
+                $receiver_data['transaction_id'] = $transaction_id;
                 if ($this->payment_model->transfer_user_payment($sender_data, $receiver_data) !== FALSE) {
                     $response['message'] = 'Payment is updated successfully.';
                 } else {
@@ -137,6 +144,7 @@ class Payment extends Role_Controller {
                     'balance_out' => $amount
                 );
                 $user_data['user_id'] = $user_id;
+                $user_data['reference_id'] = $parent_user_id;
                 $user_data['type_id'] = PAYMENT_TYPE_ID_SEND_CREDIT;
                 // parent payment info
                 $parent_data = array(
@@ -144,11 +152,16 @@ class Payment extends Role_Controller {
                     'balance_out' => 0
                 );
                 $parent_data['user_id'] = $parent_user_id;
+                $parent_data['reference_id'] = $user_id;
                 $parent_data['type_id'] = PAYMENT_TYPE_ID_RECEIVE_CREDIT;
                 if (isset($description)) {
                     $user_data['description'] = $description;
                     $parent_data['description'] = $description;
                 }
+                $this->load->library('utils');
+                $transaction_id = $this->utils->get_transaction_id();
+                $user_data['transaction_id'] = $transaction_id;
+                $parent_data['transaction_id'] = $transaction_id;
                 $this->load->model('payment_model');
                 if ($this->payment_model->transfer_user_payment($user_data, $parent_data) !== FALSE) {
                     $response['message'] = 'Return balance successfully.';
