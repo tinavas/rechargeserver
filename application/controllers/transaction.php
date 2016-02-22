@@ -137,7 +137,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
+            if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
@@ -149,7 +149,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/dbbl/index', $this->data);
@@ -191,19 +191,19 @@ class Transaction extends Role_Controller {
                 return;
             }
             $user_id = $this->session->userdata('user_id');
-            $api_key = API_KEY_MCASH_CASHIN;
+            $api_key = API_KEY_MKASH_CASHIN;
             $description = "test";
             $transaction_id = "";
             $transaction_data = array(
                 'user_id' => $this->session->userdata('user_id'),
                 'transaction_id' => $transaction_id,
-                'service_id' => SERVICE_TYPE_ID_DBBL_CASHIN,
+                'service_id' => SERVICE_TYPE_ID_MCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
+            if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
@@ -215,7 +215,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/mcash/index', $this->data);
@@ -256,7 +256,7 @@ class Transaction extends Role_Controller {
                 return;
             }
             $user_id = $this->session->userdata('user_id');
-            $api_key = API_KEY_UCASH_CASHIN;
+            $api_key = API_KEY_UKASH_CASHIN;
             $description = "test";
             $transaction_id = "";
             $transaction_data = array(
@@ -268,7 +268,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
+            if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
                 ;
             } else {
@@ -282,7 +282,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/ucash/index', $this->data);
@@ -349,7 +349,7 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
             );
-            if ($this->transaction_model->add_transaction($api_key, $transaction_data) !== FALSE) {
+            if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
                 $response['message'] = $this->ion_auth->messages_array();
@@ -360,7 +360,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP,SERVICE_TYPE_ID_TOPUP_ROBI,SERVICE_TYPE_ID_TOPUP_AIRTEL,SERVICE_TYPE_ID_TOPUP_TELETALK), INITIAL_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->load->model('service_model');
         $topup_type_list = $this->service_model->get_all_operator_types()->result_array();
