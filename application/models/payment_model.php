@@ -6,24 +6,36 @@ class Payment_model extends Ion_auth_model {
         parent::__construct();
     }
 
-    public function get_user_current_balance($user_id) {
-        $this->db->where_in($this->tables['user_payments'] . '.transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
-        $this->db->where($this->tables['user_payments'] . '.user_id', $user_id);
+    /*
+     * This method will return current balance of users
+     * @param $user_id_list, user id list
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function get_users_current_balance($user_id_list = array()) {
+        $this->db->where_in('status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in('user_id', $user_id_list);
+        $this->db->group_by('user_id');
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
                         ->get();
     }
-
+    
+    /*
+     * This method will transfer payment from one user to another user
+     * @param $sender_data, sender payment information
+     * @param $receiver_data, receiver payment information
+     * @author nazmul hasan on 24th february 2016
+     */
     public function transfer_user_payment($sender_data, $receiver_data) {
         $this->db->trans_begin();
         $current_time = now();
         $sender_data['created_on'] = $current_time;
         $sender_data['modified_on'] = $current_time;
-        $sender_data['transaction_status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
+        $sender_data['status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
 
         $receiver_data['created_on'] = $current_time;
         $receiver_data['modified_on'] = $current_time;
-        $receiver_data['transaction_status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
+        $receiver_data['status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
 
         $s_payment_data = $this->_filter_data($this->tables['user_payments'], $sender_data);
         $this->db->insert($this->tables['user_payments'], $s_payment_data);
@@ -40,15 +52,18 @@ class Payment_model extends Ion_auth_model {
         $this->db->trans_rollback();
         return FALSE;
     }
-
-    public function get_users_current_balance($user_id_list = array()) {
-        $this->db->where_in('transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
-        $this->db->where_in('user_id', $user_id_list);
-        $this->db->group_by('user_id');
+    
+    
+    
+    public function get_user_current_balance($user_id) {
+        $this->db->where_in($this->tables['user_payments'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where($this->tables['user_payments'] . '.user_id', $user_id);
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
                         ->get();
     }
+
+    
 
     public function get_payment_history($type_id_list = array(), $limit = 0) {
         //run each where that was passed

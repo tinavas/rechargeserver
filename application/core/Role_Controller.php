@@ -4,7 +4,7 @@ class Role_Controller extends CI_Controller{
     function __construct() {
         parent::__construct();
         $this->load->library('reseller_library');
-        $this->data['current_balance'] = $this->reseller_library->get_user_current_balance();
+        $this->data['current_balance'] = $this->reseller_library->get_user_current_balance();        
         $this->data['user_title'] = $this->reseller_library->get_user_title();
 //        $this->load->library("org/profile/business/business_profile_library"); 
 //        $this->load->library('notification');

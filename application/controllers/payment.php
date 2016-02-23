@@ -20,6 +20,11 @@ class Payment extends Role_Controller {
         
     }
 
+    /*
+     * This method will execute payment transaction from one user to another user
+     * @param $child_id, child user id
+     * @author nazmul hasan on 24th february 2016
+     */
     public function create_payment($child_id = 0) {
         $parent_id = $this->session->userdata('user_id');
         $response = array();

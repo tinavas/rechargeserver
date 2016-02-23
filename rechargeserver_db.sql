@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `user_payments` (
   `user_id` int(11) unsigned NOT NULL,
   `reference_id` int(11) unsigned NOT NULL,
   `transaction_id` varchar(200),
-  `transaction_status_id` int(11) unsigned NOT NULL,
+  `status_id` int(11) unsigned NOT NULL,
   `description` varchar(200),
   `balance_in` double,
   `balance_out` double,
@@ -226,12 +226,14 @@ CREATE TABLE IF NOT EXISTS `user_payments` (
   PRIMARY KEY (`id`),
   KEY `fk_user_payments_users1_idx` (`user_id`),
   KEY `fk_user_payments_users2_idx` (`reference_id`),
-  KEY `fk_user_payments_user_payment_types1_idx` (`type_id`)
+  KEY `fk_user_payments_user_payment_types1_idx` (`type_id`),
+  KEY `fk_user_payments_user_transaction_statuses1_idx` (`status_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
 ALTER TABLE `user_payments`
   ADD CONSTRAINT `fk_user_payments_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_payments_users2_idx` FOREIGN KEY (`reference_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_user_payments_upt1` FOREIGN KEY (`type_id`) REFERENCES `user_payment_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_payments_uts1` FOREIGN KEY (`status_id`) REFERENCES `user_transaction_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
   CREATE TABLE IF NOT EXISTS `user_profits` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -239,7 +241,7 @@ ALTER TABLE `user_payments`
   `reference_id` int(11) unsigned NOT NULL,
   `transaction_id` varchar(200),
   `service_id` int(11) unsigned NOT NULL,
-  `transaction_status_id` int(11) unsigned NOT NULL,
+  `status_id` int(11) unsigned NOT NULL,
   `rate` double,
   `amount` double,
   `created_on` int(11) unsigned DEFAULT NULL,
@@ -247,8 +249,11 @@ ALTER TABLE `user_payments`
   PRIMARY KEY (`id`),
   KEY `fk_user_profites_users1_idx` (`user_id`),
   KEY `fk_user_profites_users2_idx` (`reference_id`),
-  KEY `fk_user_profites_service_idx` (`service_id`)
+  KEY `fk_user_profites_service_idx` (`service_id`),
+  KEY `fk_user_profits_user_transaction_statuses1_idx` (`status_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
+ALTER TABLE `user_profits`
+  ADD CONSTRAINT `fk_user_profits_uts1` FOREIGN KEY (`status_id`) REFERENCES `user_transaction_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
   
   

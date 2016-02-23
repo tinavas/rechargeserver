@@ -61,6 +61,14 @@ $lang['email_new_password_subject']          = 'New Password';
 $lang['email_activation_subject']            = 'Account Activation';
 
 // Transaction
-$lang['error_insaficient_balance'] = 'Sorry! Insaficient Balance !';
-$lang['error_while_processing_the_transaction'] = 'Error While Processing the Transaction';
+$lang['transaction_successful']                     = 'Your request is processing. Thank you.';
+$lang['transaction_unsuccessful']                   = 'Sorry! Unable to process your request. Please try again later.';
+$lang['error_webservice_unavailable']               = 'Server to process your request is unavailable. Please try again later.';
+$lang['error_insaficient_balance']                  = 'Sorry! Insufficient Balance !';
+$lang['error_no_transaction_id']                    = 'Sorry!! There was an error while processing your transaction.';
+$lang['error_no_result_event']                      = 'Sorry!!! There was an error while processing your transaction.';
+
+$lang['error_user_rate_configuration']              = 'Please cofigure user rate.';
 $lang['null_pointer_exception_while_processing_the_transaction'] = 'Null Pointer Exception While Processing the Transaction';
+
+//Webservice Error messages

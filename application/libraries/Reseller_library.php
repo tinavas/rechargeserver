@@ -40,6 +40,42 @@ class Reseller_library {
     public function __get($var) {
         return get_instance()->$var;
     }
+    
+    /*
+     * This method will return current available balance of a user
+     * @param $user_id, user id
+     * @return current available balance of the user 
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function get_user_current_balance($user_id = 0) {
+        $current_balance = 0;
+        if (0 == $user_id) {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $this->load->model('payment_model');
+        $user_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
+        if (!empty($user_balance_array)) {
+            $current_balance = $user_balance_array[0]['current_balance'];
+        }
+        return $current_balance;
+    }
+    
+    /*
+     * This method will return user title
+     * @param $user_id, user id
+     * @author nazmul hasan 24th february 2016
+     */
+    public function get_user_title($user_id = 0) {
+        $user_title = "";
+        if ($user_id == 0) {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $user_title_info_array = $this->reseller_model->get_user_title_info($user_id)->result_array();
+        if (!empty($user_title_info_array)) {
+            $user_title = $user_title_info_array[0]['username'] . ' ' . $user_title_info_array[0]['description'];
+        }
+        return $user_title;
+    }
 
     public function get_reseller_list($user_id, $filter_data = array()) {
         $reseller_list = array();
@@ -69,17 +105,7 @@ class Reseller_library {
         return $reseller_list;
     }
 
-    public function get_user_title($user_id = 0) {
-        $user_title = "";
-        if ($user_id == 0) {
-            $user_id = $this->session->userdata('user_id');
-        }
-        $user_title_info_array = $this->reseller_model->get_user_title_info($user_id)->result_array();
-        if (!empty($user_title_info_array)) {
-            $user_title = $user_title_info_array[0]['username'] . ' ' . $user_title_info_array[0]['description'];
-        }
-        return $user_title;
-    }
+    
 
     public function get_user_dashboard_data($user_id) {
         $data = array();
@@ -101,32 +127,17 @@ class Reseller_library {
         $bkash_total_transactions = 0;
         $bkash_transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
         foreach ($bkash_transaction_list as $bkash_transaction_info) {
-            $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
+            if($bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_PENDING || $bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_SUCCESSFUL)
+            {
+                $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
+            }            
         }
         $data['bkash_total_transactions'] = $bkash_total_transactions;
 
         return $data;
     }
 
-    /*
-     * This method will return current available balance of a user
-     * @param $user_id, user id
-     * @return current available balance of the user 
-     * @author nazmul hasan on 30th January 2016
-     */
-
-    public function get_user_current_balance($user_id = 0) {
-        $current_balance = 0;
-        if ($user_id == 0) {
-            $user_id = $this->session->userdata('user_id');
-        }
-        $this->load->model('payment_model');
-        $user_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
-        if (!empty($user_balance_array)) {
-            $current_balance = $user_balance_array[0]['current_balance'];
-        }
-        return $current_balance;
-    }
+    
 
     /*
      * This method will return maximum allowable users to be created under that user

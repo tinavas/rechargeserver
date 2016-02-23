@@ -24,7 +24,10 @@ class Transaction extends Role_Controller {
     }
 
  
-
+    /*
+     * This method will process bkash transaction
+     * @author nazmul hasan on 24th february 2016
+     */
     public function bkash() {
         $response = array();
         if (file_get_contents("php://input") != null) {
@@ -72,9 +75,9 @@ class Transaction extends Role_Controller {
                 'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-                $response['message'] = "Transaction is created successfully.";
+                $response['message'] = $this->transaction_library->messages_array();
             } else {
-                $response['message'] = $this->ion_auth->messages_array();
+                $response['message'] = $this->transaction_library->errors_array();
             }
 
             echo json_encode($response);

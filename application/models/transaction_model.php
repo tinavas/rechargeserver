@@ -10,18 +10,17 @@ class Transaction_model extends Ion_auth_model {
         $this->lang->load('ion_auth');
         $this->message_codes = $this->config->item('message_codes', 'ion_auth');
     }
-
-    /**
-     * This Method return user Current balance 
-     * @param  $user_id user id
-     * return $current_balance current Balance of a user
-     * @author Rashida Sultana on 31 jan 2016
-     * 
+    
+    /*
+     * This method will return current available balance of a user 
+     * @param  $user_id, user id
+     * @return $current_balance, current balance of the user
+     * @author nazmul hasan on 24th February 2016
      */
     public function get_user_current_balance($user_id) {
         $current_balance = 0;
         $this->db->where('user_id', $user_id);
-        $this->db->where_in('transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in('status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $user_balance_array = $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
                         ->get()->result_array();
@@ -30,15 +29,21 @@ class Transaction_model extends Ion_auth_model {
         }
         return $current_balance;
     }
-
+    /*
+     * This method will call the webservice and add a new transaction
+     * @param $api_key, service API key of the transaction
+     * @param $transaction_data, transaction data
+     * @param $user_profit_data, user profit data
+     * @author nazmul hasan on 24th February 2016
+     */
     public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
         $description = $transaction_data['description'];
         $user_id = $transaction_data['user_id'];
-
+        //checking whether user has enough balance before the transaction
         if ($amount > $this->get_user_current_balance($user_id)) {
-            $this->ion_auth->set_message('error_insaficient_balance');
+            $this->set_message('error_insaficient_balance');
             return FALSE;
         }
         $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
@@ -54,16 +59,16 @@ class Transaction_model extends Ion_auth_model {
                     $transaction_info = $result_event->result;
                     $transaction_id = $transaction_info->transactionId;
                     if (empty($transaction_id) || $transaction_id == "") {
-                        $this->ion_auth->set_message('error_while_processing_the_transaction');
-                        //Handle a message if there is no transaction id
+                        $this->set_message('error_no_transaction_id');
                         return FALSE;
-                    } else {
+                    } 
+                    else {
                         $this->db->trans_begin();
                         $current_time = now();
                         $transaction_data['created_on'] = $current_time;
                         $transaction_data['modified_on'] = $current_time;
                         $transaction_data['transaction_id'] = $transaction_id;
-                        $transaction_data['status_id'] = TRANSACTION_STATUS_ID_PAINDING;
+                        $transaction_data['status_id'] = TRANSACTION_STATUS_ID_PENDING;
                         $additional_data = $this->_filter_data($this->tables['user_transactions'], $transaction_data);
                         $this->db->insert($this->tables['user_transactions'], $additional_data);
                         $insert_id = $this->db->insert_id();
@@ -72,7 +77,7 @@ class Transaction_model extends Ion_auth_model {
                                 'user_id' => $user_id,
                                 'reference_id' => $user_id,
                                 'transaction_id' => $transaction_id,
-                                'transaction_status_id' => TRANSACTION_STATUS_ID_PAINDING,
+                                'status_id' => TRANSACTION_STATUS_ID_PENDING,
                                 'balance_in' => 0,
                                 'balance_out' => $transaction_data['amount'],
                                 'type_id' => PAYMENT_TYPE_ID_USE_SERVICE,
@@ -83,29 +88,50 @@ class Transaction_model extends Ion_auth_model {
                             $this->db->insert($this->tables['user_payments'], $payment_data);
                             $insert_id = $this->db->insert_id();
                             if (isset($insert_id)) {
-                                $this->db->insert_batch($this->tables['user_profits'], $users_profit_data);
+                                //$this->db->insert_batch($this->tables['user_profits'], $users_profit_data);
                                 $this->db->trans_commit();
+                                $this->set_message('transaction_successful');
                                 return TRUE;
                             }
                         }
                         $this->db->trans_rollback();
-                        $this->ion_auth->set_message('error_while_processing_the_transaction');
+                        $this->set_message('transaction_unsuccessful');
                         return FALSE;
                     }
                 }
+                else
+                {
+                    $this->set_message('error_no_result_event');
+                    return FALSE;
+                }
+            }
+            else
+            {
+                //set message based on response code
             }
         }
-        $this->ion_auth->set_message('error_while_processing_the_transaction');
+        else
+        {
+            $this->set_error('error_webservice_unavailable');
+        }
         return FALSE;
     }
-
+    
+    /*
+     * This method will return user transaction list
+     * @param $service_id_list, service id list of transactions
+     * @param $limit, limit
+     * @param $offset, offset
+     * @param $from_date, start date
+     * @param $to_date, end date
+     * @author nazmul hasan on 24th February 2016
+     */
     public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
                 $this->db->where($where);
             }
-
             $this->_ion_where = array();
         }
         if ($limit > 0) {
@@ -164,7 +190,7 @@ class Transaction_model extends Ion_auth_model {
     public function get_user_profit($user_id, $service_ids) {
         $this->db->where($this->tables['user_profits'] . '.user_id', $user_id);
         $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_ids);
-        $this->db->where_in($this->tables['user_profits'] . '.transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->group_by('service_id');
         return $this->db->select($this->tables['user_profits'] . '.service_id, sum(rate) as total_used_amount, sum(amount) as total_profit,' . $this->tables['services'] . '.title')
                         ->from($this->tables['user_profits'])

@@ -5,6 +5,19 @@ class Reseller_model extends Ion_auth_model {
     public function __construct() {
         parent::__construct();
     }
+    /*
+     * This method will return user title
+     * @param $user_id, user id
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function get_user_title_info($user_id) {
+        $this->db->where($this->tables['users'] . '.id', $user_id);
+        return $this->db->select($this->tables['users'] . '.username,' . $this->tables['groups'] . '.description')
+                        ->from($this->tables['users'])
+                        ->join($this->tables['users_groups'], $this->tables['users_groups'] . '.user_id=' . $this->tables['users'] . '.id')
+                        ->join($this->tables['groups'], $this->tables['groups'] . '.id=' . $this->tables['users_groups'] . '.group_id')
+                        ->get();
+    }
 
     public function get_reseller_list($user_id) {
         $this->db->where($this->tables['relations'] . '.parent_user_id', $user_id);
@@ -32,15 +45,6 @@ class Reseller_model extends Ion_auth_model {
         $this->db->where($this->tables['users'] . '.id', $user_id);
         return $this->db->select('id as user_id,username,first_name,last_name,email,mobile,max_user_no,note')
                         ->from($this->tables['users'])
-                        ->get();
-    }
-
-    public function get_user_title_info($user_id) {
-        $this->db->where($this->tables['users'] . '.id', $user_id);
-        return $this->db->select($this->tables['users'] . '.username,' . $this->tables['groups'] . '.description')
-                        ->from($this->tables['users'])
-                        ->join($this->tables['users_groups'], $this->tables['users_groups'] . '.user_id=' . $this->tables['users'] . '.id')
-                        ->join($this->tables['groups'], $this->tables['groups'] . '.id=' . $this->tables['users_groups'] . '.group_id')
                         ->get();
     }
 

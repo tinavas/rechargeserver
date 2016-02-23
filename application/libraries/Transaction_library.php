@@ -41,29 +41,67 @@ class Transaction_library {
         return get_instance()->$var;
     }
 
+    /* 
+     * this method add transcation
+     * @param $api_key, API key
+     * @param $transaction_data, transaction data
+     * @author nazmul hasan on 24th February 2016
+     */
+    public function add_transaction($api_key, $transaction_data) {
+        //$service_used_amount = $transaction_data['amount'];
+        //$service_id = $transaction_data['service_id'];
+        //$user_id = $transaction_data['user_id'];
+        //$this->load->library('reseller_library');
+        //$parent_id_list = $this->reseller_library->get_user_parent_id_list($user_id);
+        $users_profit_list = array();
+        /*if (!empty($parent_id_list)) {
+            $users_profit_list = $this->calculate_user_profit($parent_id_list, $service_id, $service_used_amount, $user_id);
+        }
+        else
+        {
+            $this->transaction_model->set_error('error_user_rate_configuration');
+            return FALSE;
+        }*/
+        return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
+    }
+    /* 
+     * this method return user transaction list
+     * @param $service_id_list, service id list of transactions
+     * @param $limit, limit
+     * @param $offset, offset
+     * @param $from_date, start date
+     * @param $to_date, end date
+     * @param @where, where clause
+     * @author nazmul hasan on 24th february 2016
+     */
+
+    public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0, $where = array()) {
+        if(!empty($where))
+        {
+            $this->transaction_model->where($where);
+        }
+        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $limit, $offset, $from_date, $to_date)->result_array();
+        $this->load->library('date_utils');
+        $transation_info_list = array();
+        if (!empty($transaction_list)) {
+            foreach ($transaction_list as $transaction_info) {
+                $transaction_info['created_on'] = $this->date_utils->get_unix_to_display($transaction_info['created_on']);
+                $transation_info_list[] = $transaction_info;
+            }
+        }
+        return $transation_info_list;
+    }
+    
+    
+    
+    
+    
     public function add_user_transaction($transaction_data) {
         //adding user transaction
         return $this->transaction_model->add_transaction($transaction_data);
     }
 
-    /* this method add transcation after calculating users profite 
-     * @param $api_key
-     * @param transaction data
-     * @author Rashida Sulatana on 17 feb 2016
-     *      */
-
-    public function add_transaction($api_key, $transaction_data) {
-        $service_used_amount = $transaction_data['amount'];
-        $service_id = $transaction_data['service_id'];
-        $user_id = $transaction_data['user_id'];
-        $this->load->library('reseller_library');
-        $parent_id_list = $this->reseller_library->get_user_parent_id_list($user_id);
-        $users_profit_list = array();
-        if (!empty($parent_id_list)) {
-            $users_profit_list = $this->calculate_user_profit($parent_id_list, $service_id, $service_used_amount, $user_id);
-        }
-        $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
-    }
+    
 
     /* this method calculate users profit
      * @param $user_id_list
@@ -85,7 +123,7 @@ class Transaction_library {
                 $user_profit_info['reference_id'] = $user_id;
                 $user_profit_info['rate'] = $service_used_amount;
                 $user_profit_info['service_id'] = $service_id;
-                $user_profit_info['transaction_status_id'] = TRANSACTION_STATUS_ID_PAINDING;
+                $user_profit_info['status_id'] = TRANSACTION_STATUS_ID_PENDING;
                 if ($key < $user_service_size - 1) {
                     $user_profit_info['amount'] = ($user_service_list[$key]['commission'] - $user_service_list[$key + 1]['commission']) * $rate_ratio;
                 } else {
@@ -140,28 +178,6 @@ class Transaction_library {
         return $payment_info_list;
     }
 
-    /* this method return user  transaction list
-     * @param $user_ids
-     * @param $service_id_list
-     * @param $to_date
-     * return users transaction list
-     *  */
-
-    public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0, $where = array()) {
-        if(!empty($where))
-        {
-            $this->transaction_model->where($where);
-        }
-        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $limit, $offset, $from_date, $to_date)->result_array();
-        $this->load->library('date_utils');
-        $transation_info_list = array();
-        if (!empty($transaction_list)) {
-            foreach ($transaction_list as $transaction_info) {
-                $transaction_info['created_on'] = $this->date_utils->get_unix_to_display($transaction_info['created_on']);
-                $transation_info_list[] = $transaction_info;
-            }
-        }
-        return $transation_info_list;
-    }
+    
 
 }
