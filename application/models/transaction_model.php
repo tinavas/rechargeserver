@@ -21,6 +21,7 @@ class Transaction_model extends Ion_auth_model {
     public function get_user_current_balance($user_id) {
         $current_balance = 0;
         $this->db->where('user_id', $user_id);
+        $this->db->where_in('transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $user_balance_array = $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
                         ->get()->result_array();
@@ -62,6 +63,7 @@ class Transaction_model extends Ion_auth_model {
                         $transaction_data['created_on'] = $current_time;
                         $transaction_data['modified_on'] = $current_time;
                         $transaction_data['transaction_id'] = $transaction_id;
+                        $transaction_data['status_id'] = TRANSACTION_STATUS_ID_PAINDING;
                         $additional_data = $this->_filter_data($this->tables['user_transactions'], $transaction_data);
                         $this->db->insert($this->tables['user_transactions'], $additional_data);
                         $insert_id = $this->db->insert_id();
@@ -70,6 +72,7 @@ class Transaction_model extends Ion_auth_model {
                                 'user_id' => $user_id,
                                 'reference_id' => $user_id,
                                 'transaction_id' => $transaction_id,
+                                'transaction_status_id' => TRANSACTION_STATUS_ID_PAINDING,
                                 'balance_in' => 0,
                                 'balance_out' => $transaction_data['amount'],
                                 'type_id' => PAYMENT_TYPE_ID_USE_SERVICE,
@@ -125,14 +128,6 @@ class Transaction_model extends Ion_auth_model {
                         ->get();
     }
 
-    public function get_users_current_balance($user_id_list = array()) {
-        $this->db->where_in($this->tables['user_transactions'] . '.user_id', $user_id_list);
-        $this->db->group_by('user_id');
-        return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
-                        ->from($this->tables['user_transactions'])
-                        ->get();
-    }
-
     /**
      * this method return payment or receive history of a user
      * @$user_id
@@ -169,6 +164,7 @@ class Transaction_model extends Ion_auth_model {
     public function get_user_profit($user_id, $service_ids) {
         $this->db->where($this->tables['user_profits'] . '.user_id', $user_id);
         $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_ids);
+        $this->db->where_in($this->tables['user_profits'] . '.transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->group_by('service_id');
         return $this->db->select($this->tables['user_profits'] . '.service_id, sum(rate) as total_used_amount, sum(amount) as total_profit,' . $this->tables['services'] . '.title')
                         ->from($this->tables['user_profits'])
@@ -176,5 +172,4 @@ class Transaction_model extends Ion_auth_model {
                         ->get();
     }
 
-  
 }

@@ -69,8 +69,7 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_BKASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
+                'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
@@ -134,8 +133,7 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_DBBL_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
+                'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
@@ -200,8 +198,7 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_MCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
+                'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
@@ -265,8 +262,7 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_UCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
+                'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
@@ -346,8 +342,7 @@ class Transaction extends Role_Controller {
                 'operator_type_id' => $topUpInfo->topupType,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'status_id' => TRANSACTION_STATUS_ID_SUCCESSFUL
+                'description' => $description
             );
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";

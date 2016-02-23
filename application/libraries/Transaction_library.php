@@ -85,6 +85,7 @@ class Transaction_library {
                 $user_profit_info['reference_id'] = $user_id;
                 $user_profit_info['rate'] = $service_used_amount;
                 $user_profit_info['service_id'] = $service_id;
+                $user_profit_info['transaction_status_id'] = TRANSACTION_STATUS_ID_PAINDING;
                 if ($key < $user_service_size - 1) {
                     $user_profit_info['amount'] = ($user_service_list[$key]['commission'] - $user_service_list[$key + 1]['commission']) * $rate_ratio;
                 } else {

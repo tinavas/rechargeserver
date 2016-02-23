@@ -7,6 +7,7 @@ class Payment_model extends Ion_auth_model {
     }
 
     public function get_user_current_balance($user_id) {
+        $this->db->where_in($this->tables['user_payments'] . '.transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->where($this->tables['user_payments'] . '.user_id', $user_id);
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
@@ -18,11 +19,11 @@ class Payment_model extends Ion_auth_model {
         $current_time = now();
         $sender_data['created_on'] = $current_time;
         $sender_data['modified_on'] = $current_time;
-      
+        $sender_data['transaction_status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
+
         $receiver_data['created_on'] = $current_time;
         $receiver_data['modified_on'] = $current_time;
-       
-        
+        $receiver_data['transaction_status_id'] = TRANSACTION_STATUS_ID_SUCCESSFUL;
 
         $s_payment_data = $this->_filter_data($this->tables['user_payments'], $sender_data);
         $this->db->insert($this->tables['user_payments'], $s_payment_data);
@@ -41,7 +42,8 @@ class Payment_model extends Ion_auth_model {
     }
 
     public function get_users_current_balance($user_id_list = array()) {
-        $this->db->where_in($this->tables['user_payments'] . '.user_id', $user_id_list);
+        $this->db->where_in('transaction_status_id', array(TRANSACTION_STATUS_ID_PAINDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in('user_id', $user_id_list);
         $this->db->group_by('user_id');
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])
