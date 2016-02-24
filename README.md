@@ -79,7 +79,7 @@ while create a reseller affects the following tables:
 Reseller's services assign by parent. When update parent services then also update child's services. reseler's rate also updated by prent and also update child's rate while update parent rate (if child is gaterthen parent).
 the tables affect for these: 
 
-   1.user services(user_services).
+    1.user services(user_services).
 
 *Payments:* balance payments are 
 
