@@ -68,6 +68,7 @@
                         <table class="table10" cellspacing="0">
                             <thead>
                                 <tr>	
+                                    <th>Sender</th>
                                     <th>Number</th>
                                     <th>Amount</th>
                                     <th>Status</th>
@@ -76,6 +77,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="transactionInfo in transctionList">	
+                                    <td>{{transactionInfo.sender_cell_no}}</td>
                                     <td>{{transactionInfo.cell_no}}</td>
                                     <td>{{transactionInfo.amount}}</td>
                                     <td>{{transactionInfo.status}}</td>

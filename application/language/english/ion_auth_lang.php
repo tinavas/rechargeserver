@@ -68,6 +68,15 @@ $lang['error_insaficient_balance']                  = 'Sorry! Insufficient Balan
 $lang['error_no_transaction_id']                    = 'Sorry!! There was an error while processing your transaction.';
 $lang['error_no_result_event']                      = 'Sorry!!! There was an error while processing your transaction.';
 
+$lang['error_code_5001']                            = '5001';
+$lang['error_code_5002']                            = '5002';
+$lang['error_code_5003']                            = '5003';
+$lang['error_code_5004']                            = '5004';
+$lang['error_code_5005']                            = '5005';
+$lang['error_code_5006']                            = '5006';
+$lang['error_code_5007']                            = '5007';
+$lang['error_code_5008']                            = '5008';
+
 $lang['error_user_rate_configuration']              = 'Please cofigure user rate.';
 $lang['null_pointer_exception_while_processing_the_transaction'] = 'Null Pointer Exception While Processing the Transaction';
 

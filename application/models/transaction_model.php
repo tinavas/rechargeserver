@@ -108,6 +108,8 @@ class Transaction_model extends Ion_auth_model {
             else
             {
                 //set message based on response code
+                $this->set_message('error_code_'.$response_code);
+                return FALSE;
             }
         }
         else

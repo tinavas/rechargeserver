@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   `service_id` int(11) unsigned NOT NULL,
   `operator_id` int(11) unsigned   DEFAULT NULL,
   `operator_type_id` int(11) unsigned  DEFAULT NULL,
+  `sender_cell_no` varchar(100),
   `cell_no` varchar(20),
   `description` varchar(200),
   `amount` double,
