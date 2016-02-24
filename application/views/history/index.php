@@ -28,6 +28,7 @@
         <thead>
             <tr>
                 <th><a href="">ID</a></th>
+                <th><a href="">Sender</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
@@ -40,6 +41,7 @@
         <tfoot>
             <tr ng-repeat="transctionInfo in transctionInfoList">
                 <th>{{transctionInfo.id}}</th>
+                <th>{{transctionInfo.sender_cell_no}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
