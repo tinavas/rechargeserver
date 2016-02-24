@@ -62,3 +62,47 @@ All transction will be displayed by user.
 
 User will able to choose a specfic service transctions.
 
+
+**Database Management :**
+
+*Create reseller:* Parent allows to create reseller to his immediate child. We use four level of users
+
+1. level1 allows to create child as level2.
+2. level2 allows to create child as level3.
+3. level3 allows to create child as level4.
+
+while create a reseller affects the following tables:
+
+     1. Users(users)
+     2. User services(users_services).
+     
+Reseller's services assign by parent. When update parent services then also update child's services. reseler's rate also updated by prent and also update child's rate while update parent rate (if child is gaterthen parent).
+the tables affect for these: 
+
+   1.user services(user_services).
+
+*Payments:* balance payments are 
+
+  1. Load balance(for admin)
+  2. Balance payment from parent to child
+  3. Balance return from child to parent by parent
+  4. Balance return to parent by child
+  that time affect the table is 
+     1.user Payment (user_payments)
+
+*Use services:* Reseller allows to use the following services
+
+    1.Top up
+    2.Bkash
+    3.DBBL
+    4.M-Cash
+    5.U-cash
+    6.Global TopUp
+  
+that time affects the folloing tables
+
+     1. User Transacions(user_transction)
+     2. User Payments(user_payments)
+     3. User Profit (user_profits)
+
+
