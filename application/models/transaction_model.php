@@ -17,7 +17,7 @@ class Transaction_model extends Ion_auth_model {
      * @return $current_balance, current balance of the user
      * @author nazmul hasan on 24th February 2016
      */
-    public function get_user_current_balance($user_id) {
+    /*public function get_user_current_balance($user_id) {
         $current_balance = 0;
         $this->db->where('user_id', $user_id);
         $this->db->where_in('status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
@@ -28,7 +28,7 @@ class Transaction_model extends Ion_auth_model {
             $current_balance = $user_balance_array[0]['current_balance'];
         }
         return $current_balance;
-    }
+    }*/
     /*
      * This method will call the webservice and add a new transaction
      * @param $api_key, service API key of the transaction
@@ -41,11 +41,24 @@ class Transaction_model extends Ion_auth_model {
         $cell_no = $transaction_data['cell_no'];
         $description = $transaction_data['description'];
         $user_id = $transaction_data['user_id'];
+        
         //checking whether user has enough balance before the transaction
-        if ($amount > $this->get_user_current_balance($user_id)) {
+        $this->load->model('payment_model');
+        $user_current_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
+        if(!empty($user_current_balance_array))
+        {
+            $user_current_balance = $user_current_balance_array[0]['current_balance'];
+            if ($amount > $user_current_balance) {
+                $this->set_message('error_insaficient_balance');
+                return FALSE;
+            }
+        }
+        else
+        {
             $this->set_message('error_insaficient_balance');
             return FALSE;
         }
+        
         $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
         $this->curl->post(array("APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "description" => $description));
         $result_event = json_decode($this->curl->execute());

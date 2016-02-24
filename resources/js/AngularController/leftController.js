@@ -1,7 +1,7 @@
 angular.module('controller.Left', ['services.Reseller']).
         controller('leftController', function ($scope, resellerService) {
             $scope.resellerList = [];
-
+            $scope.serviceList = [];
             $scope.getUserServiceList = function () {
                 resellerService.getUserServiceList().
                         success(function (data, status, headers, config) {

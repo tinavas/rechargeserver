@@ -21,6 +21,33 @@ class Payment_model extends Ion_auth_model {
     }
     
     /*
+     * This method will return payment history
+     * @param $type_id_list, payment types
+     * @param $limit, limit
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function get_payment_history($type_id_list = array(), $limit = 0) {
+        //run each where that was passed
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+
+            $this->_ion_where = array();
+        }
+        if ($limit > 0) {
+            $this->db->limit($limit);
+        }
+        if (!empty($type_id_list)) {
+            $this->db->where_in($this->tables['user_payments'] . '.type_id', $type_id_list);
+        }
+        $this->db->order_by($this->tables['user_payments'] . '.id', 'desc');
+        return $this->db->select($this->tables['user_payments'] . '.*,' . $this->tables['user_payment_types'] . '.title')
+                        ->from($this->tables['user_payments'])
+                        ->join($this->tables['user_payment_types'], $this->tables['user_payment_types'] . '.id=' . $this->tables['user_payments'] . '.type_id')
+                        ->get();
+    }
+    /*
      * This method will transfer payment from one user to another user
      * @param $sender_data, sender payment information
      * @param $receiver_data, receiver payment information
@@ -64,28 +91,6 @@ class Payment_model extends Ion_auth_model {
     }
 
     
-
-    public function get_payment_history($type_id_list = array(), $limit = 0) {
-        //run each where that was passed
-        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
-            foreach ($this->_ion_where as $where) {
-                $this->db->where($where);
-            }
-
-            $this->_ion_where = array();
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-        if (!empty($type_id_list)) {
-            $this->db->where_in($this->tables['user_payments'] . '.type_id', $type_id_list);
-        }
-        $this->db->order_by($this->tables['user_payments'] . '.id', 'desc');
-        return $this->db->select($this->tables['user_payments'] . '.*,' . $this->tables['user_payment_types'] . '.title')
-                        ->from($this->tables['user_payments'])
-                        ->join($this->tables['user_payment_types'], $this->tables['user_payment_types'] . '.id=' . $this->tables['user_payments'] . '.type_id')
-                        ->get();
-    }
 
     public function get_receive_history($type_id_list = array(), $limit = 0) {
         //run each where that was passed

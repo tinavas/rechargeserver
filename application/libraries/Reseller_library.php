@@ -67,7 +67,7 @@ class Reseller_library {
      */
     public function get_user_title($user_id = 0) {
         $user_title = "";
-        if ($user_id == 0) {
+        if ( 0 == $user_id) {
             $user_id = $this->session->userdata('user_id');
         }
         $user_title_info_array = $this->reseller_model->get_user_title_info($user_id)->result_array();
@@ -75,6 +75,42 @@ class Reseller_library {
             $user_title = $user_title_info_array[0]['username'] . ' ' . $user_title_info_array[0]['description'];
         }
         return $user_title;
+    }
+    
+    /*
+     * This method will return dashboard data of a user
+     * @param $user_id, user id
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function get_user_dashboard_data($user_id) {
+        if ( 0 == $user_id) {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $data = array();
+        $this->load->model('payment_model');
+        $where_payment = array(
+            'user_id' => $user_id
+        );
+        $data['payment_list'] = $this->payment_model->where($where_payment)->get_payment_history(array(PAYMENT_TYPE_ID_SEND_CREDIT), DASHBOARD_PAYMENT_LIMIT)->result_array();
+        $data['receive_list'] = $this->payment_model->where($where_payment)->get_receive_history(array(PAYMENT_TYPE_ID_RECEIVE_CREDIT), DASHBOARD_RECEIVE_LIMIT)->result_array();
+
+        $this->load->library('Date_utils');
+        $this->load->model('transaction_model');
+        $where_transaction = array(
+            'user_id' => $user_id,
+            'created_on >= ' => $this->date_utils->server_start_unix_time_of_today(),
+            'created_on <= ' => $this->date_utils->server_end_unix_time_of_today(),
+        );
+        $bkash_total_transactions = 0;
+        $bkash_transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
+        foreach ($bkash_transaction_list as $bkash_transaction_info) {
+            if($bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_PENDING || $bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_SUCCESSFUL)
+            {
+                $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
+            }            
+        }
+        $data['bkash_total_transactions'] = $bkash_total_transactions;
+        return $data;
     }
 
     public function get_reseller_list($user_id, $filter_data = array()) {
@@ -103,38 +139,6 @@ class Reseller_library {
             $reseller_list[] = $user_info;
         }
         return $reseller_list;
-    }
-
-    
-
-    public function get_user_dashboard_data($user_id) {
-        $data = array();
-        $this->load->model('payment_model');
-        $where = array(
-            'user_id' => $user_id
-        );
-        $data['payment_list'] = $this->payment_model->where($where)->get_payment_history(array(PAYMENT_TYPE_ID_SEND_CREDIT), DASHBOARD_PAYMENT_LIMIT)->result_array();
-        $data['receive_list'] = $this->payment_model->where($where)->get_receive_history(array(PAYMENT_TYPE_ID_RECEIVE_CREDIT), DASHBOARD_RECEIVE_LIMIT)->result_array();
-
-        $this->load->library('Date_utils');
-        $this->load->model('transaction_model');
-        $this->load->model('service_model');
-        $where = array(
-            'user_id' => $user_id,
-            'created_on >= ' => $this->date_utils->server_start_unix_time_of_today(),
-            'created_on <= ' => $this->date_utils->server_end_unix_time_of_today(),
-        );
-        $bkash_total_transactions = 0;
-        $bkash_transaction_list = $this->transaction_model->where($where)->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
-        foreach ($bkash_transaction_list as $bkash_transaction_info) {
-            if($bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_PENDING || $bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_SUCCESSFUL)
-            {
-                $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
-            }            
-        }
-        $data['bkash_total_transactions'] = $bkash_total_transactions;
-
-        return $data;
     }
 
     
