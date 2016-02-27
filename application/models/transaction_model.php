@@ -185,9 +185,10 @@ class Transaction_model extends Ion_auth_model {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
         }
         $this->db->order_by('id', 'desc');
-        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status')
+        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title')
                         ->from($this->tables['user_transactions'])
                         ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_transactions'] . '.status_id')
+                        ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
                         ->get();
     }
 
