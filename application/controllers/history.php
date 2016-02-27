@@ -51,36 +51,50 @@ class History extends Role_Controller {
     }
 
     public function topup() {
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK));
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load('admin/templates/admin_tmpl', 'history/topup/index', $this->data);
     }
 
     public function bkash() {
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN));
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load('admin/templates/admin_tmpl', 'history/bkash/index', $this->data);
     }
 
     public function dbbl() {
-
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN));
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load('admin/templates/admin_tmpl', 'history/dbbl/index', $this->data);
     }
 
     public function mcash() {
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN));
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load('admin/templates/admin_tmpl', 'history/mcash/index', $this->data);
     }
 
     public function ucash() {
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN));
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load('admin/templates/admin_tmpl', 'history/ucash/index', $this->data);

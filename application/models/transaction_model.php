@@ -12,6 +12,28 @@ class Transaction_model extends Ion_auth_model {
     }
     
     /*
+     * This method will udpate transaction as call back function from the authentication server
+     * @param $transaction_id, transaction id
+     * @param $status_id, status id
+     * @param $sender_cell_number, sender cell number
+     * @author nazmul hasan on 24th february 2016
+     */
+    public function update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number)
+    {
+        $transaction_data = array(
+            'status_id' => $status_id,
+            'sender_cell_no' => $sender_cell_number
+        );
+        $this->db->where('transaction_id', $transaction_id);
+        $this->db->update('user_transactions', $transaction_data);
+
+        $payment_data = array(
+            'status_id' => $status_id
+        );
+        $this->db->where('transaction_id', $transaction_id);
+        $this->db->update('user_payments', $payment_data);
+    }
+    /*
      * This method will return current available balance of a user 
      * @param  $user_id, user id
      * @return $current_balance, current balance of the user
