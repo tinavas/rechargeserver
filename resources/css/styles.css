@@ -26,3 +26,12 @@
 .customInputMargin{
     margin-bottom: -8px;
 }
+
+.label_custom{
+    display: inline;
+}
+
+.dyn_height{
+    max-height: 400px;
+    overflow-y: scroll;
+}

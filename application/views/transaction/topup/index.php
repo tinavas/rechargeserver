@@ -1,3 +1,13 @@
+<script>
+    $(function() {
+        jQuery('a.add_row').click(function(event) {
+            event.preventDefault();
+            var newRow = jQuery('<tr><td>01912314466</td>' + '<td>100</td>' + '<td>Prepaid</td>' + '<td style="text-align: center; cursor: pointer;"><div class="glyphicon glyphicon-trash"></div></td>' + '</tr>');
+            jQuery('table.transaction_list').append(newRow);
+        });
+    });
+</script>
+
 
 <script>
 
@@ -22,13 +32,12 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#top_up_id')).scope().topUp(function (data) {
+        angular.element($('#top_up_id')).scope().topUp(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/topup';
             });
-
         });
     }
 </script>
@@ -47,28 +56,36 @@
                             <div class="col-md-12">  </div>
                         </div>
                         <div class="row form-group">
-                            <label for="number" class="col-md-6 control-label requiredField">
-                                Number
-                            </label>
-                            <label for="number" class="col-md-6 control-label requiredField">
-                                <input type="text" name="number" ng-model="topUpInfo.number" class="form-control" placeholder='eg: 0171XXXXXXX'> 
-                            </label>
+                            <div class="col-md-5">
+                                <label for="number" class="col-md-6 control-label requiredField label_custom">
+                                    Number
+                                </label>
+                            </div>
+                            <div class="col-md-7">
+                                <label for="number" class="control-label requiredField label_custom">
+                                    <input type="text" name="number" ng-model="topUpInfo.number" class="form-control" placeholder='eg: 0171XXXXXXX'> 
+                                </label>
+                            </div>
                         </div>
                         <div class="row form-group">
-                            <label for="amount" class="col-md-6 control-label requiredField">
-                                Amount
-                            </label>
-                            <label for="amount" class="col-md-6 control-label requiredField">
-                                <input type="text" name="amount" ng-model="topUpInfo.amount" class="form-control"  placeholder='eg: 100'>  
-                            </label>
+                            <div class="col-md-5">
+                                <label for="amount" class="col-md-6 control-label requiredField label_custom">
+                                    Amount
+                                </label>
+                            </div>
+                            <div class="col-md-7">
+                                <label for="amount" class="control-label requiredField label_custom">
+                                    <input type="text" name="amount" ng-model="topUpInfo.amount" class="form-control"  placeholder='eg: 100'>  
+                                </label>
+                            </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-md-6">
-                                <label for="type" class="col-md-6 control-label requiredField">
+                            <div class="col-md-5">
+                                <label for="type" class="col-md-6 control-label requiredField label_custom">
                                     Type
                                 </label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <select  for="type"  ng-model="topUpInfo.topupType" class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
                                     <option class="form-control" value="">Please select</option>
                                     <option class=form-control ng-repeat="topupType in topupTypeList" value="{{topupType.id}}">{{topupType.title}}</option>
@@ -76,20 +93,39 @@
                             </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-md-6">
-                                <label for="operator" class="col-md-6 control-label requiredField">
+                            <div class="col-md-5">
+                                <label for="operator" class="col-md-6 control-label requiredField label_custom">
                                     Operator
                                 </label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <select for="operator" ng-model="topUpInfo.topupOperatorId" class=" form-control control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
                                     <option class="form-control" value="">Please select</option>
                                     <option class=form-control ng-repeat="topupOperator in topupOperatorList" value="{{topupOperator.id}}">{{topupOperator.title}}</option>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <a class="add_row" style="float: right;"><img src="<?php echo base_url(); ?>resources/images/add.png"></a>
+                                <div class="dyn_height">
+                                    <table class="transaction_list table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Number</th>
+                                                <th>Amount</th>
+                                                <th>Package</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="submit_update_api" class="col-md-6 control-label requiredField">
+                            <label for="submit_update_api" class="col-md-6 control-label requiredField label_custom">
 
                             </label>
                             <div class ="col-md-3 pull-right">
@@ -127,3 +163,4 @@
         </div> 
     </div>
 </div>
+
