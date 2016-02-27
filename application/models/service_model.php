@@ -5,6 +5,20 @@ class Service_model extends Ion_auth_model {
     public function __construct() {
         parent::__construct();
     }
+    
+    /*
+     * this method will return assigned services of a user
+     * @param  $user_id  user id
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_user_assigned_services($user_id) {
+        $this->db->where($this->tables['users_services'] . '.user_id', $user_id);
+        $this->db->where($this->tables['users_services'] . '.status', 1);
+        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*,' . $this->tables['users_services'] . '.*,' . $this->tables['users_services'] . '.id as user_service_id')
+                        ->from($this->tables['users_services'])
+                        ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['users_services'] . '.service_id')
+                        ->get();
+    }
 
     public function get_all_services() {
         return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')

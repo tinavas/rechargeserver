@@ -18,7 +18,50 @@ class Reseller_model extends Ion_auth_model {
                         ->join($this->tables['groups'], $this->tables['groups'] . '.id=' . $this->tables['users_groups'] . '.group_id')
                         ->get();
     }
+    
+    /*
+     * This method will return user info
+     * @param $user_id, user id
+     * @return user info
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_user_info($user_id) {
+        $this->db->where($this->tables['users'] . '.id', $user_id);
+        return $this->db->select($this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.*')
+                        ->from($this->tables['users'])
+                        ->get();
+    }
+    
+    /*
+     * This method will retun user group info
+     * @param $user_id, user id
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_user_group_info($user_id) {
+        $this->db->where($this->tables['users_groups'] . '.user_id', $user_id);
+        return $this->db->select($this->tables['users_groups'] . '.*, ' . $this->tables['groups'] . '.*')
+                    ->from($this->tables['users_groups'])     
+                    ->join($this->tables['groups'], $this->tables['users_groups'] . '.' . $this->join['groups'] . '=' . $this->tables['groups'] . '.id')
+                    ->get();
+    }
+    
+    /*
+     * This method will return child user id list of a parents
+     * @param $parent_user_id_array, array of parent user id
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_child_user_id_list($parent_user_id_array = array()) {
+        $this->db->where_in($this->tables['relations'] . '.parent_user_id', $parent_user_id_array);
+        return $this->db->select($this->tables['relations'] . '.child_user_id')
+                        ->from($this->tables['relations'])
+                        ->get();
+    }
 
+    /*
+     * This method will return reseller list of a user
+     * @param $user_id, user id
+     * @author nazmul hasan on 27th february 2016
+     */
     public function get_reseller_list($user_id) {
         $this->db->where($this->tables['relations'] . '.parent_user_id', $user_id);
         return $this->db->select($this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.*')
@@ -48,12 +91,7 @@ class Reseller_model extends Ion_auth_model {
                         ->get();
     }
 
-    public function get_child_user_id_list($parent_id_array = array()) {
-        $this->db->where_in($this->tables['relations'] . '.parent_user_id', $parent_id_array);
-        return $this->db->select($this->tables['relations'] . '.child_user_id')
-                        ->from($this->tables['relations'])
-                        ->get();
-    }
+    
 
     public function update_reseller_rates($new_rate_list) {
         //try to use update batch instead of loop
@@ -92,12 +130,12 @@ class Reseller_model extends Ion_auth_model {
      * @return array
      * @author Rashida Sultana
      * */
-    public function get_users_groups($user_id) {
+    /*public function get_users_groups($user_id) {
         return $this->db->select($this->tables['users_groups'] . '.' . $this->join['groups'] . ' as id, ' . $this->tables['groups'] . '.name, ' . $this->tables['groups'] . '.description')
                         ->where($this->tables['users_groups'] . '.user_id', $user_id)
                         ->join($this->tables['groups'], $this->tables['users_groups'] . '.' . $this->join['groups'] . '=' . $this->tables['groups'] . '.id')
                         ->get($this->tables['users_groups']);
-    }
+    }*/
 
     public function get_users_service_info($user_ids = array(), $service_id) {
         $this->db->order_by("user_id", "asc");

@@ -57,8 +57,7 @@
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl' ?>">DBBL</a></li>						
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/mcash' ?>">M-Cash</a></li>						
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/ucash' ?>">U-Cash</a></li>	
-                    </div>
-                    <li><a href="#">Global Topup</a></li>					
+                    </div>                    				
                 </ul>
             </li>
 

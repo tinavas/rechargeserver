@@ -47,7 +47,7 @@ class Reseller extends Role_Controller {
     }
     
   
-    function get_reseller_list($parent_user_id = 0) {
+    /*function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
         $this->load->library('reseller_library');
         $allow_user_create = FALSE;
@@ -83,13 +83,71 @@ class Reseller extends Role_Controller {
         $this->data['group'] = $group;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/index', $this->data);
+    }*/
+    
+    /*
+     * This method will show reseller list of a user
+     * @param $parent_user_id, user id
+     * @author nazmul hasan 27th february 2016
+     */
+    function get_reseller_list($parent_user_id = 0) {
+        $this->data['message'] = "";
+        $this->load->library('reseller_library');
+        $allow_user_create = FALSE;
+        $allow_user_edit = FALSE;
+        $user_id = $this->session->userdata('user_id');
+        $group = $this->session->userdata('group');
+        if ($parent_user_id == 0 || $parent_user_id == $user_id) {
+            $maximum_children = 0;
+            $user_info_array = $this->reseller_library->get_user_info($user_id)->result_array();
+            if(!empty($user_info_array))
+            {
+                $maximum_children = $user_info_array[0]['max_user_no'];
+            }            
+            $reseller_list = array();
+            $current_children = 0;
+            if ($maximum_children > 0) {
+                $reseller_list = $this->reseller_library->get_reseller_list($user_id);
+                $current_children = count($reseller_list);
+            }
+            if ($current_children < $maximum_children) {
+                $allow_user_create = TRUE;
+            }
+            $allow_user_edit = TRUE;
+            $user_group_name = $group;
+        } else {
+            $successor_id_list = $this->reseller_library->get_successor_id_list($user_id);
+            if(!in_array($parent_user_id, $successor_id_list))
+            {
+                //you dont have permission to view this user info
+                //load a page to display error message
+            }
+            $reseller_list = $this->reseller_library->get_reseller_list($parent_user_id);
+            $user_group_info_array = $this->reseller_model->get_user_group_info($parent_user_id)->result_array();
+            if (!empty($user_group_info_array)) {
+                $user_group_name = $user_group_info_array[0]['name'];
+            }
+        }
+        $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
+        $title = $successor_group_title[$user_group_name];
+        $this->data['allow_user_create'] = $allow_user_create;
+        $this->data['allow_user_edit'] = $allow_user_edit;
+        $this->data['reseller_list'] = json_encode($reseller_list);
+        $this->data['title'] = $title;
+        $this->data['group'] = $group;
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/index', $this->data);
     }
 
+    /*
+     * This method will return assigned service list of a user
+     * @author nazmul hasan on 27th february 2016
+     */
     function get_user_service_list() {
         $user_id = $this->session->userdata('user_id');
         $response = array();
         $topup_service_allow_flag = FALSE;
-        $service_list = $this->service_model->get_user_services($user_id)->result_array();
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
         if (!empty($service_list)) {
             foreach ($service_list as $service) {
                 if ($service['service_id'] == SERVICE_TYPE_ID_TOPUP_GP || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_ROBI || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_BANGLALINK || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_BANGLALINK || $service['service_id'] == SERVICE_TYPE_ID_TOPUP_AIRTEL) {

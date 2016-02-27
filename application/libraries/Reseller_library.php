@@ -113,7 +113,12 @@ class Reseller_library {
         return $data;
     }
 
-    public function get_reseller_list($user_id, $filter_data = array()) {
+    /*
+     * This method will return reseller list of a user
+     * @param $user_id, user id
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_reseller_list($user_id) {
         $reseller_list = array();
         $user_id_list = array();
         $user_id_balance_map = array();
@@ -140,6 +145,35 @@ class Reseller_library {
         }
         return $reseller_list;
     }
+    
+    /*
+     * $this method will return successor user id list of a user
+     * @param $user_id, user id
+     * @author nazmul hasan on 27th february 2016
+     */
+    public function get_successor_id_list($user_id = 0) {
+        $successor_id_list = array();
+        $flag = true;
+        $parent_id_list = array($user_id);
+        while ($flag) {
+            $child_id_list_array = $this->reseller_model->get_child_user_id_list($parent_id_list)->result_array();
+            $parent_id_list = array();
+            foreach ($child_id_list_array as $child_info) {
+                $child_user_id = $child_info['child_user_id'];
+                if (!in_array($child_user_id, $successor_id_list)) {
+                    $successor_id_list[] = $child_user_id;
+                }
+                if (!in_array($child_user_id, $parent_id_list)) {
+                    $parent_id_list[] = $child_user_id;
+                }
+            }
+            if (empty($parent_id_list)) {
+                $flag = false;
+            }
+        }
+        return $successor_id_list;
+    }
+
 
     
 

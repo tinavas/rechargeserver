@@ -75,12 +75,12 @@ class Transaction_library {
      * @author nazmul hasan on 24th february 2016
      */
 
-    public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0, $where = array()) {
+    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $where = array()) {
         if(!empty($where))
         {
             $this->transaction_model->where($where);
         }
-        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $limit, $offset, $from_date, $to_date)->result_array();
+        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $status_id_list, $from_date, $to_date, $limit, $offset)->result_array();
         $this->load->library('date_utils');
         $transation_info_list = array();
         if (!empty($transaction_list)) {

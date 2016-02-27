@@ -163,7 +163,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $to_date, end date
      * @author nazmul hasan on 24th February 2016
      */
-    public function get_user_transaction_list($service_id_list = array(), $limit = 0, $offset = 0, $from_date = 0, $to_date = 0) {
+    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -183,6 +183,9 @@ class Transaction_model extends Ion_auth_model {
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
+        }
+        if (!empty($status_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.status_id', $status_id_list);
         }
         $this->db->order_by('id', 'desc');
         return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title')
