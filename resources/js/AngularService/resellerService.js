@@ -25,7 +25,7 @@ angular.module('services.Reseller', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/reseller/update_reseller',
+                    url: $location.path() + $app_name + '/reseller/update_reseller/'+resellerInfo.user_id,
                     data: {
                         resellerInfo: resellerInfo
                     }

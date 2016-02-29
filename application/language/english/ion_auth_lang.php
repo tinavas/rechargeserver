@@ -64,7 +64,7 @@ $lang['email_activation_subject']            = 'Account Activation';
 $lang['transaction_successful']                     = 'Your request is processing. Thank you.';
 $lang['transaction_unsuccessful']                   = 'Sorry! Unable to process your request. Please try again later.';
 $lang['error_webservice_unavailable']               = 'Server to process your request is unavailable. Please try again later.';
-$lang['error_insaficient_balance']                  = 'Sorry! Insufficient Balance !';
+$lang['error_insufficient_balance']                 = 'Sorry! Insufficient Balance !';
 $lang['error_no_transaction_id']                    = 'Sorry!! There was an error while processing your transaction.';
 $lang['error_no_result_event']                      = 'Sorry!!! There was an error while processing your transaction.';
 

@@ -149,10 +149,15 @@ class Reseller_library {
     /*
      * $this method will return successor user id list of a user
      * @param $user_id, user id
+     * @param $include_parent include parent
      * @author nazmul hasan on 27th february 2016
      */
-    public function get_successor_id_list($user_id = 0) {
+    public function get_successor_id_list($user_id = 0, $include_parent = FALSE) {
         $successor_id_list = array();
+        if($include_parent)
+        {
+            $successor_id_list[] = $user_id;
+        }
         $flag = true;
         $parent_id_list = array($user_id);
         while ($flag) {
@@ -173,6 +178,47 @@ class Reseller_library {
         }
         return $successor_id_list;
     }
+    
+    /*
+     * This method will return parent user id of a user
+     * @param $user_id user id
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function get_parent_user_id($user_id = 0) {
+        if ($user_id == 0) {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $parent_user_id = 0;
+        $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
+        if (!empty($parent_info_array)) {
+            $parent_info = $parent_info_array[0];
+            $parent_user_id = $parent_info['parent_user_id'];
+        }
+        return $parent_user_id;
+    }
+    
+    /*
+     * This method will return predecessor user id list of a user
+     * @param $user_id user id
+     * @author nazmul hasan on 29th february 2016
+     */
+    /*public function get_predecessor_id_list($user_id = 0) {
+        $user_id_list = array();
+        $flag = true;
+        while ($flag) {
+            $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
+            foreach ($parent_info_array as $parent_info) {
+                $user_id = $parent_info['parent_user_id'];
+                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
+                    $user_id_list[] = $parent_info['parent_user_id'];
+                }
+            }
+            if (empty($parent_info_array)) {
+                $flag = false;
+            }
+        }
+        return $user_id_list;
+    }*/
 
 
     
@@ -196,18 +242,7 @@ class Reseller_library {
         return 0;
     }
 
-    public function get_parent_user_id($user_id = 0) {
-        if ($user_id == 0) {
-            $user_id = $this->session->userdata('user_id');
-        }
-        $parent_user_id = 0;
-        $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
-        if (!empty($parent_info_array)) {
-            $parent_info = $parent_info_array[0];
-            $parent_user_id = $parent_info['parent_user_id'];
-        }
-        return $parent_user_id;
-    }
+    
 
     /**
      * this method will return all parents list of a user

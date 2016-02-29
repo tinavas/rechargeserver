@@ -45,6 +45,17 @@ class Reseller_model extends Ion_auth_model {
                     ->get();
     }
     
+    /**
+     * this method return parent user id of a user
+     * @param $user_id user id
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function get_parent_user_id($user_id) {
+        $this->db->where($this->tables['relations'] . '.child_user_id', $user_id);
+        return $this->db->select($this->tables['relations'] . '.parent_user_id')
+                        ->from($this->tables['relations'])
+                        ->get();
+    }
     /*
      * This method will return child user id list of a parents
      * @param $parent_user_id_array, array of parent user id
@@ -76,7 +87,6 @@ class Reseller_model extends Ion_auth_model {
      * @return user info
      * @author nazmul hasan on 30th Janaury 2016
      */
-
     public function get_reseller_info($user_id) {
         $this->db->where($this->tables['users'] . '.id', $user_id);
         return $this->db->select($this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.*')
@@ -86,7 +96,7 @@ class Reseller_model extends Ion_auth_model {
 
     public function get_profile_info($user_id) {
         $this->db->where($this->tables['users'] . '.id', $user_id);
-        return $this->db->select('id as user_id,username,first_name,last_name,email,mobile,max_user_no,note')
+        return $this->db->select('id as user_id, username, first_name, last_name, email, mobile, max_user_no, note')
                         ->from($this->tables['users'])
                         ->get();
     }
@@ -100,18 +110,6 @@ class Reseller_model extends Ion_auth_model {
             $this->db->update($this->tables['users_services'], $new_rate_info);
         }
         return True;
-    }
-
-    /**
-     * this method return parent user id of a reseller
-     * @user_id user id
-      @author Rashida on 31 jan 2016
-     */
-    public function get_parent_user_id($user_id) {
-        $this->db->where($this->tables['relations'] . '.child_user_id', $user_id);
-        return $this->db->select($this->tables['relations'] . '.parent_user_id')
-                        ->from($this->tables['relations'])
-                        ->get();
     }
 
     public function update_reseller_services($child_id_list, $reseller_inactive_service_List = array()) {

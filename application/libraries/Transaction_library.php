@@ -48,21 +48,68 @@ class Transaction_library {
      * @author nazmul hasan on 24th February 2016
      */
     public function add_transaction($api_key, $transaction_data) {
-        //$service_used_amount = $transaction_data['amount'];
-        //$service_id = $transaction_data['service_id'];
-        //$user_id = $transaction_data['user_id'];
-        //$this->load->library('reseller_library');
-        //$parent_id_list = $this->reseller_library->get_user_parent_id_list($user_id);
-        $users_profit_list = array();
-        /*if (!empty($parent_id_list)) {
-            $users_profit_list = $this->calculate_user_profit($parent_id_list, $service_id, $service_used_amount, $user_id);
-        }
-        else
-        {
-            $this->transaction_model->set_error('error_user_rate_configuration');
-            return FALSE;
-        }*/
+        $amount = $transaction_data['amount'];
+        $service_id = $transaction_data['service_id'];
+        $user_id = $transaction_data['user_id'];
+        $users_profit_list = $this->calculate_transaction_profit_chain($user_id, $service_id, $amount);
         return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
+    }
+    /*
+     * This method will calculate profit chain from user to top parent
+     * @param $user_id user id
+     * @param $service_id service id
+     * @param $amount amount
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function calculate_transaction_profit_chain($user_id, $service_id, $amount) {
+        $parent_child_id_map = array();
+        $user_id_list = array($user_id);
+        $flag = TRUE;
+        $child_user_id = $user_id;
+        while ($flag) {
+            $parent_info_array = $this->reseller_model->get_parent_user_id($child_user_id)->result_array();
+            foreach ($parent_info_array as $parent_info) {
+                $parent_user_id = $parent_info['parent_user_id'];
+                $parent_child_id_map[$parent_user_id] = $child_user_id;
+                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
+                    $user_id_list[] = $parent_user_id;
+                }
+                $child_user_id = $parent_user_id;
+            }
+            if (empty($parent_info_array)) {
+                $flag = false;
+            }
+        }
+        $user_id_service_info_map = array();
+        $user_service_list = $this->reseller_library->get_users_service_info($user_id_list, $service_id)->result_array();
+        foreach($user_service_list as $service_info)
+        {
+            $user_id_service_info_map[$service_info['user_id']] = $service_info;
+        }
+        $user_profit_list = array();
+        foreach($user_service_list as $service_info)
+        {
+            $user_profit_info = array(
+                'user_id' => $service_info['user_id'],
+                'reference_id' => $user_id,
+                'service_id' => $service_id,
+                'rate' => $amount,
+                'status_id' => TRANSACTION_STATUS_ID_PENDING
+            );
+            $commission = 0;
+            //if(!array_key_exists($service_info['user_id'], $child_parent_id_map) && $service_info['user_id'] == $user_id)
+            if($service_info['user_id'] == $user_id)
+            {
+                $commission = $amount/$service_info['rate']*$service_info['commission'];
+            }
+            else
+            {                
+                $commission = $amount/$service_info['rate']*($service_info['commission'] - $user_id_service_info_map[$parent_child_id_map[$service_info['user_id']]]['commission']);
+            }
+            $user_profit_info['amount'] = $commission;
+            $user_profit_list[] = $user_profit_info;
+        }  
+        return $user_profit_list;
     }
     /* 
      * this method return user transaction list
@@ -111,7 +158,7 @@ class Transaction_library {
      * return users profit list
      *  */
 
-    public function calculate_user_profit($user_id_list = array(), $service_id, $service_used_amount, $user_id) {
+    /*public function calculate_user_profit($user_id_list = array(), $service_id, $service_used_amount, $user_id) {
         $user_profit_list = array();
         $user_service_list = $this->reseller_library->get_users_service_info($user_id_list, $service_id)->result_array();
         if (!empty($user_service_list)) {
@@ -133,7 +180,7 @@ class Transaction_library {
             }
         }
         return $user_profit_list;
-    }
+    }*/
 
     /* this method return all transaction list
      * @param $offset

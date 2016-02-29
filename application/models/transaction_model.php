@@ -71,13 +71,13 @@ class Transaction_model extends Ion_auth_model {
         {
             $user_current_balance = $user_current_balance_array[0]['current_balance'];
             if ($amount > $user_current_balance) {
-                $this->set_message('error_insaficient_balance');
+                $this->set_error('error_insufficient_balance');
                 return FALSE;
             }
         }
         else
         {
-            $this->set_message('error_insaficient_balance');
+            $this->set_error('error_insufficient_balance');
             return FALSE;
         }
         
@@ -123,27 +123,33 @@ class Transaction_model extends Ion_auth_model {
                             $this->db->insert($this->tables['user_payments'], $payment_data);
                             $insert_id = $this->db->insert_id();
                             if (isset($insert_id)) {
-                                //$this->db->insert_batch($this->tables['user_profits'], $users_profit_data);
+                                $user_profit_list = array();
+                                foreach($users_profit_data as $user_profit_info)
+                                {
+                                    $user_profit_info['transaction_id'] = $transaction_id;
+                                    $user_profit_list[] = $user_profit_info; 
+                                }
+                                $this->db->insert_batch($this->tables['user_profits'], $user_profit_list);
                                 $this->db->trans_commit();
                                 $this->set_message('transaction_successful');
                                 return TRUE;
                             }
                         }
                         $this->db->trans_rollback();
-                        $this->set_message('transaction_unsuccessful');
+                        $this->set_error('transaction_unsuccessful');
                         return FALSE;
                     }
                 }
                 else
                 {
-                    $this->set_message('error_no_result_event');
+                    $this->set_error('error_no_result_event');
                     return FALSE;
                 }
             }
             else
             {
                 //set message based on response code
-                $this->set_message('error_code_'.$response_code);
+                $this->set_error('error_code_'.$response_code);
                 return FALSE;
             }
         }

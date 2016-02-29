@@ -791,15 +791,27 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function add_relation($parent_id, $child_id)
+    /*
+     * This method will add a relation between parent and child users
+     * @param $parent_user_id, parent user id
+     * @param $child_user_id, child user id
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function add_relation($parent_user_id, $child_user_id)
     {
         $relation_data = array(
-            'parent_user_id' => $parent_id,
-            'child_user_id' => $child_id
+            'parent_user_id' => $parent_user_id,
+            'child_user_id' => $child_user_id
         );
         $this->db->insert($this->tables['relations'], $relation_data);
     }
     
+    /*
+     * This method will add user service data
+     * @param $user_id, user id
+     * @param $user_service_list, user service list
+     * @author nazmul hasan on 29th february 2016
+     */
     public function add_user_services($user_id, $user_service_list)
     {
         $service_list = array();
@@ -811,13 +823,35 @@ class Ion_auth_model extends CI_Model {
         $this->db->insert_batch($this->tables['users_services'], $service_list); 
     }
     
-    public function update_user_service($user_id, $user_service_list)
+    /*
+     * $this method will update user services
+     * @param $user_id user id
+     * @param $user_service_list user service list
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function update_user_services($user_id, $user_service_list)
     {
         foreach($user_service_list as $service_info)
         {
             $this->db->where('user_id', $user_id);
             $this->db->where('service_id', $service_info['service_id']);
             $this->db->update($this->tables['users_services'], $service_info);
+        }
+    }
+    
+    /*
+     * This method will update service list of users
+     * @param $child_id_list user id list
+     * @param $inactive_service_list service list to be inactivated
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function update_inactive_services($child_id_list, $inactive_service_list = array()) {
+        foreach ($child_id_list as $child_id) {
+            foreach ($inactive_service_list as $service_id) {
+                $this->db->where($this->tables['users_services'] . '.user_id', $child_id);
+                $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
+                $this->db->update($this->tables['users_services'], array('status' => 0));
+            }
         }
     }
 
@@ -1360,7 +1394,8 @@ class Ion_auth_model extends CI_Model {
 
         $this->db->trans_begin();
         
-        $this->update_user_service($id, $data['user_service_list']);
+        $this->update_user_services($id, $data['user_service_list']);
+        $this->update_inactive_services($data['child_id_list'], $data['inactive_service_list']);
         
         if (array_key_exists($this->identity_column, $data) && $this->identity_check($data[$this->identity_column]) && $user->{$this->identity_column} !== $data[$this->identity_column]) {
             $this->db->trans_rollback();

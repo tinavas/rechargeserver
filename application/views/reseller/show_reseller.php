@@ -68,6 +68,6 @@
             <ul class="profileCustomResellerList" ng-repeat="serviceInfo in serviceList">
                 <li>{{serviceInfo.title}}</li>
             </ul>
-        </div>
+        </div>        
     </div>
 </div>

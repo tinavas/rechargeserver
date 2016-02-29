@@ -10,6 +10,7 @@ class Transaction extends Role_Controller {
         $this->load->library('form_validation');
         $this->load->library('transaction_library');
         $this->load->library('utils');
+        $this->load->model('service_model');
         $this->load->config('ion_auth', TRUE);
         $this->lang->load('auth');
         $this->load->helper('language');
@@ -28,9 +29,9 @@ class Transaction extends Role_Controller {
      * This method will process bkash transaction
      * @author nazmul hasan on 24th february 2016
      */
-    public function bkash() {
-        $response = array();
+    public function bkash() {        
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "bkashInfo") != FALSE) {
@@ -83,10 +84,30 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
+        //checking whether user has permission for bkash transaction
+        $user_id = $this->session->userdata('user_id');
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            //if in future there is new service under bkash then update the logic here
+            if($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN)
+            {
+                $permission_exists = TRUE;
+            }
+        }
+        if(!$permission_exists)
+        {
+            //you are not allowed to use bkash transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use bkash service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN),array(),0 ,0, INITIAL_LIMIT, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/bkash/index', $this->data);

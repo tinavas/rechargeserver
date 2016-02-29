@@ -19,18 +19,11 @@ class Service_model extends Ion_auth_model {
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['users_services'] . '.service_id')
                         ->get();
     }
-
-    public function get_all_services() {
-        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
-                        ->from($this->tables['services'])
-                        ->get();
-    }
-
-    /**
-     * this method will retun a user services
+    
+    /*
+     * this method will retun entire service list of a user assigned or unassigned
      * @param  $user_id  user id
-     * @author Rashida on 31 jan 2016
-     * 
+     * @author nazmul hasan on 28th february 2016
      */
     public function get_user_all_services($user_id) {
         $this->db->where($this->tables['users_services'] . '.user_id', $user_id);
@@ -39,7 +32,30 @@ class Service_model extends Ion_auth_model {
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['users_services'] . '.service_id')
                         ->get();
     }
+    
+    /*
+     * This method will update user rates
+     * @param $new_rate_list, new rate list
+     * @author nazmul hasan on 29th february 2016
+     */
+    public function update_user_rates($new_rate_list) {
+        //try to use update batch instead of loop
+        foreach ($new_rate_list as $new_rate_info) {
+            $this->db->where($this->tables['users_services'] . '.id', $new_rate_info['id']);
+            $this->db->update($this->tables['users_services'], $new_rate_info);
+        }
+        return TRUE;
+    }
+    
+    
 
+    public function get_all_services() {
+        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
+                        ->from($this->tables['services'])
+                        ->get();
+    }
+
+    
     /**
      * this method will retun a user services
      * @param  $user_id  user id

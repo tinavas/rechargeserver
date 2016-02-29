@@ -11,6 +11,12 @@ include './constants/superadmin/configuration.php';
 include './constants/superadmin/app_configaration.php';
 include './constants/superadmin/admin_templates.php';
 
+define('GROUP_ADMIN', 'admin');
+define('GROUP_TYPE1', 'type1');
+define('GROUP_TYPE2', 'type2');
+define('GROUP_TYPE3', 'type3');
+define('GROUP_TYPE4', 'type4');
+
 define('ADMIN', 'admin');
 define('TYPE1', 'type1');
 define('TYPE2', 'type2');

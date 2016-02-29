@@ -40,7 +40,7 @@
             $('#common_modal').modal('show');
             return false;
         }
-        angular.element($('#submit_create_reseller')).scope().updateReseller(function (data) {
+        angular.element($('#submit_update_reseller')).scope().updateReseller(function (data) {
 
             $("#content").html(data.message);
             $('#common_modal').modal('show');
@@ -125,7 +125,7 @@
                 </table>
                 <p class="help-block line">&nbsp;</p>
                 <?php if ($allow_user_edit !== FALSE) { ?> 
-                    <input id="submit_create_reseller" name="submit_update_reseller" class="btn btn-primary btn-sm" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Reseller"/>
+                    <input id="submit_update_reseller" name="submit_update_reseller" class="btn btn-primary btn-sm" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Reseller"/>
                 <?php } ?>
             </ng-from>
         </div> 
