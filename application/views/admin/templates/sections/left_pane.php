@@ -50,13 +50,13 @@
             </li>
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
-                    <li><a href="<?php echo base_url() . 'history/all' ?>">All History</a></li>
-                    <li  ng-if="topup_service_allow_flag != false"> <a href ="<?php echo base_url() . 'history/topup' ?>">Topup</a></li>						
+                    <li><a href="<?php echo base_url() . 'history/all_transactions' ?>">All History</a></li>
+                    <li  ng-if="topup_service_allow_flag != false"> <a href ="<?php echo base_url() . 'history/topup_transactions' ?>">Topup</a></li>						
                     <div ng-repeat="service in serviceList">
-                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/bkash' ?>">bKash</a></li>						
-                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl' ?>">DBBL</a></li>						
-                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/mcash' ?>">M-Cash</a></li>						
-                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/ucash' ?>">U-Cash</a></li>	
+                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/bkash_transactions' ?>">bKash</a></li>						
+                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl_transactions' ?>">DBBL</a></li>						
+                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/mcash_transactions' ?>">M-Cash</a></li>						
+                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/ucash_transactions' ?>">U-Cash</a></li>	
                     </div>                    				
                 </ul>
             </li>

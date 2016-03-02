@@ -114,10 +114,10 @@ class Transaction_library {
     /* 
      * this method return user transaction list
      * @param $service_id_list, service id list of transactions
+     * @param $from_date, start date in unix format
+     * @param $to_date, end date in unix format
      * @param $limit, limit
      * @param $offset, offset
-     * @param $from_date, start date
-     * @param $to_date, end date
      * @param @where, where clause
      * @author nazmul hasan on 24th february 2016
      */

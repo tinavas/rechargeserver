@@ -51,12 +51,13 @@ class Utils {
             RETURN True;
         }
     }
-    /**
-     * this method return a unique random 32 bit string
-     * 
+    /*
+     * This method will retunr a random string
+     * @param $length random string length
+     * @author nazmul hasan on 2nd March 2016
      */
-    public function get_transaction_id(){
-        return random_string('unique', 32);
+    public function get_transaction_id($length = TRANSACTION_ID_DEFAULT_LENGTH){
+        return random_string('unique', $length);
     }
    
 }

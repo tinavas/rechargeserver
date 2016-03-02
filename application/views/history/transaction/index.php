@@ -14,14 +14,14 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-        <li>Type</li>
+<!--        <li>Type</li>
         <li><select id="type" name="type" class="form-control input-xs">
                 <option value="">--Any--</option>
                 <option value="transfer">Payment</option>
                 <option value="return">Return</option>
                 <option value="canceled">Canceled</option>
             </select>
-        </li>
+        </li>-->
         <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_receive_history()" class="btn btn-xs btn-default"></li>
     </ul>
     <table class="table table-striped table-hover" ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>)">
@@ -50,7 +50,7 @@
             </tr>
         </tfoot>
     </table>
-    <div class="form-group">
+<!--    <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>
@@ -81,7 +81,7 @@
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
-    </ul>
+    </ul>-->
 </div>
 <script type="text/javascript">
     $(function () {

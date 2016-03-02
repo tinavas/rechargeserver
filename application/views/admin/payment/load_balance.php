@@ -1,7 +1,8 @@
 <script>
     function create_payment(paymentInfo) {
         if (typeof paymentInfo.amount == "undefined" || paymentInfo.amount.length == 0) {
-            alert("Please give an amount !");
+            $("#content").html("Please assign amount !");
+            $('#common_modal').modal('show');
             return;
         }
         angular.element($('#submit_create_payment')).scope().loadBalance(function (data) {

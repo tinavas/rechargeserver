@@ -163,10 +163,10 @@ class Transaction_model extends Ion_auth_model {
     /*
      * This method will return user transaction list
      * @param $service_id_list, service id list of transactions
+     * @param $from_date, start date in unix format
+     * @param $to_date, end date in unix format
      * @param $limit, limit
      * @param $offset, offset
-     * @param $from_date, start date
-     * @param $to_date, end date
      * @author nazmul hasan on 24th February 2016
      */
     public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {

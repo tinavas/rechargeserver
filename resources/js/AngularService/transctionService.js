@@ -57,7 +57,7 @@ angular.module('services.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/history/all',
+                    url: $location.path() + $app_name + '/history/all_transactions',
                     data: {
                         fromDate: startDate,
                         toDate : endDate
@@ -109,7 +109,7 @@ angular.module('services.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/history/all',
+                    url: $location.path() + $app_name + '/history/all_transactions',
                     data: {
                         offset: offset
                     }

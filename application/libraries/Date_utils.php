@@ -59,6 +59,12 @@ class Date_utils {
         return  $timestamp + 86400;
     }
 
+    /*
+     * This method will return unix time of start of a date
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 2nd March 2016
+     */
     public function server_start_unix_time_of_date($date, $country_code = 'BD') {
         $date_start_unix = human_to_unix($date . ' 00:00 AM');
 
@@ -69,7 +75,13 @@ class Date_utils {
 
         return $date_start_unix - $offset;
     }
-
+    
+    /*
+     * This method will return unix time of end of a date
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 2nd March 2016
+     */
     public function server_end_unix_time_of_date($date, $country_code = 'BD') {
         $date_start_unix = human_to_unix($date . ' 00:00 AM');
 
