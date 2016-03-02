@@ -70,4 +70,7 @@
             </ul>
         </div>        
     </div>
+    <div class="row col-md-12">
+        <a href="<?php echo base_url() . 'reseller/update_user_profile/'; ?>">Update Profile</a>
+    </div>
 </div>

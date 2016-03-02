@@ -30,6 +30,7 @@ class Transaction extends Role_Controller {
      * @author nazmul hasan on 24th february 2016
      */
     public function bkash() {        
+        $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
@@ -62,8 +63,7 @@ class Transaction extends Role_Controller {
                 $response["message"] = "Please Enter a Valid Cell Number !!";
                 echo json_encode($response);
                 return;
-            }
-            $user_id = $this->session->userdata('user_id');
+            }            
             $api_key = API_KEY_BKASH_CASHIN;
             $description = "test";
             $transaction_id = "";
@@ -85,7 +85,6 @@ class Transaction extends Role_Controller {
             return;
         }
         //checking whether user has permission for bkash transaction
-        $user_id = $this->session->userdata('user_id');
         $permission_exists = FALSE;
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
         foreach($service_list as $service_info)
@@ -112,10 +111,14 @@ class Transaction extends Role_Controller {
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/bkash/index', $this->data);
     }
-
-    public function dbbl() {
-        $response = array();
+    
+    /*
+     * This method will process dbbl transaction
+     * @author nazmul hasan on 2nd March 2016
+     */
+    public function dbbl() {        
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "dbblInfo")) {
@@ -168,6 +171,26 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
+        //checking whether user has permission for dbbl transaction
+        $user_id = $this->session->userdata('user_id');
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            //if in future there is new service under dbbl then update the logic here
+            if($service_info['service_id'] == SERVICE_TYPE_ID_DBBL_CASHIN)
+            {
+                $permission_exists = TRUE;
+            }
+        }
+        if(!$permission_exists)
+        {
+            //you are not allowed to use dbbl transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use dbbl service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
@@ -177,10 +200,14 @@ class Transaction extends Role_Controller {
         $this->template->load(null, 'transaction/dbbl/index', $this->data);
     }
 
+    /*
+     * This method will process mcash transaction
+     * @author nazmul hasan on 2nd March 2016
+     */
     public function mcash() {
-
-        $response = array();
+        $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "mCashInfo")) {
@@ -211,8 +238,7 @@ class Transaction extends Role_Controller {
                 $response["message"] = "Please Enter a Valid Cell Number !!";
                 echo json_encode($response);
                 return;
-            }
-            $user_id = $this->session->userdata('user_id');
+            }            
             $api_key = API_KEY_MKASH_CASHIN;
             $description = "test";
             $transaction_id = "";
@@ -233,6 +259,25 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
+        //checking whether user has permission for mcash transaction
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            //if in future there is new service under mcash then update the logic here
+            if($service_info['service_id'] == SERVICE_TYPE_ID_MCASH_CASHIN)
+            {
+                $permission_exists = TRUE;
+            }
+        }
+        if(!$permission_exists)
+        {
+            //you are not allowed to use mcash transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use mcash service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
@@ -242,9 +287,14 @@ class Transaction extends Role_Controller {
         $this->template->load(null, 'transaction/mcash/index', $this->data);
     }
 
+    /*
+     * This method will process ucash transaction
+     * @author nazmul hasan on 2nd March 2016
+     */
     public function ucash() {
-        $response = array();
+        $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "uCashInfo")) {
@@ -275,8 +325,7 @@ class Transaction extends Role_Controller {
                 $response["message"] = "Please Enter a Valid Cell Number !!";
                 echo json_encode($response);
                 return;
-            }
-            $user_id = $this->session->userdata('user_id');
+            }            
             $api_key = API_KEY_UKASH_CASHIN;
             $description = "test";
             $transaction_id = "";
@@ -298,7 +347,25 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
-
+        //checking whether user has permission for ucash transaction
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            //if in future there is new service under ucash then update the logic here
+            if($service_info['service_id'] == SERVICE_TYPE_ID_UCASH_CASHIN)
+            {
+                $permission_exists = TRUE;
+            }
+        }
+        if(!$permission_exists)
+        {
+            //you are not allowed to use ucash transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use ucash service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
@@ -308,10 +375,14 @@ class Transaction extends Role_Controller {
         $this->template->load(null, 'transaction/ucash/index', $this->data);
     }
 
+    /*
+     * This method will process topup transaction
+     * @author nazmul hasan on 2nd March 2016
+     */
     public function topup() {
-        $response = array();
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "topUpInfo")) {
@@ -374,6 +445,26 @@ class Transaction extends Role_Controller {
                 $response['message'] = $this->ion_auth->messages_array();
             }
             echo json_encode($response);
+            return;
+        }
+        //checking whether user has permission for topup transaction
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            //if in future there is new service under topup then update the logic here
+            $service_id = $service_info['service_id']; 
+            if($service_id == SERVICE_TYPE_ID_TOPUP_GP || $service_id == SERVICE_TYPE_ID_TOPUP_ROBI || $service_id == SERVICE_TYPE_ID_TOPUP_BANGLALINK || $service_id == SERVICE_TYPE_ID_TOPUP_AIRTEL || $service_id == SERVICE_TYPE_ID_TOPUP_TELETALK)
+            {
+                $permission_exists = TRUE;
+            }
+        }
+        if(!$permission_exists)
+        {
+            //you are not allowed to use topup transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use topup service.";
+            $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
         $where = array(

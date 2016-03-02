@@ -76,7 +76,7 @@
                     <li><a href="<?php echo base_url(); ?>reseller/update_rate">My Rates</a></li>
                     <li><a href="#">API Key</a></li>
                     <li><a href="<?php echo base_url(); ?>admin/load_balance">Add Balance</a></li>
-                    <li><a href="<?php echo base_url(); ?>reseller/show_reseller">My Profile</a></li>
+                    <li><a href="<?php echo base_url(); ?>reseller/show_user_profile">My Profile</a></li>
                     <li><a href="#">Access Logs</a></li>
                     <li><a href="#">Change Pin</a></li>                
                     <li><a href="#">Change Password</a></li>

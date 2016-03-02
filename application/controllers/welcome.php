@@ -19,7 +19,12 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+            $this->curl->create("http://localhost:3030/addmultipletransactions");
+            $this->curl->post(array("APIKey" => ""));
+            $result_event = json_decode($this->curl->execute());
+                print_r($result_event);
+        
+            //$this->load->view('welcome_message');
 	}
 }
 

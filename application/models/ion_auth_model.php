@@ -1394,8 +1394,14 @@ class Ion_auth_model extends CI_Model {
 
         $this->db->trans_begin();
         
-        $this->update_user_services($id, $data['user_service_list']);
-        $this->update_inactive_services($data['child_id_list'], $data['inactive_service_list']);
+        if(array_key_exists('user_service_list', $data))
+        {
+            $this->update_user_services($id, $data['user_service_list']);
+        }
+        if(array_key_exists('child_id_list', $data) && array_key_exists('inactive_service_list', $data))
+        {
+            $this->update_inactive_services($data['child_id_list'], $data['inactive_service_list']);
+        }        
         
         if (array_key_exists($this->identity_column, $data) && $this->identity_check($data[$this->identity_column]) && $user->{$this->identity_column} !== $data[$this->identity_column]) {
             $this->db->trans_rollback();

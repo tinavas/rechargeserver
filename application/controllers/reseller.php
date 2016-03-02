@@ -427,6 +427,131 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_rate', $this->data);
     }
+    
+    /*
+     * This method will display user rate
+     * @author nazmul hasan on 2nd March 2016
+     */
+    function show_user_rate() {
+        $user_id = $this->session->userdata("user_id");
+        $rate_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        $this->data['rate_list'] = json_encode($rate_list);
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/show_rate', $this->data);
+    }
+    
+    /*
+     * This method will update user profile
+     * @param $user_id user id
+     * @author nazmul hasan on 2nd March 2016
+     */
+    function update_user_profile($user_id = 0)
+    {
+        $current_user_id = $this->session->userdata('user_id'); 
+        if($user_id == 0 || $user_id == $current_user_id)
+        {
+            $user_id = $current_user_id;
+        }
+        else
+        {
+            $this->data['app'] = RESELLER_APP;
+            $this->data['error_message'] = "Sorry !! You don't have permission to update this user.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
+        
+        $this->load->library('reseller_library');      
+        $response = array();
+        if (file_get_contents("php://input") != null) {
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "resellerInfo") != FALSE) {
+                $resellerInfo = $requestInfo->resellerInfo;
+                if (!property_exists($resellerInfo, "username")) {
+                    $response["message"] = "Please assign a user name !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (!property_exists($resellerInfo, "first_name")) {
+                    $response["message"] = "Please assign first name !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (!property_exists($resellerInfo, "last_name")) {
+                    $response["message"] = "Please assign last name !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (!property_exists($resellerInfo, "email")) {
+                    $response["message"] = "Please assign email !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (property_exists($resellerInfo, "mobile")) {
+                    $cell_no = $resellerInfo->mobile;
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number !!";
+                        echo json_encode($response);
+                        return;
+                    }
+                }
+                else
+                {
+                    $response["message"] = "Please Enter a Valid Cell Number !!";
+                    echo json_encode($response);
+                    return;
+                }
+
+                $additional_data = array(
+                    'username' => $resellerInfo->username,
+                    'first_name' => $resellerInfo->first_name,
+                    'last_name' => $resellerInfo->last_name,
+                    'mobile' => $resellerInfo->mobile,
+                    'email' => $resellerInfo->email,
+                    'note' => $resellerInfo->note
+                );
+            }
+            if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
+                $response['message'] = 'User is updated successfully.';
+            } else {
+                $response['message'] = 'Error while updating the user. Please try again later.';
+            }
+
+            echo json_encode($response);
+            return;
+        }
+        
+        $reseller_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
+        if (!empty($reseller_info_array)) {
+            $reseller_info = $reseller_info_array[0];
+            $reseller_info['ip_address'] = "";
+            $this->data['reseller_info'] = json_encode($reseller_info);
+        }
+
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/update_user_profile', $this->data);
+    }
+    /*
+     * This method will update user profile
+     * @author nazmul hasan on 2nd March 2016
+     */
+    function show_user_profile()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        
+        $user_profile_info = array();
+        $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
+        if (!empty($profile_info)) {
+            $user_profile_info = $profile_info[0];
+            $user_profile_info['ip_address'] = "";
+        }
+        $this->data['profile_info'] = $user_profile_info;
+        $this->data['service_list'] = $service_list;
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load(null, 'reseller/show_user_profile', $this->data);   
+    }
 
     /*
      * This method will return assigned service list of a user

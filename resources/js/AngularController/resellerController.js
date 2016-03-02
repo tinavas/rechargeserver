@@ -77,6 +77,13 @@ angular.module('controller.Reseller', ['services.Reseller']).
                             callbackFunction(data);
                         });
             }
+            
+            $scope.updateUserProfile = function (callbackFunction) {
+                resellerService.updateUserProfile($scope.resellerInfo).
+                        success(function (data, status, headers, config) {
+                            callbackFunction(data);
+                        });
+            }
 
             $scope.updateRate = function (userId, callbackFunction) {
                 var updateServiceList = [];
