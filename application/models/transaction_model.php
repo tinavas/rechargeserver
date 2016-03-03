@@ -32,6 +32,12 @@ class Transaction_model extends Ion_auth_model {
         );
         $this->db->where('transaction_id', $transaction_id);
         $this->db->update('user_payments', $payment_data);
+        
+        $profit_data = array(
+            'status_id' => $status_id
+        );
+        $this->db->where('transaction_id', $transaction_id);
+        $this->db->update('user_profits', $profit_data);
     }
     /*
      * This method will return current available balance of a user 
