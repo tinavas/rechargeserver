@@ -27,7 +27,6 @@
     <table class="table table-striped table-hover" ng-init="setPaymentInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>)">
         <thead>
             <tr>
-                <th><a href="">ID</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Payment Type</a></th>
                 <th><a href="">Reference User</a></th>
@@ -39,7 +38,6 @@
         </tbody>
         <tfoot>
             <tr ng-repeat="paymentInfo in paymentInfoList">
-                <th>{{paymentInfo.id}}</th>
                 <th>{{paymentInfo.balance_in}}</th>
                 <th>
                     <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_LOAD_BALANCE ?>'">
@@ -53,22 +51,22 @@
                     </span>
 
                 </th>
-                <th>{{paymentInfo.username}}</th>
+                <th>{{paymentInfo.first_name}} {{paymentInfo.last_name}}</th>
                 <th>{{paymentInfo.description}}</th>
                 <th>{{paymentInfo.created_on}}</th>
             </tr>
         </tfoot>
     </table>
-    <div class="form-group">
+<!--    <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>
                 <table>
                     <tbody>
                         <tr><td>Total Payment :</td><td class="amt">0.00</td></tr>
-<!--                        <tr><td>Total Return :</td><td class="amt">0.00</td></tr>
+                        <tr><td>Total Return :</td><td class="amt">0.00</td></tr>
                         <tr><td>Total Canceled :</td><td class="amt">0.00</td></tr>
-                        <tr><td>Total :</td><td class="amt">0.00</td></tr>-->
+                        <tr><td>Total :</td><td class="amt">0.00</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -90,7 +88,7 @@
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
-    </ul>
+    </ul>-->
 </div>
 <script type="text/javascript">
     $(function () {

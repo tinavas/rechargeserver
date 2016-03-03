@@ -93,6 +93,12 @@ class Date_utils {
         return $date_start_unix - $offset + 86400;
     }
 
+    /*
+     * This method will return date from unix time
+     * @param $time unix time
+     * @param $$country_code country code
+     * @author nazmul hasan on 3rd March 2016
+     */
     public function get_unix_to_display($time, $country_code = 'BD') {
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);

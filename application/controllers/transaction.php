@@ -106,7 +106,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN),array(),0 ,0, INITIAL_LIMIT, 0, $where);
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN),array(),0 ,0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/bkash/index', $this->data);
@@ -194,7 +194,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/dbbl/index', $this->data);
@@ -281,7 +281,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/mcash/index', $this->data);
@@ -369,7 +369,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/ucash/index', $this->data);
@@ -470,7 +470,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
-         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP,SERVICE_TYPE_ID_TOPUP_ROBI,SERVICE_TYPE_ID_TOPUP_AIRTEL,SERVICE_TYPE_ID_TOPUP_TELETALK), INITIAL_LIMIT, 0, 0, 0, $where);
+         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP,SERVICE_TYPE_ID_TOPUP_ROBI,SERVICE_TYPE_ID_TOPUP_AIRTEL,SERVICE_TYPE_ID_TOPUP_TELETALK), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->load->model('service_model');
         $topup_type_list = $this->service_model->get_all_operator_types()->result_array();

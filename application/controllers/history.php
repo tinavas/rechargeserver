@@ -20,7 +20,6 @@ class History extends Role_Controller {
      * @author nazmul hasan on 27th February 2016
      */
     public function all_transactions() {
-        $offset = INITIAL_OFFSET;
         $this->data['message'] = "";        
         $where = array(
             'user_id' => $this->session->userdata('user_id')
@@ -37,9 +36,7 @@ class History extends Role_Controller {
             if (property_exists($requestInfo, "toDate") != FALSE) {
                 $to_date = $requestInfo->toDate;
             }
-            if (property_exists($requestInfo, "offset") != FALSE) {
-                $offset = $requestInfo->offset;
-            }
+            
             $this->load->library('date_utils');
             if($from_date != 0)
             {
@@ -53,11 +50,10 @@ class History extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        $transaction_list = array();
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/index', $this->data);
+        $this->template->load(null, 'history/transaction/index', $this->data);
     }
 
     /*
@@ -71,7 +67,7 @@ class History extends Role_Controller {
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/topup/index', $this->data);
+        $this->template->load(null, 'history/transaction/topup/index', $this->data);
     }
 
     /*
@@ -85,7 +81,7 @@ class History extends Role_Controller {
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/bkash/index', $this->data);
+        $this->template->load(null, 'history/transaction/bkash/index', $this->data);
     }
     
     /*
@@ -99,7 +95,7 @@ class History extends Role_Controller {
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/dbbl/index', $this->data);
+        $this->template->load(null, 'history/transaction/dbbl/index', $this->data);
     }
 
     /*
@@ -113,7 +109,7 @@ class History extends Role_Controller {
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/mcash/index', $this->data);
+        $this->template->load(null, 'history/transaction/mcash/index', $this->data);
     }
 
     /*
@@ -127,26 +123,26 @@ class History extends Role_Controller {
         $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, 0, 0, $where);
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/transaction/ucash/index', $this->data);
+        $this->template->load(null, 'history/transaction/ucash/index', $this->data);
     }
 
+    /*
+     * This method will display payment history
+     * @author nazmul hasan on 3rd march 
+     */
     public function get_payment_history() {
-        $limit = INITIAL_LIMIT;
-        $offset = INITIAL_OFFSET;
-        $payment_type_ids = array(
-            PAYMENT_TYPE_ID_SEND_CREDIT,
-            PAYMENT_TYPE_ID_RETURN_CREDIT
-        );
+        $this->load->library('payment_library');
         $user_id = $this->session->userdata('user_id');
-        $this->load->library('date_utils');
-        $payment_info_list = array();
+        $where = array(
+            'user_id' => $user_id
+        );
         if (file_get_contents("php://input") != null) {
             $response = array();
             $start_date = 0;
             $end_date = 0;
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
-
+            $payment_type_id_list = array();
             if (property_exists($requestInfo, "searchParam") != FALSE) {
                 $search_param = $requestInfo->searchParam;
 
@@ -156,60 +152,66 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "endDate") != FALSE) {
                     $end_date = $search_param->endDate;
                 }
-                if (property_exists($search_param, "paymentTypeId") != FALSE) {
-                    $payment_type_ids = array();
-                    $payment_type_ids = $search_param->paymentTypeId;
+                if (property_exists($search_param, "paymentTypeId") != FALSE && $search_param->paymentTypeId != '0') {
+                    
+                    $payment_type_id_list = $search_param->paymentTypeId;
                 }
-            }
-            if (property_exists($requestInfo, "offset") != FALSE) {
-                $offset = $requestInfo->offset;
-            }
-            if ($start_date != 0 && $end_date != 0) {
-                $start_date = $this->date_utils->convert_date_to_unix_time($start_date);
-                $end_date = $this->date_utils->convert_date_to_unix_time($end_date);
-            }
-            $payment_info_list = $this->transaction_library->get_payment_list($user_id, $payment_type_ids, $limit, $offset, $start_date, $end_date);
+                else
+                {
+                    $payment_type_id_list = array(
+                        PAYMENT_TYPE_ID_SEND_CREDIT,
+                        PAYMENT_TYPE_ID_RETURN_CREDIT
+                    );
+                }
+            }  
+            $payment_info_list = $this->payment_library->get_payment_history($payment_type_id_list, array(), $start_date, $end_date, 0, 0, 'desc', $where);
             $response['payment_info_list'] = $payment_info_list;
             echo json_encode($response);
             return;
         }
-        $payment_info_list = $this->transaction_library->get_payment_list($user_id, $payment_type_ids, $limit, $offset);
-        $payment_type_ids = array(
-            PAYMENT_TYPE_ID_SEND_CREDIT => 'Send credit',
-            PAYMENT_TYPE_ID_RETURN_CREDIT => 'Return Credit'
+        $payment_type_id_list = array(
+            PAYMENT_TYPE_ID_SEND_CREDIT,
+            PAYMENT_TYPE_ID_RETURN_CREDIT
         );
-        $this->data['payment_type_ids'] = $payment_type_ids;
-        $this->data['payment_info_list'] = json_encode($payment_info_list);
+        $payment_list = $this->payment_library->get_payment_history($payment_type_id_list, array(), 0, 0, PAYMENT_SEND_DEFAULT_LIMIT, 0, 'desc', $where);
+        $payment_types = array(
+            PAYMENT_TYPE_ID_SEND_CREDIT => 'Send credit',
+            PAYMENT_TYPE_ID_RETURN_CREDIT => 'Return Credit',
+            '0' => 'All'
+        );        
+        $this->data['payment_type_ids'] = $payment_types;
+        $this->data['payment_info_list'] = json_encode($payment_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/payment_history', $this->data);
+        $this->template->load(null, 'history/payment_history', $this->data);
     }
 
+    /*
+     * This method will display receive history
+     * @author nazmul hasan on 3rd march 
+     */
     public function get_receive_history() {
-        $limit = INITIAL_LIMIT;
-        $offset = INITIAL_OFFSET;
         $groups = $this->ion_auth->get_current_user_types();
-        $payment_type_ids = array(
-            PAYMENT_TYPE_ID_RECEIVE_CREDIT,
-            PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
-        );
-        $payment_types = array(
-            PAYMENT_TYPE_ID_RECEIVE_CREDIT => 'Receive Credit',
-            PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT => 'Return Receive Credit'
-        );
-        foreach ($groups as $group) {
-            if ($group == ADMIN) {
+        $group = "";
+        foreach ($groups as $group_info) {
+            if ($group_info == GROUP_ADMIN) {
+                $group = $group_info;
+                break;
                 $payment_type_ids[] = PAYMENT_TYPE_ID_LOAD_BALANCE;
                 $payment_types[PAYMENT_TYPE_ID_LOAD_BALANCE] = 'Load Balance';
             }
         }
+        $this->load->library('payment_library');
         $user_id = $this->session->userdata('user_id');
-        $this->load->library('date_utils');
+        $where = array(
+            'user_id' => $user_id
+        );
         if (file_get_contents("php://input") != null) {
             $response = array();
             $start_date = 0;
             $end_date = 0;
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
+            $payment_type_id_list = array();
             if (property_exists($requestInfo, "searchParam") != FALSE) {
                 $search_param = $requestInfo->searchParam;
                 if (property_exists($search_param, "startDate") != FALSE) {
@@ -218,29 +220,46 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "endDate") != FALSE) {
                     $end_date = $search_param->endDate;
                 }
-                if (property_exists($search_param, "paymentTypeId") != FALSE) {
-                    $payment_type_ids = array();
-                    $payment_type_ids = $search_param->paymentTypeId;
+                if (property_exists($search_param, "paymentTypeId") != FALSE && $search_param->paymentTypeId != '0') {
+                    $payment_type_id_list = $search_param->paymentTypeId;
+                }
+                else
+                {
+                    $payment_type_id_list = array(
+                        PAYMENT_TYPE_ID_RECEIVE_CREDIT,
+                        PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
+                    );
+                    if($group == GROUP_ADMIN)
+                    {
+                        $payment_type_id_list[] = PAYMENT_TYPE_ID_LOAD_BALANCE;
+                    }
                 }
             }
-            if (property_exists($requestInfo, "offset") != FALSE) {
-                $offset = $requestInfo->offset;
-            }
-            if ($start_date != 0 && $end_date != 0) {
-                $start_date = $this->date_utils->convert_date_to_unix_time($start_date);
-                $end_date = $this->date_utils->convert_date_to_unix_time($end_date);
-            }
-            $payment_info_list = $this->transaction_library->get_payment_list($user_id, $payment_type_ids, $limit, $offset, $start_date, $end_date);
+            $payment_info_list = $this->payment_library->get_payment_history($payment_type_id_list, array(), $start_date, $end_date, 0, 0, 'desc', $where);
             $response['payment_info_list'] = $payment_info_list;
             echo json_encode($response);
             return;
         }
-        $payment_info_list = $this->transaction_library->get_payment_list($user_id, $payment_type_ids, $limit, $offset);
-
+        $payment_types = array(
+            PAYMENT_TYPE_ID_RECEIVE_CREDIT => 'Receive Credit',
+            PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT => 'Return Receive Credit',
+            '0' => 'All'
+        );
+        $payment_type_id_list = array(
+            PAYMENT_TYPE_ID_RECEIVE_CREDIT,
+            PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
+        );
+        if($group == GROUP_ADMIN)
+        {
+            $payment_type_id_list[] = PAYMENT_TYPE_ID_LOAD_BALANCE;
+            $payment_types[PAYMENT_TYPE_ID_LOAD_BALANCE] = 'Load Balance';
+        }
+        $payment_list = $this->payment_library->get_payment_history($payment_type_id_list, array(), 0, 0, PAYMENT_SEND_DEFAULT_LIMIT, 0, 'desc', $where);
+        
         $this->data['payment_type_ids'] = $payment_types;
-        $this->data['payment_info_list'] = json_encode($payment_info_list);
+        $this->data['payment_info_list'] = json_encode($payment_list);
         $this->data['app'] = TRANSCATION_APP;
-        $this->template->load('admin/templates/admin_tmpl', 'history/receive_history', $this->data);
+        $this->template->load(null, 'history/receive_history', $this->data);
     }
 
 }

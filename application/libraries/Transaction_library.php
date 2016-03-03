@@ -94,7 +94,9 @@ class Transaction_library {
                 'reference_id' => $user_id,
                 'service_id' => $service_id,
                 'rate' => $amount,
-                'status_id' => TRANSACTION_STATUS_ID_PENDING
+                'status_id' => TRANSACTION_STATUS_ID_PENDING,
+                'created_on' => now(),
+                'modified_on' => now()
             );
             $commission = 0;
             //if(!array_key_exists($service_info['user_id'], $child_parent_id_map) && $service_info['user_id'] == $user_id)

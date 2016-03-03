@@ -32,12 +32,12 @@ class Auth extends Role_Controller {
             $user_group = $this->ion_auth->get_current_user_types();
             foreach ($user_group as $group) {
                 $this->session->set_userdata(array('group'=>$group));
-                if($group == ADMIN || $group == TYPE1 || $group == TYPE2 || $group == TYPE3 || $group == TYPE4){
+                if($group == GROUP_ADMIN || $group == GROUP_TYPE1 || $group == GROUP_TYPE2 || $group == GROUP_TYPE3 || $group == GROUP_TYPE4){
                     //set the flash data error message if there is one
                     $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
                     $user_id = $this->session->userdata('user_id');
-                    $this->data = array_merge($this->reseller_library->get_user_dashboard_data($user_id), $this->data);
+                    $this->data = array_merge($this->reseller_library->get_user_dashboard_data($user_id, $group), $this->data);
                     //$this->_render_page('auth/index', $this->data);
                     //$this->template->load(NULL, ADMIN_LOGIN_SUCCESS_VIEW, $this->data);
 

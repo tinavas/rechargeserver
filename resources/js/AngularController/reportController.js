@@ -1,5 +1,6 @@
 angular.module('controller.Report', ['services.Report']).
         controller('reportController', function ($scope, reportService) {
+            $scope.profitList = [];
             $scope.userProfits = [];
             $scope.userTotalProfitInfo = {};
             $scope.setUserProfits = function (userProfits) {
@@ -13,7 +14,10 @@ angular.module('controller.Report', ['services.Report']).
                 });
             }
 
-
+            $scope.setProfitList = function (profitList) {
+                $scope.profitList = JSON.parse(profitList);
+                console.log($scope.profitList);
+            }
         });
 
 

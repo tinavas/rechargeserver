@@ -46,12 +46,12 @@
                 <table cellspacing="0;">
                     <tbody>
                         <?php foreach ($payment_list as $payment_info) { ?>
-                            <tr><td><?php echo $payment_info['description'] ?></td><td class="tk"></td><td class="tk"><?php echo $payment_info['balance_out'] ?></td></tr>
+                            <tr><td><?php echo $payment_info['first_name'].' '.$payment_info['last_name'] ?></td><td class="tk"></td><td class="tk"><?php echo $payment_info['balance_out'] ?></td></tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div>
-            <!--<h3><span class="left">Showing last 7 records</span><span class="right"><a href="http://www.ewallet2u.com/main/payments/all" style="font-size:12px;">[View All]</a></span></h3>-->
+            <h3><span class="left">Showing last <?php echo DASHBOARD_PAYMENT_LIMIT;?> records</span><span class="right"><a href="<?php echo base_url().'history/get_payment_history'?>" style="font-size:12px;">[View All]</a></span></h3>
         </div>
         <div class="usage">
             <h2>Last Receive</h2>
@@ -59,12 +59,12 @@
                 <table cellspacing="0;">
                     <tbody>
                         <?php foreach ($receive_list as $receive_info) { ?>
-                            <tr><td><?php echo $receive_info['description'] ?></td><td class="tk"></td><td class="tk"><?php echo $receive_info['balance_in'] ?></td></tr>
+                            <tr><td><?php echo $receive_info['first_name'].' '.$receive_info['last_name'] ?></td><td class="tk"></td><td class="tk"><?php echo $receive_info['balance_in'] ?></td></tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div>
-            <!--<h3><span class="left">Showing last 7 records</span><span class="right"><a href="http://www.ewallet2u.com/main/received" style="font-size:12px;">[View All]</a></span></h3>-->
+            <h3><span class="left">Showing last <?php echo DASHBOARD_RECEIVE_LIMIT;?> records</span><span class="right"><a href="<?php echo base_url().'history/get_receive_history'?>" style="font-size:12px;">[View All]</a></span></h3>
         </div>
     </div> 
     <div class="clear"></div>

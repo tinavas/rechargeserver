@@ -82,17 +82,28 @@ class Reseller_library {
      * @param $user_id, user id
      * @author nazmul hasan on 24th february 2016
      */
-    public function get_user_dashboard_data($user_id) {
+    public function get_user_dashboard_data($user_id, $group) {
         if ( 0 == $user_id) {
             $user_id = $this->session->userdata('user_id');
         }
         $data = array();
-        $this->load->model('payment_model');
+        $this->load->library('payment_library');
         $where_payment = array(
             'user_id' => $user_id
         );
-        $data['payment_list'] = $this->payment_model->where($where_payment)->get_payment_history(array(PAYMENT_TYPE_ID_SEND_CREDIT), DASHBOARD_PAYMENT_LIMIT)->result_array();
-        $data['receive_list'] = $this->payment_model->where($where_payment)->get_receive_history(array(PAYMENT_TYPE_ID_RECEIVE_CREDIT), DASHBOARD_RECEIVE_LIMIT)->result_array();
+        $pay_id_list = array(
+            PAYMENT_TYPE_ID_SEND_CREDIT,PAYMENT_TYPE_ID_RETURN_CREDIT
+        );
+        $data['payment_list'] = $this->payment_library->where($where_payment)->get_payment_history($pay_id_list, array(),0 ,0 ,DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
+        
+        $receive_id_list = array(
+            PAYMENT_TYPE_ID_RECEIVE_CREDIT,PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
+        );
+        if(GROUP_ADMIN == $group)
+        {
+            $receive_id_list[] = PAYMENT_TYPE_ID_LOAD_BALANCE;
+        }
+        $data['receive_list'] = $this->payment_library->where($where_payment)->get_payment_history($receive_id_list, array(),0 ,0 ,DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
 
         $this->load->library('Date_utils');
         $this->load->model('transaction_model');
