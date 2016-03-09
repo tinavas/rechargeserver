@@ -1,12 +1,15 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+
 /**
  * Name:  Date_utils
  * Added in Class Diagram
  * Requirements: PHP5 or above
  */
 class Utils {
+
     /**
      * __construct
      *
@@ -21,8 +24,8 @@ class Utils {
         } else {
             $this->load->driver('session');
         }
-
     }
+
     /**
      * __get
      *
@@ -36,14 +39,15 @@ class Utils {
      */
     public function __get($var) {
         return get_instance()->$var;
-    }    
-    
+    }
+
     /*
      * this method will validate cell number
      * @param $cell_no phone number
      * @return boolean, true if the cell number is valid otherwise false
      * @author nazmul hasan on 28th february 2016
      */
+
     public function cell_number_validation($cell_no) {
         if (preg_match("/^((^\+880|0)[1-9][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
             RETURN FALSE;
@@ -51,13 +55,25 @@ class Utils {
             RETURN True;
         }
     }
+
     /*
      * This method will retunr a random string
      * @param $length random string length
      * @author nazmul hasan on 2nd March 2016
      */
-    public function get_transaction_id($length = TRANSACTION_ID_DEFAULT_LENGTH){
+
+    public function get_transaction_id($length = TRANSACTION_ID_DEFAULT_LENGTH) {
         return random_string('unique', $length);
     }
-   
+
+    /*
+     * This method will retunr a random integer
+     * @author rashida sultana on 8th March 2016
+     */
+
+    public function get_random_mapping_id() {
+       return random_string('unique', 16);
+//        return rand(1, 99);
+    }
+
 }

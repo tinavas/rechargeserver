@@ -3,6 +3,16 @@ angular.module('services.Transction', []).
             var $app_name = "/rechargeserver";
             var transctionService = {};
 
+            transctionService.multipuleTopup = function (transactionDataList) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/multipule_topups',
+                    data: {
+                        transactionDataList: transactionDataList
+                    }
+                });
+            }
             transctionService.bkash = function (bkashInfo) {
 
                 return $http({

@@ -26,5 +26,6 @@ define("TOPUP_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 
 define("WEBSERVICE_URL_REGISTER_MEMBER",                   "http://localhost:4040/registermember");
 define("WEBSERVICE_URL_CREATE_TRANSACTION",                "http://localhost:3030/addtransaction");
+define("WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS",     "http://localhost:3030/addmultipletransactions");
 define("WEBSERVICE_URL_ADD_SUBSCRIBER_PAYMENT",            "http://localhost:4040/addsubscriberpayment");
 
