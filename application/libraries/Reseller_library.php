@@ -152,6 +152,7 @@ class Reseller_library {
             $user_info['current_balance'] = $user_id_balance_map[$user_info['user_id']];
             $user_info['last_login'] = $this->date_utils->get_unix_to_display($user_info['last_login']);
             $user_info['created_on'] = $this->date_utils->get_unix_to_display($user_info['created_on']);
+            $user_info['ip_address'] = "";
             $reseller_list[] = $user_info;
         }
         return $reseller_list;

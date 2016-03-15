@@ -11,7 +11,7 @@
                 <?php echo form_open("auth/login");?>
                 <input type="hidden" style="display:none;" value="646906f7f6523800871b1476be229be9" name="elctkn">
                 <div class="ez-form-row" style="min-height: 100px">
-                    <label for="username">Username or Email</label>
+                    <label for="username">Email</label>
                     <input id="identity" class="ez-ltr" type="text" autocomplete="off" name="identity">
                 </div>
                 <div class="ez-form-row" style="min-height: 100px">

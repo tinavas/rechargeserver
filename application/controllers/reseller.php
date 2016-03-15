@@ -282,6 +282,8 @@ class Reseller extends Role_Controller {
                 $additional_data = array(
                     'first_name' => $resellerInfo->first_name,
                     'last_name' => $resellerInfo->last_name,
+                    'username' => $username,
+                    'email' => $email,
                     'mobile' => $cell_no,
                     'note' => $resellerInfo->note,
                     'max_user_no' => $max_user_no,
