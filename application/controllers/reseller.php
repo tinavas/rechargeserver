@@ -239,11 +239,12 @@ class Reseller extends Role_Controller {
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "resellerInfo") != FALSE) {
                 $resellerInfo = $requestInfo->resellerInfo;
+                $new_password = "";
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
-                if (property_exists($resellerInfo, "password")) {
-                    $password = $resellerInfo->password;
+                if (property_exists($resellerInfo, "new_password")) {
+                    $new_password = $resellerInfo->new_password;
                 }
                 if (property_exists($resellerInfo, "email")) {
                     $email = $resellerInfo->email;
@@ -291,6 +292,10 @@ class Reseller extends Role_Controller {
                     'child_id_list' => $child_id_list,
                     'inactive_service_list' => $inactive_service_list
                 );
+                if($new_password != "")
+                {
+                    $additional_data['password'] = $new_password;
+                }
             }
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
                 $response['message'] = 'User is updated successfully.';
@@ -305,6 +310,7 @@ class Reseller extends Role_Controller {
         $reseller_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($reseller_info_array)) {
             $reseller_info = $reseller_info_array[0];
+            $reseller_info['new_password'] = "";
             $reseller_info['ip_address'] = "";
             $this->data['reseller_info'] = json_encode($reseller_info);
         }

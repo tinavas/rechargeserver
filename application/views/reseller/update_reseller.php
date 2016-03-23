@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="form-group ">
                                     <label for="password" class="control-label">Password</label>
-                                    <input type="password" autocomplete="off" value="" placeholder="********" class="form-control input-sm" id="password" name="password">
+                                    <input type="password" autocomplete="off" value="" placeholder="********" class="form-control input-sm" id="password" name="password" ng-model="resellerInfo.new_password">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
