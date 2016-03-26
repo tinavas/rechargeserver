@@ -359,7 +359,7 @@ class Reseller extends Role_Controller {
                         'id' => $rate_info->id,
                         'rate' => $rate_info->rate,
                         'commission' => $rate_info->commission,
-                        //'charge' => $rate_info->charge
+                        'charge' => $rate_info->charge
                     );
                     $new_updated_rate_list[] = $new_rate_info;
                 }                
@@ -385,7 +385,7 @@ class Reseller extends Role_Controller {
                             'id' => $rate_info->id,
                             'rate' => $rate_info->rate,
                             'commission' => $rate_info->commission,
-                            //'charge' => $rate_info->charge
+                            'charge' => $rate_info->charge
                         );
                         $new_updated_rate_list[] = $new_rate_info;
                     }
