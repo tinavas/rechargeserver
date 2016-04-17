@@ -125,6 +125,18 @@ class History extends Role_Controller {
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'history/transaction/ucash/index', $this->data);
     }
+    
+    /*
+     * This method will show sms history
+     * @author nazmul hasan on 30th March 2016
+     */
+    public function sms() {
+        $user_id = $this->session->userdata('user_id');
+        $transaction_list = $this->transaction_library->get_user_sms_transaction_list($user_id, 0, 0, 0, 0);
+        $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['app'] = TRANSCATION_APP;
+        $this->template->load(null, 'history/transaction/sms/index', $this->data);
+    }
 
     /*
      * This method will display payment history

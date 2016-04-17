@@ -109,7 +109,8 @@ INSERT INTO `services` (`id`, `title`) VALUES
 (102, 'Topup ROBI'),
 (103, 'Topup BanglaLink'),
 (104, 'Topup Airtel'),
-(105, 'Topup TeleTalk');
+(105, 'Topup TeleTalk'),
+(1001, 'Send SMS');
 CREATE TABLE IF NOT EXISTS `users_services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
@@ -170,6 +171,33 @@ INSERT INTO `operator_types` (`id`, `title`) VALUES
 (1, 'Prepaid'),
 (2, 'Postpaid');
 
+CREATE TABLE IF NOT EXISTS `sms_details` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `transaction_id` varchar(200),
+  `sms` text,
+  `length` int(11),
+  `unit_price` double,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_sms_details_users1_idx` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `sms_details`
+  ADD CONSTRAINT `fk_sms_details_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
+CREATE TABLE IF NOT EXISTS `user_sms_transactions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `transaction_id` varchar(200),
+  `sender_cell_no` varchar(100),
+  `cell_no` varchar(20),
+  `status_id` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_sms_transactions_user_transaction_statuses1_idx` (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; 
+ALTER TABLE `user_sms_transactions`
+  ADD CONSTRAINT `fk_user_sms_transactions_user_transaction_statuses1` FOREIGN KEY (`status_id`) REFERENCES `user_transaction_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 CREATE TABLE IF NOT EXISTS `user_transactions` (

@@ -13,6 +13,20 @@ class Files extends Role_Controller {
     public function index() {
         
     }
+    function sms_csv_file_dowload() {
+        $this->load->helper('download');
+        $data = file_get_contents(SMS_FILE_DOWNLOAD_DIRECTORY . SMS_CSV_FILE_NAME); // Read the file's contents
+        force_download(SMS_CSV_FILE_NAME, $data);
+    }
+
+    function sms_read_me_file_dowload() {
+        $this->load->helper('download');
+        $data = file_get_contents(SMS_FILE_DOWNLOAD_DIRECTORY . SMS_README_FILE_NAME); // Read the file's contents
+        force_download(SMS_README_FILE_NAME, $data);
+    }
+    
+    
+    
 
 
     function topup_csv_file_dowload() {
@@ -37,6 +51,19 @@ class Files extends Role_Controller {
         if (!empty($_FILES)) {
             $tempPath = $_FILES['file']['tmp_name'];
             $uploadPath = FILES_PATH . $_FILES['file']['name'];
+            move_uploaded_file($tempPath, $uploadPath);
+            $answer = array('answer' => 'File transfer completed');
+            $json = json_encode($answer);
+            echo $json;
+        } else {
+            echo 'No files';
+        }
+    }
+    
+    function smsFileUpload() {
+        if (!empty($_FILES)) {
+            $tempPath = $_FILES['file']['tmp_name'];
+            $uploadPath = SMS_FILE_UPLOAD_DIRECTORY . $_FILES['file']['name'];
             move_uploaded_file($tempPath, $uploadPath);
             $answer = array('answer' => 'File transfer completed');
             $json = json_encode($answer);

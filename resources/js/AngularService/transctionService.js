@@ -2,7 +2,19 @@ angular.module('services.Transction', []).
         factory('transctionService', function ($http, $location) {
             var $app_name = "/rechargeserver";
             var transctionService = {};
+            
+            transctionService.sendSMS = function (transactionDataList, smsInfo) {
 
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/sms',
+                    data: {
+                        transactionDataList: transactionDataList,
+                        smsInfo: smsInfo
+                    }
+                });
+            }
+            
             transctionService.multipuleTopup = function (transactionDataList) {
 
                 return $http({

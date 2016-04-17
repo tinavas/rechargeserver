@@ -10,7 +10,7 @@ class Transaction_model extends Ion_auth_model {
         $this->lang->load('ion_auth');
         $this->message_codes = $this->config->item('message_codes', 'ion_auth');
     }
-
+    
     public function add_transactions($transction_list, $user_profit_list) {
         $transaction_list_for_webservice = [];
         $user_transaction_list = [];
@@ -167,8 +167,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $user_profit_data, user profit data
      * @author nazmul hasan on 24th February 2016
      */
-
-    public function add_transaction($api_key, $transaction_data, $users_profit_data) {
+    /*public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
         $description = $transaction_data['description'];
@@ -257,6 +256,227 @@ class Transaction_model extends Ion_auth_model {
             $this->set_error('error_webservice_unavailable');
         }
         return FALSE;
+    }*/
+    /*
+     * This method will call the webservice and add a new transaction
+     * @param $api_key, service API key of the transaction
+     * @param $transaction_data, transaction data
+     * @param $user_profit_data, user profit data
+     * @author nazmul hasan on 24th February 2016
+     */
+    public function add_transaction($api_key, $transaction_data, $users_profit_data) {
+        $amount = $transaction_data['amount'];
+        $cell_no = $transaction_data['cell_no'];
+        $description = $transaction_data['description'];
+        $user_id = $transaction_data['user_id'];
+
+        //checking whether user has enough balance before the transaction
+        $this->load->model('payment_model');
+        $user_current_balance_array = $this->payment_model->get_users_current_balance(array($user_id))->result_array();
+        if (!empty($user_current_balance_array)) {
+            $user_current_balance = $user_current_balance_array[0]['current_balance'];
+            if ($amount > $user_current_balance) {
+                $this->set_error('error_insufficient_balance');
+                return FALSE;
+            }
+        } else {
+            $this->set_error('error_insufficient_balance');
+            return FALSE;
+        }
+
+        //create a default transaction and based on the response update the transaction.
+        $this->load->library('Utils');
+        $trx_id = $this->utils->get_transaction_id();
+        $this->db->trans_begin();
+        $current_time = now();
+        $transaction_data['created_on'] = $current_time;
+        $transaction_data['modified_on'] = $current_time;
+        $transaction_data['transaction_id'] = $trx_id;
+        $transaction_data['status_id'] = TRANSACTION_STATUS_ID_PENDING;
+        $additional_data = $this->_filter_data($this->tables['user_transactions'], $transaction_data);
+        $this->db->insert($this->tables['user_transactions'], $additional_data);
+        $insert_id = $this->db->insert_id();
+        if (isset($insert_id)) {
+            $data = array(
+                'user_id' => $user_id,
+                'reference_id' => $user_id,
+                'transaction_id' => $trx_id,
+                'status_id' => TRANSACTION_STATUS_ID_PENDING,
+                'balance_in' => 0,
+                'balance_out' => $transaction_data['amount'],
+                'type_id' => PAYMENT_TYPE_ID_USE_SERVICE,
+                'created_on' => $current_time,
+                'modified_on' => $current_time
+            );
+            $payment_data = $this->_filter_data($this->tables['user_payments'], $data);
+            $this->db->insert($this->tables['user_payments'], $payment_data);
+            $insert_id = $this->db->insert_id();
+            if (isset($insert_id)) {
+                $user_profit_list = array();
+                foreach ($users_profit_data as $user_profit_info) {
+                    $user_profit_info['transaction_id'] = $trx_id;
+                    $user_profit_list[] = $user_profit_info;
+                }
+                $this->db->insert_batch($this->tables['user_profits'], $user_profit_list);                
+            }
+        }
+        else
+        {
+            $this->db->trans_rollback();
+            $this->set_error('transaction_unsuccessful');
+            return FALSE;
+        }
+        $package_id = OPERATOR_TYPE_ID_PREPAID;
+        if(array_key_exists("operator_type_id", $transaction_data))
+        {
+           $package_id =  $transaction_data['operator_type_id'];
+        }
+        $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
+        $this->curl->post(array("APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
+        $result_event = json_decode($this->curl->execute());
+        if (!empty($result_event)) {
+            $response_code = '';
+            if (property_exists($result_event, "responseCode") != FALSE) {
+                $response_code = $result_event->responseCode;
+            }
+            if ($response_code == RESPONSE_CODE_SUCCESS) {
+                if (property_exists($result_event, "result") != FALSE) {
+                    $transaction_info = $result_event->result;
+                    $transaction_id = $transaction_info->transactionId;
+                    if (empty($transaction_id) || $transaction_id == "") {
+                        $this->db->trans_rollback();
+                        $this->set_message('error_no_transaction_id');
+                        return FALSE;
+                    } else {
+                        //update transaction id for transaction, payment and profit tables                        
+                        $update_data = array(
+                            'transaction_id' => $transaction_id
+                        );
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('user_transactions', $update_data);
+                        
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('user_payments', $update_data); 
+                        
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('user_profits', $update_data); 
+                        
+                        $this->db->trans_commit();
+                        $this->set_message('transaction_successful');
+                        return TRUE;
+                    }
+                } else {
+                    $this->db->trans_rollback();
+                    $this->set_error('error_no_result_event');
+                    return FALSE;
+                }
+            } else {
+                //set message based on response code
+                $this->db->trans_rollback();
+                $this->set_error('error_code_' . $response_code);
+                return FALSE;
+            }
+        }
+        $this->db->trans_rollback();
+        $this->set_error('error_webservice_unavailable');
+        return FALSE;
+    }
+    
+    /*
+     * This method will add sms transaction
+     * @param $api_key, APIKey
+     * @param $transaction_list, transaction list
+     * @param $sms_info, sms info
+     * @param $payment_info, payment info
+     * @author nazmul hasan on 17th april 2016
+     */
+    public function add_sms_transactions($api_key, $transaction_list, $sms_info, $payment_info) {        
+        $current_time = now();
+        $sms_info['created_on'] = $current_time;
+        $sms_info['modified_on'] = $current_time;
+        $payment_info['created_on'] = $current_time;
+        $payment_info['modified_on'] = $current_time;
+        $this->load->library('Utils');
+        $trx_id = $this->utils->get_transaction_id();
+        $sms_info['transaction_id'] = $trx_id;
+        $payment_info['transaction_id'] = $trx_id;
+        $sms_transaction_list = array();
+        $cell_number_list = array();
+        foreach($transaction_list as $transaction_info)
+        {
+            $transaction_info['transaction_id'] = $trx_id;
+            $transaction_info['created_on'] = $current_time;
+            $transaction_info['modified_on'] = $current_time;            
+            $transaction_info['status_id'] = TRANSACTION_STATUS_ID_PENDING;
+            $transaction_data = $this->_filter_data($this->tables['user_sms_transactions'], $transaction_info);
+            $sms_transaction_list[] = $transaction_data;
+            $cell_info = array(
+                'cell_no' => $transaction_info['cell_no']
+            );
+            $cell_number_list[] = $cell_info;
+        }
+        $this->db->trans_begin();
+        
+        $this->db->insert_batch($this->tables['user_sms_transactions'], $sms_transaction_list);
+        
+        $sms_data = $this->_filter_data($this->tables['sms_details'], $sms_info);
+        $this->db->insert($this->tables['sms_details'], $sms_data);
+        
+        $payment_data = $this->_filter_data($this->tables['user_payments'], $payment_info);
+        $this->db->insert($this->tables['user_payments'], $payment_data);
+        //right now we are not assigning profit for sms transaction
+        
+        $this->curl->create(WEBSERVICE_URL_SEND_SMS);
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LOCALSERVER_TEST, "APIKey" => $api_key, "sms" => $sms_info['sms'], "cellnumberlist" => json_encode($cell_number_list)));
+        $result_event = json_decode($this->curl->execute());
+        if (!empty($result_event)) {
+            $response_code = '';
+            if (property_exists($result_event, "responseCode") != FALSE) {
+                $response_code = $result_event->responseCode;
+            }
+            if ($response_code == RESPONSE_CODE_SUCCESS) {
+                if (property_exists($result_event, "result") != FALSE) {
+                    $transaction_info = $result_event->result;
+                    $transaction_id = $transaction_info->transactionId;
+                    //update transaction id based on response for transaction and payment table
+                    
+                    if (empty($transaction_id) || $transaction_id == "") {
+                        $this->db->trans_rollback();
+                        $this->set_message('error_no_transaction_id');
+                        return FALSE;
+                    } else {
+                        //update transaction id for sms transaction, payment and sms details tables                        
+                        $update_data = array(
+                            'transaction_id' => $transaction_id
+                        );
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('user_sms_transactions', $update_data);
+                        
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('user_payments', $update_data); 
+                        
+                        $this->db->where('transaction_id', $trx_id);
+                        $this->db->update('sms_details', $update_data); 
+                        
+                        $this->db->trans_commit();
+                        $this->set_message('transaction_successful');
+                        return TRUE;
+                    }
+                } else {
+                    $this->db->trans_rollback();
+                    $this->set_error('error_no_result_event');
+                    return FALSE;
+                }
+            } else {
+                //set message based on response code
+                $this->db->trans_rollback();
+                $this->set_error('error_code_' . $response_code);
+                return FALSE;
+            }
+        }
+        $this->db->trans_rollback();
+        $this->set_error('error_webservice_unavailable');
+        return FALSE;
     }
 
     /*
@@ -298,6 +518,42 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_transactions'])
                         ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_transactions'] . '.status_id')
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
+                        ->get();
+    }
+    
+    /*
+     * This method will return user sms transaction list
+     * @param $from_date, start date in unix format
+     * @param $to_date, end date in unix format
+     * @param $limit, limit
+     * @param $offset, offset
+     * @author nazmul hasan on 10th April 2016
+     */
+
+    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
+        //run each where that was passed
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        if ($limit > 0) {
+            $this->db->limit($limit);
+        }
+        if ($offset > 0) {
+            $this->db->offset($offset);
+        }
+        if ($from_date != 0 && $to_date != 0) {
+            $this->db->where($this->tables['user_sms_transactions'] . '.created_on >=', $from_date);
+            $this->db->where($this->tables['user_sms_transactions'] . '.created_on <=', $to_date);
+        }
+        $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
+        $this->db->order_by($this->tables['user_sms_transactions'] . '.id', 'desc');
+        return $this->db->select($this->tables['user_sms_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['sms_details'] . '.sms,' . $this->tables['sms_details'] . '.length,' . $this->tables['sms_details'] . '.unit_price')
+                        ->from($this->tables['user_sms_transactions'])
+                        ->join($this->tables['sms_details'], $this->tables['sms_details'] . '.transaction_id=' . $this->tables['user_sms_transactions'] . '.transaction_id')
+                        ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_sms_transactions'] . '.status_id')
                         ->get();
     }
 

@@ -23,7 +23,7 @@ class Transaction extends Role_Controller {
     public function index() {
         
     }
-
+    
     public function multipule_topups() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
@@ -602,5 +602,69 @@ class Transaction extends Role_Controller {
 
         $this->template->load(null, 'transaction/topup/index', $this->data);
     }
-
+    
+    /*
+     * This method will send bulk sms
+     * @author nazmul hasan on 17th april
+     */
+    public function sms()
+    {
+        $user_id = $this->session->userdata('user_id');
+        if (file_get_contents("php://input") != null) {
+            $response = array();
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "transactionDataList")) {
+                $transaction_data_list = $requestInfo->transactionDataList;
+                $transction_list = [];
+                foreach ($transaction_data_list as $key => $transaction_data) {
+                    $sms_data_info = array();
+                    if (property_exists($transaction_data, "number")) {
+                        $cell_no = $transaction_data->number;
+                        if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                            $response["message"] = "Please Enter a Valid Cell Number at row number " . $key + 1;
+                            echo json_encode($response);
+                            return;
+                        }
+                        $sms_data_info['cell_no'] = $cell_no;
+                    } else {
+                        $response["message"] = "Cell Number is Required at row number " . $key + 1;
+                        echo json_encode($response);
+                        return;
+                    }
+                    $sms_data_info['user_id'] = $user_id;
+                    $sms_data_info['service_id'] = SERVICE_TYPE_ID_SEND_SMS;
+                    $transction_list[] = $sms_data_info;
+                    $sms = "";                    
+                }
+                if (property_exists($requestInfo, "smsInfo"))
+                {
+                    $smsInfo = $requestInfo->smsInfo;
+                    $sms = $smsInfo->sms;
+                    if($sms == "")
+                    {
+                        $response["message"] = "Please write sms text.";
+                        echo json_encode($response);
+                        return;
+                    }
+                }
+                if ($this->transaction_library->add_sms_transactions($transction_list, $sms, $user_id) !== FALSE) {
+                    $response['message'] = $this->transaction_library->messages_array();
+                } else {
+                    $response['message'] = $this->transaction_library->errors_array();
+                }
+                //$response['message'] = "Processing";
+                echo json_encode($response);
+                return;
+            } else {
+                $response['message'] = "Sorry!! Please provide cell number to send sms";
+                echo json_encode($response);
+                return;
+            }
+        }
+        //check whether user has permission or not to use this service
+        $this->data['app'] = "app.SmsFileUpload";
+        $this->data['transaction_list'] = json_encode(array());
+        $this->template->load(null, 'transaction/sms/index', $this->data);
+    }
 }

@@ -178,10 +178,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             }
-
-
-
-//import csv file 
+            
+            
+            
+            //import csv file 
             var uploader = $scope.uploader = new FileUploader({
                 url: 'http://localhost/rechargeserver/files/upload'
             });
@@ -223,7 +223,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
             $scope.transactionDataList = [];
-            $scope.handler = function (e, files) {
+            /*$scope.handler = function (e, files) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var string = reader.result;
@@ -235,11 +235,11 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     //do what you want with obj !
                 }
                 reader.readAsText(files[0]);
-            }
-            $scope.deleteTransction = function (transactionInfo) {
+            }*/
+            /*$scope.deleteTransction = function (transactionInfo) {
                 var index = $scope.transactionDataList.indexOf(transactionInfo);
                 $scope.transactionDataList.splice(index, 1);
-            }
+            }*/
 
 
             $scope.PhoneNumberValidityCheck = function (phoneNumber) {
@@ -250,7 +250,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     return true;
                 }
                 return false;
-            }
+            };
 
 //            $scope.filename = "file";
 ////            $scope.getArray = [{a: 1, b: 2}, {a: 3, b: 4}];
@@ -264,10 +264,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
 //                console.log("click click click");
 //            };
 
-
+            
         });
 
-transactionController.filter('csvToArray', function () {
+/*transactionController.filter('csvToArray', function () {
     return function (input) {
         var rows = input.split('\r\n');
         var transactionDataList = [];
@@ -321,5 +321,5 @@ transactionController.filter('csvToArray', function () {
 
 
 
-});
+});*/
 

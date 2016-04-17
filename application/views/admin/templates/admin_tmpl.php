@@ -52,12 +52,14 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/paymentController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/leftController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/reportController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularController/smsFileUploadController.js"></script>
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/transctionApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/resellerApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/paymentApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/reportApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/test.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularApp/smsFileUploadApp.js"></script>
 
 
     </head>

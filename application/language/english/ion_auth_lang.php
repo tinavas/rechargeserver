@@ -67,6 +67,8 @@ $lang['error_webservice_unavailable']               = 'Server to process your re
 $lang['error_insufficient_balance']                 = 'Sorry! Insufficient Balance !';
 $lang['error_no_transaction_id']                    = 'Sorry!! There was an error while processing your transaction.';
 $lang['error_no_result_event']                      = 'Sorry!!! There was an error while processing your transaction.';
+$lang['error_message_length_limit_cross']           = 'Message length exceeds allowed size.';
+$lang['error_message_charge_empty']                 = 'Message charge is not set yet.';
 
 $lang['error_code_5001']                            = '5001';
 $lang['error_code_5002']                            = '5002';

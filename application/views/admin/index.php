@@ -23,7 +23,7 @@
             <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/default.png" onerror="this.onerror=null;this.src='resources/images/default.png';">Global Topup</a></li>						
             <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/buycard.png">Prepaid Card</a></li>			
             <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/billpay.png">Bill Payment</a></li>			
-            <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/sms.png">Send SMS</a></li>
+            <li><a href="<?php echo base_url() . 'transaction/sms' ?>"><img src="<?php echo base_url(); ?>resources/images/sms.png">Send SMS</a></li>
 
         </ul>
     </div>
