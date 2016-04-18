@@ -1,7 +1,5 @@
 <script>
-
     function sendSMS(transctionSMSDataList) {
-
         for (var i = 0; i < transctionSMSDataList.length; i++) {
             var index = i + +1;
             var transationInfo = transctionSMSDataList[i];
@@ -11,11 +9,10 @@
                 return;
             }
         }
-        
-        angular.element($('#send_sms_id')).scope().sendSMS(function (data) {
+        angular.element($('#send_sms_id')).scope().sendSMS(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/sms';
             });
         });
@@ -28,10 +25,10 @@
         <div class="col-md-12 fleft">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
             <table style="width:100%;" ng-controller="smsFileUploadController">
-                <tbody><tr>
+                <tbody>
+                    <tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 20px;">
                             <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
-                                
                             </div>
                             <div class="row form-group"></div>
                             <div class="form-group">
@@ -39,7 +36,9 @@
                                     SMS
                                 </label>
                                 <label for="number" class="col-md-9 control-label requiredField">
-                                    <textarea rows="5" name="number" ng-model="smsInfo.sms" class="form-control"></textarea>              
+                                    <span id="span_remaining_chars" class="pull-right">160 remaining</span>
+                                    <span id="span_message_counter" class="pull-left"> sms 1</span>
+                                    <textarea id="textarea_message" rows="5" name="number" ng-model="smsInfo.sms" class="form-control"></textarea>              
                                 </label>
                             </div>
                             <div class="row form-group">
@@ -56,7 +55,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">
@@ -112,7 +110,6 @@
                                             </tr>
                                         </tbody>
                                     </table>
-
                                     <div class="row">
                                         <div class="col-md-offset-10 col-md-2">
                                             <button id="send_sms_id" class="button-custom pull-right" onclick="sendSMS(angular.element(this).scope().transactionSMSDataList)">Submit</button>
@@ -121,16 +118,21 @@
                                 </div>
                             </div>
                         </td>
-
-                        <td>
-                        </td>                        
                     </tr>
-                </tbody></table>
-
-
-
+                </tbody>
+            </table>
         </div> 
     </div>
-
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#textarea_message').keyup(function() {
+            var chars = this.value.length;
+            var messages = Math.ceil(chars / 160);
+            var remaining = messages * 160 - (chars % (messages * 160) || messages * 160);
+            $('#span_message_counter').text('sms ' + messages);
+            $('#span_remaining_chars').text(remaining + ' remaining');
+        });
+    });
+</script>
