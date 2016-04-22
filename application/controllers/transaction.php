@@ -662,7 +662,22 @@ class Transaction extends Role_Controller {
                 return;
             }
         }
-        //check whether user has permission or not to use this service
+        //checking whether user has permission for bkash transaction
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach ($service_list as $service_info) {
+            //if in future there is new service under bkash then update the logic here
+            if ($service_info['service_id'] == SERVICE_TYPE_ID_SEND_SMS) {
+                $permission_exists = TRUE;
+            }
+        }
+        if (!$permission_exists) {
+            //you are not allowed to use bkash transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use sms service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $this->data['app'] = "app.SmsFileUpload";
         $this->data['transaction_list'] = json_encode(array());
         $this->template->load(null, 'transaction/sms/index', $this->data);

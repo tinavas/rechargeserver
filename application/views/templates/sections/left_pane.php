@@ -23,6 +23,7 @@
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/dbbl' ?>">DBBL</a></li>
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/mcash' ?>">M-Cash</a></li>
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/ucash' ?>">U-Cash</a></li>
+                        <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_SEND_SMS; ?>"><a href="<?php echo base_url() . 'history/sms_transactions' ?>">Send SMS</a></li>
                     </div>
                     <!--<li><a href="#">Global Topup</a></li>-->
                 </ul>

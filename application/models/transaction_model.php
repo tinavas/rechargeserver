@@ -332,7 +332,7 @@ class Transaction_model extends Ion_auth_model {
            $package_id =  $transaction_data['operator_type_id'];
         }
         $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
-        $this->curl->post(array("APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';

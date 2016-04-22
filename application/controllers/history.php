@@ -130,7 +130,7 @@ class History extends Role_Controller {
      * This method will show sms history
      * @author nazmul hasan on 30th March 2016
      */
-    public function sms() {
+    public function sms_transactions() {
         $user_id = $this->session->userdata('user_id');
         $transaction_list = $this->transaction_library->get_user_sms_transaction_list($user_id, 0, 0, 0, 0);
         $this->data['transaction_list'] = json_encode($transaction_list);

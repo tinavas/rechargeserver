@@ -152,8 +152,9 @@ class Transaction_library {
     /*
      * this method will add sms transcation
      * @param $transaction_list, transaction list
+     * @param $message, sms
      * @param $user_id, user id
-     * @author nazmul hasan on 24th February 2016
+     * @author nazmul hasan on 22nd April 2016
      */
     public function add_sms_transactions($transaction_list, $message, $user_id)
     {
