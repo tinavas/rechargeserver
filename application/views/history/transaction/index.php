@@ -26,7 +26,7 @@
                         <option value="canceled">Canceled</option>
                     </select>
                 </li>-->
-        <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_receive_history()" class="btn btn-xs btn-default"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover" ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
         <thead>
@@ -55,7 +55,7 @@
         </tr>
         </tfoot>
     </table>
-    <div class="form-group">
+     <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>

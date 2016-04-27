@@ -1,7 +1,7 @@
 var transactionController = angular.module('controller.Transction', ['services.Transction', 'ngSanitize', 'ngCsv', 'angularFileUpload']).
         controller('transctionController', function ($scope, transctionService, $filter, FileUploader) {
             $scope.currentPage = 1;
-            $scope.pageSize = 10;
+            $scope.pageSize = 3;
             $scope.bkashInfo = {};
             $scope.dbblInfo = {};
             $scope.mCashInfo = {};
@@ -229,6 +229,22 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
+            $scope.getSMSTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getSMSTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageSMSAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
 
 
 
@@ -301,6 +317,16 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
+            
+            $scope.getSMSByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getSMSTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageSMSAmount();
+                        });
+            };
 
             $scope.pageChangeHandler = function (num) {
                 $scope.searchInfo.offset = getOffset(num);
@@ -333,6 +359,20 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 $scope.transctionInfoList = JSON.parse(transctionList);
                 $scope.totalAmount = totalAmount;
                 getCurrentPageTransctionAmount();
+                setCollectionLength(collectionCounter);
+            };
+
+            function getCurrentPageSMSAmount() {
+                var currentPageAmount = 0;
+                for (var i = 0; i < $scope.transctionInfoList.length; i++) {
+                    currentPageAmount = currentPageAmount + +$scope.transctionInfoList[i].unit_price;
+                }
+                $scope.currentPageAmount = currentPageAmount;
+            }
+            $scope.setSMSTransactionInfoList = function (transctionList, collectionCounter, totalAmount) {
+                $scope.transctionInfoList = JSON.parse(transctionList);
+                $scope.totalAmount = totalAmount;
+                getCurrentPageSMSAmount();
                 setCollectionLength(collectionCounter);
             };
 

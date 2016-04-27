@@ -166,6 +166,15 @@ angular.module('services.Transction', []).
                     }
                 });
             };
+            transctionService.getSMSTransactionList = function (searchParam) {
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/sms_transactions',
+                    data: {
+                        searchParam: searchParam
+                    }
+                });
+            };
             return transctionService;
         });
 

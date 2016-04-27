@@ -18,7 +18,7 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-        <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_ucash()" class="btn btn-xs btn-default"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_ucash()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
         <thead>

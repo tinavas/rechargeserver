@@ -25,7 +25,7 @@
                     <option ng-repeat="(key, paymentType) in paymentTypeIds" value="{{key}}">{{paymentType}}</option>
                 </select>
             </li>
-            <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_receive_history()" class="btn btn-xs btn-default"></li>
+            <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history()" class="button-custom"></li>
         </ul>
     </ng-form>
     <table class="table table-striped table-hover" ng-init="setReceiveInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">

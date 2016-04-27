@@ -18,7 +18,7 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-        <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_mkash()" class="btn btn-xs btn-default"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_mkash()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
         <thead>
@@ -45,14 +45,14 @@
             </tr>
         </tfoot>
     </table>
-    <div class="form-group">
+     <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>
                 <table>
                     <tbody>
-                        <tr><td>Current Page Payment :</td><td class="amt">{{currentPageAmount}}</td></tr>
-                        <tr><td>Total Payment :</td><td class="amt">{{totalAmount}}</td></tr>
+                        <tr><td>Current Page Amount :</td><td class="amt">{{currentPageAmount}}</td></tr>
+                        <tr><td>Total Amount :</td><td class="amt">{{totalAmount}}</td></tr>
                     </tbody>
                 </table>
             </div>

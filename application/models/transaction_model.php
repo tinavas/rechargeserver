@@ -264,6 +264,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $user_profit_data, user profit data
      * @author nazmul hasan on 24th February 2016
      */
+
     public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
@@ -387,6 +388,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $payment_info, payment info
      * @author nazmul hasan on 17th april 2016
      */
+
     public function add_sms_transactions($api_key, $transaction_list, $sms_info, $payment_info) {
         $current_time = now();
         $sms_info['created_on'] = $current_time;
@@ -581,6 +583,32 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_sms_transactions'])
                         ->join($this->tables['sms_details'], $this->tables['sms_details'] . '.transaction_id=' . $this->tables['user_sms_transactions'] . '.transaction_id')
                         ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_sms_transactions'] . '.status_id')
+                        ->get();
+    }
+
+    /*
+     * This method will return user sms transaction summary
+     * @param $user_id, user id 
+     * @param $from_date, start date in unix format
+     * @param $to_date, end date in unix format
+     * @author rashida on 27th April 2016
+     */
+    public function get_user_sms_transaction_summary($user_id, $from_date = 0, $to_date = 0) {
+        //run each where that was passed
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        if ($from_date != 0 && $to_date != 0) {
+            $this->db->where($this->tables['user_sms_transactions'] . '.created_on >=', $from_date);
+            $this->db->where($this->tables['user_sms_transactions'] . '.created_on <=', $to_date);
+        }
+        $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
+        return $this->db->select('COUNT(*) as total_transactions, sum(unit_price) as total_amount')
+                        ->from($this->tables['user_sms_transactions'])
+                        ->join($this->tables['sms_details'], $this->tables['sms_details'] . '.transaction_id=' . $this->tables['user_sms_transactions'] . '.transaction_id')
                         ->get();
     }
 
