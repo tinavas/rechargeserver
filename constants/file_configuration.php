@@ -7,5 +7,7 @@
   define("SMS_FILE_DOWNLOAD_DIRECTORY",                                         "resources/download/files/sms/");
   define("SMS_CSV_FILE_NAME",                                                   "sms_data.csv");
   define("SMS_README_FILE_NAME",                                                "sms_readme.txt");
+  define("SMS_XLSX_FILE_NAME",                                                  "sample.xlsx");
+  define("TOPUP_XLSX_FILE_NAME",                                                "sample_topup.xlsx");
 
 

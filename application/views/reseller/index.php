@@ -19,6 +19,7 @@
                 <th><a href="">Created Date</a></th>
                 <th><a href="">Last Login</a></th>
                 <th><a href="">Details</a></th>
+                <th><a href="">Show</a></th>
                 <?php if ($allow_user_edit !== FALSE) { ?> 
                     <th width="170">Action</th>
                 <?php } ?>
@@ -40,6 +41,9 @@
                 <td>
                     <a href="<?php echo base_url() . 'reseller/get_reseller_list/'; ?>{{resellerInfo.user_id}}">View</a>
                 </td>
+                <td>
+                    <a href="<?php echo base_url() . 'reseller/show_reseller/'; ?>{{resellerInfo.user_id}}">Show</a>
+                </td>
                 <?php if ($allow_user_edit !== FALSE) { ?> 
                     <td class="action">
                         <a href="<?php echo base_url() . 'payment/create_payment/'; ?>{{resellerInfo.user_id}}">Payment</a>
@@ -48,5 +52,6 @@
                 <?php } ?>
             </tr>
         </tbody>
+        
     </table>	
 </div>

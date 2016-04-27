@@ -66,7 +66,36 @@
                 </div>
             </div>
             <ul class="profileCustomResellerList" ng-repeat="serviceInfo in serviceList">
-                <li>{{serviceInfo.title}}</li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN?>">
+                    <a href="<?php echo base_url() . 'history/bkash_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN?>">
+                    <a href="<?php echo base_url() . 'history/dbbl_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN?>">
+                    <a href="<?php echo base_url() . 'history/mcash_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN?>">
+                    <a href="<?php echo base_url() . 'history/ucash_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_TOPUP_GP?>">
+                    <a href="<?php echo base_url() . 'history/topup_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_TOPUP_ROBI?>">
+                    <a href="<?php echo base_url() . 'history/topup_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK?>">
+                    <a href="<?php echo base_url() . 'history/topup_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL?>">
+                    <a href="<?php echo base_url() . 'history/topup_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_TOPUP_TELETALK?>">
+                    <a href="<?php echo base_url() . 'history/topup_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
+                <li ng-if="serviceInfo.service_id == <?php echo SERVICE_TYPE_ID_SEND_SMS?>">
+                    <a href="<?php echo base_url() . 'history/sms_transactions/'; ?>{{profileInfo.user_id}}">{{serviceInfo.title}}</a>
+                </li>
             </ul>
         </div>        
     </div>

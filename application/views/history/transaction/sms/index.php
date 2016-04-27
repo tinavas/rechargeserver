@@ -6,7 +6,7 @@
     function search_sms() {
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
-        angular.element($("#search_submit_btn")).scope().getSMSTransactionList(startDate, endDate);
+        angular.element($("#search_submit_btn")).scope().getSMSTransactionList(startDate, endDate, '<?php echo $user_id; ?>');
     }
 </script>
 <div class="loader"></div>
@@ -57,7 +57,7 @@
     <li style="display: none" dir-paginate="paymentInfo in transctionInfoList|itemsPerPage:pageSize" current-page="currentPage"></li>
     <div class="other-controller">
         <div class="text-center">
-            <dir-pagination-controls boundary-links="true" on-page-change="getSMSByPagination(newPageNumber)" template-url="<?php echo base_url(); ?>history/pagination_tmpl_load"></dir-pagination-controls>
+            <dir-pagination-controls boundary-links="true" on-page-change="getSMSByPagination(newPageNumber,'<?php echo $user_id; ?>')" template-url="<?php echo base_url(); ?>history/pagination_tmpl_load"></dir-pagination-controls>
         </div>
     </div>
 </div>

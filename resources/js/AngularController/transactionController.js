@@ -146,10 +146,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getTopupTransactionList = function (startDate, endDate) {
+            $scope.getTopupTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -162,10 +165,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getBkashTransactionList = function (startDate, endDate) {
+            $scope.getBkashTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -180,10 +186,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
 
-            $scope.getDBBLTransactionList = function (startDate, endDate) {
+            $scope.getDBBLTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -196,10 +205,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getMcashTransactionList = function (startDate, endDate) {
+            $scope.getMcashTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -213,10 +225,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getUcashTransactionList = function (startDate, endDate) {
+            $scope.getUcashTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -229,10 +244,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getSMSTransactionList = function (startDate, endDate) {
+            $scope.getSMSTransactionList = function (startDate, endDate, userId) {
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (userId != "" && userId != 0) {
+                    $scope.searchInfo.userId = userId;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
@@ -272,8 +290,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getTopupByPagination = function (num) {
+            $scope.getTopupByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getTopupTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
@@ -281,8 +300,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getBkashByPagination = function (num) {
+            $scope.getBkashByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getBkashTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
@@ -290,8 +310,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getDBBLByPagination = function (num) {
+            $scope.getDBBLByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getDBBLTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
@@ -299,8 +320,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getMcashByPagination = function (num) {
+            $scope.getMcashByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getMcashTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
@@ -308,8 +330,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getUcashByPagination = function (num) {
+            $scope.getUcashByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getUcashTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
@@ -317,9 +340,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             getCurrentPageTransctionAmount();
                         });
             };
-            
-            $scope.getSMSByPagination = function (num) {
+
+            $scope.getSMSByPagination = function (num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
+                $scope.searchInfo.userId = userId;
                 transctionService.getSMSTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;

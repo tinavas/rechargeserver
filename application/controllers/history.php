@@ -19,6 +19,7 @@ class History extends Role_Controller {
      * This method will return entire transaction history
      * @author nazmul hasan on 27th February 2016
      */
+
     public function all_transactions() {
         $this->data['message'] = "";
         $where = array(
@@ -72,10 +73,26 @@ class History extends Role_Controller {
      * This method will return topup transaction history
      * @author nazmul hasan on 27th February 2016
      */
-    public function topup_transactions() {
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
+    public function topup_transactions($user_id = 0) {
+        $where = array();
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
+            $where['user_id'] = $current_user_id;
+            $this->data['user_id'] = $current_user_id;
+        } else if ($user_id != 0) {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this user.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+            $where['user_id'] = $user_id;
+            $this->data['user_id'] = $user_id;
+        }
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -94,6 +111,9 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "offset") != FALSE) {
                     $offset = $search_param->offset;
                 }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $where['user_id'] = $search_param->userId;
+                }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
             if (!empty($transction_information_array)) {
@@ -104,7 +124,10 @@ class History extends Role_Controller {
             echo json_encode($response);
             return;
         }
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $total_transactions = 0;
+        $total_amount = 0;
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
@@ -123,10 +146,25 @@ class History extends Role_Controller {
      * @author nazmul hasan on 27th February 2016
      */
 
-    public function bkash_transactions() {
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+    public function bkash_transactions($user_id = 0) {
+        $where = array();
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
+            $where['user_id'] = $current_user_id;
+            $this->data['user_id'] = $current_user_id;
+        } else if ($user_id != 0) {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this transcations.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+            $where['user_id'] = $user_id;
+            $this->data['user_id'] = $user_id;
+        }
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -145,6 +183,9 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "offset") != FALSE) {
                     $offset = $search_param->offset;
                 }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $where['user_id'] = $search_param->userId;
+                }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
             if (!empty($transction_information_array)) {
@@ -156,6 +197,8 @@ class History extends Role_Controller {
             return;
         }
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $total_transactions = 0;
+        $total_amount = 0;
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
@@ -173,10 +216,26 @@ class History extends Role_Controller {
      * This method will return dbbl transaction history
      * @author nazmul hasan on 27th February 2016
      */
-    public function dbbl_transactions() {
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
+    public function dbbl_transactions($user_id = 0) {
+        $where = array();
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
+            $where['user_id'] = $current_user_id;
+            $this->data['user_id'] = $current_user_id;
+        } else if ($user_id != 0) {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this user.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+            $where['user_id'] = $user_id;
+            $this->data['user_id'] = $user_id;
+        }
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -195,6 +254,9 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "offset") != FALSE) {
                     $offset = $search_param->offset;
                 }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $where['user_id'] = $search_param->userId;
+                }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
             if (!empty($transction_information_array)) {
@@ -206,6 +268,8 @@ class History extends Role_Controller {
             return;
         }
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $total_transactions = 0;
+        $total_amount = 0;
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
@@ -223,10 +287,26 @@ class History extends Role_Controller {
      * This method will return mcash transaction history
      * @author nazmul hasan on 27th February 2016
      */
-    public function mcash_transactions() {
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
+    public function mcash_transactions($user_id = 0) {
+        $where = array();
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
+            $where['user_id'] = $current_user_id;
+            $this->data['user_id'] = $current_user_id;
+        } else if ($user_id != 0) {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this user.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+            $where['user_id'] = $user_id;
+            $this->data['user_id'] = $user_id;
+        }
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -245,6 +325,9 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "offset") != FALSE) {
                     $offset = $search_param->offset;
                 }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $where['user_id'] = $search_param->userId;
+                }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
             if (!empty($transction_information_array)) {
@@ -256,6 +339,8 @@ class History extends Role_Controller {
             return;
         }
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $total_transactions = 0;
+        $total_amount = 0;
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
@@ -273,10 +358,26 @@ class History extends Role_Controller {
      * This method will return ucash transaction history
      * @author nazmul hasan on 27th February 2016
      */
-    public function ucash_transactions() {
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
+    public function ucash_transactions($user_id = 0) {
+        $where = array();
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
+            $where['user_id'] = $current_user_id;
+            $this->data['user_id'] = $current_user_id;
+        } else if ($user_id != 0) {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this user.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+            $where['user_id'] = $user_id;
+            $this->data['user_id'] = $user_id;
+        }
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -295,6 +396,9 @@ class History extends Role_Controller {
                 if (property_exists($search_param, "offset") != FALSE) {
                     $offset = $search_param->offset;
                 }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $where['user_id'] = $search_param->userId;
+                }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
             if (!empty($transction_information_array)) {
@@ -306,6 +410,8 @@ class History extends Role_Controller {
             return;
         }
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $total_transactions = 0;
+        $total_amount = 0;
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
@@ -323,10 +429,66 @@ class History extends Role_Controller {
      * This method will show sms history
      * @author nazmul hasan on 30th March 2016
      */
-    public function sms_transactions() {
-        $user_id = $this->session->userdata('user_id');
-        $transaction_list = $this->transaction_library->get_user_sms_transaction_list($user_id, 0, 0, 0, 0);
+
+    public function sms_transactions($user_id = 0) {
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $current_user_id == $user_id) {
+           $user_id = $current_user_id ;
+        } else {
+            $this->load->library('reseller_library');
+            $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
+            if (!in_array($user_id, $successor_id_list)) {
+                //you don't have permission to update this reseller
+                $this->data['app'] = RESELLER_APP;
+                $this->data['error_message'] = "Sorry !! You don't have permission to show this user.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
+            }
+        }
+        if (file_get_contents("php://input") != null) {
+            $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
+            $response = array();
+            $from_date = 0;
+            $to_date = 0;
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "searchParam") != FALSE) {
+                $search_param = $requestInfo->searchParam;
+                if (property_exists($search_param, "fromDate") != FALSE) {
+                    $from_date = $search_param->fromDate;
+                }
+                if (property_exists($search_param, "toDate") != FALSE) {
+                    $to_date = $search_param->toDate;
+                }
+                if (property_exists($search_param, "offset") != FALSE) {
+                    $offset = $search_param->offset;
+                }
+                if (property_exists($search_param, "userId") != FALSE) {
+                    $user_id = $search_param->userId;
+                }
+            }
+            $transction_information_array = $this->transaction_library->get_user_sms_transaction_list($user_id, $from_date, $to_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset);
+            if (!empty($transction_information_array)) {
+                $response['total_transactions'] = $transction_information_array['total_transactions'];
+                $response['total_amount'] = $transction_information_array['total_amount'];
+                $response['transaction_list'] = $transction_information_array['transaction_list'];
+            }
+            echo json_encode($response);
+            return;
+        }
+        $transaction_list_array = $this->transaction_library->get_user_sms_transaction_list($user_id, 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET);
+        $total_transactions = 0;
+        $total_amount = 0;
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $total_transactions = $transaction_list_array['total_transactions'];
+            $total_amount = $transaction_list_array['total_amount'];
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['total_transactions'] = json_encode($total_transactions);
+        $this->data['total_amount'] = json_encode($total_amount);
+        $this->data['user_id'] = $user_id;
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'history/transaction/sms/index', $this->data);
     }
@@ -335,6 +497,7 @@ class History extends Role_Controller {
      * This method will display payment history
      * @author nazmul hasan on 3rd march 
      */
+
     public function get_payment_history() {
         $this->load->library('payment_library');
         $user_id = $this->session->userdata('user_id');

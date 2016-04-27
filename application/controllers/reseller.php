@@ -17,14 +17,15 @@ class Reseller extends Role_Controller {
     }
 
     public function index() {
+        
+    }
 
-    }   
-    
     /*
      * This method will show reseller list of a user
      * @param $parent_user_id, user id
      * @author nazmul hasan 27th february 2016
      */
+
     function get_reseller_list($parent_user_id = 0) {
         $this->data['message'] = "";
         $this->load->library('reseller_library');
@@ -35,10 +36,9 @@ class Reseller extends Role_Controller {
         if ($parent_user_id == 0 || $parent_user_id == $user_id) {
             $maximum_children = 0;
             $user_info_array = $this->reseller_library->get_user_info($user_id)->result_array();
-            if(!empty($user_info_array))
-            {
+            if (!empty($user_info_array)) {
                 $maximum_children = $user_info_array[0]['max_user_no'];
-            }            
+            }
             $reseller_list = array();
             $current_children = 0;
             if ($maximum_children > 0) {
@@ -52,8 +52,7 @@ class Reseller extends Role_Controller {
             $user_group_name = $group;
         } else {
             $successor_id_list = $this->reseller_library->get_successor_id_list($user_id);
-            if(!in_array($parent_user_id, $successor_id_list))
-            {
+            if (!in_array($parent_user_id, $successor_id_list)) {
                 //you don't have permission to view details of this user
                 $this->data['app'] = RESELLER_APP;
                 $this->data['error_message'] = "Sorry !! You don't have permission to view details of this user.";
@@ -76,11 +75,12 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/index', $this->data);
     }
-    
+
     /*
      * This method will create a new reseller
      * @author nazmul hasan on 28th february 2016
      */
+
     public function create_reseller() {
         $group = $this->session->userdata('group');
         $user_id = $this->session->userdata('user_id');
@@ -152,16 +152,13 @@ class Reseller extends Role_Controller {
 
             echo json_encode($response);
             return;
-        }
-        else
-        {
+        } else {
             //checking whether you have proper permission to create a new reseller
             $maximum_children = 0;
             $user_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
-            if(!empty($user_info_array))
-            {
+            if (!empty($user_info_array)) {
                 $maximum_children = $user_info_array[0]['max_user_no'];
-            }            
+            }
             $current_children = 0;
             if ($maximum_children > 0) {
                 $reseller_list_array = $this->reseller_model->get_reseller_list($user_id)->result_array();
@@ -175,7 +172,7 @@ class Reseller extends Role_Controller {
                 return;
             }
         }
-        $this->data['message'] = "";        
+        $this->data['message'] = "";
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
@@ -183,26 +180,26 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/create_reseller', $this->data);
     }
-    
+
     /*
      * This method will show user information
      * @param $user_id user id
      * @author nazmul hasan on 29th february 2016
      */
+
     public function show_reseller($user_id) {
         $current_user_id = $this->session->userdata('user_id');
         $this->load->library('reseller_library');
         $successor_id_list = $this->reseller_library->get_successor_id_list($current_user_id);
-        if(!in_array($user_id, $successor_id_list))
-        {
+        if (!in_array($user_id, $successor_id_list)) {
             //you don't have permission to view details of this user
             $this->data['app'] = RESELLER_APP;
             $this->data['error_message'] = "Sorry !! You don't have permission to view details of this user.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
-        }        
+        }
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-        
+
         $user_profile_info = array();
         $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($profile_info)) {
@@ -212,26 +209,26 @@ class Reseller extends Role_Controller {
         $this->data['profile_info'] = $user_profile_info;
         $this->data['service_list'] = $service_list;
         $this->data['app'] = RESELLER_APP;
-        $this->template->load(null, 'reseller/show_reseller', $this->data);        
+        $this->template->load(null, 'reseller/show_reseller', $this->data);
     }
-    
+
     /*
      * This method will update reseller information
      * @param $user_id user id
      * @author nazmul hasan on 29th february 2016
      */
+
     public function update_reseller($user_id) {
-        $current_user_id = $this->session->userdata('user_id');        
+        $current_user_id = $this->session->userdata('user_id');
         $this->load->library('reseller_library');
         $parent_user_id = $this->reseller_library->get_parent_user_id($user_id);
-        if($current_user_id != $parent_user_id)
-        {
+        if ($current_user_id != $parent_user_id) {
             //you don't have permission to update this reseller
             $this->data['app'] = RESELLER_APP;
             $this->data['error_message'] = "Sorry !! You don't have permission to update this user.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
-        }        
+        }
         $service_list = $this->service_model->get_user_assigned_services($current_user_id)->result_array();
         $response = array();
         if (file_get_contents("php://input") != null) {
@@ -292,8 +289,7 @@ class Reseller extends Role_Controller {
                     'child_id_list' => $child_id_list,
                     'inactive_service_list' => $inactive_service_list
                 );
-                if($new_password != "")
-                {
+                if ($new_password != "") {
                     $additional_data['password'] = $new_password;
                 }
             }
@@ -306,7 +302,7 @@ class Reseller extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        
+
         $reseller_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($reseller_info_array)) {
             $reseller_info = $reseller_info_array[0];
@@ -335,15 +331,15 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_reseller', $this->data);
     }
-    
-    
+
     /*
      * This method will update user rate
      * @param $user_id, user id
      * @author nazmul hasan 29th february 2016
      */
+
     public function update_rate($user_id = 0) {
-        $parent_user_id = $this->session->userdata("user_id");        
+        $parent_user_id = $this->session->userdata("user_id");
         if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
@@ -362,7 +358,7 @@ class Reseller extends Role_Controller {
                         'charge' => $rate_info->charge
                     );
                     $new_updated_rate_list[] = $new_rate_info;
-                }                
+                }
             } else {
                 $parent_rate_list = $this->service_model->get_user_all_services($parent_user_id)->result_array();
                 if (!empty($parent_rate_list)) {
@@ -399,26 +395,21 @@ class Reseller extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        
+
         //only administrator will be able to update his/her rate
-        if($user_id == 0 || $user_id == $parent_user_id)
-        {
+        if ($user_id == 0 || $user_id == $parent_user_id) {
             $group = $this->session->userdata('group');
-            if($group != GROUP_ADMIN)
-            {
+            if ($group != GROUP_ADMIN) {
                 //you are not allowed to update rate
                 $this->data['app'] = RESELLER_APP;
                 $this->data['error_message'] = "Sorry !! You are not allowed to update your rate.";
                 $this->template->load(null, 'common/error_message', $this->data);
                 return;
             }
-        }
-        else
-        {
+        } else {
             //only parent will be able to update his/her child rate
             $successor_id_list = $this->reseller_library->get_successor_id_list($parent_user_id);
-            if(!in_array($user_id, $successor_id_list))
-            {
+            if (!in_array($user_id, $successor_id_list)) {
                 //you don't have permission to view details of this user
                 $this->data['app'] = RESELLER_APP;
                 $this->data['error_message'] = "Sorry !! You don't have permission to update rate of this user.";
@@ -435,11 +426,12 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_rate', $this->data);
     }
-    
+
     /*
      * This method will display user rate
      * @author nazmul hasan on 2nd March 2016
      */
+
     function show_user_rate() {
         $user_id = $this->session->userdata("user_id");
         $rate_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -447,28 +439,25 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/show_rate', $this->data);
     }
-    
+
     /*
      * This method will update user profile
      * @param $user_id user id
      * @author nazmul hasan on 2nd March 2016
      */
-    function update_user_profile($user_id = 0)
-    {
-        $current_user_id = $this->session->userdata('user_id'); 
-        if($user_id == 0 || $user_id == $current_user_id)
-        {
+
+    function update_user_profile($user_id = 0) {
+        $current_user_id = $this->session->userdata('user_id');
+        if ($user_id == 0 || $user_id == $current_user_id) {
             $user_id = $current_user_id;
-        }
-        else
-        {
+        } else {
             $this->data['app'] = RESELLER_APP;
             $this->data['error_message'] = "Sorry !! You don't have permission to update this user.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        
-        $this->load->library('reseller_library');      
+
+        $this->load->library('reseller_library');
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -503,9 +492,7 @@ class Reseller extends Role_Controller {
                         echo json_encode($response);
                         return;
                     }
-                }
-                else
-                {
+                } else {
                     $response["message"] = "Please Enter a Valid Cell Number !!";
                     echo json_encode($response);
                     return;
@@ -529,7 +516,7 @@ class Reseller extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        
+
         $reseller_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($reseller_info_array)) {
             $reseller_info = $reseller_info_array[0];
@@ -540,15 +527,16 @@ class Reseller extends Role_Controller {
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_user_profile', $this->data);
     }
+
     /*
      * This method will update user profile
      * @author nazmul hasan on 2nd March 2016
      */
-    function show_user_profile()
-    {
+
+    function show_user_profile($user_id = 0) {
         $user_id = $this->session->userdata('user_id');
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-        
+
         $user_profile_info = array();
         $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($profile_info)) {
@@ -558,13 +546,14 @@ class Reseller extends Role_Controller {
         $this->data['profile_info'] = $user_profile_info;
         $this->data['service_list'] = $service_list;
         $this->data['app'] = RESELLER_APP;
-        $this->template->load(null, 'reseller/show_user_profile', $this->data);   
+        $this->template->load(null, 'reseller/show_user_profile', $this->data);
     }
 
     /*
      * This method will return assigned service list of a user
      * @author nazmul hasan on 27th february 2016
      */
+
     function get_user_service_list() {
         $user_id = $this->session->userdata('user_id');
         $response = array();
@@ -581,12 +570,6 @@ class Reseller extends Role_Controller {
         $response['topup_service_allow_flag'] = $topup_service_allow_flag;
         echo json_encode($response);
     }
-
-    
-
-    
-
-    
 
     function get_reseller_service_rate() {
         $user_id = $this->session->userdata("user_id");
