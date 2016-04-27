@@ -1,4 +1,8 @@
-<script>
+<script type="text/javascript">
+    $(function () {
+        $('#start_date').Zebra_DatePicker();
+        $('#end_date').Zebra_DatePicker();
+    });
     function search_receive_history() {
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
@@ -24,7 +28,7 @@
             <li><input id="search_submit_btn" type="submit" size="18" value="Submit" onclick="search_receive_history()" class="btn btn-xs btn-default"></li>
         </ul>
     </ng-form>
-    <table class="table table-striped table-hover" ng-init="setPaymentInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>)">
+    <table class="table table-striped table-hover" ng-init="setReceiveInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
         <thead>
             <tr>
                 <th><a href="">Amount</a></th>
@@ -37,62 +41,43 @@
         <tbody>
         </tbody>
         <tfoot>
-            <tr ng-repeat="paymentInfo in paymentInfoList">
-                <th>{{paymentInfo.balance_in}}</th>
-                <th>
-                    <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_LOAD_BALANCE ?>'">
-                        Load Balance
-                    </span>
-                    <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_RECEIVE_CREDIT ?>'">
-                        Receive Credit
-                    </span>
-                    <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT ?>'">
-                        Return Credit
-                    </span>
+        <li style="display: none" dir-paginate="paymentInfo in paymentInfoList|itemsPerPage:pageSize" current-page="currentPage"></li>
+        <tr ng-repeat="paymentInfo in paymentInfoList">
+            <th>{{paymentInfo.balance_in}}</th>
+            <th>
+                <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_LOAD_BALANCE ?>'">
+                    Load Balance
+                </span>
+                <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_RECEIVE_CREDIT ?>'">
+                    Receive Credit
+                </span>
+                <span ng-if="paymentInfo.type_id == '<?php echo PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT ?>'">
+                    Return Credit
+                </span>
 
-                </th>
-                <th>{{paymentInfo.first_name}} {{paymentInfo.last_name}}</th>
-                <th>{{paymentInfo.description}}</th>
-                <th>{{paymentInfo.created_on}}</th>
-            </tr>
+            </th>
+            <th>{{paymentInfo.first_name}} {{paymentInfo.last_name}}</th>
+            <th>{{paymentInfo.description}}</th>
+            <th>{{paymentInfo.created_on}}</th>
+        </tr>
         </tfoot>
     </table>
-<!--    <div class="form-group">
+    <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>
                 <table>
                     <tbody>
-                        <tr><td>Total Payment :</td><td class="amt">0.00</td></tr>
-                        <tr><td>Total Return :</td><td class="amt">0.00</td></tr>
-                        <tr><td>Total Canceled :</td><td class="amt">0.00</td></tr>
-                        <tr><td>Total :</td><td class="amt">0.00</td></tr>
+                        <tr><td>Current Page Receive His:</td><td class="amt">{{currentPageAmount}}</td></tr>
+                        <tr><td>Total Receive History :</td><td class="amt">{{totalAmount}}</td></tr>
                     </tbody>
                 </table>
             </div>
         </div> 
     </div> 
-    <ul class="pagination pull-right">
-        <li>
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li><a ng-click="getReceiveHistoryByPagination('<?php echo INITIAL_OFFSET; ?>')">1</a></li>
-        <li><a ng-click="getReceiveHistoryByPagination('<?php echo INITIAL_LIMIT; ?>')">2</a></li>
-        <li><a ng-click="getReceiveHistoryByPagination('<?php echo INITIAL_LIMIT + INITIAL_LIMIT; ?>')">3</a></li>
-        <li><a ng-click="getReceiveHistoryByPagination('<?php echo INITIAL_LIMIT + INITIAL_LIMIT + INITIAL_LIMIT; ?>')">4</a></li>
-        <li><a ng-click="getReceiveHistoryByPagination('<?php echo INITIAL_LIMIT + INITIAL_LIMIT + INITIAL_LIMIT + INITIAL_LIMIT; ?>')">5</a></li>
-        <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>-->
+    <div class="other-controller">
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="getReceiveHistoryByPagination(newPageNumber)" template-url="<?php echo base_url(); ?>history/pagination_tmpl_load"></dir-pagination-controls>
+        </div>
+    </div>
 </div>
-<script type="text/javascript">
-    $(function () {
-        $('#start_date').Zebra_DatePicker();
-        $('#end_date').Zebra_DatePicker();
-    });
-</script>

@@ -148,7 +148,7 @@ class Transaction_library {
         $users_profit_list = $this->calculate_transaction_profit_chain($user_id, $service_id, $amount);
         return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
     }
-    
+
     /*
      * this method will add sms transcation
      * @param $transaction_list, transaction list
@@ -156,33 +156,24 @@ class Transaction_library {
      * @param $user_id, user id
      * @author nazmul hasan on 22nd April 2016
      */
-    public function add_sms_transactions($transaction_list, $message, $user_id)
-    {
+    public function add_sms_transactions($transaction_list, $message, $user_id) {
         //calculating sms counter. Right now we are assuming maximum sms length to 3
         $message_counter = 1;
         $message_length = strlen($message);
-        if($message_length <= MESSAGE_COUNTER1_LENGTH)
-        {
+        if ($message_length <= MESSAGE_COUNTER1_LENGTH) {
             $message_counter = 1;
-        }
-        else if($message_length <= MESSAGE_COUNTER2_LENGTH)
-        {
+        } else if ($message_length <= MESSAGE_COUNTER2_LENGTH) {
             $message_counter = 2;
-        }
-        else if($message_length <= MESSAGE_COUNTER3_LENGTH)
-        {
+        } else if ($message_length <= MESSAGE_COUNTER3_LENGTH) {
             $message_counter = 3;
-        }
-        else
-        {
+        } else {
             $this->transaction_model->set_error('error_message_length_limit_cross');
             return FALSE;
         }
         //calculating sms rate
         $sms_charge = 0;
         $user_service_info_array = $this->reseller_model->get_users_service_info(SERVICE_TYPE_ID_SEND_SMS, array($user_id))->result_array();
-        if(!empty($user_service_info_array))
-        {
+        if (!empty($user_service_info_array)) {
             $sms_charge = $user_service_info_array[0]['charge'];
             //checking available balance
             $amount = count($transaction_list) * $sms_charge * $message_counter;
@@ -212,10 +203,8 @@ class Transaction_library {
             } else {
                 $this->set_error('error_insufficient_balance');
                 return FALSE;
-            }            
-        }
-        else
-        {
+            }
+        } else {
             $this->transaction_model->set_error('error_message_charge_empty');
             return FALSE;
         }
@@ -280,8 +269,9 @@ class Transaction_library {
     /*
      * this method return user transaction list
      * @param $service_id_list, service id list of transactions
-     * @param $from_date, start date in unix format
-     * @param $to_date, end date in unix format
+     * @param $status_id_list, status id list of transactions
+     * @param $from_date, start date in YYYY-MM-DD format
+     * @param $to_date, end date in YYYY-MM-DD format
      * @param $limit, limit
      * @param $offset, offset
      * @param @where, where clause
@@ -289,21 +279,43 @@ class Transaction_library {
      */
 
     public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $where = array()) {
+        $this->load->library('date_utils');
+        if ($from_date != 0) {
+            $from_date = $this->date_utils->server_start_unix_time_of_date($from_date);
+        }
+        if ($to_date != 0) {
+            $to_date = $this->date_utils->server_end_unix_time_of_date($to_date);
+        }
+
+        if (!empty($where)) {
+            $this->transaction_model->where($where);
+        }
+        $total_transactions = 0;
+        $total_amount = 0;
+        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $from_date, $to_date)->result_array();
+        if (!empty($transaction_summary_array)) {
+            $total_transactions = (int) $transaction_summary_array[0]['total_transactions'];
+            $total_amount = (double)$transaction_summary_array[0]['total_amount'];
+        }
         if (!empty($where)) {
             $this->transaction_model->where($where);
         }
         $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $status_id_list, $from_date, $to_date, $limit, $offset)->result_array();
-        $this->load->library('date_utils');
-        $transation_info_list = array();
+        $transaction_info_list = array();
         if (!empty($transaction_list)) {
             foreach ($transaction_list as $transaction_info) {
                 $transaction_info['created_on'] = $this->date_utils->get_unix_to_display($transaction_info['created_on']);
-                $transation_info_list[] = $transaction_info;
+                $transaction_info_list[] = $transaction_info;
             }
         }
-        return $transation_info_list;
+
+        $transaction_information = array();
+        $transaction_information['total_transactions'] = $total_transactions;
+        $transaction_information['total_amount'] = $total_amount;
+        $transaction_information['transaction_list'] = $transaction_info_list;
+        return $transaction_information;
     }
-    
+
     /*
      * this method return user sms transaction list
      * @param $from_date, start date in unix format

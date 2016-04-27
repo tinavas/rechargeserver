@@ -135,7 +135,9 @@ INSERT INTO `users_services` (`id`, `user_id`, `service_id`, `rate`, `commission
 (6, 1, 102, 12.0, 5.0, 2.0,  1),
 (7, 1, 103, 11.0, 5.0, 2.0,  1),
 (8, 1, 104, 10.0, 5.0, 2.0,  1),
-(9, 1, 105, 10.0, 5.0, 2.0,  1);
+(9, 1, 105, 10.0, 5.0, 2.0,  1),
+(10, 1, 1001, 1.0, 0.0, 0.5,  1);
+
   
 CREATE TABLE IF NOT EXISTS `user_transaction_statuses` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

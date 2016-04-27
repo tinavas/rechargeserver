@@ -16,7 +16,6 @@ angular.module('controller.Report', ['services.Report']).
 
             $scope.setProfitList = function (profitList) {
                 $scope.profitList = JSON.parse(profitList);
-                console.log($scope.profitList);
             }
         });
 

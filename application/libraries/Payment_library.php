@@ -45,27 +45,40 @@ class Payment_library {
      * This method will return payment history
      * @author nazmul hasan on 3rd March 2016
      */
-    public function get_payment_history($type_id_list = array(), $status_id_list = array(), $start_date = 0, $end_date = 0, $limit = 0, $offset = 0, $order = 'desc', $where = array())
-    {
+    public function get_payment_history($type_id_list = array(), $status_id_list = array(), $start_date = 0, $end_date = 0, $limit = 0, $offset = 0, $order = 'desc', $where = array()) {
         $this->load->library('Date_utils');
         $payment_list = array();
-        if(!empty($where))
-        {
-            $this->payment_model->where($where);            
-        }
+        $payment_information = array();
         $start_time = 0;
         $end_time = 0;
-        if($start_date != 0 && $end_date != 0)
-        {            
+        if ($start_date != 0 && $end_date != 0) {
             $start_time = $this->date_utils->server_start_unix_time_of_date($start_date);
             $end_time = $this->date_utils->server_end_unix_time_of_date($end_date);
-        }  
+        }
+        $total_transactions = 0;
+        $total_amount_out = 0;
+        $total_amount_in = 0;
+        if (!empty($where)) {
+            $this->payment_model->where($where);
+        }
+        $payment_summery_array = $this->payment_model->get_payment_history_summary($type_id_list, $status_id_list, $start_time, $end_time)->result_array();
+        if (!empty($payment_summery_array)) {
+            $total_transactions = (int) $payment_summery_array[0]['total_transactions'];
+            $total_amount_out = (int) $payment_summery_array[0]['total_amount_out'];
+            $total_amount_in = (int) $payment_summery_array[0]['total_amount_in'];
+        }
+        if (!empty($where)) {
+            $this->payment_model->where($where);
+        }
         $payment_list_array = $this->payment_model->get_payment_history($type_id_list, $status_id_list, $start_time, $end_time, $limit, $offset, $order)->result_array();
-        foreach($payment_list_array as $payment_info)
-        {
+        foreach ($payment_list_array as $payment_info) {
             $payment_info['created_on'] = $this->date_utils->get_unix_to_display($payment_info['created_on']);
             $payment_list[] = $payment_info;
         }
-        return $payment_list;
+        $payment_information['total_transactions'] = $total_transactions;
+        $payment_information['total_amount_out'] = $total_amount_out;
+        $payment_information['total_amount_in'] = $total_amount_in;
+        $payment_information['payment_list'] = $payment_list;
+        return $payment_information;
     }
 }

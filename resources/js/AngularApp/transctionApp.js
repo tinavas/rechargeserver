@@ -1,6 +1,7 @@
 angular.module("app.Transction", [
     'controller.Transction',
     'controller.Left',
+    'angularUtils.directives.dirPagination',
     'ui.bootstrap'
 ]).directive('fileChange', ['$parse', function ($parse) {
         return{

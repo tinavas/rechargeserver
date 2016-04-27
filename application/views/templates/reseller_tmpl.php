@@ -22,6 +22,7 @@
 
 
         <script src="<?php echo base_url(); ?>resources/js/jquery.min.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>resources/js/jquery-2.0.3.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/chosen.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/datepicker.js" type="text/javascript"></script>    
         <script src="<?php echo base_url(); ?>resources/js/ajax_req.js" type="text/javascript"></script>
@@ -38,6 +39,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular-file-upload.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/csv_file_dependencies/angular-sanitize.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/csv_file_dependencies/ng-csv.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/dirPagination.js"></script>
 
         <!--<angular Services>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/AngularService/transctionService.js"></script>

@@ -141,7 +141,7 @@
                                 </ng-form>
                             </div>
                             <div class="row form-group"></div>
-<!--                            <div class="row form-group">
+                            <div class="row form-group">
                                 <div class="col-md-3">
                                     <a href="<?php echo base_url() . "files/topup_csv_file_dowload" ?>"><label class="cursor_pointer">CSV Download</label></a>
                                 </div>
@@ -154,9 +154,9 @@
                                         <input class="button-custom" type="button" value="Browse..." onclick="document.getElementById('selectedFile').click();" />
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
 
-<!--                            <div class="row">
+                            <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">
                                         <thead>
@@ -224,7 +224,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
                         </td>
 
                         <td>
@@ -253,8 +253,6 @@
                             </div></td>
                     </tr>
                 </tbody></table>
-
-
 
         </div> 
     </div>

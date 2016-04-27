@@ -9,10 +9,10 @@
                 return;
             }
         }
-        angular.element($('#send_sms_id')).scope().sendSMS(function(data) {
+        angular.element($('#send_sms_id')).scope().sendSMS(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function() {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>transaction/sms';
             });
         });
@@ -20,11 +20,11 @@
 </script>
 <div class="loader"></div>
 <div class="ezttle"><span class="text">SMS</span></div>
-<div class="mypage"  ng-controller="transctionController">
+<div class="mypage"   ng-controller="smsFileUploadController">
     <div class="row" style="margin-top:5px;">
         <div class="col-md-12 fleft">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
-            <table style="width:100%;" ng-controller="smsFileUploadController">
+            <table style="width:100%;" >
                 <tbody>
                     <tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 20px;">
@@ -73,7 +73,8 @@
                                                 <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size / 1024 / 1024|number:2 }} MB</td>
                                                 <td ng-show="uploader.isHTML5">
                                                     <div class="progress" style="margin-bottom: 0;">
-                                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                        <div class="progress-bar" role="progressbar" ng-style="{
+                                                                    'width': item.progress + '%' }"></div>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
@@ -121,13 +122,19 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="other-controller">
+                <div class="text-center">
+                    <dir-pagination-controls boundary-links="true" on-page-change="getPaymentHistoryByPagination(newPageNumber)" template-url="<?php echo base_url(); ?>history/pagination_tmpl_load"></dir-pagination-controls>
+                </div>
+            </div>
+
         </div> 
     </div>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#textarea_message').keyup(function() {
+            $(document).ready(function() {
+    $('#textarea_message').keyup(function() {
             var chars = this.value.length;
             var messages = Math.ceil(chars / 160);
             var remaining = messages * 160 - (chars % (messages * 160) || messages * 160);

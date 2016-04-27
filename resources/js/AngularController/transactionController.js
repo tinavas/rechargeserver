@@ -1,5 +1,7 @@
 var transactionController = angular.module('controller.Transction', ['services.Transction', 'ngSanitize', 'ngCsv', 'angularFileUpload']).
         controller('transctionController', function ($scope, transctionService, $filter, FileUploader) {
+            $scope.currentPage = 1;
+            $scope.pageSize = 10;
             $scope.bkashInfo = {};
             $scope.dbblInfo = {};
             $scope.mCashInfo = {};
@@ -9,11 +11,14 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.transctionList = [];
             $scope.transctionInfoList = [];
             $scope.paymentInfoList = [];
+            $scope.paymentSearchList = [];
             $scope.topupTypeList = [];
             $scope.topupOperatorList = [];
             $scope.topupDataList = [];
             $scope.allow_transction = true;
-
+            $scope.totalAmount = 0;
+            $scope.currentPageAmount = 0;
+            $scope.searchInfo = {};
             $scope.bkash = function (callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
@@ -73,84 +78,295 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.appendTopUpInfo = function (topUpInfo, requestFunction) {
                 $scope.topupDataList.push(topUpInfo);
                 requestFunction($scope.topupDataList);
-                console.log($scope.topupDataList);
             }
 
 
             $scope.setTopUpData = function (topEmptyList) {
                 $scope.topupDataList = [];
-                console.log($scope.topupDataList);
-            }
-            $scope.setPaymentInfoList = function (paymentInfoList) {
-                $scope.paymentInfoList = JSON.parse(paymentInfoList);
+
             }
 
-            $scope.getAllHistory = function (startDate, endDate) {
-                transctionService.getAllHistory(startDate, endDate).
-                        success(function (data, status, headers, config) {
-                            $scope.transctionInfoList = data.transaction_list
-                        });
+            function getCurrentPagePayment() {
+                var currentPageAmount = 0;
+                for (var i = 0; i < $scope.paymentInfoList.length; i++) {
+                    currentPageAmount = currentPageAmount + +$scope.paymentInfoList[i].balance_out;
+                }
+                $scope.currentPageAmount = currentPageAmount;
             }
+            $scope.setPaymentInfoList = function (paymentInfoList, collectionCounter, totalAmount) {
+                $scope.totalAmount = totalAmount;
+                $scope.paymentInfoList = JSON.parse(paymentInfoList);
+                getCurrentPagePayment();
+                setCollectionLength(collectionCounter);
+            };
+            function getCurrentPageReceivePayment() {
+                var currentPageAmount = 0;
+                for (var i = 0; i < $scope.paymentInfoList.length; i++) {
+                    currentPageAmount = currentPageAmount + +$scope.paymentInfoList[i].balance_in;
+                }
+                $scope.currentPageAmount = currentPageAmount;
+            }
+            $scope.setReceiveInfoList = function (paymentInfoList, collectionCounter, totalAmount) {
+                $scope.totalAmount = totalAmount;
+                $scope.paymentInfoList = JSON.parse(paymentInfoList);
+                getCurrentPageReceivePayment();
+                setCollectionLength(collectionCounter);
+            };
             $scope.getPaymentHistory = function (startDate, endDate) {
-                var searchParam = {};
                 if (startDate != "" && endDate != "") {
-                    searchParam.startDate = startDate;
-                    searchParam.endDate = endDate;
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
                 }
                 if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
-                    searchParam.paymentTypeId = $scope.paymentType.key;
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
-                transctionService.getPaymentHistory(searchParam).
+                transctionService.getPaymentHistory($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.paymentInfoList = data.payment_info_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPagePayment();
+                            setCollectionLength(data.total_transactions);
                         });
+            };
 
-
-            }
-            $scope.getPaymentHistoryByPagination = function (offset) {
-                transctionService.getPaymentHistoryByPagination(offset).
-                        success(function (data, status, headers, config) {
-                            $scope.paymentInfoList = data.payment_info_list;
-                        });
-
-            }
             $scope.getReceiveHistory = function (startDate, endDate) {
-                var searchParam = {};
                 if (startDate != "" && endDate != "") {
-                    searchParam.startDate = startDate;
-                    searchParam.endDate = endDate;
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
                 }
-                if (typeof $scope.paymentType != "undefined") {
-                    searchParam.paymentTypeId = $scope.paymentType.key;
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
-
-                transctionService.getReceiveHistory(searchParam).
+                transctionService.getReceiveHistory($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.paymentInfoList = data.payment_info_list;
-                            console.log($scope.paymentInfoList);
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageReceivePayment();
+                            setCollectionLength(data.total_transactions);
                         });
+            };
 
-
-            }
-            $scope.getReceiveHistoryByPagination = function (offset) {
-                transctionService.getReceiveHistoryByPagination(offset).
+            $scope.getTopupTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getTopupTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
-                            $scope.paymentInfoList = data.payment_info_list;
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
                         });
-
-            }
-            $scope.getTransctionByPagination = function (offset) {
-                transctionService.getTransctionByPagination(offset).
+            };
+            $scope.getBkashTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getBkashTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
-                            $scope.transctionInfoList = data.transaction_list
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+
+
+            $scope.getDBBLTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getDBBLTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+            $scope.getMcashTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getMcashTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+
+            $scope.getUcashTransactionList = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+                }
+                transctionService.getUcashTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+
+
+
+
+            $scope.getPaymentHistoryByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getPaymentHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            if (typeof data.payment_info_list != "undefined") {
+                                $scope.paymentInfoList = data.payment_info_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPagePayment();
+                            }
+                        });
+            };
+            $scope.getReceiveHistoryByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getReceiveHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            if (typeof data.payment_info_list != "undefined") {
+                                $scope.paymentInfoList = data.payment_info_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPageReceivePayment();
+                            }
+                        });
+            };
+
+            $scope.getTopupByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getTopupTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                        });
+            };
+            $scope.getBkashByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getBkashTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                        });
+            };
+            $scope.getDBBLByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getDBBLTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                        });
+            };
+            $scope.getMcashByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getMcashTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                        });
+            };
+            $scope.getUcashByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getUcashTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                        });
+            };
+
+            $scope.pageChangeHandler = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getPaymentHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            if (typeof data.payment_info_list != "undefined") {
+                                $scope.paymentInfoList = data.payment_info_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPagePayment();
+                            }
+                        });
+            };
+
+
+
+// return pagination collection initital index;
+            function getOffset(number) {
+                var initIndex;
+                initIndex = $scope.pageSize * (number - 1);
+                return initIndex;
+            }
+            function getCurrentPageTransctionAmount() {
+                var currentPageAmount = 0;
+                for (var i = 0; i < $scope.transctionInfoList.length; i++) {
+                    currentPageAmount = currentPageAmount + +$scope.transctionInfoList[i].amount;
+                }
+                $scope.currentPageAmount = currentPageAmount;
+            }
+            $scope.setTransactionInfoList = function (transctionList, collectionCounter, totalAmount) {
+                $scope.transctionInfoList = JSON.parse(transctionList);
+                $scope.totalAmount = totalAmount;
+                getCurrentPageTransctionAmount();
+                setCollectionLength(collectionCounter);
+            };
+
+            $scope.getAllHistory = function (startDate, endDate) {
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+//                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+//                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
+//                }
+                transctionService.getAllHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+            $scope.getTransctionByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getAllHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            if (typeof data.transaction_list != "undefined") {
+                                $scope.transctionInfoList = data.transaction_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPageTransctionAmount();
+                            }
                         });
 
-            }
-
+            };
 
             $scope.setPaymentTypeIds = function (paymentTypeIds) {
                 $scope.paymentTypeIds = JSON.parse(paymentTypeIds);
-                console.log($scope.paymentTypeIds);
             }
             $scope.setTransctionList = function (transctionList) {
                 $scope.transctionList = JSON.parse(transctionList);
@@ -162,9 +378,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 $scope.topupOperatorList = JSON.parse(topupOperatorList);
             }
 
-            $scope.setTransactionInfoList = function (transctionList) {
-                $scope.transctionInfoList = JSON.parse(transctionList);
-            }
+
 
             $scope.multipuleTopup = function (callbackFunction) {
                 if ($scope.allow_transction == false) {
@@ -178,9 +392,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             }
-            
-            
-            
+
+
+
             //import csv file 
             var uploader = $scope.uploader = new FileUploader({
                 url: 'http://localhost/rechargeserver/files/upload'
@@ -224,22 +438,22 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
             $scope.transactionDataList = [];
             /*$scope.handler = function (e, files) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var string = reader.result;
-                    var fileData = $filter('csvToArray')(string);
-                    
-                    if (fileData[0].errorExist != true) {
-                        $scope.transactionDataList = fileData;
-                    }
-                    //do what you want with obj !
-                }
-                reader.readAsText(files[0]);
-            }*/
+             var reader = new FileReader();
+             reader.onload = function (e) {
+             var string = reader.result;
+             var fileData = $filter('csvToArray')(string);
+             
+             if (fileData[0].errorExist != true) {
+             $scope.transactionDataList = fileData;
+             }
+             //do what you want with obj !
+             }
+             reader.readAsText(files[0]);
+             }*/
             /*$scope.deleteTransction = function (transactionInfo) {
-                var index = $scope.transactionDataList.indexOf(transactionInfo);
-                $scope.transactionDataList.splice(index, 1);
-            }*/
+             var index = $scope.transactionDataList.indexOf(transactionInfo);
+             $scope.transactionDataList.splice(index, 1);
+             }*/
 
 
             $scope.PhoneNumberValidityCheck = function (phoneNumber) {
@@ -264,62 +478,87 @@ var transactionController = angular.module('controller.Transction', ['services.T
 //                console.log("click click click");
 //            };
 
-            
+
+// pagination next data
+            $scope.pageChangeHandler = function (num) {
+                var initIndex = getOffset(num);
+
+                $scope.searchInfo.offset = initIndex;
+                transctionService.getPaymentHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            var tempCollectionLength = 0;
+                            var collectionIndex = 0;
+                            if (typeof data.payment_info_list != "undefined") {
+                                $scope.paymentInfoList = data.payment_info_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPagePayment();
+                            }
+                        });
+            };
+
+// return pagination collection initital index;
+            function getOffset(number) {
+                var initIndex;
+                initIndex = $scope.pageSize * (number - 1);
+                return initIndex;
+            }
+
+
         });
 
 /*transactionController.filter('csvToArray', function () {
-    return function (input) {
-        var rows = input.split('\r\n');
-        var transactionDataList = [];
-        //remove file header 
-        rows.splice(0, 1);
-        //remove example data if given while providing csv file 
-//        rows.splice(0, 1);
-        //convert file rows to array 
-        angular.forEach(rows, function (val, index) {
-            var trmpIndex = index + +3;
-            if (val != "") {
-                var row = val.split(',');
-                var tempObj = {};
-                var phoneOperatorSelection = "0";
-                angular.forEach(row, function (key, element) {
-                    if (element == 0) {
-                        var tempNumber = 0 + key;
-                        var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
-                        var validPhoneNumber = tempNumber.match(regexp);
-//                        console.log(validPhoneNumber);
-                        if (validPhoneNumber) {
-                            var tempOperatorType = validPhoneNumber[1];
-                            var splits = tempOperatorType.split('01');
-                            phoneOperatorSelection = splits[1];
-                            tempObj.number = tempNumber;
-                        } else {
-                            transactionDataList.unshift({errorExist: true});
-                            alert("Please Eenter a vaild Phone number at your csv file row number " + trmpIndex);
-                        }
-
-                    }
-//                    console.log(phoneOperatorSelection);
-                    if (element == 1) {
-                        tempObj.amount = key;
-                    }
-                    if (element == 2) {
-                        tempObj.topupOperatorId = key;
-                    }
-                    if (element == 3) {
-                        tempObj.topupType = key;
-                    }
-                });
-                if (tempObj.number != "" && tempObj.amount) {
-                    transactionDataList.push(tempObj);
-                }
-            }
-        });
-
-        return transactionDataList;
-    };
-
-
-
-});*/
+ return function (input) {
+ var rows = input.split('\r\n');
+ var transactionDataList = [];
+ //remove file header 
+ rows.splice(0, 1);
+ //remove example data if given while providing csv file 
+ //        rows.splice(0, 1);
+ //convert file rows to array 
+ angular.forEach(rows, function (val, index) {
+ var trmpIndex = index + +3;
+ if (val != "") {
+ var row = val.split(',');
+ var tempObj = {};
+ var phoneOperatorSelection = "0";
+ angular.forEach(row, function (key, element) {
+ if (element == 0) {
+ var tempNumber = 0 + key;
+ var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
+ var validPhoneNumber = tempNumber.match(regexp);
+ //                        console.log(validPhoneNumber);
+ if (validPhoneNumber) {
+ var tempOperatorType = validPhoneNumber[1];
+ var splits = tempOperatorType.split('01');
+ phoneOperatorSelection = splits[1];
+ tempObj.number = tempNumber;
+ } else {
+ transactionDataList.unshift({errorExist: true});
+ alert("Please Eenter a vaild Phone number at your csv file row number " + trmpIndex);
+ }
+ 
+ }
+ //                    console.log(phoneOperatorSelection);
+ if (element == 1) {
+ tempObj.amount = key;
+ }
+ if (element == 2) {
+ tempObj.topupOperatorId = key;
+ }
+ if (element == 3) {
+ tempObj.topupType = key;
+ }
+ });
+ if (tempObj.number != "" && tempObj.amount) {
+ transactionDataList.push(tempObj);
+ }
+ }
+ });
+ 
+ return transactionDataList;
+ };
+ 
+ 
+ 
+ });*/
 

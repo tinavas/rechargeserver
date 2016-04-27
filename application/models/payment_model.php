@@ -63,6 +63,37 @@ class Payment_model extends Ion_auth_model {
                         ->get();
     }
     
+        /*
+     * This method will return payment history summery
+     * @param $type_id_list, payment types
+     * @param $status_id_list, status id list
+     * @param $start_time start time in unix
+     * @param $end_time end time in unix
+     * @author rashida on 26th April 2016
+     */
+    
+    function get_payment_history_summary($type_id_list = array(), $status_id_list = array(), $start_time = 0, $end_time = 0){
+        //run each where that was passed
+         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        if ($start_time != 0 && $end_time != 0) {
+            $this->db->where($this->tables['user_payments'] . '.created_on >=', $start_time);
+            $this->db->where($this->tables['user_payments'] . '.created_on <=', $end_time);
+        }
+        if (!empty($type_id_list)) {
+            $this->db->where_in($this->tables['user_payments'] . '.type_id', $type_id_list);
+        }
+        if (!empty($status_id_list)) {
+            $this->db->where_in($this->tables['user_payments'] . '.status_id', $status_id_list);
+        }
+        return $this->db->select('COUNT(*) as total_transactions, sum(balance_out) as total_amount_out, sum(balance_in) as total_amount_in')
+                        ->from($this->tables['user_payments'])
+                        ->get();
+   }
     
     public function get_receive_history($type_id_list = array(), $limit = 0) {
         //run each where that was passed

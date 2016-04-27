@@ -23,7 +23,7 @@ class Transaction extends Role_Controller {
     public function index() {
         
     }
-    
+
     public function multipule_topups() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
@@ -144,7 +144,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->load->model('service_model');
         $topup_type_list = $this->service_model->get_all_operator_types()->result_array();
@@ -235,7 +239,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/bkash/index', $this->data);
@@ -321,7 +329,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/dbbl/index', $this->data);
@@ -406,7 +418,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/mcash/index', $this->data);
@@ -492,7 +508,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN),array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/ucash/index', $this->data);
@@ -591,7 +611,11 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
-        $transaction_list = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), TRANSACTION_PAGE_DEFAULT_LIMIT, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, 0, 0, $where);
+        $transaction_list = array();
+        if (!empty($transaction_list_array)) {
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->load->model('service_model');
         $topup_type_list = $this->service_model->get_all_operator_types()->result_array();
@@ -602,13 +626,13 @@ class Transaction extends Role_Controller {
 
         $this->template->load(null, 'transaction/topup/index', $this->data);
     }
-    
+
     /*
      * This method will send bulk sms
      * @author nazmul hasan on 17th april
      */
-    public function sms()
-    {
+
+    public function sms() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -635,14 +659,12 @@ class Transaction extends Role_Controller {
                     $sms_data_info['user_id'] = $user_id;
                     $sms_data_info['service_id'] = SERVICE_TYPE_ID_SEND_SMS;
                     $transction_list[] = $sms_data_info;
-                    $sms = "";                    
+                    $sms = "";
                 }
-                if (property_exists($requestInfo, "smsInfo"))
-                {
+                if (property_exists($requestInfo, "smsInfo")) {
                     $smsInfo = $requestInfo->smsInfo;
                     $sms = $smsInfo->sms;
-                    if($sms == "")
-                    {
+                    if ($sms == "") {
                         $response["message"] = "Please write sms text.";
                         echo json_encode($response);
                         return;
