@@ -19,6 +19,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.totalAmount = 0;
             $scope.currentPageAmount = 0;
             $scope.searchInfo = {};
+            $scope.smsInfo = {};
             $scope.bkash = function (callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
@@ -81,10 +82,28 @@ var transactionController = angular.module('controller.Transction', ['services.T
             }
 
 
+            $scope.setTransctionDataList = function (transactionList) {
+                $scope.transactionDataList = JSON.parse(transactionList);
+            };
+
+
+
+            $scope.sendSMS = function (callbackFunction) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
+                transctionService.sendSMS($scope.transactionDataList, $scope.smsInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
+                            callbackFunction(data);
+                        });
+
+            };
             $scope.setTopUpData = function (topEmptyList) {
                 $scope.topupDataList = [];
 
-            }
+            };
 
             function getCurrentPagePayment() {
                 var currentPageAmount = 0;
@@ -514,10 +533,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
              }
              reader.readAsText(files[0]);
              }*/
-            /*$scope.deleteTransction = function (transactionInfo) {
-             var index = $scope.transactionDataList.indexOf(transactionInfo);
-             $scope.transactionDataList.splice(index, 1);
-             }*/
+            $scope.deleteTransction = function (transactionInfo) {
+                var index = $scope.transactionDataList.indexOf(transactionInfo);
+                $scope.transactionDataList.splice(index, 1);
+            };
 
 
             $scope.PhoneNumberValidityCheck = function (phoneNumber) {

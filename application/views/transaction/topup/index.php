@@ -1,5 +1,19 @@
 <script>
 
+    $(function () {
+        error_message = '<?php
+if (isset($error_message)) {
+    echo $error_message;
+}
+?>';
+        if (error_message != "") {
+            console.log(error_message);
+            $("#content").html(error_message);
+            $('#common_modal').modal('show');
+        }
+
+
+    });
     function top_up(topUpInfo) {
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
@@ -30,34 +44,39 @@
         });
     }
 
-    function add_multipule_topup(transctionDataList) {
 
-        for (var i = 0; i < transctionDataList.length; i++) {
-            var index = i + +1;
-            var transationInfo = transctionDataList[i];
-            if (typeof transationInfo.number == "undefined" || transationInfo.number.length == 0) {
-                $("#content").html("Please give a TopUP Number at transction index " + index);
-                $('#common_modal').modal('show');
-                return;
-            }
-            if (typeof transationInfo.amount == "undefined" || transationInfo.amount.length == 0) {
-                $("#content").html("Please give an amount at transction index " + index);
-                $('#common_modal').modal('show');
-                return;
-            }
-            if (typeof transationInfo.topupType == "undefined" || transationInfo.topupType.length == 0) {
-                $("#content").html("Please Select a Operator Type at transction index " + index)
-                $('#common_modal').modal('show');
-                return;
-            }
-            if (typeof transationInfo.topupOperatorId == "undefined" || transationInfo.topupOperatorId.length == 0) {
-                $("#content").html("Please Select an Operator at transction index " + index)
-                $('#common_modal').modal('show');
-                return;
+
+    function add_multipule_topup(transctionDataList) {
+        if (transctionDataList.length <= 0) {
+            $("#content").html("Please upload a XLSX file  " );
+            $('#common_modal').modal('show');
+            return;
+        } else {
+            for (var i = 0; i < transctionDataList.length; i++) {
+                var index = i + +1;
+                var transationInfo = transctionDataList[i];
+                if (typeof transationInfo.number == "undefined" || transationInfo.number.length == 0) {
+                    $("#content").html("Please give a TopUP Number at transction index " + index);
+                    $('#common_modal').modal('show');
+                    return;
+                }
+                if (typeof transationInfo.amount == "undefined" || transationInfo.amount.length == 0) {
+                    $("#content").html("Please give an amount at transction index " + index);
+                    $('#common_modal').modal('show');
+                    return;
+                }
+                if (typeof transationInfo.topupType == "undefined" || transationInfo.topupType.length == 0) {
+                    $("#content").html("Please Select a Operator Type at transction index " + index)
+                    $('#common_modal').modal('show');
+                    return;
+                }
+                if (typeof transationInfo.topupOperatorId == "undefined" || transationInfo.topupOperatorId.length == 0) {
+                    $("#content").html("Please Select an Operator at transction index " + index)
+                    $('#common_modal').modal('show');
+                    return;
+                }
             }
         }
-
-
         angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
@@ -142,57 +161,28 @@
                             </div>
                             <div class="row form-group"></div>
                             <div class="row form-group">
-                                <div class="col-md-3">
-                                    <a href="<?php echo base_url() . "files/topup_csv_file_dowload" ?>"><label class="cursor_pointer">CSV Download</label></a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="<?php echo base_url() . "files/topup_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
+                                <div class="col-md-6">
+                                    <a href="<?php echo base_url() . FILES_PATH.SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="pull-right">
-                                        Upload CSV: <input id="selectedFile" type="file" style="display: none;" file-change="handler($event,files)" ng-model="transactionDataList" nv-file-select="" uploader="uploader" />
-                                        <input class="button-custom" type="button" value="Browse..." onclick="document.getElementById('selectedFile').click();" />
+                                    <a href="<?php echo base_url() . "files/topup_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <?php echo form_open_multipart('files/import_topup_xlsx', array('name' => 'file_upload')); ?>
+                                    <div class="form-group">
+                                        <label for="fileupload">Upload:</label>
+                                        <input id="fileupload" type="file" name="userfile">
+                                        <p class="help-block">Select ".XLSX" files only.</p>
+                                        <input id="submit_btn" name="submit_btn" value="Upload" type="submit" class="button-custom"/>
                                     </div>
+                                    <?php echo form_close(); ?>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th width="50%">Name</th>
-                                                <th ng-show="uploader.isHTML5">Size</th>
-                                                <th ng-show="uploader.isHTML5">Progress</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="item in uploader.queue">
-                                                <td><strong>{{ item.file.name}}</strong></td>
-                                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size / 1024 / 1024|number:2 }} MB</td>
-                                                <td ng-show="uploader.isHTML5">
-                                                    <div class="progress" style="margin-bottom: 0;">
-                                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                                </td>
-                                                <td nowrap>
-                                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                                        <span class="glyphicon glyphicon-upload"></span> Upload
-                                                    </button>
-                                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                     <table class="table10 form-group" cellspacing="0">
                                         <thead>
                                             <tr>	
@@ -204,18 +194,20 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr ng-repeat="(key, transactionInfo) in transactionDataList">
-                                                <td>
-                                                    {{key + +1}}
-                                                </td>
-                                                <td>{{transactionInfo.number}}</td>
-                                                <td>{{transactionInfo.amount}}</td>
-                                                <td>{{transactionInfo.topupOperatorId}}</td>
-                                                <td>{{transactionInfo.topupType}}</td>
-                                                <td style="text-align: center; cursor: pointer;" ng-click="deleteTransction(transactionInfo)"><div class="glyphicon glyphicon-trash"></div></td>
-                                            </tr>
-                                        </tbody>
+                                        <?php if (isset($transactions_data)) { ?>
+                                            <tbody ng-init="setTransctionDataList(<?php echo htmlspecialchars(json_encode($transactions_data)); ?>)">
+                                                <tr ng-repeat="(key, transactionInfo) in transactionDataList">
+                                                    <td>
+                                                        {{key + +1}}
+                                                    </td>
+                                                    <td>{{transactionInfo.number}}</td>
+                                                    <td>{{transactionInfo.amount}}</td>
+                                                    <td>{{transactionInfo.topupOperatorId}}</td>
+                                                    <td>{{transactionInfo.topupType}}</td>
+                                                    <td style="text-align: center; cursor: pointer;" ng-click="deleteTransction(transactionInfo)"><div class="glyphicon glyphicon-trash"></div></td>
+                                                </tr>
+                                            </tbody>
+                                        <?php } ?>
                                     </table>
 
                                     <div class="row">

@@ -19,33 +19,38 @@ class Transaction_model extends Ion_auth_model {
         $current_time = now();
         foreach ($transction_list as $transaction_info) {
             $service_id = $transaction_info['service_id'];
-            $transaction_info_for_webservice = [];
+            $transaction_info_for_webservice = array();
             if ($service_id == SERVICE_TYPE_ID_BKASH_CASHIN) {
-                $api_key = API_KEY_BKASH_CASHIN;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_BKASH_CASHIN;
             } else if ($service_id == SERVICE_TYPE_ID_DBBL_CASHIN) {
-                $api_key = API_KEY_DBBL_CASHIN;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_DBBL_CASHIN;
             } else if ($service_id == SERVICE_TYPE_ID_MCASH_CASHIN) {
-                $api_key = API_KEY_MKASH_CASHIN;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_MKASH_CASHIN;
             } else if ($service_id == SERVICE_TYPE_ID_UCASH_CASHIN) {
-                $api_key = API_KEY_UKASH_CASHIN;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_UKASH_CASHIN;
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_GP) {
-                $api_key = API_KEY_CASHIN_GP;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_GP;
+                $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_ROBI) {
-                $api_key = API_KEY_CASHIN_ROBI;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_ROBI;
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_BANGLALINK) {
-                $api_key = API_KEY_CASHIN_BANGLALINK;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_BANGLALINK;
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_AIRTEL) {
-                $api_key = API_KEY_CASHIN_AIRTEL;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_AIRTEL;
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_TELETALK) {
-                $api_key = API_KEY_CASHIN_TELETALK;
+                $ $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_TELETALK;
             }
-            $transaction_info_for_webservice = array(
-                'id' => $transaction_info['mapping_id'],
-                'APIKey' => $api_key,
-                'amount' => $transaction_info['amount'],
-                'cell_no' => $transaction_info['cell_no'],
-                'description' => $transaction_info['description']
-            );
+            $transaction_info_for_webservice[mapping_id] = $transaction_info['mapping_id'];
+            $transaction_info_for_webservice[service_id] = $service_id;
+            $transaction_info_for_webservice[amount] = $transaction_info['amount'];
+            $transaction_info_for_webservice[cell_no] = $transaction_info['cell_no'];
+            $transaction_info_for_webservice[description] = $transaction_info['description'];
+//                'id' => $transaction_info['mapping_id'],
+//                'APIKey' => $api_key,
+//                'amount' => $transaction_info['amount'],
+//                'cell_no' => $transaction_info['cell_no'],
+//                'description' => $transaction_info['description']
+//            );
             $transaction_info['created_on'] = $current_time;
             $transaction_info['modified_on'] = $current_time;
             $transaction_info['status_id'] = TRANSACTION_STATUS_ID_PENDING;
@@ -60,6 +65,7 @@ class Transaction_model extends Ion_auth_model {
                 'modified_on' => $current_time
             );
             $transaction_list_for_webservice[] = $transaction_info_for_webservice;
+            
             $user_transaction_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
             $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
         }
@@ -593,6 +599,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $to_date, end date in unix format
      * @author rashida on 27th April 2016
      */
+
     public function get_user_sms_transaction_summary($user_id, $from_date = 0, $to_date = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
