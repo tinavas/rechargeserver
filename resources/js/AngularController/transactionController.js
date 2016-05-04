@@ -79,8 +79,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
             $scope.setTransctionDataList = function (transactionList) {
-                var transactionData = JSON.parse(transactionList);
-                $scope.transactionDataList.push(transactionData); 
+                 $scope.transactionDataList = JSON.parse(transactionList);
             };
 
 
