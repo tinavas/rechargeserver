@@ -71,8 +71,17 @@ class Utils {
      */
 
     public function get_random_mapping_id() {
-       return random_string('unique', 16);
+        return random_string('unique', 16);
 //        return rand(1, 99);
+    }
+
+    /*
+     * This method will retunr a random string of length 32
+     * @author rashida on 4th May 2016
+     */
+
+    public function get_random_string() {
+         return random_string('unique');
     }
 
 }

@@ -18,6 +18,8 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
+        <li>Show All</li>
+        <li> <input type="checkbox" ng-model="allTransactions"></li>
         <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_ucash()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
@@ -65,3 +67,6 @@
         </div>
     </div>
 </div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>

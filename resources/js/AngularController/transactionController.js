@@ -10,6 +10,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.paymentTypeIds = [];
             $scope.transctionList = [];
             $scope.transctionInfoList = [];
+            $scope.transactionDataList = [];
             $scope.paymentInfoList = [];
             $scope.paymentSearchList = [];
             $scope.topupTypeList = [];
@@ -18,6 +19,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.allow_transction = true;
             $scope.totalAmount = 0;
             $scope.currentPageAmount = 0;
+            $scope.allTransactions = false;
             $scope.searchInfo = {};
             $scope.smsInfo = {};
             $scope.bkash = function (callbackFunction) {
@@ -64,16 +66,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             callbackFunction(data);
                         });
             };
-            $scope.topUp = function (callbackFunction) {
-                if ($scope.allow_transction == false) {
-                    return;
-                }
-                $scope.allow_transction = false;
-                transctionService.topUp($scope.topUpInfo).
-                        success(function (data, status, headers, config) {
-                            $scope.allow_transction = true;
-                            callbackFunction(data);
-                        });
+
+            $scope.addTopUpData = function () {
+                $scope.transactionDataList.push($scope.topUpInfo);
+                $scope.topUpInfo = {};
             };
 
             $scope.appendTopUpInfo = function (topUpInfo, requestFunction) {
@@ -83,7 +79,8 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
             $scope.setTransctionDataList = function (transactionList) {
-                $scope.transactionDataList = JSON.parse(transactionList);
+                var transactionData = JSON.parse(transactionList);
+                $scope.transactionDataList.push(transactionData); 
             };
 
 
@@ -132,6 +129,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 setCollectionLength(collectionCounter);
             };
             $scope.getPaymentHistory = function (startDate, endDate) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
+                ;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -144,11 +145,18 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.paymentInfoList = data.payment_info_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPagePayment();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
 
             $scope.getReceiveHistory = function (startDate, endDate) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -161,11 +169,18 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.paymentInfoList = data.payment_info_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageReceivePayment();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
 
             $scope.getTopupTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -181,10 +196,17 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
             $scope.getBkashTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -200,12 +222,19 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
 
 
             $scope.getDBBLTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -221,10 +250,17 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
             $scope.getMcashTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -240,11 +276,18 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
 
             $scope.getUcashTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -260,10 +303,17 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
             $scope.getSMSTransactionList = function (startDate, endDate, userId) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -279,6 +329,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageSMSAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
@@ -476,63 +530,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
             }
 
-
-
-            //import csv file 
-            var uploader = $scope.uploader = new FileUploader({
-                url: 'http://localhost/rechargeserver/files/upload'
-            });
-
-            // FILTERS
-
-            uploader.filters.push({
-                name: 'customFilter',
-                fn: function (item /*{File|FileLikeObject}*/, options) {
-                    return this.queue.length < 10;
-                }
-            });
-
-            // CALLBACKS
-
-            uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
-            };
-            uploader.onAfterAddingFile = function (fileItem) {
-            };
-            uploader.onAfterAddingAll = function (addedFileItems) {
-            };
-            uploader.onBeforeUploadItem = function (item) {
-            };
-            uploader.onProgressItem = function (fileItem, progress) {
-            };
-            uploader.onProgressAll = function (progress) {
-            };
-            uploader.onSuccessItem = function (fileItem, response, status, headers) {
-            };
-            uploader.onErrorItem = function (fileItem, response, status, headers) {
-                $scope.transactionDataList = [];
-            };
-            uploader.onCancelItem = function (fileItem, response, status, headers) {
-            };
-            uploader.onCompleteItem = function (fileItem, response, status, headers) {
-            };
-            uploader.onCompleteAll = function () {
-            };
-
-
-            $scope.transactionDataList = [];
-            /*$scope.handler = function (e, files) {
-             var reader = new FileReader();
-             reader.onload = function (e) {
-             var string = reader.result;
-             var fileData = $filter('csvToArray')(string);
-             
-             if (fileData[0].errorExist != true) {
-             $scope.transactionDataList = fileData;
-             }
-             //do what you want with obj !
-             }
-             reader.readAsText(files[0]);
-             }*/
             $scope.deleteTransction = function (transactionInfo) {
                 var index = $scope.transactionDataList.indexOf(transactionInfo);
                 $scope.transactionDataList.splice(index, 1);
@@ -549,17 +546,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 return false;
             };
 
-//            $scope.filename = "file";
-////            $scope.getArray = [{a: 1, b: 2}, {a: 3, b: 4}];
-//            $scope.addRandomRow = function () {
-//                $scope.transactionDataList.push({a: Math.floor((Math.random() * 10) + 1), b: Math.floor((Math.random() * 10) + 1)});
-//            };
-//            $scope.getHeader = function () {
-//                return ["number", "amount", "operator id", "operator type id"]
-//            };
-//            $scope.clickFn = function () {
-//                console.log("click click click");
-//            };
 
 
 // pagination next data
@@ -586,62 +572,17 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 return initIndex;
             }
 
+            $scope.rows = ['Row 1', 'Row 2'];
+
+            $scope.counter = 3;
+
+            $scope.addRow = function () {
+
+                $scope.rows.push('Row ' + $scope.counter);
+                $scope.counter++;
+            }
+
 
         });
 
-/*transactionController.filter('csvToArray', function () {
- return function (input) {
- var rows = input.split('\r\n');
- var transactionDataList = [];
- //remove file header 
- rows.splice(0, 1);
- //remove example data if given while providing csv file 
- //        rows.splice(0, 1);
- //convert file rows to array 
- angular.forEach(rows, function (val, index) {
- var trmpIndex = index + +3;
- if (val != "") {
- var row = val.split(',');
- var tempObj = {};
- var phoneOperatorSelection = "0";
- angular.forEach(row, function (key, element) {
- if (element == 0) {
- var tempNumber = 0 + key;
- var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
- var validPhoneNumber = tempNumber.match(regexp);
- //                        console.log(validPhoneNumber);
- if (validPhoneNumber) {
- var tempOperatorType = validPhoneNumber[1];
- var splits = tempOperatorType.split('01');
- phoneOperatorSelection = splits[1];
- tempObj.number = tempNumber;
- } else {
- transactionDataList.unshift({errorExist: true});
- alert("Please Eenter a vaild Phone number at your csv file row number " + trmpIndex);
- }
- 
- }
- //                    console.log(phoneOperatorSelection);
- if (element == 1) {
- tempObj.amount = key;
- }
- if (element == 2) {
- tempObj.topupOperatorId = key;
- }
- if (element == 3) {
- tempObj.topupType = key;
- }
- });
- if (tempObj.number != "" && tempObj.amount) {
- transactionDataList.push(tempObj);
- }
- }
- });
- 
- return transactionDataList;
- };
- 
- 
- 
- });*/
 

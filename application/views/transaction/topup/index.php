@@ -1,27 +1,42 @@
 <script>
 
     $(function () {
-        error_message = '<?php
-if (isset($error_message)) {
-    echo $error_message;
-}
-?>';
+        error_message = '<?php if (isset($error_message)) { echo $error_message;}?>';
         if (error_message != "") {
             console.log(error_message);
             $("#content").html(error_message);
             $('#common_modal').modal('show');
         }
-
-
     });
-    function top_up(topUpInfo) {
+
+
+    function number_validation(phoneNumber) {
+        var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
+        var validPhoneNumber = phoneNumber.match(regexp);
+        if (validPhoneNumber) {
+            return true;
+        }
+        return false;
+    }
+    function add_topup_data(topUpInfo) {
+
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
             $('#common_modal').modal('show');
             return;
         }
+        if (number_validation(topUpInfo.number) == false) {
+            $("#content").html("Please give a valid TopUP Number");
+            $('#common_modal').modal('show');
+            return;
+        }
         if (typeof topUpInfo.amount == "undefined" || topUpInfo.amount.length == 0) {
             $("#content").html("Please give an amount ");
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (topUpInfo.amount < <?php echo BKASH_MINIMUM_CASH_IN_AMOUNT ?> || topUpInfo.amount > <?php echo BKASH_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please Give a Valid Amount !!");
             $('#common_modal').modal('show');
             return;
         }
@@ -35,12 +50,7 @@ if (isset($error_message)) {
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#top_up_id')).scope().topUp(function (data) {
-            $("#content").html(data.message);
-            $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
-                window.location = '<?php echo base_url() ?>transaction/topup';
-            });
+        angular.element($('#top_up_id')).scope().addTopUpData(function () {
         });
     }
 
@@ -48,7 +58,7 @@ if (isset($error_message)) {
 
     function add_multipule_topup(transctionDataList) {
         if (transctionDataList.length <= 0) {
-            $("#content").html("Please upload a XLSX file  " );
+            $("#content").html("Please add a topUp info/ XLSX file!  ");
             $('#common_modal').modal('show');
             return;
         } else {
@@ -96,7 +106,7 @@ if (isset($error_message)) {
                 <tbody><tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 20px;">
                             <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
-                                <ng-form>
+                                <form>
                                     <div class ="row">
                                         <div class="col-md-12">  </div>
                                     </div>
@@ -153,16 +163,16 @@ if (isset($error_message)) {
                                     <div class="row form-group">
                                         <div for="submit_update_api" class="col-md-6 control-label requiredField label_custom"> </div>
                                         <div class ="col-md-6">
-                                            <button id="top_up_id" class="button-custom pull-right"  onclick="top_up(angular.element(this).scope().topUpInfo)">Send</button>
+                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo)">Add</button>
                                         </div> 
                                     </div>
 
-                                </ng-form>
+                                </form>
                             </div>
                             <div class="row form-group"></div>
                             <div class="row form-group">
                                 <div class="col-md-6">
-                                    <a href="<?php echo base_url() . FILES_PATH.SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
+                                    <a href="<?php echo base_url() . FILES_PATH . SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
                                 </div>
                                 <div class="col-md-6">
                                     <a href="<?php echo base_url() . "files/topup_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
@@ -180,7 +190,6 @@ if (isset($error_message)) {
                                     <?php echo form_close(); ?>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table10 form-group" cellspacing="0">
@@ -195,19 +204,21 @@ if (isset($error_message)) {
                                             </tr>
                                         </thead>
                                         <?php if (isset($transactions_data)) { ?>
-                                            <tbody ng-init="setTransctionDataList(<?php echo htmlspecialchars(json_encode($transactions_data)); ?>)">
-                                                <tr ng-repeat="(key, transactionInfo) in transactionDataList">
-                                                    <td>
-                                                        {{key + +1}}
-                                                    </td>
-                                                    <td>{{transactionInfo.number}}</td>
-                                                    <td>{{transactionInfo.amount}}</td>
-                                                    <td>{{transactionInfo.topupOperatorId}}</td>
-                                                    <td>{{transactionInfo.topupType}}</td>
-                                                    <td style="text-align: center; cursor: pointer;" ng-click="deleteTransction(transactionInfo)"><div class="glyphicon glyphicon-trash"></div></td>
-                                                </tr>
-                                            </tbody>
+                                            <div ng-init="setTransctionDataList(<?php echo htmlspecialchars(json_encode($transactions_data)); ?>)"></div>
                                         <?php } ?>
+                                        <tbody> 
+                                            <tr ng-repeat="(key, transactionInfo) in transactionDataList">
+                                                <td>
+                                                    {{key + +1}}
+                                                </td>
+                                                <td>{{transactionInfo.number}}</td>
+                                                <td>{{transactionInfo.amount}}</td>
+                                                <td>{{transactionInfo.topupOperatorId}}</td>
+                                                <td>{{transactionInfo.topupType}}</td>
+                                                <td style="text-align: center; cursor: pointer;" ng-click="deleteTransction(transactionInfo)"><div class="glyphicon glyphicon-trash"></div></td>
+                                            </tr>
+                                        </tbody>
+
                                     </table>
 
                                     <div class="row">

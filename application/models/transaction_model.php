@@ -40,11 +40,11 @@ class Transaction_model extends Ion_auth_model {
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_TELETALK) {
                 $ $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_TELETALK;
             }
-            $transaction_info_for_webservice[mapping_id] = $transaction_info['mapping_id'];
-            $transaction_info_for_webservice[service_id] = $service_id;
-            $transaction_info_for_webservice[amount] = $transaction_info['amount'];
-            $transaction_info_for_webservice[cell_no] = $transaction_info['cell_no'];
-            $transaction_info_for_webservice[description] = $transaction_info['description'];
+            $transaction_info_for_webservice['id'] = $transaction_info['mapping_id'];
+            $transaction_info_for_webservice['service_id'] = $service_id;
+            $transaction_info_for_webservice['amount'] = $transaction_info['amount'];
+            $transaction_info_for_webservice['cell_no'] = $transaction_info['cell_no'];
+            $transaction_info_for_webservice['description'] = $transaction_info['description'];
 //                'id' => $transaction_info['mapping_id'],
 //                'APIKey' => $api_key,
 //                'amount' => $transaction_info['amount'],

@@ -18,6 +18,8 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
+        <li>Show All</li>
+        <li> <input type="checkbox" ng-model="allTransactions"></li>
         <!--        <li>Type</li>
                 <li><select id="type" name="type" class="form-control input-xs">
                         <option value="">--Any--</option>
@@ -55,7 +57,7 @@
         </tr>
         </tfoot>
     </table>
-     <div class="form-group">
+    <div class="form-group">
         <div class="col-md-12 fleft">
             <div class="summery">
                 <p>Summary</p>
@@ -75,3 +77,6 @@
         </div>
     </div>
 </div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>

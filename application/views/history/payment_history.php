@@ -29,6 +29,8 @@
                     <option ng-repeat="(key, paymentType) in paymentTypeIds" value="{{key}}">{{paymentType}}</option>
                 </select>
             </li>
+            <li>Show All</li>
+            <li> <input type="checkbox" ng-model="allTransactions"></li>
             <li><input id="search_submit_btn" ng-model="search" type="submit" size="18" value="Search" onclick="search_payment_history()" class="button-custom"></li>
         </ul>
     </ng-form>
@@ -81,6 +83,8 @@
         </div>
     </div>
 </div>
-
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
 
 

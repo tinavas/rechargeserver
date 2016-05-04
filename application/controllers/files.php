@@ -78,13 +78,16 @@ class Files extends Role_Controller {
         if ($this->input->post('submit_btn')) {
             $config['upload_path'] = FILES_PATH;
             $config['allowed_types'] = 'xlsx';
-            $config['file_name'] = TOPUP_XLSX_FILE_NAME;
-            $config['overwrite'] = TRUE;
+            $this->load->library('utils');
+            $random_string = $this->utils->get_random_string();
+            $file_name = TOPUP_XLSX_FILE_NAME . "_" . $random_string . ".xlsx";
+            $config['file_name'] = $file_name;
+            $config['overwrite'] = FALSE;
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload()) {
                 $this->data['message'] = $this->upload->display_errors();
             } else {
-                $file = FILES_PATH . TOPUP_XLSX_FILE_NAME;
+                $file = FILES_PATH . $file_name;
 
                 //read file from path
                 $objPHPExcel = PHPExcel_IOFactory::load($file);
@@ -128,7 +131,6 @@ class Files extends Role_Controller {
                         $error_messages[] = 'Row no ' . $row_counter . ' is contains empty cell';
                         break;
                     }
-                    $this->load->library('utils');
 //                    var_dump($result_data['A']);
                     if ((array_key_exists('A', $result_data) && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
                         $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
@@ -182,13 +184,16 @@ class Files extends Role_Controller {
         if ($this->input->post('submit_btn')) {
             $config['upload_path'] = FILES_PATH;
             $config['allowed_types'] = 'xlsx';
-            $config['file_name'] = SMS_XLSX_FILE_NAME;
-            $config['overwrite'] = TRUE;
+            $this->load->library('utils');
+            $random_string = $this->utils->get_random_string();
+            $file_name = SMS_XLSX_FILE_NAME . "_" . $random_string . ".xlsx";
+            $config['file_name'] = $file_name;
+            $config['overwrite'] = FALSE;
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload()) {
                 $this->data['message'] = $this->upload->display_errors();
             } else {
-                $file = FILES_PATH . SMS_XLSX_FILE_NAME;
+                $file = FILES_PATH . $file_name;
 
                 //read file from path
                 $objPHPExcel = PHPExcel_IOFactory::load($file);
@@ -232,7 +237,6 @@ class Files extends Role_Controller {
                         $error_messages[] = 'Row no ' . $row_counter . ' is contains empty cell';
                         break;
                     }
-                    $this->load->library('utils');
                     if ((array_key_exists('A', $result_data) && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
                         $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
                         break;
@@ -253,7 +257,7 @@ class Files extends Role_Controller {
                 }
             }
         }
-         $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, 'transaction/sms/index', $this->data);
     }
 
