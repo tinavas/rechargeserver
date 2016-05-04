@@ -79,7 +79,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
             $scope.setTransctionDataList = function (transactionList) {
-                 $scope.transactionDataList = JSON.parse(transactionList);
+                $scope.transactionDataList = JSON.parse(transactionList);
             };
 
 
@@ -473,6 +473,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.getAllHistory = function (startDate, endDate) {
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -485,6 +488,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
                             setCollectionLength(data.total_transactions);
                         });
             };
