@@ -182,6 +182,7 @@ class Files extends Role_Controller {
     public function import_sms_xlsx() {
         $this->data['message'] = '';
         if ($this->input->post('submit_btn')) {
+            $config = array();
             $config['upload_path'] = FILES_PATH;
             $config['allowed_types'] = 'xlsx';
             $this->load->library('utils');
@@ -194,7 +195,7 @@ class Files extends Role_Controller {
                 $this->data['message'] = $this->upload->display_errors();
             } else {
                 $file = FILES_PATH . $file_name;
-
+                
                 //read file from path
                 $objPHPExcel = PHPExcel_IOFactory::load($file);
 
@@ -220,29 +221,27 @@ class Files extends Role_Controller {
                         $arr_data[$row][$column] = $data_value;
                     }
                 }
-
+                
                 $header_len = sizeof($header[1]);
                 $row_counter = 1;
                 $error_messages = array();
                 $i = 0;
                 $transction_list = array();
                 foreach ($arr_data as $result_data) {
-
                     if (sizeof($result_data) != $header_len) {
-
                         $error_messages[] = 'Row no ' . $row_counter . ' is not a valid row';
                         break;
                     }
-                    if (strip_tags($result_data['A']) == '') {
-                        $error_messages[] = 'Row no ' . $row_counter . ' is contains empty cell';
-                        break;
+                    //ignoring empty row
+                    if(array_key_exists('A', $result_data) && strip_tags($result_data['A']) == '')
+                    {
+                        $row_counter++;
+                        continue;
                     }
-                    if ((array_key_exists('A', $result_data) && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
+                    if ((array_key_exists('A', $result_data) && strip_tags($result_data['A']) == '' && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
                         $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
                         break;
                     }
-
-
                     $row_counter++;
                     $transction_data = array(
                         'number' => strip_tags($result_data['A'])

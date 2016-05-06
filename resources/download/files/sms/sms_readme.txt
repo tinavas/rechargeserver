@@ -1,10 +1,13 @@
-This file helps you how you use csv file to use sms service. 
+This file helps you how to upload xlsx file
 Please read carefully. 
 
-Please edit csv file in notepad or notepad++
+You must fill up data only in first columns of the xlsx file
+First row will be title
+Use Mobile number starting from second row (Each number must contain 11 digits and a valid mobile number)
 
-SMS data example in csv file:
-number
+Example:
+
+Number
 01511123456
 01611123456
 01711123456

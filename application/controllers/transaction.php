@@ -24,7 +24,7 @@ class Transaction extends Role_Controller {
         
     }
 
-    public function multipule_topups() {
+    /*public function multipule_topups() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -125,7 +125,7 @@ class Transaction extends Role_Controller {
                 return;
             }
         }
-    }
+    }*/
 
     /*
      * This method will process bkash transaction
@@ -492,7 +492,7 @@ class Transaction extends Role_Controller {
 
     public function topup() {
         $user_id = $this->session->userdata('user_id');
-        if (file_get_contents("php://input") != null) {
+        /*if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
@@ -557,6 +557,105 @@ class Transaction extends Role_Controller {
             }
             echo json_encode($response);
             return;
+        }*/
+        if (file_get_contents("php://input") != null) {
+            $response = array();
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "transactionDataList")) {
+                $user_assigned_service_id_list = [];
+                $user_topup_operator_id_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+                if (!empty($user_topup_operator_id_list)) {
+                    // generate user assign service id list and declare specific transction data list
+                    foreach ($user_topup_operator_id_list as $operator_id_info) {
+                        $user_assigned_service_id_list[] = $operator_id_info['service_id'];
+                    }
+                }
+
+                $transaction_data_list = $requestInfo->transactionDataList;
+                $transction_list = [];
+                $total_amount = 0;
+                $this->load->library('utils');
+                foreach ($transaction_data_list as $key => $transaction_data) {
+                    $mapping_id = $this->utils->get_random_mapping_id();
+                    $description = "test";
+                    $transaction_id = "";
+                    $topup_data_info = array(
+                        'user_id' => $user_id,
+                        'transaction_id' => $transaction_id,
+                        'description' => $description,
+                        'mapping_id' => $mapping_id
+                    );
+
+                    if (property_exists($transaction_data, "number")) {
+                        $cell_no = $transaction_data->number;
+                        if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                            $response["message"] = "Please Enter a Valid Cell Number at row number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
+                        $topup_data_info['cell_no'] = $cell_no;
+                    } else {
+                        $response["message"] = "Cell Number is Required at row number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
+                    if (property_exists($transaction_data, "amount")) {
+                        $amount = $transaction_data->amount;
+                        $total_amount = $total_amount + $amount;
+                        if (isset($amount)) {
+                            if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT || $amount > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
+                                $response["message"] = "Please Give a Valid Amount at row number " . ($key + 1);
+                                echo json_encode($response);
+                                return;
+                            }
+                        }
+                        $topup_data_info['amount'] = $amount;
+                    } else {
+                        $response["message"] = "Amount is Required  at row number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
+                    if (property_exists($transaction_data, "topupOperatorId")) {
+                        $service_id = $transaction_data->topupOperatorId;
+                        if (!in_array($service_id, $user_assigned_service_id_list)) {
+                            $response["message"] = "The Operator Id  is not assigned to you at row number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
+                        $topup_data_info['service_id'] = $service_id;
+                    } else {
+                        $response["message"] = "Operator Id  is Required at row number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
+                    if (property_exists($transaction_data, "topupType")) {
+                        $topup_type_id = $transaction_data->topupType;
+                        if ($topup_type_id != OPERATOR_TYPE_ID_PREPAID && $topup_type_id != OPERATOR_TYPE_ID_POSTPAID) {
+                            $response["message"] = "Please give valid Operator Type Id at row number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
+                        $topup_data_info['operator_type_id'] = $topup_type_id;
+                    } else {
+                        $response["message"] = "Operator Type Id  is Required at row number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
+                    $transction_list[] = $topup_data_info;
+                }
+                if ($this->transaction_library->add_multipule_transactions($transction_list, $user_assigned_service_id_list, $total_amount, $user_id) !== FALSE) {
+                    $response['message'] = $this->transaction_library->messages_array();
+                } else {
+                    $response['message'] = $this->transaction_library->errors_array();
+                }
+                echo json_encode($response);
+                return;
+            } else {
+                $response['message'] = "Sorry!! Please give a transaction Info";
+                echo json_encode($response);
+                return;
+            }
         }
         //checking whether user has permission for topup transaction
         $permission_exists = FALSE;
@@ -578,7 +677,7 @@ class Transaction extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, 0, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             $transaction_list = $transaction_list_array['transaction_list'];
@@ -596,11 +695,11 @@ class Transaction extends Role_Controller {
 
     /*
      * This method will send bulk sms
-     * @author nazmul hasan on 17th april
+     * @author nazmul hasan on 17th april 2016
      */
-
     public function sms() {
         $user_id = $this->session->userdata('user_id');
+        $transction_list = array();
         if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
@@ -651,6 +750,72 @@ class Transaction extends Role_Controller {
                 return;
             }
         }
+        else if ($this->input->post('submit_btn')) {
+            $config = array();
+            $config['upload_path'] = SMS_FILE_UPLOAD_DIRECTORY;
+            $config['allowed_types'] = 'xlsx';
+            $this->load->library('utils');
+            $random_string = $this->utils->get_random_string();
+            $file_name = $user_id . "_" . $random_string . ".xlsx";
+            $config['file_name'] = $file_name;
+            $config['overwrite'] = FALSE;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload()) {
+                $this->data['message'] = $this->upload->display_errors();
+            } else {
+                $this->load->library('excel');
+                $file = SMS_FILE_UPLOAD_DIRECTORY . $file_name;                
+                //read file from path
+                $objPHPExcel = PHPExcel_IOFactory::load($file);
+                //get only the Cell Collection
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
+                //extract to a PHP readable array format
+                $header = array();
+                $arr_data = array();
+                //task_tanvir validate each row before extracting information
+                foreach ($cell_collection as $cell) {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
+                    //header will/should be in row 1 only. of course this can be modified to suit your need.
+                    if ($row == 1) {
+                        $header[$row][$column] = $data_value;
+                    } else {
+                        $arr_data[$row][$column] = $data_value;
+                    }
+                }                
+                $header_len = sizeof($header[1]);
+                $row_counter = 1;
+                $error_messages = array();
+                foreach ($arr_data as $result_data) {
+                    if (sizeof($result_data) != $header_len) {
+                        $error_messages[] = 'Row no ' . $row_counter . ' is not a valid row';
+                        break;
+                    }
+                    //ignoring empty row
+                    if(array_key_exists('A', $result_data) && strip_tags($result_data['A']) == '')
+                    {
+                        $row_counter++;
+                        continue;
+                    }
+                    if ((array_key_exists('A', $result_data) && strip_tags($result_data['A']) == '' && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
+                        $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
+                        break;
+                    }
+                    $row_counter++;
+                    $transction_data = array(
+                        'number' => strip_tags($result_data['A'])
+                    );
+                    $transction_list[] = $transction_data;
+                }
+                if (empty($error_messages)) {
+                    $this->data['transactions_data'] = json_encode($transction_list);
+                } else {
+                    $this->data['transactions_data'] = json_encode($transction_list);
+                    $this->data['error_message'] = $error_messages[0];
+                }
+            }
+        }
         //checking whether user has permission for bkash transaction
         $permission_exists = FALSE;
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -667,8 +832,8 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $this->data['app'] = "app.SmsFileUpload";
-        $this->data['transaction_list'] = json_encode(array());
+        $this->data['app'] = TRANSCATION_APP;
+        $this->data['transaction_list'] = json_encode($transction_list);
         $this->template->load(null, 'transaction/sms/index', $this->data);
     }
 

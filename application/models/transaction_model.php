@@ -70,7 +70,7 @@ class Transaction_model extends Ion_auth_model {
             $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
         }
         $this->curl->create(WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS);
-        $this->curl->post(array("transction_list" => json_encode($transaction_list_for_webservice)));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "transction_list" => json_encode($transaction_list_for_webservice)));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';
@@ -85,11 +85,11 @@ class Transaction_model extends Ion_auth_model {
                         return FALSE;
                     } else {
                         foreach ($mapping_info_list as $mapping_info) {
-                            $mapping_id = $mapping_info->id;
+                            $mapping_id = $mapping_info->referenceId;
                             $user_transaction_list[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
                             $payment_list[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
                             foreach ($user_profit_list as $user_profit_info) {
-                                if ($user_profit_info['mapping_id'] == $mapping_info->id) {
+                                if ($user_profit_info['mapping_id'] == $mapping_info->referenceId) {
                                     $user_profit_info['transaction_id'] = $mapping_info->transactionId;
                                     $user_profits[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
                                 }
@@ -431,7 +431,7 @@ class Transaction_model extends Ion_auth_model {
         //right now we are not assigning profit for sms transaction
 
         $this->curl->create(WEBSERVICE_URL_SEND_SMS);
-        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "APIKey" => $api_key, "sms" => $sms_info['sms'], "cellnumberlist" => json_encode($cell_number_list)));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "APIKey" => $api_key, "sms" => $sms_info['sms'], "cellnumberlist" => json_encode($cell_number_list)));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';

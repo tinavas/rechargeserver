@@ -44,13 +44,13 @@
                                 <div class="col-md-6">
                                     <div class="row ">
                                         <div class="col-md-3">
-                                            <a href="<?php echo base_url() . "files/sms_csv_file_dowload" ?>"><label class="cursor_pointer">CSV Download</label></a>
+                                            <a target="_blank" href="<?php echo base_url() . SMS_FILE_DOWNLOAD_DIRECTORY . SMS_XLSX_FILE_NAME ?>"><label class="cursor_pointer">Sample File</label></a>
                                         </div>
                                         <div class="col-md-3">
-                                            <a href="<?php echo base_url() . "files/sms_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
+                                            <a target="_blank" href="<?php echo base_url() . SMS_FILE_DOWNLOAD_DIRECTORY . SMS_README_FILE_NAME ?>"><label class="cursor_pointer">Help</label></a>
                                         </div>
                                         <div class="col-md-6" >
-                                            <?php echo form_open_multipart('files/import_sms_xlsx', array('name' => 'file_upload')); ?>
+                                            <?php echo form_open_multipart('transaction/sms', array('name' => 'file_upload')); ?>
                                             <div class="form-group">
                                                 <label for="fileupload">Upload:</label>
                                                 <input id="fileupload" type="file" name="userfile">
@@ -121,8 +121,8 @@
                                     <table class="table10 form-group" cellspacing="0" >
                                         <thead>
                                             <tr>	
-                                                <th>Index</th>
-                                                <th>Number</th>
+                                                <th>Serial</th>
+                                                <th>Mobile Number</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>

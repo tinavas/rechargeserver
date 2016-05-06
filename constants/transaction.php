@@ -1,6 +1,6 @@
 <?php
 define("TRANSACTION_ID_DEFAULT_LENGTH",                     32);
-define("TRANSACTION_PAGE_DEFAULT_LIMIT",                    3);
+define("TRANSACTION_PAGE_DEFAULT_LIMIT",                    10);
 define("TRANSACTION_PAGE_DEFAULT_OFFSET",                   0);
 
 define("TRANSACTION_STATUS_ID_PENDING",                     1);

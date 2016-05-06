@@ -195,8 +195,8 @@
                                     <table class="table10 form-group" cellspacing="0">
                                         <thead>
                                             <tr>	
-                                                <th>id</th>
-                                                <th>Number</th>
+                                                <th>Serial</th>
+                                                <th>Mobile Number</th>
                                                 <th>Amount</th>
                                                 <th>Operator Id</th>
                                                 <th>type id</th>

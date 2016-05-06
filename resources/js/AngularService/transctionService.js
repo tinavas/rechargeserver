@@ -19,7 +19,7 @@ angular.module('services.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/transaction/multipule_topups',
+                    url: $location.path() + $app_name + '/transaction/topup',
                     data: {
                         transactionDataList: transactionDataList
                     }
