@@ -71,6 +71,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 $scope.transactionDataList.push($scope.topUpInfo);
                 $scope.topUpInfo = {};
             };
+            $scope.addSMSData = function () {
+                $scope.transactionDataList.push({"number": $scope.smsInfo.number});
+                $scope.smsInfo.number = "";
+            };
 
             $scope.appendTopUpInfo = function (topUpInfo, requestFunction) {
                 $scope.topupDataList.push(topUpInfo);
@@ -82,8 +86,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 $scope.transactionDataList = JSON.parse(transactionList);
             };
 
-
-
             $scope.sendSMS = function (callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
@@ -94,7 +96,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
-
             };
             $scope.setTopUpData = function (topEmptyList) {
                 $scope.topupDataList = [];

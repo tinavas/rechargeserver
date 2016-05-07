@@ -1,17 +1,15 @@
 <script>
 
     $(function () {
-        error_message = '<?php if (isset($error_message)) { echo $error_message;}?>';
+        error_message = '<?php if (isset($error_message)) { echo $error_message; } ?>';
         if (error_message != "") {
-            console.log(error_message);
             $("#content").html(error_message);
             $('#common_modal').modal('show');
         }
     });
 
-
     function number_validation(phoneNumber) {
-        var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
+        var regexp = /^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
         var validPhoneNumber = phoneNumber.match(regexp);
         if (validPhoneNumber) {
             return true;
@@ -172,22 +170,35 @@
                             <div class="row form-group"></div>
                             <div class="row form-group">
                                 <div class="col-md-6">
-                                    <a href="<?php echo base_url() . FILES_PATH . SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
+                                    <a href="<?php echo base_url() . TOPUP_FILE_DOWNLOAD_DIRECTORY . SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
                                 </div>
                                 <div class="col-md-6">
                                     <a href="<?php echo base_url() . "files/topup_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
                                 </div>
                             </div>
+                            <div class="row">
+                                <!--                                <div class="col-md-12">
+                                <?php // echo form_open_multipart('transaction/topup', array('name' => 'file_upload'));  ?>
+                                                                    <div class="form-group">
+                                                                        <label for="fileupload">Upload:</label>
+                                                                        <input id="fileupload" type="file" name="userfile">
+                                                                        <p class="help-block">Select ".XLSX" files only.</p>
+                                                                        <input id="submit_btn" name="submit_btn" value="Upload" type="submit" class="button-custom"/>
+                                                                    </div>
+                                <?php // echo form_close(); ?>
+                                                                </div>-->
+                                <?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
+                                <div class="form-group">
+                                    <label  class="col-md-2" for="fileupload">Upload:</label>
+                                    <input class="col-md-4" id="fileupload" type="file" name="userfile">
+                                    <div class="col-md-3"></div>
+                                    <input id="submit_btn"  name="submit_btn" value="Upload" type="submit" class="col-md-2 button-custom"/>
+                                </div>
+                                <?php echo form_close(); ?>
+                            </div>
                             <div class="row form-group">
-                                <div class="col-md-12">
-                                    <?php echo form_open_multipart('files/import_topup_xlsx', array('name' => 'file_upload')); ?>
-                                    <div class="form-group">
-                                        <label for="fileupload">Upload:</label>
-                                        <input id="fileupload" type="file" name="userfile">
-                                        <p class="help-block">Select ".XLSX" files only.</p>
-                                        <input id="submit_btn" name="submit_btn" value="Upload" type="submit" class="button-custom"/>
-                                    </div>
-                                    <?php echo form_close(); ?>
+                                <div class="col-md-6">
+                                    <p class="help-block">Select ".XLSX" files only.</p>   
                                 </div>
                             </div>
                             <div class="row">
@@ -198,8 +209,8 @@
                                                 <th>Serial</th>
                                                 <th>Mobile Number</th>
                                                 <th>Amount</th>
-                                                <th>Operator Id</th>
-                                                <th>type id</th>
+                                                <th>Operator </th>
+                                                <th>type </th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -213,8 +224,13 @@
                                                 </td>
                                                 <td>{{transactionInfo.number}}</td>
                                                 <td>{{transactionInfo.amount}}</td>
-                                                <td>{{transactionInfo.topupOperatorId}}</td>
-                                                <td>{{transactionInfo.topupType}}</td>
+                                                <td ng-if="transactionInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>'"> GP </td>
+                                                <td ng-if="transactionInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_ROBI; ?>'"> Robi </td>
+                                                <td ng-if="transactionInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>'"> Banglalink </td>
+                                                <td ng-if="transactionInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL; ?>'"> Airtel </td>
+                                                <td ng-if="transactionInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_TELETALK; ?>'"> TeleTalk </td>
+                                                <td ng-if="transactionInfo.topupType == '<?php echo OPERATOR_TYPE_ID_PREPAID ?>'">Prepaid </td>
+                                                <td ng-if="transactionInfo.topupType == '<?php echo OPERATOR_TYPE_ID_POSTPAID ?>'">Postpaid </td>
                                                 <td style="text-align: center; cursor: pointer;" ng-click="deleteTransction(transactionInfo)"><div class="glyphicon glyphicon-trash"></div></td>
                                             </tr>
                                         </tbody>
