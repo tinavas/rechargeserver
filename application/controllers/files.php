@@ -17,19 +17,14 @@ class Files extends Role_Controller {
         
     }
 
-    function sms_read_me_file_dowload() {
+    function sms_readme_file_dowload() {
         $this->load->helper('download');
-        $data = file_get_contents(SMS_FILE_DOWNLOAD_DIRECTORY . SMS_README_FILE_NAME); // Read the file's contents
-        force_download(SMS_README_FILE_NAME, $data);
+        force_download(SMS_README_FILE_NAME, file_get_contents(SMS_FILE_DOWNLOAD_DIRECTORY . SMS_README_FILE_NAME));
     }
 
-    function topup_read_me_file_dowload() {
+    function topup_readme_file_dowload() {
         $this->load->helper('download');
-        $file_path = TOPUP_FILE_DOWNLOAD_DIRECTORY;
-        $file_name = TOPUP_README_FILE_NAME;
-        $file_full_path = $file_path . $file_name;
-        $data = file_get_contents($file_full_path); // Read the file's contents
-        force_download($file_name, $data);
+        force_download(TOPUP_README_FILE_NAME, file_get_contents(TOPUP_FILE_DOWNLOAD_DIRECTORY . TOPUP_README_FILE_NAME));
     }
 
 }

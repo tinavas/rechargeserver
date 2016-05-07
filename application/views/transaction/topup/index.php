@@ -173,7 +173,7 @@
                                     <a href="<?php echo base_url() . TOPUP_FILE_DOWNLOAD_DIRECTORY . SAMPLE_TOPUP_XLSX_FILE_NAME; ?>"><label class="cursor_pointer">Download sample</label></a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="<?php echo base_url() . "files/topup_read_me_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
+                                    <a href="<?php echo base_url() . "files/topup_readme_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
                                 </div>
                             </div>
                             <div class="row">
