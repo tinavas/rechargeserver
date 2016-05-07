@@ -177,16 +177,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <!--                                <div class="col-md-12">
-                                <?php // echo form_open_multipart('transaction/topup', array('name' => 'file_upload'));  ?>
-                                                                    <div class="form-group">
-                                                                        <label for="fileupload">Upload:</label>
-                                                                        <input id="fileupload" type="file" name="userfile">
-                                                                        <p class="help-block">Select ".XLSX" files only.</p>
-                                                                        <input id="submit_btn" name="submit_btn" value="Upload" type="submit" class="button-custom"/>
-                                                                    </div>
-                                <?php // echo form_close(); ?>
-                                                                </div>-->
                                 <?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
                                 <div class="form-group">
                                     <label  class="col-md-2" for="fileupload">Upload:</label>

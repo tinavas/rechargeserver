@@ -23,7 +23,6 @@ class Transaction extends Role_Controller {
     public function index() {
         
     }
-
     /* public function multipule_topups() {
       $user_id = $this->session->userdata('user_id');
       if (file_get_contents("php://input") != null) {
@@ -875,7 +874,7 @@ class Transaction extends Role_Controller {
                         $row_counter++;
                         continue;
                     }
-                    if ((array_key_exists('A', $result_data) && strip_tags($result_data['A']) == '' && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
+                    if ((array_key_exists('A', $result_data) && strip_tags($result_data['A']) != '' && $this->utils->cell_number_validation($result_data['A']) == FALSE)) {
                         $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
                         break;
                     }
