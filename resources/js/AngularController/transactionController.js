@@ -1,7 +1,7 @@
 var transactionController = angular.module('controller.Transction', ['services.Transction', 'ngSanitize', 'ngCsv', 'angularFileUpload']).
         controller('transctionController', function ($scope, transctionService, $filter, FileUploader) {
             $scope.currentPage = 1;
-            $scope.pageSize = 3;
+            $scope.pageSize = 10;
             $scope.bkashInfo = {};
             $scope.dbblInfo = {};
             $scope.mCashInfo = {};

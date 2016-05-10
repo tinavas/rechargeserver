@@ -43,6 +43,21 @@ class Transaction_library {
     }
 
     /*
+     * this method add transcation
+     * @param $api_key, API key
+     * @param $transaction_data, transaction data
+     * @author nazmul hasan on 24th February 2016
+     */
+
+    public function add_transaction($api_key, $transaction_data) {
+        $amount = $transaction_data['amount'];
+        $service_id = $transaction_data['service_id'];
+        $user_id = $transaction_data['user_id'];
+        $users_profit_list = $this->calculate_transaction_profit_chain($user_id, $service_id, $amount);
+        return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
+    }
+    
+    /*
      * this method add multipule transcations
      * @param $transaction_list, transction data list
      * @param $service_id_list, service id list
@@ -50,7 +65,6 @@ class Transaction_library {
      * @param $user_id, user_id
      * @author rashida on 9th march 2016
      */
-
     public function add_multipule_transactions($transaction_list, $service_id_list, $total_amount, $user_id = 0) {
         if ($user_id == 0) {
             $user_id = $this->session->userdata('user_id');
@@ -67,86 +81,10 @@ class Transaction_library {
             $this->set_error('error_insufficient_balance');
             return FALSE;
         }
+        //$users_profit_list = array();
+        //check this logic with simulation
         $users_profit_list = $this->calculate_multipule_transactions_profit_chain($user_id, $service_id_list, $transaction_list);
         return $this->transaction_model->add_transactions($transaction_list, $users_profit_list);
-    }
-
-    /*
-     * This method will calculate profit chain from user to top parent for multipule transaction
-     * @param $user_id user id
-     * @param $service_id_list service id list
-     * @param $transction_data_list transction list
-     * @author rashida on 9th march 2016
-     */
-
-    public function calculate_multipule_transactions_profit_chain($user_id, $service_id_list, $transaction_list) {
-        $parent_child_id_map = array();
-        $user_id_list = array($user_id);
-        $flag = TRUE;
-        $child_user_id = $user_id;
-        while ($flag) {
-            $parent_info_array = $this->reseller_model->get_parent_user_id($child_user_id)->result_array();
-            foreach ($parent_info_array as $parent_info) {
-                $parent_user_id = $parent_info['parent_user_id'];
-                $parent_child_id_map[$parent_user_id] = $child_user_id;
-                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
-                    $user_id_list[] = $parent_user_id;
-                }
-                $child_user_id = $parent_user_id;
-            }
-            if (empty($parent_info_array)) {
-                $flag = false;
-            }
-        }
-
-        $user_id_service_info_map = array();
-        $user_service_list = $this->reseller_library->get_users_service_info_list($user_id_list, $service_id_list)->result_array();
-        foreach ($user_service_list as $service_info) {
-            $user_id_service_info_map[$service_info['user_id']] = $service_info;
-        }
-        $user_profit_list = array();
-        foreach ($user_service_list as $service_info) {
-            foreach ($transaction_list as $transction_info) {
-                if ($transction_info['service_id'] == $service_info['service_id']) {
-                    $amount = $transction_info['amount'];
-                    $user_profit_info = array(
-                        'user_id' => $service_info['user_id'],
-                        'reference_id' => $user_id,
-                        'service_id' => $service_info['service_id'],
-                        'rate' => $amount,
-                        'status_id' => TRANSACTION_STATUS_ID_PENDING,
-                        //maping id need for identify this profit for which transction
-                        'mapping_id' => $transction_info['mapping_id'],
-                        'created_on' => now(),
-                        'modified_on' => now()
-                    );
-                    $commission = 0;
-                    if ($service_info['user_id'] == $user_id) {
-                        $commission = $amount / $service_info['rate'] * $service_info['commission'];
-                    } else {
-                        $commission = $amount / $service_info['rate'] * ($service_info['commission'] - $user_id_service_info_map[$parent_child_id_map[$service_info['user_id']]]['commission']);
-                    }
-                    $user_profit_info['amount'] = $commission;
-                    $user_profit_list[] = $user_profit_info;
-                }
-            }
-        }
-        return $user_profit_list;
-    }
-
-    /*
-     * this method add transcation
-     * @param $api_key, API key
-     * @param $transaction_data, transaction data
-     * @author nazmul hasan on 24th February 2016
-     */
-
-    public function add_transaction($api_key, $transaction_data) {
-        $amount = $transaction_data['amount'];
-        $service_id = $transaction_data['service_id'];
-        $user_id = $transaction_data['user_id'];
-        $users_profit_list = $this->calculate_transaction_profit_chain($user_id, $service_id, $amount);
-        return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
     }
 
     /*
@@ -436,6 +374,68 @@ class Transaction_library {
             }
         }
         return $payment_info_list;
+    }
+    
+    /*
+     * This method will calculate profit chain from user to top parent for multipule transaction
+     * @param $user_id user id
+     * @param $service_id_list service id list
+     * @param $transction_data_list transction list
+     * @author rashida on 9th march 2016
+     */
+    public function calculate_multipule_transactions_profit_chain($user_id, $service_id_list, $transaction_list) {
+        $parent_child_id_map = array();
+        $user_id_list = array($user_id);
+        $flag = TRUE;
+        $child_user_id = $user_id;
+        while ($flag) {
+            $parent_info_array = $this->reseller_model->get_parent_user_id($child_user_id)->result_array();
+            foreach ($parent_info_array as $parent_info) {
+                $parent_user_id = $parent_info['parent_user_id'];
+                $parent_child_id_map[$parent_user_id] = $child_user_id;
+                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
+                    $user_id_list[] = $parent_user_id;
+                }
+                $child_user_id = $parent_user_id;
+            }
+            if (empty($parent_info_array)) {
+                $flag = false;
+            }
+        }
+
+        $user_id_service_info_map = array();
+        $user_service_list = $this->reseller_library->get_users_service_info_list($user_id_list, $service_id_list)->result_array();
+        foreach ($user_service_list as $service_info) {
+            $user_id_service_info_map[$service_info['user_id']] = $service_info;
+        }
+        $user_profit_list = array();
+        foreach ($user_service_list as $service_info) {
+            foreach ($transaction_list as $transction_info) {
+                if ($transction_info['service_id'] == $service_info['service_id']) {
+                    $amount = $transction_info['amount'];
+                    $user_profit_info = array(
+                        'user_id' => $service_info['user_id'],
+                        'reference_id' => $user_id,
+                        'service_id' => $service_info['service_id'],
+                        'rate' => $amount,
+                        'status_id' => TRANSACTION_STATUS_ID_PENDING,
+                        //maping id need for identify this profit for which transction
+                        'mapping_id' => $transction_info['mapping_id'],
+                        'created_on' => now(),
+                        'modified_on' => now()
+                    );
+                    $commission = 0;
+                    if ($service_info['user_id'] == $user_id) {
+                        $commission = $amount / $service_info['rate'] * $service_info['commission'];
+                    } else {
+                        $commission = $amount / $service_info['rate'] * ($service_info['commission'] - $user_id_service_info_map[$parent_child_id_map[$service_info['user_id']]]['commission']);
+                    }
+                    $user_profit_info['amount'] = $commission;
+                    $user_profit_list[] = $user_profit_info;
+                }
+            }
+        }
+        return $user_profit_list;
     }
 
 }
