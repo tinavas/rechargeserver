@@ -25,6 +25,15 @@
                     <option ng-repeat="(key, paymentType) in paymentTypeIds" value="{{key}}">{{paymentType}}</option>
                 </select>
             </li>
+            <li>Status Type</li>
+            <li> <select name="repeatSelect" id="repeatSelect" ng-model="searchInfo.statusId">
+                    <option  value="">Please select</option>
+                    <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
+                    <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Pending</option>
+                    <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Failed</option>
+                    <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
+                </select>
+            </li>
             <li>Show All</li>
             <li> <input type="checkbox" ng-model="allTransactions"></li>
             <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history()" class="button-custom"></li>

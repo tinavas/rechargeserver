@@ -80,7 +80,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <a href="<?php echo base_url() . "files/sms_readme_file_dowload" ?>"><label class="cursor_pointer">Help</label></a>
-                                            <!--<a target="_blank" href="<?php // echo base_url() . SMS_FILE_DOWNLOAD_DIRECTORY . SMS_README_FILE_NAME ?>"><label class="cursor_pointer">Help</label></a>-->
                                         </div>
                                     </div>
                                 </div>

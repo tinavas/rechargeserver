@@ -266,7 +266,7 @@ class Transaction_library {
      * @modified by rashida on 27th April 2016
      */
 
-    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
+    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $status_id_list = array()) {
         $this->load->library('date_utils');
         if ($from_date != 0) {
             $from_date = $this->date_utils->server_start_unix_time_of_date($from_date);
@@ -276,13 +276,13 @@ class Transaction_library {
         }
         $total_transactions = 0;
         $total_amount = 0;
-        $transaction_summary_array = $this->transaction_model->get_user_sms_transaction_summary($user_id, $from_date, $to_date)->result_array();
+        $transaction_summary_array = $this->transaction_model->get_user_sms_transaction_summary($user_id, $from_date, $to_date, $status_id_list)->result_array();
         if (!empty($transaction_summary_array)) {
             $total_transactions = (int)$transaction_summary_array[0]['total_transactions'];
             $total_amount = (double)$transaction_summary_array[0]['total_amount'];
         }
         $transaction_info_list = array();
-        $transaction_list = $this->transaction_model->get_user_sms_transaction_list($user_id, $from_date, $to_date, $limit, $offset)->result_array();
+        $transaction_list = $this->transaction_model->get_user_sms_transaction_list($user_id, $from_date, $to_date, $limit, $offset, $status_id_list)->result_array();
         if (!empty($transaction_list)) {
             foreach ($transaction_list as $transaction_info) {
                 $transaction_info['created_on'] = $this->date_utils->get_unix_to_display($transaction_info['created_on']);

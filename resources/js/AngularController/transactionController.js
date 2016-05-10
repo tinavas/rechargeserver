@@ -137,9 +137,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
                 }
-                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
-                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
-                }
                 transctionService.getPaymentHistory($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.paymentInfoList = data.payment_info_list;
@@ -481,9 +478,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
                 }
-//                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
-//                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
-//                }
                 transctionService.getAllHistory($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;

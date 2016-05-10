@@ -7,7 +7,7 @@ class Transaction_model extends Ion_auth_model {
         $this->load->config('ion_auth', TRUE);
         $this->lang->load('ion_auth');
     }
-    
+
     /*
      * This method will udpate transaction as call back function from the authentication server
      * @param $transaction_id, transaction id
@@ -15,6 +15,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $sender_cell_number, sender cell number
      * @author nazmul hasan on 24th february 2016
      */
+
     public function update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number) {
         $transaction_data = array(
             'status_id' => $status_id,
@@ -43,6 +44,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $user_profit_data, user profit data
      * @author nazmul hasan on 24th February 2016
      */
+
     public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
@@ -157,13 +159,14 @@ class Transaction_model extends Ion_auth_model {
         $this->set_error('error_webservice_unavailable');
         return FALSE;
     }
-    
+
     /*
      * This method will add multiple transactions in single step
      * @param $transaction_list, transaction list
      * @param $user_profit_list, profit list
      * @author nazmul hasan on 9th May 2016
      */
+
     public function add_transactions($transction_list, $user_profit_list) {
         $transaction_list_for_webservice = [];
         $user_transaction_list = [];
@@ -218,7 +221,7 @@ class Transaction_model extends Ion_auth_model {
                 'modified_on' => $current_time
             );
             $transaction_list_for_webservice[] = $transaction_info_for_webservice;
-            
+
             $user_transaction_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
             $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
         }
@@ -280,6 +283,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $payment_info, payment info
      * @author nazmul hasan on 17th april 2016
      */
+
     public function add_sms_transactions($api_key, $transaction_list, $sms_info, $payment_info) {
         $current_time = now();
         $sms_info['created_on'] = $current_time;
@@ -377,6 +381,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $offset, offset
      * @author nazmul hasan on 24th February 2016
      */
+
     public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
@@ -408,7 +413,7 @@ class Transaction_model extends Ion_auth_model {
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
                         ->get();
     }
-    
+
     /*
      * This method will return user sms transaction list
      * @param $from_date, start date in unix format
@@ -417,7 +422,8 @@ class Transaction_model extends Ion_auth_model {
      * @param $offset, offset
      * @author nazmul hasan on 10th April 2016
      */
-    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
+
+    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $status_id_list = array()) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -434,6 +440,9 @@ class Transaction_model extends Ion_auth_model {
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_sms_transactions'] . '.created_on >=', $from_date);
             $this->db->where($this->tables['user_sms_transactions'] . '.created_on <=', $to_date);
+        }
+        if (!empty($status_id_list)) {
+            $this->db->where_in($this->tables['user_sms_transactions'] . '.status_id', $status_id_list);
         }
         $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
         $this->db->order_by($this->tables['user_sms_transactions'] . '.id', 'desc');
@@ -483,7 +492,7 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 27th April 2016
      */
 
-    public function get_user_sms_transaction_summary($user_id, $from_date = 0, $to_date = 0) {
+    public function get_user_sms_transaction_summary($user_id, $from_date = 0, $to_date = 0, $status_id_list = array()) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -494,6 +503,9 @@ class Transaction_model extends Ion_auth_model {
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_sms_transactions'] . '.created_on >=', $from_date);
             $this->db->where($this->tables['user_sms_transactions'] . '.created_on <=', $to_date);
+        }
+        if (!empty($status_id_list)) {
+            $this->db->where_in($this->tables['user_sms_transactions'] . '.status_id', $status_id_list);
         }
         $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
         return $this->db->select('COUNT(*) as total_transactions, sum(unit_price) as total_amount')
