@@ -641,5 +641,4 @@ var collectionSize = 0;
 })();
 function setCollectionLength(collectionLength) {
     collectionSize = collectionLength;
-    console.log("pagination counter" + collectionLength);
 }

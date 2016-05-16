@@ -1,7 +1,7 @@
 @import url("bootstrap.min.css");
 .form-background
 {
-/*    background-color: #E4F2D9;*/
+    /*    background-color: #E4F2D9;*/
 }
 .table td {
     text-align: center;   
@@ -228,7 +228,7 @@
     font-size:14px; 
     vertical-align: top;
     border-left: -35px;
-   
+
 }
 .message_style{ 
     color: red; 
@@ -279,18 +279,18 @@ input[type="radio"], input[type="checkbox"] {
         margin-left: 0!important;
     }
     input[type="radio"], input[type="checkbox"] {
-    margin: 4px!important;
-}
+        margin: 4px!important;
+    }
 }
 
 .btn_success_staff_style{
-  width: 124px;  
+    width: 124px;  
 }
 .btn_success_manager_style{
-  width: 111px;  
+    width: 111px;  
 }
 .btn_success_admin_style{
-  width: 92px;  
+    width: 92px;  
 }
 
 /*******************************************************************************************/
@@ -331,3 +331,194 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 
+
+/******************************  deshboard   *********************************************************/
+
+/*
+    Created on : Feb 10, 2016
+    Author     : A.K.M. NAZMUL ISLAM
+*/
+
+.dashBoardBackground{
+    background-color: #C7D9EB;
+    font-size: 9px;
+    color: #333;
+    padding: 2px;
+}
+.dashBoardHeaderBackground{
+    background-color: #4F7FA6;
+}
+.dashBoardHeaderLeftContent, .dashBoardHeaderRightContent{
+    color: #fff;
+    font-weight: bold;
+    padding-top: 10px;
+}
+.dashBoardHeaderLeftContent{
+    float: left;
+}
+.dashBoardHeaderRightContent{
+    float: right;
+}
+
+.tableHeaderTitle{
+    background-color: lavender; 
+    font-weight: bold; 
+    text-align: center;
+}
+.tableHeaderContentTitle{
+    background-color: #DFDBF4; 
+    font-weight: bold; 
+}
+.padding_5px{
+    padding: 4px 0 4px 4px;  
+}
+.padding_2px{
+    padding: 2px;  
+}
+.borderFull{
+    border: 1px solid #fff;
+}
+.borderWithoutTop{
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+.borderRight{
+    border-right: 1px solid #fff;
+}
+.borderHeight{
+    height: 92px;
+}
+.textBold{
+    font-weight: bold;
+}
+
+.textSize{
+    font-size: 9px;
+}
+
+.textAlignCenter{
+    text-align: center;
+}
+
+.whiteBackground{
+    background-color: #fff;
+}
+
+.borderBottom{
+    border-bottom: 1px solid lightgray;
+}
+
+.customNav > li > a {
+    padding: 5px 8px!important;
+}
+.padding_top_10px{
+    padding-top: 10px;
+}
+.padding_top_5px{
+    padding-top: 5px;
+}
+.slice text {
+    font-size: 12pt;
+    fill: #ffffff;
+}
+
+
+.chart div {
+    background-color: #3AB9B2;
+    padding: 3px;
+    margin: 1px;
+    height: 18px;
+}
+.chart div span{
+    font: 10px sans-serif;
+    float: right;
+    color: #000000;
+    position: absolute;
+}
+.left_menu{
+    background-color: #F3F3F3;
+}
+@media print
+{    
+    .sidebar,.ezttle, .form-inline, #footer
+    {
+        display: none !important;
+    }
+    .onprint { display: block !important; }
+
+    .report {margin:0px;}
+}
+.sidebar {
+    width: 180px;
+    float: left;
+    background-color: #F3F3F3;
+}
+@media (max-width: 991px) {
+    .maxWindow{
+        display: none;
+    }
+    .paglet{
+        background-color: white;
+        padding: 5px;
+        margin-bottom: 1px;
+        box-shadow: 0 0 1px #bbb;
+        border-radius: 3.5px;
+
+    }
+}
+@media (min-width: 992px) {
+    .marginLeft{
+        margin-left: -25px;  
+    }
+    .miniWindow{
+        display: none;
+    }
+    .maxWindow{
+    }
+    .paglet{
+        background-color: white;
+        padding: 15px;
+        margin-bottom: 1px;
+        box-shadow: 0 0 1px #bbb;
+        border-radius: 3.5px;
+        overflow-y: auto;
+        height: 360px;
+        max-width: 313px;
+    }
+}
+
+.customInputMargin{
+    margin-bottom: -8px;
+}
+.customInput{
+    height: 24px!important;
+    padding: 5px!important;
+    font-size: 11px!important;
+    width: 100%!important;
+}
+
+.custom_button{
+    background-color:#0072C6; 
+    border: 1px solid #0072C6;
+    color:#fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    width: 100%!important;
+    margin-bottom: 5px!important;
+    border-radius: 4px!important;
+    border-radius: 4px!important;
+    line-height: normal!important;
+}
+
+.button-custom{
+    background-color:#0072C6; 
+    border: 1px solid #0072C6;
+    color:#fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 30px !important;
+    border-radius: 4px!important;
+}

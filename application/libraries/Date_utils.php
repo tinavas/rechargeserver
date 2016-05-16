@@ -53,10 +53,17 @@ class Date_utils {
         return human_to_unix($date_array[0] . ' 00:00 AM') + 86400;
     }
 
-    public function convert_date_to_unix_time($date){
+    public function server_start_unix_time_of_previous_day() {
+        $date = date('Y-m-d', strtotime("-1 days"));
         $date = date_parse_from_format('Y-m-d', $date);
         $timestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
-        return  $timestamp + 86400;
+        return $timestamp;
+    }
+
+    public function convert_date_to_unix_time($date) {
+        $date = date_parse_from_format('Y-m-d', $date);
+        $timestamp = mktime(0, 0, 0, $date['month'], $date['day'], $date['year']);
+        return $timestamp + 86400;
     }
 
     /*
@@ -65,6 +72,7 @@ class Date_utils {
      * @param $country_code country code
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function server_start_unix_time_of_date($date, $country_code = 'BD') {
         $date_start_unix = human_to_unix($date . ' 00:00 AM');
 
@@ -75,13 +83,14 @@ class Date_utils {
 
         return $date_start_unix - $offset;
     }
-    
+
     /*
      * This method will return unix time of end of a date
      * @param $date, date in yyyy-mm-dd format
      * @param $country_code country code
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function server_end_unix_time_of_date($date, $country_code = 'BD') {
         $date_start_unix = human_to_unix($date . ' 00:00 AM');
 
@@ -99,6 +108,7 @@ class Date_utils {
      * @param $$country_code country code
      * @author nazmul hasan on 3rd March 2016
      */
+
     public function get_unix_to_display($time, $country_code = 'BD') {
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);

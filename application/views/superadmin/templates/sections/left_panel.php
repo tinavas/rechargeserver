@@ -12,6 +12,9 @@
         <li id="transaction">
             <a href="<?php echo base_url() ?>superadmin/transaction/show_transactions">Transactions</a>
         </li>
+        <li id="sim">
+            <a href="<?php echo base_url() ?>superadmin/transaction/show_sims">Sims</a>
+        </li>
         <li id="logout">
             <a href="<?php echo base_url() ?>superadmin/auth/logout">Log out</a>                                
         </li>                            

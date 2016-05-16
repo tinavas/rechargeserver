@@ -25,30 +25,6 @@
                     <!--<li><a href="#">Global Topup</a></li>-->
                 </ul>
             </li>
-            <!--<li><a href="#">Pending Request </a></li>-->	
-<!--            <li>
-                <a class="chld" href="#">Prepaid Card</a>
-                <ul id="baby">
-                    <li><a href="#">Buy Card</a></li>
-                    <li><a href="#">History</a></li>
-                </ul>
-            </li>-->
-<!--            <li>
-                <a class="chld" href="#">Bill Pay</a>
-                <ul id="baby">
-                    <li><a href="#">New BillPay</a></li>
-                    <li><a href="#">BillPay History</a></li>
-                </ul>
-            </li>-->
-<!--            <li>
-                <a class="chld" href="javascript:void(0)">Message</a>
-                <ul id="baby">
-                    <li><a href="#">Send SMS</a></li>
-                    <li><a href="#">Bulk SMS</a></li>
-                    <li><a href="#">AddressBook</a></li>
-                    <li><a href="#">SMS History</a></li>
-                </ul>
-            </li>-->
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
                     <li><a href="<?php echo base_url() . 'history/all_transactions' ?>">All History</a></li>

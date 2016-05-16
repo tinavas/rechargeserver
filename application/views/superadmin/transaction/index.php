@@ -2,7 +2,6 @@
     <div class="panel-heading">Transactions</div>
     <div class="panel-body">
         <div class="row form-group"></div>
-        <div class="row form-group"></div>
         <div class="row col-md-12" style="margin-left: 1px;">            
             <div class="row" ng-init="setTransctionList('<?php echo htmlspecialchars(json_encode($transction_list)) ?>')">
                 <div class="table-responsive">
