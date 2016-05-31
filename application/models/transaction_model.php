@@ -110,7 +110,7 @@ class Transaction_model extends Ion_auth_model {
             $package_id = $transaction_data['operator_type_id'];
         }
         $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
-        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';
@@ -226,7 +226,7 @@ class Transaction_model extends Ion_auth_model {
             $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
         }
         $this->curl->create(WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS);
-        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "transction_list" => json_encode($transaction_list_for_webservice)));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "transction_list" => json_encode($transaction_list_for_webservice)));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';
@@ -320,7 +320,7 @@ class Transaction_model extends Ion_auth_model {
         //right now we are not assigning profit for sms transaction
 
         $this->curl->create(WEBSERVICE_URL_SEND_SMS);
-        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_WEBSERVER_TEST, "APIKey" => $api_key, "sms" => $sms_info['sms'], "cellnumberlist" => json_encode($cell_number_list)));
+        $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "APIKey" => $api_key, "sms" => $sms_info['sms'], "cellnumberlist" => json_encode($cell_number_list)));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';
@@ -423,7 +423,7 @@ class Transaction_model extends Ion_auth_model {
      * @author nazmul hasan on 10th April 2016
      */
 
-    public function get_user_sms_transaction_list($user_id, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $status_id_list = array()) {
+    public function get_user_sms_transaction_list($status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -444,7 +444,6 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($status_id_list)) {
             $this->db->where_in($this->tables['user_sms_transactions'] . '.status_id', $status_id_list);
         }
-        $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
         $this->db->order_by($this->tables['user_sms_transactions'] . '.id', 'desc');
         return $this->db->select($this->tables['user_sms_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['sms_details'] . '.sms,' . $this->tables['sms_details'] . '.length,' . $this->tables['sms_details'] . '.unit_price')
                         ->from($this->tables['user_sms_transactions'])
@@ -492,7 +491,7 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 27th April 2016
      */
 
-    public function get_user_sms_transaction_summary($user_id, $from_date = 0, $to_date = 0, $status_id_list = array()) {
+    public function get_user_sms_transaction_summary($status_id_list = array(), $from_date = 0, $to_date = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -507,7 +506,6 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($status_id_list)) {
             $this->db->where_in($this->tables['user_sms_transactions'] . '.status_id', $status_id_list);
         }
-        $this->db->where($this->tables['sms_details'] . '.user_id', $user_id);
         return $this->db->select('COUNT(*) as total_transactions, sum(unit_price) as total_amount')
                         ->from($this->tables['user_sms_transactions'])
                         ->join($this->tables['sms_details'], $this->tables['sms_details'] . '.transaction_id=' . $this->tables['user_sms_transactions'] . '.transaction_id')

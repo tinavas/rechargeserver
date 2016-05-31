@@ -18,8 +18,8 @@
                 <th><a href="">Balance</a></th>
                 <th><a href="">Created Date</a></th>
                 <th><a href="">Last Login</a></th>
-                <th><a href="">Details</a></th>
-                <th><a href="">Show</a></th>
+                <th><a href="">Resellers</a></th>
+                <th><a href="">Profile</a></th>
                 <?php if ($allow_user_edit !== FALSE) { ?> 
                     <th width="170">Action</th>
                 <?php } ?>

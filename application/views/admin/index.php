@@ -20,9 +20,9 @@
                 <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_MCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/mcash' ?>"><img src="<?php echo base_url(); ?>resources/images/mcash.png" onerror="this.onerror=null;this.src='resources/images/default.png';">M-Cash</a></li>						
                 <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/ucash' ?>"><img src="<?php echo base_url(); ?>resources/images/ucash.png" onerror="this.onerror=null;this.src='resources/images/default.png';">U-Cash</a></li>						
             </div>
-            <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/default.png" onerror="this.onerror=null;this.src='resources/images/default.png';">Global Topup</a></li>						
+<!--            <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/default.png" onerror="this.onerror=null;this.src='resources/images/default.png';">Global Topup</a></li>						
             <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/buycard.png">Prepaid Card</a></li>			
-            <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/billpay.png">Bill Payment</a></li>			
+            <li><a href="#"><img src="<?php echo base_url(); ?>resources/images/billpay.png">Bill Payment</a></li>			-->
             <li><a href="<?php echo base_url() . 'transaction/sms' ?>"><img src="<?php echo base_url(); ?>resources/images/sms.png">Send SMS</a></li>
 
         </ul>
@@ -35,7 +35,9 @@
             <div class="table">
                 <table cellspacing="0;">
                     <tbody>
-                        <tr><td>bKash</td><td class="tk"></td><td class="tk"><?php echo $bkash_total_transactions ?></td></tr>
+                        <?php foreach ($today_usages as $key => $value) { ?>
+                            <tr><td><?php echo $key ?></td><td class="tk"></td><td class="tk"><?php echo $value ?></td></tr>
+                        <?php } ?>                        
                     </tbody></table>
             </div>
             <!--<h3><span class="left">Sub-Total</span><span class="right">0.00</span></h3>-->

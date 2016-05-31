@@ -551,7 +551,7 @@ class History extends Role_Controller {
                     $status_id_list = array($status_id);
                 }
             }
-            $transction_information_array = $this->transaction_library->get_user_sms_transaction_list($user_id, $from_date, $to_date, $limit, $offset, $status_id_list);
+            $transction_information_array = $this->transaction_library->get_user_sms_transaction_list($status_id_list, $from_date, $to_date, $limit, $offset, array('user_id' => $user_id));
             if (!empty($transction_information_array)) {
                 $response['total_transactions'] = $transction_information_array['total_transactions'];
                 $response['total_amount'] = $transction_information_array['total_amount'];
@@ -560,7 +560,7 @@ class History extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        $transaction_list_array = $this->transaction_library->get_user_sms_transaction_list($user_id, 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, array(TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $transaction_list_array = $this->transaction_library->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_SUCCESSFUL), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, array('user_id' => $user_id));
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();

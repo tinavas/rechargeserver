@@ -1,3 +1,3 @@
 <div id="footer">
-    <p>Powered By - Global Trade &amp; Dealing</p>
+    <p>Powered By - bdlions@gmail.com</p>
 </div>

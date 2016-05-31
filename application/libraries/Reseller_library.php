@@ -112,15 +112,73 @@ class Reseller_library {
             'created_on >= ' => $this->date_utils->server_start_unix_time_of_today(),
             'created_on <= ' => $this->date_utils->server_end_unix_time_of_today(),
         );
-        $bkash_total_transactions = 0;
-        $bkash_transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
-        foreach ($bkash_transaction_list as $bkash_transaction_info) {
-            if($bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_PENDING || $bkash_transaction_info['status_id'] == TRANSACTION_STATUS_ID_SUCCESSFUL)
+        $today_usages = array();
+        $service_id_list = array();
+        $this->load->model('service_model');
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach($service_list as $service_info)
+        {
+            if(!in_array($service_info['service_id'], $service_id_list))
             {
-                $bkash_total_transactions = $bkash_total_transactions + $bkash_transaction_info['amount'];
-            }            
+                $service_id_list[] = $service_info['service_id'];
+            }
+            if(SERVICE_TYPE_ID_BKASH_CASHIN == $service_info['service_id'])
+            {
+                $today_usages['bkash'] = 0;
+            }
+            else if(SERVICE_TYPE_ID_DBBL_CASHIN == $service_info['service_id'])
+            {
+                $today_usages['dbbl'] = 0;
+            }
+            else if(SERVICE_TYPE_ID_MCASH_CASHIN == $service_info['service_id'])
+            {
+                $today_usages['mcash'] = 0;
+            }
+            else if(SERVICE_TYPE_ID_UCASH_CASHIN == $service_info['service_id'])
+            {
+                $today_usages['ucash'] = 0;
+            }
+            else if(SERVICE_TYPE_ID_TOPUP_GP == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $service_info['service_id'])
+            {
+                $today_usages['topup'] = 0;
+            }
+            else if(SERVICE_TYPE_ID_SEND_SMS == $service_info['service_id'])
+            {
+                $today_usages['sms'] = 0;
+            }
         }
-        $data['bkash_total_transactions'] = $bkash_total_transactions;
+        $transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL))->result_array();
+        foreach ($transaction_list as $transaction_info) {
+            if(SERVICE_TYPE_ID_BKASH_CASHIN == $transaction_info['service_id'])
+            {
+                $today_usages['bkash'] = $today_usages['bkash'] + $transaction_info['amount'];
+            }
+            else if(SERVICE_TYPE_ID_DBBL_CASHIN == $transaction_info['service_id'])
+            {
+                $today_usages['dbbl'] = $today_usages['dbbl'] + $transaction_info['amount'];
+            }
+            else if(SERVICE_TYPE_ID_MCASH_CASHIN == $transaction_info['service_id'])
+            {
+                $today_usages['mcash'] = $today_usages['mcash'] + $transaction_info['amount'];
+            }
+            else if(SERVICE_TYPE_ID_UCASH_CASHIN == $transaction_info['service_id'])
+            {
+                $today_usages['ucash'] = $today_usages['ucash'] + $transaction_info['amount'];
+            }
+            else if(SERVICE_TYPE_ID_TOPUP_GP == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $transaction_info['service_id'])
+            {
+                $today_usages['topup'] = $today_usages['topup'] + $transaction_info['amount'];
+            }
+        }
+        if(in_array(SERVICE_TYPE_ID_SEND_SMS, $service_id_list))
+        {
+            $sms_transaction_list = $this->transaction_model->where(array('user_id' => $user_id))->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL), $this->date_utils->server_start_unix_time_of_today(), $this->date_utils->server_end_unix_time_of_today())->result_array();
+            foreach($sms_transaction_list as $sms_transaction_info)
+            {
+                $today_usages['sms'] = $today_usages['sms'] + $sms_transaction_info['unit_price'];
+            }
+        }
+        $data['today_usages'] = $today_usages;
         return $data;
     }
 
