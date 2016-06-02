@@ -386,7 +386,7 @@ class Transaction extends Role_Controller
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "transactionDataList")) {
-                $user_assigned_service_id_list = [];
+                $user_assigned_service_id_list = array();
                 $user_topup_operator_id_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
                 if (!empty($user_topup_operator_id_list)) {
                     // generate user assign service id list and declare specific transction data list
@@ -396,7 +396,7 @@ class Transaction extends Role_Controller
                 }
 
                 $transaction_data_list = $requestInfo->transactionDataList;
-                $transction_list = [];
+                $transction_list = array();
                 $total_amount = 0;
                 foreach ($transaction_data_list as $key => $transaction_data) {
                     $mapping_id = $this->utils->get_random_mapping_id();
@@ -604,7 +604,7 @@ class Transaction extends Role_Controller
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "transactionDataList")) {
                 $transaction_data_list = $requestInfo->transactionDataList;
-                $transction_list = [];
+                $transction_list = array();
                 foreach ($transaction_data_list as $key => $transaction_data) {
                     $sms_data_info = array();
                     if (property_exists($transaction_data, "number")) {

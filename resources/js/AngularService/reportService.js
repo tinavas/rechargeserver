@@ -1,6 +1,7 @@
 angular.module('services.Report', []).
         factory('reportService', function ($http, $location) {
             var $app_name = "/rechargeserver";
+            //var $app_name = "";
             var reportService = {};
 
             reportService.bkash = function (bkashInfo) {

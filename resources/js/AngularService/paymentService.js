@@ -1,6 +1,7 @@
 angular.module('services.Payment', []).
         factory('paymentService', function ($http, $location) {
             var $app_name = "/rechargeserver";
+            //var $app_name = "";
             var paymentService = {};
             paymentService.createPayment = function (userId, paymentInfo) {
 

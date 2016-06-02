@@ -1,6 +1,7 @@
 angular.module('services.Transction', []).
         factory('transctionService', function ($http, $location) {
             var $app_name = "/rechargeserver";
+            //var $app_name = "";
             var transctionService = {};
 
             transctionService.sendSMS = function (transactionDataList, smsInfo) {

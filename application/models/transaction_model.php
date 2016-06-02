@@ -168,10 +168,10 @@ class Transaction_model extends Ion_auth_model {
      */
 
     public function add_transactions($transction_list, $user_profit_list) {
-        $transaction_list_for_webservice = [];
-        $user_transaction_list = [];
-        $payment_list = [];
-        $user_profits = [];
+        $transaction_list_for_webservice = array();
+        $user_transaction_list = array();
+        $payment_list = array();
+        $user_profits = array();
         $current_time = now();
         foreach ($transction_list as $transaction_info) {
             $service_id = $transaction_info['service_id'];

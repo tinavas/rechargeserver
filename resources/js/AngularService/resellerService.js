@@ -1,6 +1,7 @@
 angular.module('services.Reseller', []).
         factory('resellerService', function ($http, $location) {
             var $app_name = "/rechargeserver";
+            //var $app_name = "";
             var resellerService = {};
             resellerService.getUserServiceList = function () {
 
