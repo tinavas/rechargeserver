@@ -49,7 +49,7 @@ class Utils {
      */
 
     public function cell_number_validation($cell_no) {
-        if (preg_match("/^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
+        if (preg_match("/^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
             RETURN FALSE;
         } else {
             RETURN TRUE;

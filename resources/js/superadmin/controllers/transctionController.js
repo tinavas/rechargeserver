@@ -31,7 +31,9 @@ angular.module('controller.Transction', ['service.Transction']).
                             callbackFunction(data);
                         });
             };
-
+            $scope.setSimInfo = function (simInfo) {
+                $scope.simInfo = JSON.parse(simInfo);
+            };
             $scope.setSimServiceList = function (simServiceList) {
                 $scope.simServiceList = JSON.parse(simServiceList);
             };
@@ -64,42 +66,31 @@ angular.module('controller.Transction', ['service.Transction']).
                 }
                 $scope.allow_action = false;
                 $scope.simInfo = simInfo;
-
-                if (typeof $scope.simInfo.selectedIdList == "undefined") {
-                    $scope.simInfo.selectedIdList = [];
-                }
-                angular.forEach($scope.serviceList, function (service) {
-                    if (service.selected == true) {
-                        $scope.simInfo.selectedIdList.push(service.service_id);
-                    }
-                });
+//                if (typeof $scope.simInfo.selectedIdList == "undefined") {
+//                    $scope.simInfo.selectedIdList = [];
+//                }
+//                angular.forEach($scope.serviceList, function (service) {
+//                    if (service.selected == true) {
+//                        $scope.simInfo.selectedIdList.push(service.service_id);
+//                    }
+//                });
                 transctionService.addSim($scope.simInfo).
                         success(function (data, status, headers, config) {
                             $scope.allow_action = true;
                             callbackFunction(data);
                         });
             };
-            $scope.editSim = function (simNumber, registrationDate, callbackFunction) {
+            $scope.editSim = function (simInfo, callbackFunction) {
                 if ($scope.allow_action == false) {
                     return;
                 }
                 $scope.allow_action = false;
-                $scope.simInfo.simNumber = simNumber;
-                $scope.simInfo.registrationDate = registrationDate;
-
-                if (typeof $scope.simInfo.selectedIdList == "undefined") {
-                    $scope.simInfo.selectedIdList = [];
-                }
-                angular.forEach($scope.serviceList, function (service) {
-                    if (service.selected == true) {
-                        $scope.simInfo.selectedIdList.push(service.service_id);
-                    }
-                });
+                $scope.simInfo = simInfo;
                 transctionService.editSim($scope.simInfo).
-                        success(function (data, status, headers, config) {
-                            $scope.allow_action = true;
-                            callbackFunction(data);
-                        });
+                    success(function (data, status, headers, config) {
+                        $scope.allow_action = true;
+                        callbackFunction(data);
+                    });
             };
             $scope.loadBalance = function (balanceInfo, callbackFunction) {
                 if ($scope.allow_action == false) {

@@ -78,6 +78,10 @@ $lang['error_code_5005']                            = '5005';
 $lang['error_code_5006']                            = '5006';
 $lang['error_code_5007']                            = '5007';
 $lang['error_code_5008']                            = '5008';
+$lang['error_code_5009']                            = '5009';
+$lang['error_code_5010']                            = '5010';
+$lang['error_code_5011']                            = '5011';
+$lang['error_code_5012']                            = '5012';
 
 $lang['error_user_rate_configuration']              = 'Please cofigure user rate.';
 $lang['null_pointer_exception_while_processing_the_transaction'] = 'Null Pointer Exception While Processing the Transaction';

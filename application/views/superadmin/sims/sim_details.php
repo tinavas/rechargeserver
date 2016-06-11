@@ -11,13 +11,13 @@
 </script>
 <div class="panel panel-default" ng-controller="transctionController">
     <div id="sim_details_id">  
-        <div class="panel-heading">Sim Details -> <?php echo $sim_no ?></div>
+        <div class="panel-heading">Sim Details -> <?php //echo $sim_info ?></div>
         <div class="panel-body">
             <div class="row" style="margin-left: 1px;">  
                 <div class="col-md-12">
                     <div class="row">
-                        <?php if (isset($sim_service_info_list)) { ?>
-                            <div ng-init="setSimServiceList(<?php echo htmlspecialchars(json_encode($sim_service_info_list)) ?>)"></div>
+                        <?php if (isset($service_list)) { ?>
+                            <div ng-init="setSimServiceList(<?php echo htmlspecialchars(json_encode($service_list)) ?>)"></div>
                         <?php } ?> 
                         <div class="table-responsive">
 

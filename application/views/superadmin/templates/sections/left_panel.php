@@ -13,7 +13,7 @@
             <a href="<?php echo base_url() ?>superadmin/transaction/show_transactions">Transactions</a>
         </li>
         <li id="sim">
-            <a href="<?php echo base_url() ?>superadmin/transaction/show_sims">Sims</a>
+            <a href="<?php echo base_url() ?>superadmin/sim">Sims</a>
         </li>
         <li id="logout">
             <a href="<?php echo base_url() ?>superadmin/auth/logout">Log out</a>                                

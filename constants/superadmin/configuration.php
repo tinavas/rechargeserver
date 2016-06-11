@@ -1,4 +1,11 @@
 <?php
+//Added by Nazmul
+define("WEBSERVICE_ADD_SIM",                                   "http://localhost:4040/addsim");
+define("WEBSERVICE_GET_ALL_SIMS",                              "http://localhost:4040/getallsims");
+define("WEBSERVICE_GET_SIM_INFO",                              "http://localhost:4040/getsiminfo");
+define("WEBSERVICE_EDIT_SIM",                                  "http://localhost:4040/editsim");
+//End of configuration added by Nazmul
+
 
 define("SUPER_ADMIN",                                          "superadmin");
 
@@ -28,9 +35,7 @@ define("WEBSERVICE_GET_SERVICE_RANK_LIST_VOLUMN",              "http://localhost
 define("WEBSERVICE_GET_SERVICE_RPOFIT_LIST",                   "http://localhost:4040/getServiceProfitList");
 define("WEBSERVICE_GET_TOP_CUSTOMER_LIST",                     "http://localhost:4040/getCustomerList");
 
-define("WEBSERVICE_GET_SIM",                                   "http://localhost:4040/getSimList");
-define("WEBSERVICE_ADD_SIM_INFORMATION",                       "http://localhost:4040/addSim");
-define("WEBSERVICE_EDIT_SIM_INFORMATION",                       "http://localhost:4040/editSim");
+define("WEBSERVICE_EDIT_SIM_INFORMATION",                      "http://localhost:4040/editSim");
 define("WEBSERVICE_LOAD_SERVICE_BALANCE",                      "http://localhost:4040/loadServiceBalance");
 define("WEBSERVICE_GET_SIM_SERVICE_LIST",                      "http://localhost:4040/getSimServiceList");
 define("WEBSERVICE_GET_SIM_TRANSACTION_LIST",                  "http://localhost:4040/getSimTransactionList");
