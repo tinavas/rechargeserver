@@ -23,6 +23,11 @@
             $('#common_modal').modal('show');
             return;
         }
+        if (typeof simInfo.identifier == "undefined" || simInfo.identifier.length == 0) {
+            $("#content").html("Please add identifier !");
+            $('#common_modal').modal('show');
+            return;
+        }
 
         angular.element($("#submit_create_sim")).scope().addSim(simInfo, function (data) {
             $("#content").html(data.message);
@@ -51,6 +56,14 @@
                             </div> 
                         </div>
                         <div class="row form-group">
+                            <label for="identifier" class="col-md-6 control-label requiredField">
+                                Identifier:
+                            </label>
+                            <div class ="col-md-6">
+                                <input type="text" placeholder="localserver1" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.identifier">
+                            </div> 
+                        </div>
+                        <div class="row form-group">
                             <label for="description" class="col-md-6 control-label requiredField">
                                 Description:
                             </label>
@@ -64,6 +77,14 @@
                             </label>
                             <div class ="col-md-6">
                                 <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.current_balance">
+                            </div> 
+                        </div>
+                        <div class="row form-group">
+                            <label for="status" class="col-md-6 control-label requiredField">
+                                Status:
+                            </label>
+                            <div class ="col-md-6">
+                                <input type="text" placeholder="1 or 0" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.status">
                             </div> 
                         </div>
                     </form>

@@ -31,7 +31,7 @@ class Auth extends CI_Controller {
             $user_group = $this->ion_auth->get_current_user_types();
             foreach ($user_group as $group) {
                 if ($group == SUPER_ADMIN) {
-                    $this->load->library('superadmin/org/history_library');
+                    /*$this->load->library('superadmin/org/history_library');
                     $result_event = $this->history_library->get_deshbord_info();
                     if (!empty($result_event)) {
 //                        if (property_exists($result_event_event, "responseCode") != FALSE) {
@@ -82,7 +82,8 @@ class Auth extends CI_Controller {
 //                        }
 //                    }
                     $this->data['app'] = HISTORY_APP;
-                    $this->template->load(null, "superadmin/index", $this->data);
+                    $this->template->load(null, "superadmin/index", $this->data);*/
+                    redirect("superadmin/sim","refresh");
                 } else {
                     echo "Non member";
                 }

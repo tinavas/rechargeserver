@@ -14,7 +14,7 @@ class Sim_model extends Ion_auth_model {
     public function add_sim($additional_data)
     {        
         $this->curl->create(WEBSERVICE_ADD_SIM);
-        $this->curl->post(array('sim_no'=>$additional_data['sim_no'], 'description'=>$additional_data['description'],'current_balance'=>$additional_data['current_balance']));
+        $this->curl->post(array('sim_no'=>$additional_data['sim_no'], 'identifier'=>$additional_data['identifier'], 'description'=>$additional_data['description'],'current_balance'=>$additional_data['current_balance'],'status'=>$additional_data['status']));
         return json_decode($this->curl->execute());
     }
     
@@ -41,7 +41,9 @@ class Sim_model extends Ion_auth_model {
                     {
                         $sim_info = array();
                         $sim_info['sim_no'] = $simInfo->simNo;
+                        $sim_info['identifier'] = $simInfo->identifier;
                         $sim_info['description'] = $simInfo->description;
+                        $sim_info['status'] = $simInfo->status;
                         $sim_info['current_balance'] = $simInfo->simServiceList[0]->currentBalance;
                         $sim_info['modified_on'] = $this->date_utils->get_unix_to_display($simInfo->simServiceList[0]->modifiedOn);
                         $sim_list[] = $sim_info;
@@ -72,7 +74,9 @@ class Sim_model extends Ion_auth_model {
                 if (property_exists($result_event, "result") != FALSE) {
                     $result = $result_event->result;
                     $sim_info['sim_no'] = $result->simNo;
+                    $sim_info['identifier'] = $result->identifier;
                     $sim_info['description'] = $result->description;
+                    $sim_info['status'] = $result->status;
                     $sim_info['current_balance'] = $result->simServiceList[0]->currentBalance;
                 }
             }
@@ -88,7 +92,14 @@ class Sim_model extends Ion_auth_model {
     public function edit_sim($additional_data)
     {
         $this->curl->create(WEBSERVICE_EDIT_SIM);
-        $this->curl->post(array('sim_no'=>$additional_data['sim_no'], 'description'=>$additional_data['description'],'current_balance'=>$additional_data['current_balance']));
+        $this->curl->post(array('sim_no'=>$additional_data['sim_no'], 'identifier'=>$additional_data['identifier'], 'description'=>$additional_data['description'],'current_balance'=>$additional_data['current_balance'],'status'=>$additional_data['status']));
+        return json_decode($this->curl->execute());
+    }
+    
+    public function check_sim_balance($sim_no)
+    {
+        $this->curl->create(WEBSERVICE_CHECK_SIM_BALANCE);
+        $this->curl->post(array('sim_no' => $sim_no));
         return json_decode($this->curl->execute());
     }
 }

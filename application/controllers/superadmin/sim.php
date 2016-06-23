@@ -36,8 +36,10 @@ class Sim extends CI_Controller {
             if (property_exists($requestInfo, "simInfo") != FALSE) {
                 $sim_info = $requestInfo->simInfo;
                 $sim_no = "";
+                $identifier = "";
                 $description = "";
                 $current_balance = 0;
+                $status = 0;
                 if (property_exists($sim_info, "sim_no")) {
                     $sim_no = $sim_info->sim_no;
                 }
@@ -47,16 +49,24 @@ class Sim extends CI_Controller {
                     echo json_encode($response);
                     return;
                 }
+                if (property_exists($sim_info, "identifier")) {
+                    $identifier = $sim_info->identifier;
+                }
                 if (property_exists($sim_info, "description")) {
                     $description = $sim_info->description;
                 }
                 if (property_exists($sim_info, "current_balance")) {
                     $current_balance = $sim_info->current_balance;
                 }
+                if (property_exists($sim_info, "status")) {
+                    $status = $sim_info->status;
+                }
                 $additional_data = array(
                     'sim_no' => $sim_no,
+                    'identifier' => $identifier,
                     'description' => $description,
-                    'current_balance' => $current_balance
+                    'current_balance' => $current_balance,
+                    'status' => $status
                 );
             }
             $result_event = $this->sim_model->add_sim($additional_data);
@@ -99,8 +109,10 @@ class Sim extends CI_Controller {
             if (property_exists($requestInfo, "simInfo") != FALSE) {
                 $sim_info = $requestInfo->simInfo;
                 $sim_no = "";
+                $identifier = "";
                 $description = "";
                 $current_balance = 0;
+                $status = 0;
                 if (property_exists($sim_info, "sim_no")) {
                     $sim_no = $sim_info->sim_no;
                 }
@@ -110,16 +122,24 @@ class Sim extends CI_Controller {
                     echo json_encode($response);
                     return;
                 }
+                if (property_exists($sim_info, "identifier")) {
+                    $identifier = $sim_info->identifier;
+                }
                 if (property_exists($sim_info, "description")) {
                     $description = $sim_info->description;
                 }
                 if (property_exists($sim_info, "current_balance")) {
                     $current_balance = $sim_info->current_balance;
                 }
+                if (property_exists($sim_info, "status")) {
+                    $status = $sim_info->status;
+                }
                 $additional_data = array(
                     'sim_no' => $sim_no,
+                    'identifier' => $identifier,
                     'description' => $description,
-                    'current_balance' => $current_balance
+                    'current_balance' => $current_balance,
+                    'status' => $status
                 );
             }
             $result_event = $this->sim_model->edit_sim($additional_data);
@@ -141,5 +161,12 @@ class Sim extends CI_Controller {
         $this->data['sim_info'] = json_encode($sim_info);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/edit_sim", $this->data);
+    }
+    
+    public function get_sim_balance($sim_no)
+    {
+        $this->sim_model->check_sim_balance($sim_no);
+        $this->data['app'] = TRANSCATION_APP;
+        $this->template->load(null, "superadmin/sims/update_sim_balance", $this->data);
     }
 }

@@ -4,6 +4,7 @@ define("WEBSERVICE_ADD_SIM",                                   "http://localhost
 define("WEBSERVICE_GET_ALL_SIMS",                              "http://localhost:4040/getallsims");
 define("WEBSERVICE_GET_SIM_INFO",                              "http://localhost:4040/getsiminfo");
 define("WEBSERVICE_EDIT_SIM",                                  "http://localhost:4040/editsim");
+define("WEBSERVICE_CHECK_SIM_BALANCE",                         "http://localhost:4040/checksimbalance");
 //End of configuration added by Nazmul
 
 

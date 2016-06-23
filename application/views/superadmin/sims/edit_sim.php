@@ -18,6 +18,11 @@
             $('#common_modal').modal('show');
             return;
         }
+        if (typeof simInfo.identifier == "undefined" || simInfo.identifier.length == 0) {
+            $("#content").html("Please assign SIM identifier !");
+            $('#common_modal').modal('show');
+            return;
+        }
         if (typeof simInfo.description == "undefined" || simInfo.description.length == 0) {
             $("#content").html("Please add a description !");
             $('#common_modal').modal('show');
@@ -53,6 +58,14 @@
                         </div> 
                     </div>
                     <div class="row form-group">
+                        <label for="identifier" class="col-md-6 control-label requiredField">
+                            Identifier:
+                        </label>
+                        <div class ="col-md-6">
+                            <input type="text" value="" class="form-control"  ng-model="simInfo.identifier">
+                        </div> 
+                    </div>
+                    <div class="row form-group">
                         <label for="description" class="col-md-6 control-label requiredField">
                             Description:
                         </label>
@@ -67,7 +80,15 @@
                         <div class ="col-md-6">
                             <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.current_balance">
                         </div> 
-                    </div>                    
+                    </div> 
+                    <div class="row form-group">
+                        <label for="status" class="col-md-6 control-label requiredField">
+                            Status:
+                        </label>
+                        <div class ="col-md-6">
+                            <input type="text" placeholder="1 or 0" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.status">
+                        </div> 
+                    </div>
                 </form>
             </div>
 <!--            <div class="col-md-4">
