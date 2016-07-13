@@ -27,6 +27,13 @@
                     <th>Rate</th>
                     <th>Comm. (%)</th>
                     <th>Charge (%)</th>
+                    <th>Code</th>
+                    <th>SMS Verification
+                        <input type="checkbox" ng-model="allSmsVerifications" ng-click="checkAllSmsVerifications()" />
+                    </th>
+                    <th>Email Verification
+                        <input type="checkbox" ng-model="allEmailVerifications" ng-click="checkAllEmailVerifications()" />
+                    </th>
                     <th>
                         <input type="checkbox" ng-model="selectedAll" ng-click="checkallbox()" />
                     </th>
@@ -39,7 +46,10 @@
                     <td class="edit"><input type="text" style="width:100%" ng-model="rateInfo.rate"></td>
                     <td class="edit"><input type="text" ng-model="rateInfo.commission" style="width:100%" name="" value=""></td>
                     <td class="edit"><input type="text" style="width:100%" ng-model="rateInfo.charge" ></td>
-                    <td class="enable last"><input type="checkbox" checked="" value="{{rateInfo.id}}" ng-model="rateInfo.enable" ng-click="toggleSelectionRate(rateInfo)" ></td>
+                    <td class="edit"><input type="text" style="width:100%" ng-model="rateInfo.code" ></td>
+                    <td class="enable last"><input type="checkbox" ng-model="rateInfo.sms_enable" ng-click="toggleSelectionRate(rateInfo)" ></td>
+                    <td class="enable last"><input type="checkbox" ng-model="rateInfo.email_enable" ng-click="toggleSelectionRate(rateInfo)" ></td>
+                    <td class="enable last"><input type="checkbox" value="{{rateInfo.id}}" ng-model="rateInfo.enable" ng-click="toggleSelectionRate(rateInfo)" ></td>
                 </tr>
             </tbody>
         </table>

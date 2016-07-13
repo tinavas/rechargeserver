@@ -355,7 +355,10 @@ class Reseller extends Role_Controller {
                         'id' => $rate_info->id,
                         'rate' => $rate_info->rate,
                         'commission' => $rate_info->commission,
-                        'charge' => $rate_info->charge
+                        'charge' => $rate_info->charge,
+                        'code' => $rate_info->code,
+                        'sms_verification' => $rate_info->sms_enable,
+                        'email_verification' => $rate_info->email_enable
                     );
                     $new_updated_rate_list[] = $new_rate_info;
                 }
@@ -375,19 +378,23 @@ class Reseller extends Role_Controller {
                                     echo json_encode($response);
                                     return;
                                 }
+                                //check charge here mainly for sms
                             }
                         }
                         $new_rate_info = array(
                             'id' => $rate_info->id,
                             'rate' => $rate_info->rate,
                             'commission' => $rate_info->commission,
-                            'charge' => $rate_info->charge
+                            'charge' => $rate_info->charge,
+                            'code' => $rate_info->code,
+                            'sms_verification' => $rate_info->sms_enable,
+                            'email_verification' => $rate_info->email_enable
                         );
                         $new_updated_rate_list[] = $new_rate_info;
                     }
                 }
             }
-            if ($this->service_model->update_user_rates($new_updated_rate_list) == True) {
+            if ($this->service_model->update_user_rates($new_updated_rate_list) == true) {
                 $response['message'] = "User Rate Updated successfully !";
             } else {
                 $response['message'] = "Error while updating user rates!";
@@ -420,7 +427,29 @@ class Reseller extends Role_Controller {
         if (!isset($user_id) || $user_id == 0) {
             $user_id = $parent_user_id;
         }
-        $rate_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        $rate_list = array();
+        foreach($service_list as $service_info)
+        {
+            //these two fields will be used to display check boxes because data types are tinyint instead of boolean
+            if($service_info['sms_verification'] == 1)
+            {
+                $service_info['sms_enable'] = true;
+            }
+            else
+            {
+                $service_info['sms_enable'] = false;
+            }
+            if($service_info['email_verification'] == 1)
+            {
+                $service_info['email_enable'] = true;
+            }
+            else
+            {
+                $service_info['email_enable'] = false;
+            }
+            $rate_list[] = $service_info;
+        }
         $this->data['rate_list'] = json_encode($rate_list);
         $this->data['user_id'] = $user_id;
         $this->data['app'] = RESELLER_APP;

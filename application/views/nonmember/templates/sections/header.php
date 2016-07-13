@@ -2,7 +2,7 @@
     <div class="ez-wrap">
         <div id="ez-logo-wrap">
             <a id="ez-logo" tabindex="-1" href="">
-                <img alt="<?php echo SITE_TITLE; ?>" src="14249544742127718058.png">
+                <img alt="<?php echo SITE_TITLE; ?>" src="<?php echo base_url()?>resources/images/logo.png">
             </a>
         </div>
         <a id="ez-logo" tabindex="-1" href=""> </a>

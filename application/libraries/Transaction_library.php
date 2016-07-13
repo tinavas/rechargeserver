@@ -57,6 +57,17 @@ class Transaction_library {
         return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
     }
     
+    public function update_transaction_info($transaction_data)
+    {
+        $profit_list = $this->calculate_transaction_profit_chain($transaction_data['user_id'], $transaction_data['service_id'], $transaction_data['amount']);
+        $user_profit_list = array();
+        foreach ($profit_list as $user_profit_info) {
+            $user_profit_info['transaction_id'] = $transaction_data['transaction_id'];
+            $user_profit_list[] = $user_profit_info;
+        }
+        return $this->transaction_model->update_transaction_info($transaction_data,  $user_profit_list);
+    }
+    
     /*
      * this method add multipule transcations
      * @param $transaction_list, transction data list

@@ -16,4 +16,13 @@ class Callbackws extends CI_Controller {
         $this->transaction_model->update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number);
         echo true;
     }
+    
+    public function update_transaction_editable_status()
+    {
+        $transaction_id = $_POST["transaction_id"];
+        $editable = $_POST["editable"];
+        $this->load->model('transaction_model');
+        $this->transaction_model->callbackws_update_transaction_editable_status($transaction_id, $editable);
+        echo true;
+    }
 }

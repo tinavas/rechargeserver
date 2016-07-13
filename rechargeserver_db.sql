@@ -119,6 +119,10 @@ CREATE TABLE IF NOT EXISTS `users_services` (
   `commission` double DEFAULT 0.0,
   `charge` double DEFAULT 0.0,
   `status` boolean DEFAULT 0,
+  `code` varchar(200) DEFAULT '',
+  `verification_code` varchar(200) DEFAULT '',
+  `sms_verification` boolean DEFAULT 0,
+  `email_verification` boolean DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_users_services_users1_idx` (`user_id`),
   KEY `fk_users_services_services1_idx` (`service_id`)
@@ -214,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   `description` varchar(200),
   `amount` double,
   `status_id` int(11) unsigned NOT NULL,
+  `editable` BOOLEAN DEFAULT FALSE,
   `created_on` int(11) unsigned DEFAULT NULL,
   `modified_on` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),

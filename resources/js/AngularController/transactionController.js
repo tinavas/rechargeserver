@@ -502,7 +502,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             };
-
+            $scope.setBkashTransaction = function (transctionInfo) {
+                $scope.bkashInfo = JSON.parse(transctionInfo);
+            }
             $scope.setPaymentTypeIds = function (paymentTypeIds) {
                 $scope.paymentTypeIds = JSON.parse(paymentTypeIds);
             }

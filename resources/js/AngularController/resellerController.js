@@ -99,6 +99,26 @@ angular.module('controller.Reseller', ['services.Reseller']).
                     callbackFunction(data);
                 });
             }
+            $scope.checkAllSmsVerifications = function () {
+                if ($scope.allSmsVerifications) {
+                    $scope.allSmsVerifications = true;
+                } else {
+                    $scope.allSmsVerifications = false;
+                }
+                angular.forEach($scope.serviceRateList, function (service) {
+                    service.sms_enable = $scope.allSmsVerifications;
+                }, $scope.serviceRateList);
+            };
+            $scope.checkAllEmailVerifications = function () {
+                if ($scope.allEmailVerifications) {
+                    $scope.allEmailVerifications = true;
+                } else {
+                    $scope.allEmailVerifications = false;
+                }
+                angular.forEach($scope.serviceRateList, function (service) {
+                    service.email_enable = $scope.allEmailVerifications;
+                }, $scope.serviceRateList);
+            };
             $scope.checkallbox = function () {
                 if ($scope.selectedAll) {
                     $scope.selectedAll = true;

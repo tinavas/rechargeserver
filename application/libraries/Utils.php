@@ -83,5 +83,8 @@ class Utils {
     public function get_random_string() {
          return random_string('unique');
     }
-
+    
+    public function get_transaction_verification_code() {
+         return rand(1000, 9999);
+    }
 }

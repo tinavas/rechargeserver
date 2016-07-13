@@ -24,7 +24,7 @@
 <div class="ezttle"><span class="text">BKash CashIn</span></div>
 <div class="mypage" ng-controller="transctionController">
     <div class="row" style="margin-top:5px;">
-        <div class="col-md-12 fleft">	
+        <div class="col-md-12 fleft" ng-init="setBkashTransaction(<?php echo htmlspecialchars(json_encode($transaction_info)); ?>)">	
             <input name="elctkn" value="30dfe1ad62facbf8e5b1ec2e46f9f084" style="display:none;" type="hidden">
             <table style="width:100%;">
                 <tbody><tr>
@@ -50,6 +50,16 @@
                                 <input type="text" name="amount" ng-model="bkashInfo.amount" class="form-control"  placeholder='eg: 100'>  
                             </label>
                         </div>
+                        <?php if($code_verification){ ?>
+                        <div class="form-group">
+                            <label for="code" class="col-md-6 control-label requiredField">
+                                Code
+                            </label>
+                            <label for="code" class="col-md-6 control-label requiredField">
+                                <input type="text" name="amount" ng-model="bkashInfo.code" class="form-control">  
+                            </label>
+                        </div>
+                        <?php }?>
                         <div class="form-group">
                             <label for="submit_update_api" class="col-md-6 control-label requiredField">
 
@@ -73,6 +83,7 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
+                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,6 +93,7 @@
                                     <td>{{transactionInfo.amount}}</td>
                                     <td>{{transactionInfo.status}}</td>
                                     <td>{{transactionInfo.created_on}}</td>
+                                    <td ng-if="transactionInfo.editable == 1"><a href="<?php echo base_url() . 'transaction/bkash/'; ?>{{transactionInfo.transaction_id}}">Edit</a></td>
                                 </tr>
                             </tbody>
                         </table>

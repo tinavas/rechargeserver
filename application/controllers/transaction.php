@@ -25,10 +25,29 @@ class Transaction extends Role_Controller
      * This method will process bkash transaction
      * @author nazmul hasan on 24th february 2016
      */
-    public function bkash() {
+    public function bkash($transaction_id = '') {
         $user_id = $this->session->userdata('user_id');
+        //checking whether user has permission for bkash transaction
+        $permission_exists = FALSE;
+        $bkash_service_info = array();
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach ($service_list as $service_info) {
+            //if in future there is new service under bkash then update the logic here
+            if ($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN) {
+                $permission_exists = TRUE;
+                $bkash_service_info = $service_info;
+            }
+        }
+        if (!$permission_exists) {
+            //you are not allowed to use bkash transaction
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! You are not allowed to use bkash service.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         if (file_get_contents("php://input") != null) {
             $response = array();
+            $transaction_id = "";
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "bkashInfo") != FALSE) {
@@ -47,6 +66,46 @@ class Transaction extends Role_Controller
                     echo json_encode($response);
                     return;
                 }
+                if (property_exists($bkashInfo, "code")) {
+                    $code = $bkashInfo->code;
+                    //verify code here
+                    if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
+                    {
+                        if($code != $bkash_service_info['verification_code'])
+                        {
+                            $response['message'] = "Invalid verification code!!!!.";
+                            echo json_encode($response);
+                            return;
+                        }
+                    }
+                    else if($bkash_service_info['code'] != "")
+                    {
+                        if($code != $bkash_service_info['code'])
+                        {
+                            $response['message'] = "Invalid code!!!!.";
+                            echo json_encode($response);
+                            return;
+                        }
+                    }
+                } else {
+                    $response["message"] = "Code is Required !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (property_exists($bkashInfo, "transaction_id") && $bkashInfo->transaction_id != '') {
+                    //update transaction
+                    $transaction_id = $bkashInfo->transaction_id;
+                    $transaction_info_array = $this->transaction_model->get_transaction_info($transaction_id)->result_array();
+                    if(!empty($transaction_info_array) && !$transaction_info_array[0]['editable'])
+                    {
+                        //restrict to edit
+                        $response['message'] = "Sorry! You are not allowed to edit this transaction.";
+                        echo json_encode($response);
+                        return;
+                    }
+                } else {
+                    //create transaction
+                }
             }
             if (isset($amount)) {
                 if ($amount < BKASH_MINIMUM_CASH_IN_AMOUNT || $amount > BKASH_MAXIMUM_CASH_IN_AMOUNT) {
@@ -61,41 +120,101 @@ class Transaction extends Role_Controller
                 return;
             }
             $api_key = API_KEY_BKASH_CASHIN;
-            $description = "test";
-            $transaction_id = "";
+            $description = "test";            
             $transaction_data = array(
                 'user_id' => $user_id,
                 'transaction_id' => $transaction_id,
                 'service_id' => SERVICE_TYPE_ID_BKASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description
+                'description' => $description,
+                'editable' => true
             );
-            if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-                $response['message'] = $this->transaction_library->messages_array();
-            } else {
-                $response['message'] = $this->transaction_library->errors_array();
+            if($transaction_id == '')
+            {
+                if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
+                    $response['message'] = $this->transaction_library->messages_array();
+                } else {
+                    $response['message'] = $this->transaction_library->errors_array();
+                }
             }
-
+            else
+            {
+                if ($this->transaction_library->update_transaction_info($transaction_data) !== FALSE) {
+                    $response['message'] = $this->transaction_model->messages_array();
+                } else {
+                    $response['message'] = $this->transaction_model->errors_array();
+                }
+            }
             echo json_encode($response);
             return;
         }
-        //checking whether user has permission for bkash transaction
-        $permission_exists = FALSE;
-        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-        foreach ($service_list as $service_info) {
-            //if in future there is new service under bkash then update the logic here
-            if ($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN) {
-                $permission_exists = TRUE;
+        
+        $code_verification = false;
+        //if we have code/sms verification/email verification then we will display user to assign code
+        if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
+        {
+            //transaction verification code is generated here
+            $this->load->library('Utils');
+            $verification_code = $this->utils->get_transaction_verification_code();
+            //Storing code into the database
+            $updated_data = array(
+                'id' => $bkash_service_info['user_service_id'],
+                'verification_code' => $verification_code
+            );
+            $this->service_model->update_user_rates(array($updated_data));            
+            if($bkash_service_info['sms_verification'] == 1)
+            {
+                //send verification code via sms to the client
+            }
+            if($bkash_service_info['email_verification'] == 1)
+            {
+                //send verification code via email to the client
+                $email = "";
+                $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
+                if (!empty($profile_info)) {
+                    $email = $profile_info[0]['email'];
+                }
+                $this->transaction_library->send_email($email, $verification_code);
+            }
+            $code_verification = true;
+        }
+        else if($bkash_service_info['code'] != "")
+        {
+            $code_verification = true;
+        }
+        $this->data['code_verification'] = $code_verification;
+        //if sms verification is enabled then send sms with generate code
+        //if email verification is enabled then send email with generate code
+        //if transaction id is valid the retrieve transaction info
+        $transaction_info = array();
+        if($transaction_id != '')
+        {
+            $transaction_info_array = $this->transaction_model->get_transaction_info($transaction_id)->result_array();
+            if(!empty($transaction_info_array) && $transaction_info_array[0]['editable'])
+            {
+                $transaction_info['number'] = $transaction_info_array[0]['cell_no'];
+                $transaction_info['amount'] = $transaction_info_array[0]['amount'];
+                $transaction_info['transaction_id'] = $transaction_id;
+                $transaction_info['code'] = '';
+            }
+            else
+            {
+                $this->data['app'] = TRANSCATION_APP;
+                $this->data['error_message'] = "Time is expired. Sorry !! You are not allowed to edit the transaction anymore.";
+                $this->template->load(null, 'common/error_message', $this->data);
+                return;
             }
         }
-        if (!$permission_exists) {
-            //you are not allowed to use bkash transaction
-            $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! You are not allowed to use bkash service.";
-            $this->template->load(null, 'common/error_message', $this->data);
-            return;
+        else
+        {
+            $transaction_info['number'] = '';
+            $transaction_info['amount'] = '';
+            $transaction_info['transaction_id'] = '';
+            $transaction_info['code'] = '';
         }
+        
+        $this->data['transaction_info'] = json_encode($transaction_info);
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );

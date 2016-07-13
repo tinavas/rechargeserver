@@ -36,6 +36,14 @@ class Transaction_model extends Ion_auth_model {
         $this->db->where('transaction_id', $transaction_id);
         $this->db->update('user_profits', $profit_data);
     }
+    
+    public function callbackws_update_transaction_editable_status($transaction_id, $editable) {
+        $transaction_data = array(
+            'editable' => $editable
+        );
+        $this->db->where('transaction_id', $transaction_id);
+        $this->db->update('user_transactions', $transaction_data);
+    }
 
     /*
      * This method will call the webservice and add a new transaction
@@ -189,12 +197,16 @@ class Transaction_model extends Ion_auth_model {
                 $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_ROBI) {
                 $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_ROBI;
+                $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_BANGLALINK) {
                 $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_BANGLALINK;
+                $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_AIRTEL) {
                 $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_AIRTEL;
+                $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             } else if ($service_id == SERVICE_TYPE_ID_TOPUP_TELETALK) {
-                $ $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_TELETALK;
+                $transaction_info_for_webservice['APIKey'] = API_KEY_CASHIN_TELETALK;
+                $transaction_info_for_webservice['operator_type_id'] = $transaction_info['operator_type_id'];
             }
             $transaction_info_for_webservice['id'] = $transaction_info['mapping_id'];
             $transaction_info_for_webservice['service_id'] = $service_id;
@@ -370,6 +382,75 @@ class Transaction_model extends Ion_auth_model {
         $this->db->trans_rollback();
         $this->set_error('error_webservice_unavailable');
         return FALSE;
+    }
+    
+    public function update_transaction_info($transaction_data, $user_profit_list)
+    {
+        $this->db->trans_begin();
+        //update user transactions table
+        $trx_update_data = array(
+            'cell_no' => $transaction_data['cell_no'],
+            'amount' => $transaction_data['amount']
+        );
+        $this->db->where('transaction_id', $transaction_data['transaction_id']);
+        $this->db->update('user_transactions', $trx_update_data);
+        //update user payment table
+        $trx_payment_data = array(
+            'balance_out' => $transaction_data['amount']
+        );
+        $this->db->where('transaction_id', $transaction_data['transaction_id']);
+        $this->db->update('user_payments', $trx_payment_data);        
+        //update user profit table
+        $this->db->where('transaction_id', $transaction_data['transaction_id']);
+        $this->db->delete('user_profits');
+        $this->db->insert_batch($this->tables['user_profits'], $user_profit_list);
+        
+        
+        $this->curl->create(WEBSERVICE_URL_UPDATE_TRANSACTION);
+        $this->curl->post(array("transaction_id" => $transaction_data['transaction_id'], "amount" => $transaction_data['amount'], "cell_no" => $transaction_data['cell_no']));
+        $result_event = json_decode($this->curl->execute());
+        if (!empty($result_event)) {
+            $response_code = '';
+            if (property_exists($result_event, "responseCode") != FALSE) {
+                $response_code = $result_event->responseCode;
+            }
+            if ($response_code == RESPONSE_CODE_SUCCESS) {
+                if (property_exists($result_event, "result") != FALSE) {
+                    $transaction_info = $result_event->result;
+                    $transaction_id = $transaction_info->transactionId;
+                    
+                    if (empty($transaction_id) || $transaction_id == "") {
+                        $this->db->trans_rollback();
+                        $this->set_message('error_no_transaction_id');
+                        return FALSE;
+                    } else {
+                        $this->db->trans_commit();
+                        $this->set_message('transaction_successful');
+                        return TRUE;
+                    }
+                } else {
+                    $this->db->trans_rollback();
+                    $this->set_error('error_no_result_event');
+                    return FALSE;
+                }
+            } else {
+                //set message based on response code
+                $this->db->trans_rollback();
+                $this->set_error('error_code_' . $response_code);
+                return FALSE;
+            }
+        }
+        $this->db->trans_rollback();
+        $this->set_error('error_webservice_unavailable');
+        return FALSE;
+    }
+    
+    public function get_transaction_info($transaction_id)
+    {
+        $this->db->where('transaction_id', $transaction_id);
+        return $this->db->select($this->tables['user_transactions'] . '.*')
+                        ->from($this->tables['user_transactions'])
+                        ->get();
     }
 
     /*
@@ -554,6 +635,13 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_profits'])
                         ->join($this->tables['services'], $this->tables['user_profits'] . '.service_id=' . $this->tables['services'] . '.id')
                         ->get();
+    }
+    
+    public function send_email($email, $message)
+    {
+        $this->curl->create(WEBSERVICE_URL_SEND_EMAIL);
+        $this->curl->post(array("email" => $email, "message" => $message));
+        $this->curl->execute();     
     }
 
 }
