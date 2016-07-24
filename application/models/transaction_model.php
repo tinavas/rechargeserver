@@ -17,6 +17,7 @@ class Transaction_model extends Ion_auth_model {
      */
 
     public function update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number) {
+        $this->db->trans_begin();
         $transaction_data = array(
             'status_id' => $status_id,
             'sender_cell_no' => $sender_cell_number
@@ -35,6 +36,7 @@ class Transaction_model extends Ion_auth_model {
         );
         $this->db->where('transaction_id', $transaction_id);
         $this->db->update('user_profits', $profit_data);
+        $this->db->trans_commit();
     }
     
     public function callbackws_update_transaction_editable_status($transaction_id, $editable) {

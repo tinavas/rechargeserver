@@ -12,10 +12,10 @@ class Auth extends CI_Controller {
     function login() {
         $response = array();
         $this->load->library('ion_auth');
-        //$email = $this->input->post('email');
-        //$password = $this->input->post('password');
-        $email = "admin@admin.com";
-        $password = "password";
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        //$email = "admin@admin.com";
+        //$password = "password";
         if($this->ion_auth->login($email, $password))
         {
             $user_id = $this->session->userdata('user_id');
@@ -31,8 +31,22 @@ class Auth extends CI_Controller {
                 $current_balance = $this->reseller_library->get_user_current_balance($user_id);
                 $result['user_info'] = $user_info;
                 $result['current_balance'] = $current_balance;
+				$app_session_id = "xyz123";
+				$session_data = array(
+					'app_session_id' => $app_session_id
+				);
+				$this->session->set_userdata($session_data);
+				$result['session_id'] = $app_session_id;
                 $service_id_list = array(
-                    SERVICE_TYPE_ID_BKASH_CASHIN
+                    SERVICE_TYPE_ID_BKASH_CASHIN,
+					SERVICE_TYPE_ID_DBBL_CASHIN,
+					SERVICE_TYPE_ID_MCASH_CASHIN,
+					SERVICE_TYPE_ID_UCASH_CASHIN,
+					SERVICE_TYPE_ID_TOPUP_GP,
+					SERVICE_TYPE_ID_TOPUP_ROBI,
+					SERVICE_TYPE_ID_TOPUP_BANGLALINK,
+					SERVICE_TYPE_ID_TOPUP_AIRTEL,
+					SERVICE_TYPE_ID_TOPUP_TELETALK
                 );
                 $result['service_id_list'] = $service_id_list;
                 $response['result_event'] = $result;
