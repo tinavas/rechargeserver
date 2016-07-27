@@ -60,10 +60,10 @@ $config['successor_group_id']['type1'] = '4';
 $config['successor_group_id']['type2'] = '5';
 $config['successor_group_id']['type3'] = '6';
 
-$config['successor_group_title']['admin'] = 'Resellers I';
-$config['successor_group_title']['type1'] = 'Resellers II';
-$config['successor_group_title']['type2'] = 'Resellers III';
-$config['successor_group_title']['type3'] = 'Resellers IV';
+$config['successor_group_title']['admin'] = 'Resellers IV';
+$config['successor_group_title']['type1'] = 'Resellers III';
+$config['successor_group_title']['type2'] = 'Resellers II';
+$config['successor_group_title']['type3'] = 'Resellers I';
 /*
  | Users table column and Group table column you want to join WITH.
  |

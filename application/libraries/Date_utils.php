@@ -109,6 +109,20 @@ class Date_utils {
 
         return unix_to_human($time + $offset);
     }
+    
+    /*
+     * This method will return current date for user end in YYYY-MM-DD format
+     * @Author Nazmul on 27July 2016
+     */
+    public function get_current_date($country_code = 'BD') {
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $unix_current_time = now() + $dateTime->getOffset();
+        $human_current_time = unix_to_human($unix_current_time);
+        $human_current_time_array= explode(" ", $human_current_time);
+        return $human_current_time_array[0];
+    }
 
     public function server_start_unix_time_of_previous_day() {
         $date = date('Y-m-d', strtotime("-1 days"));

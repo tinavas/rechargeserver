@@ -6,7 +6,11 @@
     }
     $(function () {
         $('#start_date').Zebra_DatePicker();
+        $('#start_date').val('<?php echo $current_date?>');
         $('#end_date').Zebra_DatePicker();
+        $('#end_date').val('<?php echo $current_date?>');
+        $('#payment_type').val('0');
+        $('#status_type').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL?>');
     });
 </script>
 
@@ -24,13 +28,13 @@
             <li>End Date</li>
             <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
             <li>Type</li>
-            <li> <select name="repeatSelect" id="repeatSelect" ng-model="paymentType.key">
+            <li> <select name="payment_type" id="payment_type" ng-model="paymentType.key">
                     <option  value="">Please select</option>
                     <option ng-repeat="(key, paymentType) in paymentTypeIds" value="{{key}}">{{paymentType}}</option>
                 </select>
             </li>
-            <li>Status Type</li>
-            <li> <select name="repeatSelect" id="repeatSelect" ng-model="searchInfo.statusId">
+            <li>Status</li>
+            <li> <select name="status_type" id="status_type" ng-model="searchInfo.statusId">
                     <option  value="">Please select</option>
                     <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
                     <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>

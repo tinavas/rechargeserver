@@ -214,6 +214,23 @@ class Transaction extends CI_Controller {
         echo json_encode($response);        
     }
 	
+	public function get_payment_transaction_list()
+    {
+        $transaction1 = array(
+            'amount' => 5000,
+            'date' => '2016-07-25',
+            'status' => 'Success'
+        );
+        
+        $transaction_list = array($transaction1);
+		$response = array(
+			'payment_list' => $transaction_list
+		);
+        $response['response_code'] = 2000;
+        $response['message'] = "Transaction list.";
+        echo json_encode($response);     
+    }
+	
 	public function qrtransaction()
     {
         $cell_no = $this->input->post('number');

@@ -20,6 +20,63 @@ class Transaction extends Role_Controller
     public function index() {
         //handle code if you want to redirect to any other location
     }
+    
+    /*
+     * This method will send transaction code to the user via sms or email based on configuration. 
+     * //right now we are using this feature for bkash service
+     */
+    public function send_transaction_code()
+    {
+        $response = "";
+        $user_id = $this->session->userdata('user_id');
+        $permission_exists = FALSE;
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        foreach ($service_list as $service_info) {
+            //if in future there is new service under bkash then update the logic here
+            if ($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN) {
+                $permission_exists = TRUE;
+                $bkash_service_info = $service_info;
+            }
+        }
+        if (!$permission_exists) {
+            //you are not allowed to use bkash transaction
+            $response = "Sorry !! You are not allowed to use bkash service.";
+            echo $response;
+            return;
+        }
+        if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
+        {
+            //transaction verification code is generated here
+            $this->load->library('Utils');
+            $verification_code = $this->utils->get_transaction_verification_code();
+            //Storing code into the database
+            $updated_data = array(
+                'id' => $bkash_service_info['user_service_id'],
+                'verification_code' => $verification_code
+            );
+            $this->service_model->update_user_rates(array($updated_data));            
+            if($bkash_service_info['sms_verification'] == 1)
+            {
+                //send verification code via sms to the client
+            }
+            if($bkash_service_info['email_verification'] == 1)
+            {
+                //send verification code via email to the client
+                $email = "";
+                $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
+                if (!empty($profile_info)) {
+                    $email = $profile_info[0]['email'];
+                }
+                $this->transaction_library->send_email($email, $verification_code);
+                $response = "Code is sent successfully. Please check your email.";
+            }
+        }
+        else
+        {
+            $response = "Sorry! You have no permission to use transaction code.";
+        }
+        echo $response;
+    }
 
     /*
      * This method will process bkash transaction
@@ -151,11 +208,13 @@ class Transaction extends Role_Controller
         }
         
         $code_verification = false;
+        $sms_or_email_verification = false;
         //if we have code/sms verification/email verification then we will display user to assign code
         if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
         {
+            $sms_or_email_verification = true;
             //transaction verification code is generated here
-            $this->load->library('Utils');
+            /*$this->load->library('Utils');
             $verification_code = $this->utils->get_transaction_verification_code();
             //Storing code into the database
             $updated_data = array(
@@ -176,7 +235,7 @@ class Transaction extends Role_Controller
                     $email = $profile_info[0]['email'];
                 }
                 $this->transaction_library->send_email($email, $verification_code);
-            }
+            }*/
             $code_verification = true;
         }
         else if($bkash_service_info['code'] != "")
@@ -184,6 +243,7 @@ class Transaction extends Role_Controller
             $code_verification = true;
         }
         $this->data['code_verification'] = $code_verification;
+        $this->data['sms_or_email_verification'] = $sms_or_email_verification;
         //if sms verification is enabled then send sms with generate code
         //if email verification is enabled then send email with generate code
         //if transaction id is valid the retrieve transaction info

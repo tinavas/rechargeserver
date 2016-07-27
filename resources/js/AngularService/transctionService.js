@@ -3,7 +3,16 @@ angular.module('services.Transction', []).
             var $app_name = "/rechargeserver";
             //var $app_name = "";
             var transctionService = {};
+            transctionService.sendTransactionCode = function () {
 
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/send_transaction_code',
+                    data: {
+                        
+                    }
+                });
+            }
             transctionService.sendSMS = function (transactionDataList, smsInfo) {
 
                 return $http({

@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS `groups` (
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Administrator'),
 (2, 'members', 'General User'),
-(3, 'type1', 'I'),
-(4, 'type2', 'II'),
-(5, 'type3', 'III'),
-(6, 'type4', 'IV'),
+(3, 'type1', 'IV'),
+(4, 'type2', 'III'),
+(5, 'type3', 'II'),
+(6, 'type4', 'I'),
 (7, 'superadmin', 'Super Administrator');
 
 CREATE TABLE IF NOT EXISTS `login_attempts` (

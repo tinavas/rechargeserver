@@ -1,4 +1,11 @@
 <script>
+    function send_code() 
+    {
+        angular.element($('#bkash_cash_in_id')).scope().sendTransactionCode(function (data) {
+            $("#content").html(data);
+            $('#common_modal').modal('show');
+        });
+    }
     function bkash(bkashInfo) {
         if (typeof bkashInfo.number == "undefined" || bkashInfo.number.length == 0) {
             $("#content").html("Please give a bkash Number");
@@ -57,6 +64,16 @@
                             </label>
                             <label for="code" class="col-md-6 control-label requiredField">
                                 <input type="text" name="amount" ng-model="bkashInfo.code" class="form-control">  
+                            </label>
+                        </div>
+                        <?php }?>
+                        <?php if($sms_or_email_verification){ ?>
+                        <div class="form-group">
+                            <label for="code" class="col-md-6 control-label requiredField">
+                                
+                            </label>
+                            <label for="code" class="col-md-6 control-label requiredField">
+                                <a href="#" onclick="send_code()">Send Code</a>
                             </label>
                         </div>
                         <?php }?>

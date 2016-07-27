@@ -1,7 +1,10 @@
 <script type="text/javascript">
     $(function () {
         $('#start_date').Zebra_DatePicker();
+        $('#start_date').val('<?php echo $current_date?>');
         $('#end_date').Zebra_DatePicker();
+        $('#end_date').val('<?php echo $current_date?>');
+        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL?>');
     });
     function search_ucash() {
         var startDate = $("#start_date").val();

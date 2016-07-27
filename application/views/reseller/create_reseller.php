@@ -25,7 +25,7 @@
             return;
         }
         if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-            $("#content").html("Please give Mobile Number !");
+            $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
             $('#common_modal').modal('show');
             return;
         }
@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="form-group ">
                                     <label for="mobile" class="control-label">Mobile Number</label>
-                                    <input type="text" value="" placeholder="Mobile Number" class="form-control input-sm" id="mobile" name="mobile" ng-model="resellerInfo.mobile">
+                                    <input type="text" value="" placeholder="01XXXXXXXXX" class="form-control input-sm" id="mobile" name="mobile" ng-model="resellerInfo.mobile">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">

@@ -22,6 +22,12 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.allTransactions = false;
             $scope.searchInfo = {};
             $scope.smsInfo = {};
+            $scope.sendTransactionCode = function (callbackFunction) {
+                transctionService.sendTransactionCode().
+                    success(function (data, status, headers, config) {
+                        callbackFunction(data);
+                    });
+            };
             $scope.bkash = function (callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
@@ -136,6 +142,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
+                }
+                if (typeof $scope.paymentType != "undefined" && $scope.paymentType.key != "") {
+                    $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getPaymentHistory($scope.searchInfo).
                         success(function (data, status, headers, config) {
