@@ -19,22 +19,22 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-            $("#content").html("Please give Mobile Number !");
-            $('#common_modal').modal('show');
-            return;
-        }
-        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-            $("#content").html("Please give Email address !");
-            $('#common_modal').modal('show');
-            return;
-        }
-        var varificationResult = validateEmail(resellerInfo.email);
-        if (varificationResult == false) {
-            $("#content").html("Please Enter a valid Email Address!");
-            $('#common_modal').modal('show');
-            return false;
-        }
+//        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
+//            $("#content").html("Please give Mobile Number !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
+//            $("#content").html("Please give Email address !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        var varificationResult = validateEmail(resellerInfo.email);
+//        if (varificationResult == false) {
+//            $("#content").html("Please Enter a valid Email Address!");
+//            $('#common_modal').modal('show');
+//            return false;
+//        }
         angular.element($('#submit_update_user_profile')).scope().updateUserProfile(function (data) {
 
             $("#content").html(data.message);
@@ -63,6 +63,11 @@
                                 <div class="form-group ">
                                     <label for="username" class="control-label">Username</label>
                                     <input type="text" value="" placeholder="Username" class="form-control input-sm" id="username" name="username" ng-model="resellerInfo.username">
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="password" class="control-label">Password</label>
+                                    <input type="password" autocomplete="off" value="" placeholder="********" class="form-control input-sm" id="password" name="password" ng-model="resellerInfo.new_password">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">

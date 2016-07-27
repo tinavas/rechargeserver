@@ -19,32 +19,32 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
-            $("#content").html("Please give Last Name !");
-            $('#common_modal').modal('show');
-            return;
-        }
-        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-            $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
-            $('#common_modal').modal('show');
-            return;
-        }
-        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-            $("#content").html("Please give Email address !");
-            $('#common_modal').modal('show');
-            return;
-        }
-        var varificationResult = validateEmail(resellerInfo.email);
-        if (varificationResult == false) {
-            $("#content").html("Please Enter a valid Email Address!");
-            $('#common_modal').modal('show');
-            return false;
-        }
-        if (typeof resellerInfo.note == "undefined" || resellerInfo.note.length == 0) {
-            $("#content").html("Please Give a Note !");
-            $('#common_modal').modal('show');
-            return;
-        }
+//        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
+//            $("#content").html("Please give Last Name !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
+//            $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
+//            $("#content").html("Please give Email address !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        var varificationResult = validateEmail(resellerInfo.email);
+//        if (varificationResult == false) {
+//            $("#content").html("Please Enter a valid Email Address!");
+//            $('#common_modal').modal('show');
+//            return false;
+//        }
+//        if (typeof resellerInfo.note == "undefined" || resellerInfo.note.length == 0) {
+//            $("#content").html("Please Give a Note !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
         angular.element($('#submit_create_reseller')).scope().createReseller(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
@@ -76,17 +76,17 @@
                             <td style="width:50%;vertical-align:top;padding-right:15px;">
                                 <p class="help-block">Login Information</p>
                                 <div class="form-group ">
-                                    <label for="username" class="control-label">Username</label>
+                                    <label for="username" class="control-label">Username*</label>
                                     <input type="text" value="" placeholder="Username" class="form-control input-sm" id="username" name="username" ng-model="resellerInfo.username">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="password" class="control-label">Password</label>
+                                    <label for="password" class="control-label">Password*</label>
                                     <input type="password" autocomplete="off" value="" placeholder="Password" class="form-control input-sm" id="password" name="password" ng-model="resellerInfo.password">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="name" class="control-label">First name</label>
+                                    <label for="name" class="control-label">First name*</label>
                                     <input type="text" value="" placeholder="First name" class="form-control input-sm" id="first_name" name="first_name" ng-model="resellerInfo.first_name">
                                     <p class="help-block form_error"></p>
                                 </div>

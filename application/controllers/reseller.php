@@ -90,12 +90,24 @@ class Reseller extends Role_Controller {
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "resellerInfo") != FALSE) {
+                $email = "";
+                $cell_no = "";
+                $max_user_no = 0;
+                $first_name = "";
+                $last_name = "";
+                $note = "";
                 $resellerInfo = $requestInfo->resellerInfo;
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
                 if (property_exists($resellerInfo, "password")) {
                     $password = $resellerInfo->password;
+                }
+                if (property_exists($resellerInfo, "first_name")) {
+                    $first_name = $resellerInfo->first_name;
+                }
+                if (property_exists($resellerInfo, "last_name")) {
+                    $last_name = $resellerInfo->last_name;
                 }
                 if (property_exists($resellerInfo, "email")) {
                     $email = $resellerInfo->email;
@@ -106,12 +118,15 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "mobile")) {
                     $cell_no = $resellerInfo->mobile;
                 }
-                $this->load->library('utils');
-                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                    $response["message"] = "Please Enter a Valid Cell Number !!";
-                    echo json_encode($response);
-                    return;
+                if (property_exists($resellerInfo, "note")) {
+                    $note = $resellerInfo->note;
                 }
+//                $this->load->library('utils');
+//                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+//                    $response["message"] = "Please Enter a Valid Cell Number !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
 
                 $user_service_list = array();
@@ -130,10 +145,10 @@ class Reseller extends Role_Controller {
                     $user_service_list[] = $user_service_info;
                 }
                 $additional_data = array(
-                    'first_name' => $resellerInfo->first_name,
-                    'last_name' => $resellerInfo->last_name,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
                     'mobile' => $cell_no,
-                    'note' => $resellerInfo->note,
+                    'note' => $note,
                     'max_user_no' => $max_user_no,
                     'parent_user_id' => $this->session->userdata('user_id'),
                     'user_service_list' => $user_service_list
@@ -147,9 +162,8 @@ class Reseller extends Role_Controller {
             if ($user_id !== FALSE) {
                 $response['message'] = 'User is created successfully.';
             } else {
-                $response['message'] = 'Error while creating the user. Please try again later.';
+                $response['message'] = $this->ion_auth->errors();
             }
-
             echo json_encode($response);
             return;
         } else {
@@ -237,6 +251,12 @@ class Reseller extends Role_Controller {
             if (property_exists($requestInfo, "resellerInfo") != FALSE) {
                 $resellerInfo = $requestInfo->resellerInfo;
                 $new_password = "";
+                $first_name = "";
+                $last_name = "";
+                $email = "";
+                $max_user_no = 0;
+                $cell_no = "";
+                $note = "";
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
@@ -245,6 +265,12 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "email")) {
                     $email = $resellerInfo->email;
+                }
+                if (property_exists($resellerInfo, "first_name")) {
+                    $first_name = $resellerInfo->first_name;
+                }
+                if (property_exists($resellerInfo, "last_name")) {
+                    $last_name = $resellerInfo->last_name;
                 }
                 if (property_exists($resellerInfo, "max_user_no")) {
                     $max_user_no = $resellerInfo->max_user_no;
@@ -255,12 +281,15 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "mobile")) {
                     $cell_no = $resellerInfo->mobile;
                 }
-                $this->load->library('utils');
-                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                    $response["message"] = "Please Enter a Valid Cell Number !!";
-                    echo json_encode($response);
-                    return;
+                if (property_exists($resellerInfo, "note")) {
+                    $note = $resellerInfo->note;
                 }
+//                $this->load->library('utils');
+//                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+//                    $response["message"] = "Please Enter a Valid Cell Number !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
                 $user_service_list = array();
                 $inactive_service_list = array();
@@ -278,12 +307,12 @@ class Reseller extends Role_Controller {
                 }
                 $child_id_list = $this->reseller_library->get_successor_id_list($user_id, TRUE);
                 $additional_data = array(
-                    'first_name' => $resellerInfo->first_name,
-                    'last_name' => $resellerInfo->last_name,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
                     'username' => $username,
                     'email' => $email,
                     'mobile' => $cell_no,
-                    'note' => $resellerInfo->note,
+                    'note' => $note,
                     'max_user_no' => $max_user_no,
                     'user_service_list' => $user_service_list,
                     'child_id_list' => $child_id_list,
@@ -485,7 +514,6 @@ class Reseller extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-
         $this->load->library('reseller_library');
         $response = array();
         if (file_get_contents("php://input") != null) {
@@ -493,6 +521,12 @@ class Reseller extends Role_Controller {
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "resellerInfo") != FALSE) {
                 $resellerInfo = $requestInfo->resellerInfo;
+                $new_password = "";
+                $username = "";
+                $email = "";
+                $first_name = "";
+                $last_name = "";
+                $mobile = "";                
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a user name !!";
                     echo json_encode($response);
@@ -503,56 +537,74 @@ class Reseller extends Role_Controller {
                     echo json_encode($response);
                     return;
                 }
-                if (!property_exists($resellerInfo, "last_name")) {
-                    $response["message"] = "Please assign last name !!";
-                    echo json_encode($response);
-                    return;
+//                if (!property_exists($resellerInfo, "last_name")) {
+//                    $response["message"] = "Please assign last name !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
+//                if (!property_exists($resellerInfo, "email")) {
+//                    $response["message"] = "Please assign email !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
+//                if (property_exists($resellerInfo, "mobile")) {
+//                    $cell_no = $resellerInfo->mobile;
+//                    $this->load->library('utils');
+//                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+//                        $response["message"] = "Please Enter a Valid Cell Number !!";
+//                        echo json_encode($response);
+//                        return;
+//                    }
+//                } else {
+//                    $response["message"] = "Please Enter a Valid Cell Number !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
+                
+                if (property_exists($resellerInfo, "username")) {
+                    $username = $resellerInfo->username;
                 }
-                if (!property_exists($resellerInfo, "email")) {
-                    $response["message"] = "Please assign email !!";
-                    echo json_encode($response);
-                    return;
+                if (property_exists($resellerInfo, "new_password")) {
+                    $new_password = $resellerInfo->new_password;
+                }
+                if (property_exists($resellerInfo, "email")) {
+                    $email = $resellerInfo->email;
+                }
+                if (property_exists($resellerInfo, "first_name")) {
+                    $first_name = $resellerInfo->first_name;
+                }
+                if (property_exists($resellerInfo, "last_name")) {
+                    $last_name = $resellerInfo->last_name;
                 }
                 if (property_exists($resellerInfo, "mobile")) {
-                    $cell_no = $resellerInfo->mobile;
-                    $this->load->library('utils');
-                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                        $response["message"] = "Please Enter a Valid Cell Number !!";
-                        echo json_encode($response);
-                        return;
-                    }
-                } else {
-                    $response["message"] = "Please Enter a Valid Cell Number !!";
-                    echo json_encode($response);
-                    return;
+                    $mobile = $resellerInfo->mobile;
                 }
-
+                if (property_exists($resellerInfo, "note")) {
+                    $note = $resellerInfo->note;
+                }
                 $additional_data = array(
-                    'username' => $resellerInfo->username,
-                    'first_name' => $resellerInfo->first_name,
-                    'last_name' => $resellerInfo->last_name,
-                    'mobile' => $resellerInfo->mobile,
-                    'email' => $resellerInfo->email,
-                    'note' => $resellerInfo->note
+                    'username' => $username,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'mobile' => $mobile,
+                    'email' => $email,
+                    'note' => $note
                 );
             }
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
                 $response['message'] = 'User is updated successfully.';
             } else {
-                $response['message'] = 'Error while updating the user. Please try again later.';
+                $response['message'] = $this->ion_auth->errors();
             }
-
             echo json_encode($response);
             return;
         }
-
         $reseller_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($reseller_info_array)) {
             $reseller_info = $reseller_info_array[0];
             $reseller_info['ip_address'] = "";
             $this->data['reseller_info'] = json_encode($reseller_info);
         }
-
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_user_profile', $this->data);
     }
