@@ -14,11 +14,11 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-            $("#content").html("Please give First Name !");
-            $('#common_modal').modal('show');
-            return;
-        }
+//        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
+//            $("#content").html("Please give First Name !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
 //        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
 //            $("#content").html("Please give Last Name !");
 //            $('#common_modal').modal('show');
@@ -86,7 +86,7 @@
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="name" class="control-label">First name*</label>
+                                    <label for="name" class="control-label">First name</label>
                                     <input type="text" value="" placeholder="First name" class="form-control input-sm" id="first_name" name="first_name" ng-model="resellerInfo.first_name">
                                     <p class="help-block form_error"></p>
                                 </div>

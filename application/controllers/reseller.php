@@ -98,6 +98,16 @@ class Reseller extends Role_Controller {
                 $note = "";
                 $pin = DEFAULT_PIN;
                 $resellerInfo = $requestInfo->resellerInfo;
+                if (!property_exists($resellerInfo, "username")) {
+                    $response["message"] = "Please assign a username !!";
+                    echo json_encode($response);
+                    return;
+                }
+                if (!property_exists($resellerInfo, "password")) {
+                    $response["message"] = "Please assign a password !!";
+                    echo json_encode($response);
+                    return;
+                }
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
@@ -263,6 +273,11 @@ class Reseller extends Role_Controller {
                 $cell_no = "";
                 $note = "";
                 $pin = DEFAULT_PIN;
+                if (!property_exists($resellerInfo, "username")) {
+                    $response["message"] = "Please assign a username !!";
+                    echo json_encode($response);
+                    return;
+                }
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
@@ -547,11 +562,11 @@ class Reseller extends Role_Controller {
                     echo json_encode($response);
                     return;
                 }
-                if (!property_exists($resellerInfo, "first_name")) {
-                    $response["message"] = "Please assign first name !!";
-                    echo json_encode($response);
-                    return;
-                }
+//                if (!property_exists($resellerInfo, "first_name")) {
+//                    $response["message"] = "Please assign first name !!";
+//                    echo json_encode($response);
+//                    return;
+//                }
 //                if (!property_exists($resellerInfo, "last_name")) {
 //                    $response["message"] = "Please assign last name !!";
 //                    echo json_encode($response);

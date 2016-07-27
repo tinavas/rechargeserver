@@ -9,16 +9,16 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof resellerInfo.password == "undefined" || resellerInfo.password.length == 0) {
-            $("#content").html("Please give Password  !");
-            $('#common_modal').modal('show');
-            return;
-        }
-        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-            $("#content").html("Please give First Name !");
-            $('#common_modal').modal('show');
-            return;
-        }
+//        if (typeof resellerInfo.password == "undefined" || resellerInfo.password.length == 0) {
+//            $("#content").html("Please give Password  !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
+//        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
+//            $("#content").html("Please give First Name !");
+//            $('#common_modal').modal('show');
+//            return;
+//        }
 //        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
 //            $("#content").html("Please give Last Name !");
 //            $('#common_modal').modal('show');
@@ -67,7 +67,7 @@
                             <td style="width:50%;vertical-align:top;padding-right:15px;">
                                 <p class="help-block">Update Reseller</p>
                                 <div class="form-group ">
-                                    <label for="username" class="control-label">Username</label>
+                                    <label for="username" class="control-label">Username*</label>
                                     <input type="text" value="" placeholder="Username" class="form-control input-sm" id="username" name="username" ng-model="resellerInfo.username">
                                     <p class="help-block form_error"></p>
                                 </div>
