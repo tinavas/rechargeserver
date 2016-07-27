@@ -74,7 +74,7 @@
                         </tr>
                         <tr>
                             <td style="width:50%;vertical-align:top;padding-right:15px;">
-                                <p class="help-block">Login Information</p>
+                                <p class="help-block">Create Reseller</p>
                                 <div class="form-group ">
                                     <label for="username" class="control-label">Username*</label>
                                     <input type="text" value="" placeholder="Username" class="form-control input-sm" id="username" name="username" ng-model="resellerInfo.username">
@@ -129,6 +129,11 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="pin" class="control-label">Pin</label>
+                                    <input type="text" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <p style="padding-top: 0px !important;padding-top: 0px !important;line-height:0px;" class="help-block">&nbsp;</p>

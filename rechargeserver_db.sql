@@ -81,6 +81,18 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
 (2, 2, 7);
 
+CREATE TABLE IF NOT EXISTS `users_pins` (
+  `user_id` int(11) unsigned NOT NULL,
+  `pin` varchar(50) DEFAULT '',
+  PRIMARY KEY (`user_id`),
+  KEY `fk_users_pins_users1_idx` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `users_pins`
+  ADD CONSTRAINT `fk_users_pins_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `users_pins` (`user_id`, `pin`) VALUES
+(1, '1234'),
+(2, '1234');
+
 CREATE TABLE IF NOT EXISTS `relations` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `parent_user_id` int(11) unsigned NOT NULL,

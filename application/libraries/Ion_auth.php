@@ -364,7 +364,7 @@ class Ion_auth {
     public function logged_in() {
         $this->ion_auth_model->trigger_events('logged_in');
 
-        return (bool) $this->session->userdata('identity');
+        return (bool) $this->session->userdata('identity') && $this->session->userdata('pin');
     }
 
     /**

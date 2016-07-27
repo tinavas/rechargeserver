@@ -782,7 +782,11 @@ class Ion_auth_model extends CI_Model {
         if ((isset($default_group->id) && !isset($groups)) || (empty($groups) && !in_array($default_group->id, $groups))) {
             $this->add_to_group($default_group->id, $id);
         }
-        
+        //adding pin
+        if(array_key_exists("pin", $additional_data))
+        {
+            $this->add_pin($id, $additional_data['pin']);
+        }        
         $this->add_relation($additional_data['parent_user_id'], $id);
         $this->add_user_services($id, $additional_data['user_service_list']);
 
@@ -821,6 +825,45 @@ class Ion_auth_model extends CI_Model {
             $service_list[] = $service_info;
         }
         $this->db->insert_batch($this->tables['users_services'], $service_list); 
+    }
+    
+    /*
+     * This method will add pin under a user
+     * @param $user_id, user id
+     * @param $pin, pin
+     * @author nazmul hasan on 27th july 2016
+     */
+    public function add_pin($user_id, $pin)
+    {
+        $pin_data = array(
+            'user_id' => $user_id,
+            'pin' => $pin
+        );
+        $this->db->insert($this->tables['users_pins'], $pin_data);
+    }
+    
+    /*
+     * This method will return pin info of a user
+     * @param $user_id, user id
+     * @author nazmul hasan on 27th july 2016
+     */
+    public function get_pin_info($user_id)
+    {
+        $this->db->where($this->tables['users_pins'] . '.user_id', $user_id);
+        return $this->db->select('*')
+                        ->from($this->tables['users_pins'])
+                        ->get();
+    }
+    /*
+     * This method will update pin info of a user
+     * @param $user_id, user id
+     * @param $pin_info, pin info
+     * @author nazmul hasan on 27th july 2016
+     */
+    public function update_pin_info($user_id, $pin_info)
+    {
+        $this->db->where('user_id', $user_id);
+        $this->db->update($this->tables['users_pins'], $pin_info);
     }
     
     /*
@@ -1397,6 +1440,10 @@ class Ion_auth_model extends CI_Model {
         if(array_key_exists('user_service_list', $data))
         {
             $this->update_user_services($id, $data['user_service_list']);
+        }
+        if(array_key_exists('pin', $data))
+        {
+            $this->update_pin_info($id, array('pin' => $data['pin']));
         }
         if(array_key_exists('child_id_list', $data) && array_key_exists('inactive_service_list', $data))
         {

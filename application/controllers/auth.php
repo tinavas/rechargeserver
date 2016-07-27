@@ -77,8 +77,8 @@ class Auth extends Role_Controller {
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
                 //if the login is successful
                 //redirect them back to the home page
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('auth/', 'refresh');
+                //$this->session->set_flashdata('message', $this->ion_auth->messages());
+                redirect('auth/pin', 'refresh');
             } else {
                 //if the login was un-successful
                 //redirect them back to the login page
@@ -104,6 +104,49 @@ class Auth extends Role_Controller {
             //$this->template->load(NULL, LOGIN_TEMPLATE, $this->data);
             //$this->_render_page('auth/login', $this->data);
         }
+    }
+    
+    function pin()
+    {
+        $this->data['message'] = "";
+        $this->form_validation->set_rules('pin', 'Pin', 'required');
+        if ($this->form_validation->run() == true) 
+        {
+            $pin = $this->input->post('pin');
+            $user_id = $this->session->userdata('user_id');
+            if(isset($user_id))
+            {
+                //verify pin
+                $pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
+                if(!empty($pin_info_array))
+                {
+                    if($pin == $pin_info_array[0]['pin'])
+                    {
+                        $this->session->set_userdata(array('pin' => $pin));
+                        redirect('auth', 'refresh');
+                    }
+                    else
+                    {
+                        $this->data['message'] = "Invalid pin.";
+                    }
+                }
+                else
+                {
+                    $this->data['message'] = "Invalid user pin.";
+                }
+            }
+            else
+            {
+                $this->session->set_flashdata('message', "Invalid user.");
+                redirect('auth/login', 'refresh');
+            }            
+        }
+        else
+        {
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+        }
+        $this->data['app'] = RESELLER_APP;
+        $this->template->load("nonmember/templates/main_tmpl", 'reseller/pin', $this->data);
     }
 
     //log the user out

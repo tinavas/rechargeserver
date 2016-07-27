@@ -96,6 +96,7 @@ class Reseller extends Role_Controller {
                 $first_name = "";
                 $last_name = "";
                 $note = "";
+                $pin = DEFAULT_PIN;
                 $resellerInfo = $requestInfo->resellerInfo;
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
@@ -120,6 +121,9 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "note")) {
                     $note = $resellerInfo->note;
+                }
+                if (property_exists($resellerInfo, "pin")) {
+                    $pin = $resellerInfo->pin;
                 }
 //                $this->load->library('utils');
 //                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
@@ -151,7 +155,8 @@ class Reseller extends Role_Controller {
                     'note' => $note,
                     'max_user_no' => $max_user_no,
                     'parent_user_id' => $this->session->userdata('user_id'),
-                    'user_service_list' => $user_service_list
+                    'user_service_list' => $user_service_list,
+                    'pin' => $pin
                 );
             }
             $group_successor_config = $this->config->item('successor_group_id', 'ion_auth');
@@ -257,6 +262,7 @@ class Reseller extends Role_Controller {
                 $max_user_no = 0;
                 $cell_no = "";
                 $note = "";
+                $pin = DEFAULT_PIN;
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
@@ -283,6 +289,9 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "note")) {
                     $note = $resellerInfo->note;
+                }
+                if (property_exists($resellerInfo, "pin")) {
+                    $pin = $resellerInfo->pin;
                 }
 //                $this->load->library('utils');
 //                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
@@ -316,7 +325,8 @@ class Reseller extends Role_Controller {
                     'max_user_no' => $max_user_no,
                     'user_service_list' => $user_service_list,
                     'child_id_list' => $child_id_list,
-                    'inactive_service_list' => $inactive_service_list
+                    'inactive_service_list' => $inactive_service_list,
+                    'pin' => $pin
                 );
                 if ($new_password != "") {
                     $additional_data['password'] = $new_password;
@@ -337,8 +347,13 @@ class Reseller extends Role_Controller {
             $reseller_info = $reseller_info_array[0];
             $reseller_info['new_password'] = "";
             $reseller_info['ip_address'] = "";
+            $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
+            if (!empty($user_pin_info_array)) 
+            {
+                $reseller_info['pin'] = $user_pin_info_array[0]['pin'];
+            }
             $this->data['reseller_info'] = json_encode($reseller_info);
-        }
+        }        
 
         $user_available_services = array();
         $child_services = $this->service_model->get_user_assigned_services($user_id)->result_array();
