@@ -205,7 +205,21 @@ class Reseller extends Role_Controller {
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
-        $this->data['service_list'] = json_encode($service_list);
+        
+        //by default providing bkash service
+        $user_service_list = array();
+        foreach ($service_list as $service_info) 
+        {
+            //before assigning a default service while creating a reseller 
+            //make sure that current user has permission of that service
+            if($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN)
+            {
+                $service_info['selected'] = true;
+            }            
+            $user_service_list[] = $service_info;
+        }
+        
+        $this->data['service_list'] = json_encode($user_service_list);
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/create_reseller', $this->data);
     }
@@ -234,6 +248,11 @@ class Reseller extends Role_Controller {
         if (!empty($profile_info)) {
             $user_profile_info = $profile_info[0];
             $user_profile_info['ip_address'] = "";
+            $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
+            if (!empty($user_pin_info_array)) 
+            {
+                $user_profile_info['pin'] = $user_pin_info_array[0]['pin'];
+            }
         }
         $this->data['profile_info'] = $user_profile_info;
         $this->data['service_list'] = $service_list;
@@ -556,7 +575,8 @@ class Reseller extends Role_Controller {
                 $email = "";
                 $first_name = "";
                 $last_name = "";
-                $mobile = "";                
+                $mobile = "";      
+                $pin = DEFAULT_PIN;
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a user name !!";
                     echo json_encode($response);
@@ -597,6 +617,9 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "new_password")) {
                     $new_password = $resellerInfo->new_password;
                 }
+                if (property_exists($resellerInfo, "pin")) {
+                    $pin = $resellerInfo->pin;
+                }
                 if (property_exists($resellerInfo, "email")) {
                     $email = $resellerInfo->email;
                 }
@@ -618,7 +641,8 @@ class Reseller extends Role_Controller {
                     'last_name' => $last_name,
                     'mobile' => $mobile,
                     'email' => $email,
-                    'note' => $note
+                    'note' => $note,
+                    'pin' => $pin
                 );
             }
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
@@ -633,6 +657,11 @@ class Reseller extends Role_Controller {
         if (!empty($reseller_info_array)) {
             $reseller_info = $reseller_info_array[0];
             $reseller_info['ip_address'] = "";
+            $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
+            if (!empty($user_pin_info_array)) 
+            {
+                $reseller_info['pin'] = $user_pin_info_array[0]['pin'];
+            }
             $this->data['reseller_info'] = json_encode($reseller_info);
         }
         $this->data['app'] = RESELLER_APP;
@@ -653,6 +682,11 @@ class Reseller extends Role_Controller {
         if (!empty($profile_info)) {
             $user_profile_info = $profile_info[0];
             $user_profile_info['ip_address'] = "";
+            $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
+            if (!empty($user_pin_info_array)) 
+            {
+                $user_profile_info['pin'] = $user_pin_info_array[0]['pin'];
+            }
         }
         $this->data['profile_info'] = $user_profile_info;
         $this->data['service_list'] = $service_list;
