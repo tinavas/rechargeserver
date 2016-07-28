@@ -7,6 +7,9 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.serviceRateList = [];
             $scope.allow_reseller_action = true;
             $scope.topup_service_allow_flag = false;
+            $scope.createResellerInitialize = function (pin) {
+                $scope.resellerInfo.pin = pin;
+            }
             $scope.setResellerInfo = function (resellerInfo) {
                 $scope.resellerInfo = JSON.parse(resellerInfo);
             }

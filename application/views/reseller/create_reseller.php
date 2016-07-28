@@ -62,7 +62,7 @@
 <div class="ezttle"><span class="text"><?php echo $title; ?></span></div>
 <div class="mypage" ng-controller="resellerController">
     <div class="top10">&nbsp;</div>
-    <div class="row">
+    <div class="row" ng-init="createResellerInitialize('<?php echo DEFAULT_PIN?>')">
         <div class="col-md-12 fleft">	
             <?php // echo form_open("reseller/create_reseller", array('id' => 'form_create_reseller', 'class' => 'inform well', 'style' => 'width:650px;')); ?>
             <ng-from>    

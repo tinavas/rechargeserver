@@ -20,6 +20,14 @@
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
+                    <label>Pin</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="help-block">{{profileInfo.pin}}</div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
                     <label>Name</label>
                 </div>
                 <div class="col-md-6">
