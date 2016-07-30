@@ -70,7 +70,7 @@
                 </span>
 
             </th>
-            <th>{{paymentInfo.first_name}} {{paymentInfo.last_name}}</th>
+            <th>{{paymentInfo.username}}</th>
             <th>{{paymentInfo.description}}</th>
             <th>{{paymentInfo.created_on}}</th>
         </tr>

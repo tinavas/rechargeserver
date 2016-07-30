@@ -56,7 +56,7 @@ class Payment_model extends Ion_auth_model {
             $this->db->where_in($this->tables['user_payments'] . '.status_id', $status_id_list);
         }
         $this->db->order_by($this->tables['user_payments'] . '.id', $order);
-        return $this->db->select($this->tables['user_payments'] . '.*,' . $this->tables['user_payment_types'] . '.title,' . $this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.first_name,' . $this->tables['users'] . '.last_name')
+        return $this->db->select($this->tables['user_payments'] . '.*,' . $this->tables['user_payment_types'] . '.title,' . $this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.first_name,' . $this->tables['users'] . '.last_name,' . $this->tables['users'] . '.username')
                         ->from($this->tables['user_payments'])
                         ->join($this->tables['user_payment_types'], $this->tables['user_payment_types'] . '.id=' . $this->tables['user_payments'] . '.type_id')
                         ->join($this->tables['users'], $this->tables['users'] . '.id=' . $this->tables['user_payments'] . '.reference_id', 'left')

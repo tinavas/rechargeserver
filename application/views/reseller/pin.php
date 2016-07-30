@@ -7,7 +7,7 @@
         <div id="ez-login-wrap">
             <?php echo form_open("auth/pin");?>
                 <div class="ez-form-row" style="min-height: 100px">
-                    <label for="pin">Pin</label>
+                    <label for="pin">Pin<span style="color:red">*</span></label>
                     <input id="pin" name="pin" class="ez-ltr" type="text" autocomplete="off">
                 </div>
                 <input type="submit" value="Submit" class="ez-full-width">

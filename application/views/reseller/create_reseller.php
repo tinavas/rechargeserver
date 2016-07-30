@@ -76,12 +76,12 @@
                             <td style="width:50%;vertical-align:top;padding-right:15px;">
                                 <p class="help-block">Create Reseller</p>
                                 <div class="form-group ">
-                                    <label for="username" class="control-label">Username*</label>
+                                    <label for="username" class="control-label">Username<span style="color:red">*</span></label>
                                     <input type="text" value="" placeholder="Username" class="form-control input-sm" id="username" name="username" ng-model="resellerInfo.username">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="password" class="control-label">Password*</label>
+                                    <label for="password" class="control-label">Password<span style="color:red">*</span></label>
                                     <input type="password" autocomplete="off" value="" placeholder="Password" class="form-control input-sm" id="password" name="password" ng-model="resellerInfo.password">
                                     <p class="help-block form_error"></p>
                                 </div>
@@ -134,6 +134,11 @@
                                 <div class="form-group ">
                                     <label for="pin" class="control-label">Pin</label>
                                     <input type="text" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="pin" class="control-label">Starting Balance</label>
+                                    <input type="text" value="" placeholder="" class="form-control input-sm" id="init_balance" name="init_balance" ng-model="resellerInfo.init_balance">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <p style="padding-top: 0px !important;padding-top: 0px !important;line-height:0px;" class="help-block">&nbsp;</p>

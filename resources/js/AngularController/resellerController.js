@@ -9,6 +9,7 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.topup_service_allow_flag = false;
             $scope.createResellerInitialize = function (pin) {
                 $scope.resellerInfo.pin = pin;
+                $scope.resellerInfo.init_balance = 0;
             }
             $scope.setResellerInfo = function (resellerInfo) {
                 $scope.resellerInfo = JSON.parse(resellerInfo);

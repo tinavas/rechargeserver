@@ -97,6 +97,7 @@ class Reseller extends Role_Controller {
                 $last_name = "";
                 $note = "";
                 $pin = DEFAULT_PIN;
+                $init_balance = 0;
                 $resellerInfo = $requestInfo->resellerInfo;
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a username !!";
@@ -134,6 +135,18 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "pin")) {
                     $pin = $resellerInfo->pin;
+                }
+                if (property_exists($resellerInfo, "init_balance")) {
+                    $init_balance = $resellerInfo->init_balance;
+                }
+                
+                $this->load->library('reseller_library');
+                $current_balance = $this->reseller_library->get_user_current_balance($user_id);
+                if($init_balance > $current_balance)
+                {
+                    $response["message"] = "Sorry! Insaficient Balance !!";
+                    echo json_encode($response);
+                    return;
                 }
 //                $this->load->library('utils');
 //                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
@@ -173,9 +186,41 @@ class Reseller extends Role_Controller {
             $group_ids = array(
                 $group_successor_config[$group]
             );
-            $user_id = $this->ion_auth->register($username, $password, $email, $additional_data, $group_ids);
-            if ($user_id !== FALSE) {
+            $reseller_id = $this->ion_auth->register($username, $password, $email, $additional_data, $group_ids);
+            if ($reseller_id !== FALSE) {
                 $response['message'] = 'User is created successfully.';
+                if($init_balance > 0)
+                {
+                    $sender_data = array(
+                        'balance_in' => 0,
+                        'balance_out' => $init_balance
+                    );
+
+                    $receiver_data = array(
+                        'balance_out' => 0,
+                        'balance_in' => $init_balance
+                    );
+                    $sender_data['description'] = "Credit Forward";
+                    $receiver_data['description'] = "Credit Forward";
+                    $sender_data['user_id'] = $user_id;
+                    $sender_data['reference_id'] = $reseller_id;
+                    $sender_data['type_id'] = PAYMENT_TYPE_ID_SEND_CREDIT;
+
+                    $receiver_data['user_id'] = $reseller_id;
+                    $receiver_data['reference_id'] = $user_id;
+                    $receiver_data['type_id'] = PAYMENT_TYPE_ID_RECEIVE_CREDIT;
+                    $this->load->library('utils');
+                    $transaction_id = $this->utils->get_transaction_id();
+                    $sender_data['transaction_id'] = $transaction_id;
+                    $receiver_data['transaction_id'] = $transaction_id;
+                    $this->load->model('payment_model');
+                    if ($this->payment_model->transfer_user_payment($sender_data, $receiver_data) !== FALSE) {
+                        $response['message'] = $response['message'] . " Starting Balance " . $init_balance;
+                    } else {
+                        $response['message'] = $response['message'] . ' Error while updating the payment. Please try later.';
+                    }
+                }
+                
             } else {
                 $response['message'] = $this->ion_auth->errors();
             }

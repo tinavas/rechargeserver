@@ -48,7 +48,7 @@
                 <table cellspacing="0;">
                     <tbody>
                         <?php foreach ($payment_list as $payment_info) { ?>
-                            <tr><td><?php echo $payment_info['first_name'].' '.$payment_info['last_name'] ?></td><td class="tk"></td><td class="tk"><?php echo $payment_info['balance_out'] ?></td></tr>
+                            <tr><td><?php echo $payment_info['username'];?></td><td class="tk"></td><td class="tk"><?php echo $payment_info['balance_out'] ?></td></tr>
                         <?php } ?>
                     </tbody>
                 </table>
@@ -61,7 +61,7 @@
                 <table cellspacing="0;">
                     <tbody>
                         <?php foreach ($receive_list as $receive_info) { ?>
-                            <tr><td><?php echo $receive_info['first_name'].' '.$receive_info['last_name'] ?></td><td class="tk"></td><td class="tk"><?php echo $receive_info['balance_in'] ?></td></tr>
+                            <tr><td><?php echo $receive_info['username'];?></td><td class="tk"></td><td class="tk"><?php echo $receive_info['balance_in'] ?></td></tr>
                         <?php } ?>
                     </tbody>
                 </table>
