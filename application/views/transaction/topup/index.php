@@ -33,8 +33,13 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (topUpInfo.amount < <?php echo BKASH_MINIMUM_CASH_IN_AMOUNT ?> || topUpInfo.amount > <?php echo BKASH_MAXIMUM_CASH_IN_AMOUNT; ?>) {
-            $("#content").html("Please Give a Valid Amount !!");
+        if (topUpInfo.amount < <?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. "+'<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (topUpInfo.amount > <?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. "+'<?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>');
             $('#common_modal').modal('show');
             return;
         }

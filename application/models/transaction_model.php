@@ -37,6 +37,7 @@ class Transaction_model extends Ion_auth_model {
         $this->db->where('transaction_id', $transaction_id);
         $this->db->update('user_profits', $profit_data);
         $this->db->trans_commit();
+        return true;
     }
     
     public function callbackws_update_transaction_editable_status($transaction_id, $editable) {
