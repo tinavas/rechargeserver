@@ -139,21 +139,22 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "init_balance")) {
                     $init_balance = $resellerInfo->init_balance;
                 }
-                
+
                 $this->load->library('reseller_library');
                 $current_balance = $this->reseller_library->get_user_current_balance($user_id);
-                if($init_balance > $current_balance)
-                {
+                if ($init_balance > $current_balance) {
                     $response["message"] = "Sorry! Insaficient Balance !!";
                     echo json_encode($response);
                     return;
                 }
-//                $this->load->library('utils');
-//                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-//                    $response["message"] = "Please Enter a Valid Cell Number !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
+                if (isset($cell_no) && $cell_no != "") {
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number! Supported format is now 01XXXXXXXXX.";
+                        echo json_encode($response);
+                        return;
+                    }
+                }
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
 
                 $user_service_list = array();
@@ -181,6 +182,8 @@ class Reseller extends Role_Controller {
                     'user_service_list' => $user_service_list,
                     'pin' => $pin
                 );
+                $this->load->library("security");
+                $additional_data = $this->security->xss_clean($additional_data);
             }
             $group_successor_config = $this->config->item('successor_group_id', 'ion_auth');
             $group_ids = array(
@@ -189,8 +192,7 @@ class Reseller extends Role_Controller {
             $reseller_id = $this->ion_auth->register($username, $password, $email, $additional_data, $group_ids);
             if ($reseller_id !== FALSE) {
                 $response['message'] = 'User is created successfully.';
-                if($init_balance > 0)
-                {
+                if ($init_balance > 0) {
                     $sender_data = array(
                         'balance_in' => 0,
                         'balance_out' => $init_balance
@@ -220,7 +222,6 @@ class Reseller extends Role_Controller {
                         $response['message'] = $response['message'] . ' Error while updating the payment. Please try later.';
                     }
                 }
-                
             } else {
                 $response['message'] = $this->ion_auth->errors();
             }
@@ -250,20 +251,20 @@ class Reseller extends Role_Controller {
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];
         $this->data['title'] = $title;
-        
+
         //by default providing bkash service
+      //  $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        
         $user_service_list = array();
-        foreach ($service_list as $service_info) 
-        {
+        foreach ($service_list as $service_info) {
             //before assigning a default service while creating a reseller 
             //make sure that current user has permission of that service
-            if($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN)
-            {
+            if ($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN && $service_info['status'] == SERVICE_STATUS_TYPE_ACTIVE) {
                 $service_info['selected'] = true;
-            }            
+            }
             $user_service_list[] = $service_info;
         }
-        
+
         $this->data['service_list'] = json_encode($user_service_list);
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/create_reseller', $this->data);
@@ -294,8 +295,7 @@ class Reseller extends Role_Controller {
             $user_profile_info = $profile_info[0];
             $user_profile_info['ip_address'] = "";
             $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
-            if (!empty($user_pin_info_array)) 
-            {
+            if (!empty($user_pin_info_array)) {
                 $user_profile_info['pin'] = $user_pin_info_array[0]['pin'];
             }
         }
@@ -372,12 +372,15 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "pin")) {
                     $pin = $resellerInfo->pin;
                 }
-//                $this->load->library('utils');
-//                if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-//                    $response["message"] = "Please Enter a Valid Cell Number !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
+                if (isset($cell_no) && $cell_no != "") {
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number !Supported format is now 01XXXXXXXXX.";
+                        echo json_encode($response);
+                        return;
+                    }
+                }
+
                 $selected_service_id_list = $resellerInfo->selected_service_id_list;
                 $user_service_list = array();
                 $inactive_service_list = array();
@@ -411,6 +414,8 @@ class Reseller extends Role_Controller {
                     $additional_data['password'] = $new_password;
                 }
             }
+            $this->load->library("security");
+            $additional_data = $this->security->xss_clean($additional_data);
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
                 $response['message'] = 'User is updated successfully.';
             } else {
@@ -427,12 +432,11 @@ class Reseller extends Role_Controller {
             $reseller_info['new_password'] = "";
             $reseller_info['ip_address'] = "";
             $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
-            if (!empty($user_pin_info_array)) 
-            {
+            if (!empty($user_pin_info_array)) {
                 $reseller_info['pin'] = $user_pin_info_array[0]['pin'];
             }
             $this->data['reseller_info'] = json_encode($reseller_info);
-        }        
+        }
 
         $user_available_services = array();
         $child_services = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -517,6 +521,8 @@ class Reseller extends Role_Controller {
                     }
                 }
             }
+            $this->load->library("security");
+            $new_updated_rate_list = $this->security->xss_clean($new_updated_rate_list);
             if ($this->service_model->update_user_rates($new_updated_rate_list) == true) {
                 $response['message'] = "User Rate Updated successfully !";
             } else {
@@ -552,23 +558,16 @@ class Reseller extends Role_Controller {
         }
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
         $rate_list = array();
-        foreach($service_list as $service_info)
-        {
+        foreach ($service_list as $service_info) {
             //these two fields will be used to display check boxes because data types are tinyint instead of boolean
-            if($service_info['sms_verification'] == 1)
-            {
+            if ($service_info['sms_verification'] == 1) {
                 $service_info['sms_enable'] = true;
-            }
-            else
-            {
+            } else {
                 $service_info['sms_enable'] = false;
             }
-            if($service_info['email_verification'] == 1)
-            {
+            if ($service_info['email_verification'] == 1) {
                 $service_info['email_enable'] = true;
-            }
-            else
-            {
+            } else {
                 $service_info['email_enable'] = false;
             }
             $rate_list[] = $service_info;
@@ -620,7 +619,7 @@ class Reseller extends Role_Controller {
                 $email = "";
                 $first_name = "";
                 $last_name = "";
-                $mobile = "";      
+                $mobile = "";
                 $pin = DEFAULT_PIN;
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a user name !!";
@@ -655,7 +654,7 @@ class Reseller extends Role_Controller {
 //                    echo json_encode($response);
 //                    return;
 //                }
-                
+
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;
                 }
@@ -677,6 +676,14 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "mobile")) {
                     $mobile = $resellerInfo->mobile;
                 }
+                if (isset($mobile) && $mobile != "") {
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number !Supported format is now 01XXXXXXXXX.";
+                        echo json_encode($response);
+                        return;
+                    }
+                }
                 if (property_exists($resellerInfo, "note")) {
                     $note = $resellerInfo->note;
                 }
@@ -690,6 +697,8 @@ class Reseller extends Role_Controller {
                     'pin' => $pin
                 );
             }
+            $this->load->library("security");
+            $additional_data = $this->security->xss_clean($additional_data);
             if ($this->ion_auth->update($user_id, $additional_data) !== FALSE) {
                 $response['message'] = 'User is updated successfully.';
             } else {
@@ -703,8 +712,7 @@ class Reseller extends Role_Controller {
             $reseller_info = $reseller_info_array[0];
             $reseller_info['ip_address'] = "";
             $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
-            if (!empty($user_pin_info_array)) 
-            {
+            if (!empty($user_pin_info_array)) {
                 $reseller_info['pin'] = $user_pin_info_array[0]['pin'];
             }
             $this->data['reseller_info'] = json_encode($reseller_info);
@@ -728,8 +736,7 @@ class Reseller extends Role_Controller {
             $user_profile_info = $profile_info[0];
             $user_profile_info['ip_address'] = "";
             $user_pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
-            if (!empty($user_pin_info_array)) 
-            {
+            if (!empty($user_pin_info_array)) {
                 $user_profile_info['pin'] = $user_pin_info_array[0]['pin'];
             }
         }

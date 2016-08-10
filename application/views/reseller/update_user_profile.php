@@ -9,32 +9,22 @@
             $('#common_modal').modal('show');
             return;
         }
-//        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-//            $("#content").html("Please give First Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
-//            $("#content").html("Please give Last Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-//            $("#content").html("Please give Mobile Number !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-//            $("#content").html("Please give Email address !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        var varificationResult = validateEmail(resellerInfo.email);
-//        if (varificationResult == false) {
-//            $("#content").html("Please Enter a valid Email Address!");
-//            $('#common_modal').modal('show');
-//            return false;
-//        }
+    if (typeof resellerInfo.mobile != "undefined" && resellerInfo.mobile.length != 0) {
+            var varificationResult = numberValidation(resellerInfo.mobile);
+            if (varificationResult == false) {
+                $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }
+        if (typeof resellerInfo.email != "undefined" && resellerInfo.email.length != 0) {
+            var varificationResult = validateEmail(resellerInfo.email);
+            if (varificationResult == false) {
+                $("#content").html("Please Enter a valid Email Address!");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }
         angular.element($('#submit_update_user_profile')).scope().updateUserProfile(function (data) {
 
             $("#content").html(data.message);

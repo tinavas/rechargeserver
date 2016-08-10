@@ -18,11 +18,11 @@ class Admin extends Role_Controller {
      * This method will raise balance
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function load_balance() {
         //checking whether user has administrator access or not
         $group = $this->session->userdata('group');
-        if($group != GROUP_ADMIN)
-        {
+        if ($group != GROUP_ADMIN) {
             //you are not allowed to update rate
             $this->data['app'] = RESELLER_APP;
             $this->data['error_message'] = "Sorry !! You are not allowed to raise your balance.";
@@ -42,7 +42,7 @@ class Admin extends Role_Controller {
                     $description = $paymentInfo->description;
                 }
 
-                $user_id = $this->session->userdata('user_id'); 
+                $user_id = $this->session->userdata('user_id');
                 $this->load->library('utils');
                 $transaction_id = $this->utils->get_transaction_id();
                 $payment_data = array(
@@ -54,7 +54,9 @@ class Admin extends Role_Controller {
                     'balance_in' => $paymentInfo->amount,
                     'balance_out' => 0,
                     'type_id' => PAYMENT_TYPE_ID_LOAD_BALANCE
-                );                
+                );
+                $this->load->library("security");
+                $payment_data = $this->security->xss_clean($payment_data);
                 $this->load->model('admin/admin_payment_model');
                 if ($this->admin_payment_model->load_balance($payment_data) !== FALSE) {
                     $response['message'] = 'Balance is raised successfully.';
@@ -69,4 +71,5 @@ class Admin extends Role_Controller {
         $this->data['app'] = PAYMENT_APP;
         $this->template->load('admin/templates/admin_tmpl', 'admin/payment/load_balance', $this->data);
     }
+
 }

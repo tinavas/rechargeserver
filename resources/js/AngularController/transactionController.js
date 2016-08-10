@@ -1,5 +1,5 @@
 var transactionController = angular.module('controller.Transction', ['services.Transction', 'ngSanitize', 'ngCsv', 'angularFileUpload']).
-        controller('transctionController', function ($scope, transctionService, $filter, FileUploader) {
+        controller('transctionController', function($scope, transctionService, $filter, FileUploader) {
             $scope.currentPage = 1;
             $scope.pageSize = 10;
             $scope.bkashInfo = {};
@@ -22,88 +22,88 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.allTransactions = false;
             $scope.searchInfo = {};
             $scope.smsInfo = {};
-            $scope.sendTransactionCode = function (callbackFunction) {
+            $scope.sendTransactionCode = function(callbackFunction) {
                 transctionService.sendTransactionCode().
-                    success(function (data, status, headers, config) {
-                        callbackFunction(data);
-                    });
+                        success(function(data, status, headers, config) {
+                            callbackFunction(data);
+                        });
             };
-            $scope.bkash = function (callbackFunction) {
+            $scope.bkash = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.bkash($scope.bkashInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             callbackFunction(data);
                             $scope.allow_transction = true;
                         });
             };
-            $scope.dbbl = function (callbackFunction) {
+            $scope.dbbl = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.dbbl($scope.dbblInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
-            $scope.mCash = function (callbackFunction) {
+            $scope.mCash = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.mCash($scope.mCashInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
-            $scope.uCash = function (callbackFunction) {
+            $scope.uCash = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.uCash($scope.uCashInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
 
-            $scope.addTopUpData = function () {
+            $scope.addTopUpData = function() {
                 $scope.transactionDataList.push($scope.topUpInfo);
                 $scope.topUpInfo = {};
             };
-            $scope.addSMSData = function () {
+            $scope.addSMSData = function() {
                 $scope.transactionDataList.push({"number": $scope.smsInfo.number});
                 $scope.smsInfo.number = "";
             };
 
-            $scope.appendTopUpInfo = function (topUpInfo, requestFunction) {
+            $scope.appendTopUpInfo = function(topUpInfo, requestFunction) {
                 $scope.topupDataList.push(topUpInfo);
                 requestFunction($scope.topupDataList);
             }
 
 
-            $scope.setTransctionDataList = function (transactionList) {
+            $scope.setTransctionDataList = function(transactionList) {
                 $scope.transactionDataList = JSON.parse(transactionList);
             };
 
-            $scope.sendSMS = function (callbackFunction) {
+            $scope.sendSMS = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.sendSMS($scope.transactionDataList, $scope.smsInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
             };
-            $scope.setTopUpData = function (topEmptyList) {
+            $scope.setTopUpData = function(topEmptyList) {
                 $scope.topupDataList = [];
 
             };
@@ -115,7 +115,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 }
                 $scope.currentPageAmount = currentPageAmount;
             }
-            $scope.setPaymentInfoList = function (paymentInfoList, collectionCounter, totalAmount) {
+            $scope.setPaymentInfoList = function(paymentInfoList, collectionCounter, totalAmount) {
                 $scope.totalAmount = totalAmount;
                 $scope.paymentInfoList = JSON.parse(paymentInfoList);
                 getCurrentPagePayment();
@@ -128,13 +128,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 }
                 $scope.currentPageAmount = currentPageAmount;
             }
-            $scope.setReceiveInfoList = function (paymentInfoList, collectionCounter, totalAmount) {
+            $scope.setReceiveInfoList = function(paymentInfoList, collectionCounter, totalAmount) {
                 $scope.totalAmount = totalAmount;
                 $scope.paymentInfoList = JSON.parse(paymentInfoList);
                 getCurrentPageReceivePayment();
                 setCollectionLength(collectionCounter);
             };
-            $scope.getPaymentHistory = function (startDate, endDate) {
+            $scope.getPaymentHistory = function(startDate, endDate) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -147,7 +147,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getPaymentHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.paymentInfoList = data.payment_info_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPagePayment();
@@ -159,7 +159,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getReceiveHistory = function (startDate, endDate) {
+            $scope.getReceiveHistory = function(startDate, endDate) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -171,7 +171,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getReceiveHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.paymentInfoList = data.payment_info_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageReceivePayment();
@@ -183,7 +183,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getTopupTransactionList = function (startDate, endDate, userId) {
+            $scope.getTopupTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -198,7 +198,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getTopupTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -209,7 +209,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getBkashTransactionList = function (startDate, endDate, userId) {
+            $scope.getBkashTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -224,7 +224,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getBkashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -237,7 +237,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
 
-            $scope.getDBBLTransactionList = function (startDate, endDate, userId) {
+            $scope.getDBBLTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -252,7 +252,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getDBBLTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -263,7 +263,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getMcashTransactionList = function (startDate, endDate, userId) {
+            $scope.getMcashTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -278,7 +278,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getMcashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -290,7 +290,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getUcashTransactionList = function (startDate, endDate, userId) {
+            $scope.getUcashTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -305,7 +305,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getUcashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -316,7 +316,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getSMSTransactionList = function (startDate, endDate, userId) {
+            $scope.getSMSTransactionList = function(startDate, endDate, userId) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -331,7 +331,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.paymentTypeId = $scope.paymentType.key;
                 }
                 transctionService.getSMSTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageSMSAmount();
@@ -346,10 +346,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
 
-            $scope.getPaymentHistoryByPagination = function (num) {
+            $scope.getPaymentHistoryByPagination = function(num) {
                 $scope.searchInfo.offset = getOffset(num);
                 transctionService.getPaymentHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             if (typeof data.payment_info_list != "undefined") {
                                 $scope.paymentInfoList = data.payment_info_list;
                                 $scope.totalAmount = data.total_amount;
@@ -357,10 +357,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             }
                         });
             };
-            $scope.getReceiveHistoryByPagination = function (num) {
+            $scope.getReceiveHistoryByPagination = function(num) {
                 $scope.searchInfo.offset = getOffset(num);
                 transctionService.getReceiveHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             if (typeof data.payment_info_list != "undefined") {
                                 $scope.paymentInfoList = data.payment_info_list;
                                 $scope.totalAmount = data.total_amount;
@@ -369,72 +369,72 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.getTopupByPagination = function (num, userId) {
+            $scope.getTopupByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getTopupTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getBkashByPagination = function (num, userId) {
+            $scope.getBkashByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getBkashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getDBBLByPagination = function (num, userId) {
+            $scope.getDBBLByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getDBBLTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getMcashByPagination = function (num, userId) {
+            $scope.getMcashByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getMcashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
                         });
             };
-            $scope.getUcashByPagination = function (num, userId) {
+            $scope.getUcashByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getUcashTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
                         });
             };
 
-            $scope.getSMSByPagination = function (num, userId) {
+            $scope.getSMSByPagination = function(num, userId) {
                 $scope.searchInfo.offset = getOffset(num);
                 $scope.searchInfo.userId = userId;
                 transctionService.getSMSTransactionList($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageSMSAmount();
                         });
             };
 
-            $scope.pageChangeHandler = function (num) {
+            $scope.pageChangeHandler = function(num) {
                 $scope.searchInfo.offset = getOffset(num);
                 transctionService.getPaymentHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             if (typeof data.payment_info_list != "undefined") {
                                 $scope.paymentInfoList = data.payment_info_list;
                                 $scope.totalAmount = data.total_amount;
@@ -458,7 +458,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 }
                 $scope.currentPageAmount = currentPageAmount;
             }
-            $scope.setTransactionInfoList = function (transctionList, collectionCounter, totalAmount) {
+            $scope.setTransactionInfoList = function(transctionList, collectionCounter, totalAmount) {
                 $scope.transctionInfoList = JSON.parse(transctionList);
                 $scope.totalAmount = totalAmount;
                 getCurrentPageTransctionAmount();
@@ -472,14 +472,14 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 }
                 $scope.currentPageAmount = currentPageAmount;
             }
-            $scope.setSMSTransactionInfoList = function (transctionList, collectionCounter, totalAmount) {
+            $scope.setSMSTransactionInfoList = function(transctionList, collectionCounter, totalAmount) {
                 $scope.transctionInfoList = JSON.parse(transctionList);
                 $scope.totalAmount = totalAmount;
                 getCurrentPageSMSAmount();
                 setCollectionLength(collectionCounter);
             };
 
-            $scope.getAllHistory = function (startDate, endDate) {
+            $scope.getAllHistory = function(startDate, endDate) {
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }
@@ -488,7 +488,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                     $scope.searchInfo.toDate = endDate;
                 }
                 transctionService.getAllHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
                             $scope.totalAmount = data.total_amount;
                             getCurrentPageTransctionAmount();
@@ -499,10 +499,10 @@ var transactionController = angular.module('controller.Transction', ['services.T
                             setCollectionLength(data.total_transactions);
                         });
             };
-            $scope.getTransctionByPagination = function (num) {
+            $scope.getTransctionByPagination = function(num) {
                 $scope.searchInfo.offset = getOffset(num);
                 transctionService.getAllHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             if (typeof data.transaction_list != "undefined") {
                                 $scope.transctionInfoList = data.transaction_list;
                                 $scope.totalAmount = data.total_amount;
@@ -511,44 +511,58 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             };
-            $scope.setBkashTransaction = function (transctionInfo) {
+            $scope.setBkashTransaction = function(transctionInfo) {
                 $scope.bkashInfo = JSON.parse(transctionInfo);
             }
-            $scope.setPaymentTypeIds = function (paymentTypeIds) {
+            $scope.setPaymentTypeIds = function(paymentTypeIds) {
                 $scope.paymentTypeIds = JSON.parse(paymentTypeIds);
             }
-            $scope.setTransctionList = function (transctionList) {
+            $scope.setTransctionList = function(transctionList) {
                 $scope.transctionList = JSON.parse(transctionList);
             }
-            $scope.setTopUpTypeList = function (topupTypeList) {
+            $scope.setTopUpTypeList = function(topupTypeList) {
                 $scope.topupTypeList = JSON.parse(topupTypeList);
             }
-            $scope.setTopupOperatorList = function (topupOperatorList) {
+            $scope.setTopupOperatorList = function(topupOperatorList) {
                 $scope.topupOperatorList = JSON.parse(topupOperatorList);
             }
 
 
 
-            $scope.multipuleTopup = function (callbackFunction) {
+            $scope.getAjaxTransactionList = function(serviceIdList) {
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
+                console.log("Call here!" + serviceIdList);
+
+            }
+
+
+
+            $scope.multipuleTopup = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
                 transctionService.multipuleTopup($scope.transactionDataList).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
                         });
 
             }
 
-            $scope.deleteTransction = function (transactionInfo) {
+
+
+
+            $scope.deleteTransction = function(transactionInfo) {
                 var index = $scope.transactionDataList.indexOf(transactionInfo);
                 $scope.transactionDataList.splice(index, 1);
             };
 
 
-            $scope.PhoneNumberValidityCheck = function (phoneNumber) {
+            $scope.PhoneNumberValidityCheck = function(phoneNumber) {
 //                var phonenumber = "01623598606";
                 var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
                 var validPhoneNumber = phoneNumber.match(regexp);
@@ -561,12 +575,12 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
 // pagination next data
-            $scope.pageChangeHandler = function (num) {
+            $scope.pageChangeHandler = function(num) {
                 var initIndex = getOffset(num);
 
                 $scope.searchInfo.offset = initIndex;
                 transctionService.getPaymentHistory($scope.searchInfo).
-                        success(function (data, status, headers, config) {
+                        success(function(data, status, headers, config) {
                             var tempCollectionLength = 0;
                             var collectionIndex = 0;
                             if (typeof data.payment_info_list != "undefined") {
@@ -588,7 +602,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
             $scope.counter = 3;
 
-            $scope.addRow = function () {
+            $scope.addRow = function() {
 
                 $scope.rows.push('Row ' + $scope.counter);
                 $scope.counter++;

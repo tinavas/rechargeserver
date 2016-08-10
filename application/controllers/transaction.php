@@ -1,7 +1,7 @@
 <?php
 
-class Transaction extends Role_Controller 
-{
+class Transaction extends Role_Controller {
+
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
@@ -20,13 +20,13 @@ class Transaction extends Role_Controller
     public function index() {
         //handle code if you want to redirect to any other location
     }
-    
+
     /*
      * This method will send transaction code to the user via sms or email based on configuration. 
      * //right now we are using this feature for bkash service
      */
-    public function send_transaction_code()
-    {
+
+    public function send_transaction_code() {
         $response = "";
         $user_id = $this->session->userdata('user_id');
         $permission_exists = FALSE;
@@ -44,8 +44,7 @@ class Transaction extends Role_Controller
             echo $response;
             return;
         }
-        if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
-        {
+        if ($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1) {
             //transaction verification code is generated here
             $this->load->library('Utils');
             $verification_code = $this->utils->get_transaction_verification_code();
@@ -54,13 +53,11 @@ class Transaction extends Role_Controller
                 'id' => $bkash_service_info['user_service_id'],
                 'verification_code' => $verification_code
             );
-            $this->service_model->update_user_rates(array($updated_data));            
-            if($bkash_service_info['sms_verification'] == 1)
-            {
+            $this->service_model->update_user_rates(array($updated_data));
+            if ($bkash_service_info['sms_verification'] == 1) {
                 //send verification code via sms to the client
             }
-            if($bkash_service_info['email_verification'] == 1)
-            {
+            if ($bkash_service_info['email_verification'] == 1) {
                 //send verification code via email to the client
                 $email = "";
                 $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
@@ -70,9 +67,7 @@ class Transaction extends Role_Controller
                 $this->transaction_library->send_email($email, $verification_code);
                 $response = "Code is sent successfully. Please check your email.";
             }
-        }
-        else
-        {
+        } else {
             $response = "Sorry! You have no permission to use transaction code.";
         }
         echo $response;
@@ -82,6 +77,7 @@ class Transaction extends Role_Controller
      * This method will process bkash transaction
      * @author nazmul hasan on 24th february 2016
      */
+
     public function bkash($transaction_id = '') {
         $user_id = $this->session->userdata('user_id');
         //checking whether user has permission for bkash transaction
@@ -112,40 +108,35 @@ class Transaction extends Role_Controller
                 if (property_exists($bkashInfo, "number")) {
                     $cell_no = $bkashInfo->number;
                 } else {
-                    $response["message"] = "Cell Number is Required !!";
+                    $response["message"] = " Please give a Cell number! Cell Number is Required !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($bkashInfo, "amount")) {
                     $amount = $bkashInfo->amount;
                 } else {
-                    $response["message"] = "Amount is Required !!";
+                    $response["message"] = "Please give an Amount! Amount is Required !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($bkashInfo, "code")) {
                     $code = $bkashInfo->code;
                     //verify code here
-                    if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
-                    {
-                        if($code != $bkash_service_info['verification_code'])
-                        {
+                    if ($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1) {
+                        if ($code != $bkash_service_info['verification_code']) {
                             $response['message'] = "Invalid verification code!!!!.";
                             echo json_encode($response);
                             return;
                         }
-                    }
-                    else if($bkash_service_info['code'] != "")
-                    {
-                        if($code != $bkash_service_info['code'])
-                        {
+                    } else if ($bkash_service_info['code'] != "") {
+                        if ($code != $bkash_service_info['code']) {
                             $response['message'] = "Invalid code!!!!.";
                             echo json_encode($response);
                             return;
                         }
                     }
                 } else {
-                    $response["message"] = "Code is Required !!";
+                    $response["message"] = "Please give a Varification Code! Code is Required !!";
                     echo json_encode($response);
                     return;
                 }
@@ -153,8 +144,7 @@ class Transaction extends Role_Controller
                     //update transaction
                     $transaction_id = $bkashInfo->transaction_id;
                     $transaction_info_array = $this->transaction_model->get_transaction_info($transaction_id)->result_array();
-                    if(!empty($transaction_info_array) && !$transaction_info_array[0]['editable'])
-                    {
+                    if (!empty($transaction_info_array) && !$transaction_info_array[0]['editable']) {
                         //restrict to edit
                         $response['message'] = "Sorry! You are not allowed to edit this transaction.";
                         echo json_encode($response);
@@ -166,18 +156,18 @@ class Transaction extends Role_Controller
             }
             if (isset($amount)) {
                 if ($amount < BKASH_MINIMUM_CASH_IN_AMOUNT || $amount > BKASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount !!";
+                    $response["message"] = "Please Give a Valid Amount among tk." + BKASH_MINIMUM_CASH_IN_AMOUNT + "to" + BKASH_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
             }
             if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                $response["message"] = "Please Enter a Valid Cell Number !!";
+                $response["message"] = "Please Enter a Valid Cell Number! Supported format is now 01XXXXXXXXX. ";
                 echo json_encode($response);
                 return;
             }
             $api_key = API_KEY_BKASH_CASHIN;
-            $description = "test";            
+            $description = "test";
             $transaction_data = array(
                 'user_id' => $user_id,
                 'transaction_id' => $transaction_id,
@@ -187,16 +177,15 @@ class Transaction extends Role_Controller
                 'description' => $description,
                 'editable' => true
             );
-            if($transaction_id == '')
-            {
+            $this->load->library("security");
+            $transaction_data = $this->security->xss_clean($transaction_data);
+            if ($transaction_id == '') {
                 if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                     $response['message'] = $this->transaction_library->messages_array();
                 } else {
                     $response['message'] = $this->transaction_library->errors_array();
                 }
-            }
-            else
-            {
+            } else {
                 if ($this->transaction_library->update_transaction_info($transaction_data) !== FALSE) {
                     $response['message'] = $this->transaction_model->messages_array();
                 } else {
@@ -206,40 +195,37 @@ class Transaction extends Role_Controller
             echo json_encode($response);
             return;
         }
-        
+
         $code_verification = false;
         $sms_or_email_verification = false;
         //if we have code/sms verification/email verification then we will display user to assign code
-        if($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1)
-        {
+        if ($bkash_service_info['sms_verification'] == 1 || $bkash_service_info['email_verification'] == 1) {
             $sms_or_email_verification = true;
             //transaction verification code is generated here
-            /*$this->load->library('Utils');
-            $verification_code = $this->utils->get_transaction_verification_code();
-            //Storing code into the database
-            $updated_data = array(
-                'id' => $bkash_service_info['user_service_id'],
-                'verification_code' => $verification_code
-            );
-            $this->service_model->update_user_rates(array($updated_data));            
-            if($bkash_service_info['sms_verification'] == 1)
-            {
-                //send verification code via sms to the client
-            }
-            if($bkash_service_info['email_verification'] == 1)
-            {
-                //send verification code via email to the client
-                $email = "";
-                $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
-                if (!empty($profile_info)) {
-                    $email = $profile_info[0]['email'];
-                }
-                $this->transaction_library->send_email($email, $verification_code);
-            }*/
+            /* $this->load->library('Utils');
+              $verification_code = $this->utils->get_transaction_verification_code();
+              //Storing code into the database
+              $updated_data = array(
+              'id' => $bkash_service_info['user_service_id'],
+              'verification_code' => $verification_code
+              );
+              $this->service_model->update_user_rates(array($updated_data));
+              if($bkash_service_info['sms_verification'] == 1)
+              {
+              //send verification code via sms to the client
+              }
+              if($bkash_service_info['email_verification'] == 1)
+              {
+              //send verification code via email to the client
+              $email = "";
+              $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
+              if (!empty($profile_info)) {
+              $email = $profile_info[0]['email'];
+              }
+              $this->transaction_library->send_email($email, $verification_code);
+              } */
             $code_verification = true;
-        }
-        else if($bkash_service_info['code'] != "")
-        {
+        } else if ($bkash_service_info['code'] != "") {
             $code_verification = true;
         }
         $this->data['code_verification'] = $code_verification;
@@ -248,32 +234,26 @@ class Transaction extends Role_Controller
         //if email verification is enabled then send email with generate code
         //if transaction id is valid the retrieve transaction info
         $transaction_info = array();
-        if($transaction_id != '')
-        {
+        if ($transaction_id != '') {
             $transaction_info_array = $this->transaction_model->get_transaction_info($transaction_id)->result_array();
-            if(!empty($transaction_info_array) && $transaction_info_array[0]['editable'])
-            {
+            if (!empty($transaction_info_array) && $transaction_info_array[0]['editable']) {
                 $transaction_info['number'] = $transaction_info_array[0]['cell_no'];
                 $transaction_info['amount'] = $transaction_info_array[0]['amount'];
                 $transaction_info['transaction_id'] = $transaction_id;
                 $transaction_info['code'] = '';
-            }
-            else
-            {
+            } else {
                 $this->data['app'] = TRANSCATION_APP;
                 $this->data['error_message'] = "Time is expired. Sorry !! You are not allowed to edit the transaction anymore.";
                 $this->template->load(null, 'common/error_message', $this->data);
                 return;
             }
-        }
-        else
-        {
+        } else {
             $transaction_info['number'] = '';
             $transaction_info['amount'] = '';
             $transaction_info['transaction_id'] = '';
             $transaction_info['code'] = '';
         }
-        
+
         $this->data['transaction_info'] = json_encode($transaction_info);
         $where = array(
             'user_id' => $this->session->userdata('user_id')
@@ -292,6 +272,7 @@ class Transaction extends Role_Controller
      * This method will process dbbl transaction
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function dbbl() {
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -302,27 +283,27 @@ class Transaction extends Role_Controller
                 if (property_exists($dbblInfo, "number")) {
                     $cell_no = $dbblInfo->number;
                 } else {
-                    $response["message"] = "Cell Number is Required !!";
+                    $response["message"] = "  Please give a Cell number! Cell Number is Required    !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($dbblInfo, "amount")) {
                     $amount = $dbblInfo->amount;
                 } else {
-                    $response["message"] = "Amount is Required !!";
+                    $response["message"] = "Please give an Amount! Amount is Required  !!";
                     echo json_encode($response);
                     return;
                 }
             }
             if (isset($amount)) {
                 if ($amount < DBBL_MINIMUM_CASH_IN_AMOUNT || $amount > DBBL_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount !!";
+                    $response["message"] = "Please Give a Valid Amount among tk." + DBBL_MINIMUM_CASH_IN_AMOUNT + "to" + DBBL_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
             }
             if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                $response["message"] = "Please Enter a Valid Cell Number !!";
+                $response["message"] = "Please Enter a Valid Cell Number !! Supported format is now 01XXXXXXXXX";
                 echo json_encode($response);
                 return;
             }
@@ -338,6 +319,8 @@ class Transaction extends Role_Controller
                 'cell_no' => $cell_no,
                 'description' => $description
             );
+            $this->load->library("security");
+            $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
@@ -381,6 +364,7 @@ class Transaction extends Role_Controller
      * This method will process mcash transaction
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function mcash() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
@@ -392,27 +376,27 @@ class Transaction extends Role_Controller
                 if (property_exists($mCashInfo, "number")) {
                     $cell_no = $mCashInfo->number;
                 } else {
-                    $response["message"] = "Cell Number is Required !!";
+                    $response["message"] = "Please give a Cell number! Cell Number is Required    !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($mCashInfo, "amount")) {
                     $amount = $mCashInfo->amount;
                 } else {
-                    $response["message"] = "Amount is Required !!";
+                    $response["message"] = "Please give an Amount! Amount is Required  !!";
                     echo json_encode($response);
                     return;
                 }
             }
             if (isset($amount)) {
                 if ($amount < MCASH_MINIMUM_CASH_IN_AMOUNT || $amount > MCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount !!";
+                    $response["message"] = "Please Give a Valid Amount among tk." + MCASH_MINIMUM_CASH_IN_AMOUNT + "to" + MCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
             }
             if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                $response["message"] = "Please Enter a Valid Cell Number !!";
+                $response["message"] = "Please Enter a Valid Cell Number !! Supported format is now 01XXXXXXXXX";
                 echo json_encode($response);
                 return;
             }
@@ -427,6 +411,8 @@ class Transaction extends Role_Controller
                 'cell_no' => $cell_no,
                 'description' => $description
             );
+            $this->load->library("security");
+            $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
             } else {
@@ -469,6 +455,7 @@ class Transaction extends Role_Controller
      * This method will process ucash transaction
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function ucash() {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
@@ -480,27 +467,27 @@ class Transaction extends Role_Controller
                 if (property_exists($uCashInfo, "number")) {
                     $cell_no = $uCashInfo->number;
                 } else {
-                    $response["message"] = "Cell Number is Required !!";
+                    $response["message"] = "Please give a Cell number! Cell Number is Required    !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($uCashInfo, "amount")) {
                     $amount = $uCashInfo->amount;
                 } else {
-                    $response["message"] = "Amount is Required !!";
+                    $response["message"] = "Please give an Amount! Amount is Required  !!";
                     echo json_encode($response);
                     return;
                 }
             }
             if (isset($amount)) {
                 if ($amount < UCASH_MINIMUM_CASH_IN_AMOUNT || $amount > UCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount !!";
+                    $response["message"] = "Please Give a Valid Amount among tk." + UCASH_MINIMUM_CASH_IN_AMOUNT + "to" + UCASH_MINIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
             }
             if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                $response["message"] = "Please Enter a Valid Cell Number !!";
+                $response["message"] = "Please Enter a Valid Cell Number !! Supported format is now 01XXXXXXXXX";
                 echo json_encode($response);
                 return;
             }
@@ -515,6 +502,8 @@ class Transaction extends Role_Controller
                 'cell_no' => $cell_no,
                 'description' => $description
             );
+            $this->load->library("security");
+            $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
                 $response['message'] = "Transaction is created successfully.";
                 ;
@@ -558,8 +547,9 @@ class Transaction extends Role_Controller
      * This method will process topup transaction
      * @author nazmul hasan on 2nd March 2016
      */
+
     public function topup() {
-        $user_id = $this->session->userdata('user_id');        
+        $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
@@ -597,7 +587,7 @@ class Transaction extends Role_Controller
                         }
                         $topup_data_info['cell_no'] = $cell_no;
                     } else {
-                        $response["message"] = "Cell Number is Required at row number " . ($key + 1);
+                        $response["message"] = "Please give a Cell number! Cell Number is Required   at row number " . ($key + 1);
                         echo json_encode($response);
                         return;
                     }
@@ -613,7 +603,7 @@ class Transaction extends Role_Controller
                         }
                         $topup_data_info['amount'] = $amount;
                     } else {
-                        $response["message"] = "Amount is Required  at row number " . ($key + 1);
+                        $response["message"] = "Please give an Amount! Amount is Required   at row number " . ($key + 1);
                         echo json_encode($response);
                         return;
                     }
@@ -645,6 +635,8 @@ class Transaction extends Role_Controller
                     }
                     $transction_list[] = $topup_data_info;
                 }
+                $this->load->library("security");
+                $transction_list = $this->security->xss_clean($transction_list);
                 if ($this->transaction_library->add_multipule_transactions($transction_list, $user_assigned_service_id_list, $total_amount, $user_id) !== FALSE) {
                     $response['message'] = $this->transaction_library->messages_array();
                 } else {
@@ -774,6 +766,7 @@ class Transaction extends Role_Controller
      * This method will send bulk sms
      * @author nazmul hasan on 17th april 2016
      */
+
     public function sms() {
         $user_id = $this->session->userdata('user_id');
         $transction_list = array();
@@ -795,7 +788,7 @@ class Transaction extends Role_Controller
                         }
                         $sms_data_info['cell_no'] = $cell_no;
                     } else {
-                        $response["message"] = "Cell Number is Required at row number " . $key + 1;
+                        $response["message"] = " Please give a Cell number! Cell Number is Required   at row number " . $key + 1;
                         echo json_encode($response);
                         return;
                     }
@@ -814,6 +807,8 @@ class Transaction extends Role_Controller
                         return;
                     }
                 }
+                $this->load->library("security");
+                $transction_list = $this->security->xss_clean($transction_list);
                 if ($this->transaction_library->add_sms_transactions($transction_list, $sms, $user_id) !== FALSE) {
                     $response['message'] = $this->transaction_library->messages_array();
                 } else {
@@ -911,5 +906,27 @@ class Transaction extends Role_Controller
         $this->data['transaction_list'] = json_encode($transction_list);
         $this->template->load(null, 'transaction/sms/index', $this->data);
     }
+
+//    function get_transaction_list() {
+//        $response = array( 'transaction_list' => array());
+//        if (file_get_contents("php://input") != null) {
+//
+//            $user_id = $this->session->userdata('user_id');
+//            $service_id_list = array();
+//            $postdata = file_get_contents("php://input");
+//            $requestInfo = json_decode($postdata);
+//            if (property_exists($requestInfo, "serviceIdList")) {
+//                $service_id_list = $requestInfo->serviceIdList;
+//            }
+//            $transaction_list_array = $this->transaction_library->get_user_transaction_list($service_id_list, array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+//            $transaction_list = array();
+//            if (!empty($transaction_list_array)) {
+//                $response['transaction_list'] = $transaction_list_array['transaction_list'];
+//            }
+//        }
+//         echo json_encode($response);
+//    }
+    
+   
 
 }

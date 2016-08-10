@@ -12,6 +12,16 @@
             $('#common_modal').modal('show');
             return;
         }
+          if (dbblInfo.amount < <?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (dbblInfo.amount > <?php echo DBBL_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo DBBL_MAXIMUM_CASH_IN_AMOUNT; ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
         angular.element($('#dbbl_cash_in_id')).scope().dbbl(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');

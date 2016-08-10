@@ -12,6 +12,8 @@ define("SERVICE_TYPE_ID_TOPUP_TELETALK",                   105);
 
 define("SERVICE_TYPE_ID_SEND_SMS",                         1001);
 
+define("SERVICE_STATUS_TYPE_ACTIVE",                        1);
+define("SERVICE_STATUS_TYPE_INACTIVE",                      0);
 define("OPERATOR_TYPE_ID_PREPAID",                          1);
 define("OPERATOR_TYPE_ID_POSTPAID",                         2);
 

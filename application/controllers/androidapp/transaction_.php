@@ -25,7 +25,7 @@ class Transaction extends CI_Controller {
         $api_key = API_KEY_BKASH_CASHIN;
         $transaction_id = "";
         $description = "test";
-        $data['non_xss'] = $transaction_data = array(
+        $transaction_data = array(
             'user_id' => $user_id,
             'transaction_id' => $transaction_id,
             'service_id' => SERVICE_TYPE_ID_BKASH_CASHIN,
@@ -33,8 +33,6 @@ class Transaction extends CI_Controller {
             'cell_no' => $cell_no,
             'description' => $description
         );
-   
-
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
             $response['message'] = $this->transaction_library->messages_array();
@@ -210,10 +208,7 @@ class Transaction extends CI_Controller {
     public function get_bkash_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -229,15 +224,7 @@ class Transaction extends CI_Controller {
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
-            foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
-                $transaction_info = array(
-                    'cell_no' => $temp_transaction_info['cell_no'],
-                    'amount' => $temp_transaction_info['amount'],
-                    'title' => $temp_transaction_info['service_title'],
-                    'status' => $temp_transaction_info['status']
-                );
-                $transaction_list[] = $transaction_info;
-            }
+            $transaction_list = $transaction_list_array['transaction_list'];
             $response['transaction_list'] = $transaction_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
@@ -248,10 +235,7 @@ class Transaction extends CI_Controller {
     public function get_dbbl_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -267,15 +251,7 @@ class Transaction extends CI_Controller {
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
-            foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
-                $transaction_info = array(
-                    'cell_no' => $temp_transaction_info['cell_no'],
-                    'amount' => $temp_transaction_info['amount'],
-                    'title' => $temp_transaction_info['service_title'],
-                    'status' => $temp_transaction_info['status']
-                );
-                $transaction_list[] = $transaction_info;
-            }
+            $transaction_list = $transaction_list_array['transaction_list'];
             $response['transaction_list'] = $transaction_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
@@ -286,10 +262,7 @@ class Transaction extends CI_Controller {
     public function get_mcash_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -305,15 +278,7 @@ class Transaction extends CI_Controller {
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
-            foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
-                $transaction_info = array(
-                    'cell_no' => $temp_transaction_info['cell_no'],
-                    'amount' => $temp_transaction_info['amount'],
-                    'title' => $temp_transaction_info['service_title'],
-                    'status' => $temp_transaction_info['status']
-                );
-                $transaction_list[] = $transaction_info;
-            }
+            $transaction_list = $transaction_list_array['transaction_list'];
             $response['transaction_list'] = $transaction_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
@@ -324,10 +289,7 @@ class Transaction extends CI_Controller {
     public function get_ucash_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -343,15 +305,7 @@ class Transaction extends CI_Controller {
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
-            foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
-                $transaction_info = array(
-                    'cell_no' => $temp_transaction_info['cell_no'],
-                    'amount' => $temp_transaction_info['amount'],
-                    'title' => $temp_transaction_info['service_title'],
-                    'status' => $temp_transaction_info['status']
-                );
-                $transaction_list[] = $transaction_info;
-            }
+            $transaction_list = $transaction_list_array['transaction_list'];
             $response['transaction_list'] = $transaction_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
@@ -362,10 +316,7 @@ class Transaction extends CI_Controller {
     public function get_topup_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -381,15 +332,7 @@ class Transaction extends CI_Controller {
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
-            foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
-                $transaction_info = array(
-                    'cell_no' => $temp_transaction_info['cell_no'],
-                    'amount' => $temp_transaction_info['amount'],
-                    'title' => $temp_transaction_info['service_title'],
-                    'status' => $temp_transaction_info['status']
-                );
-                $transaction_list[] = $transaction_info;
-            }
+            $transaction_list = $transaction_list_array['transaction_list'];
             $response['transaction_list'] = $transaction_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
@@ -400,10 +343,7 @@ class Transaction extends CI_Controller {
     public function get_payment_transaction_list() {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
-        );
+        $response = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -415,18 +355,8 @@ class Transaction extends CI_Controller {
         $where = array(
             'user_id' => $user_id
         );
-        $this->load->library('payment_library');
         $payment_info_list = $this->payment_library->get_payment_history(array(PAYMENT_TYPE_ID_SEND_CREDIT, PAYMENT_TYPE_ID_RETURN_CREDIT), array(), 0, 0, PAYMENT_LIST_DEAFULT_LIMIT, PAYMENT_LIST_DEAFULT_OFFSET, 'desc', $where);
         if (!empty($payment_info_list)) {
-            foreach ($payment_info_list['payment_list'] as $temp_payment_info) {
-                $payment_info = array(
-                    'amount' => $temp_payment_info['balance_out'],
-                    'date' => $temp_payment_info['created_on'],
-                    'description' => $temp_payment_info['description'],
-                    'type_id' => $temp_payment_info['type_id']
-                );
-                $transaction_list[] = $transaction_info;
-            }
             $response['payment_list'] = $payment_info_list['payment_list'];
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";

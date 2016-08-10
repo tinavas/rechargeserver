@@ -8,21 +8,31 @@
             return;
         }
         if (typeof uCashInfo.amount == "undefined" || uCashInfo.amount.length == 0) {
-             $("#content").html("Please give an amount ");
+            $("#content").html("Please give an amount ");
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#u_cash_in_id')).scope().uCash(function (data) {
+        if (uCashInfo.amount < <?php echo UCASH_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo UCASH_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (uCashInfo.amount > <?php echo UCASH_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo UCASH_MAXIMUM_CASH_IN_AMOUNT; ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        angular.element($('#u_cash_in_id')).scope().uCash(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/ucash';
             });
 
         });
     }
 </script>
- <div class="loader"></div>
+<div class="loader"></div>
 <div class="ezttle"><span class="text">U-Cash</span></div>
 <div class="mypage"  ng-controller="transctionController">
     <div class="row" style="margin-top:5px;">
@@ -74,7 +84,7 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>

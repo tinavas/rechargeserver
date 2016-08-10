@@ -25,6 +25,7 @@ class Payment extends Role_Controller {
      * @param $child_id, child user id
      * @author nazmul hasan on 24th february 2016
      */
+
     public function create_payment($child_id = 0) {
         $parent_id = $this->session->userdata('user_id');
         $response = array();
@@ -89,6 +90,9 @@ class Payment extends Role_Controller {
                 $transaction_id = $this->utils->get_transaction_id();
                 $sender_data['transaction_id'] = $transaction_id;
                 $receiver_data['transaction_id'] = $transaction_id;
+                $this->load->library("security");
+                $sender_data = $this->security->xss_clean($sender_data);
+                $receiver_data = $this->security->xss_clean($receiver_data);
                 if ($this->payment_model->transfer_user_payment($sender_data, $receiver_data) !== FALSE) {
                     $response['message'] = 'Payment is updated successfully.';
                 } else {
@@ -167,6 +171,9 @@ class Payment extends Role_Controller {
                 $transaction_id = $this->utils->get_transaction_id();
                 $user_data['transaction_id'] = $transaction_id;
                 $parent_data['transaction_id'] = $transaction_id;
+                $this->load->library("security");
+                $user_data = $this->security->xss_clean($user_data);
+                $parent_data = $this->security->xss_clean($parent_data);
                 $this->load->model('payment_model');
                 if ($this->payment_model->transfer_user_payment($user_data, $parent_data) !== FALSE) {
                     $response['message'] = 'Return balance successfully.';
