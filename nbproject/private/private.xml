@@ -2,6 +2,25 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/models/service_model.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/transaction.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/history/payment_history.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/report/balance_report.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/constants/transaction.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/reseller.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/models/ion_auth_model.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/androidapp/transaction.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/payment/create_payment.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/report/cost_and_profit.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/transaction/topup/index.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/transaction/bkash/index.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/reseller/create_reseller.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/history.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/resources/js/AngularController/transactionController.js</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/transaction/sms/index.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/libraries/Ion_auth.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/androidapp/auth.php</file>
+        </group>
     </open-files>
 </project-private>
