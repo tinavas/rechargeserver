@@ -12,10 +12,20 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#dbbl_cash_in_id')).scope().dbbl(function (data) {
+        if (dbblInfo.amount < <?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (dbblInfo.amount > <?php echo DBBL_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo DBBL_MAXIMUM_CASH_IN_AMOUNT; ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        angular.element($('#dbbl_cash_in_id')).scope().dbbl(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/dbbl';
             });
 
@@ -36,7 +46,7 @@
                     <?php // echo form_open("transaction/dbbl", array('id' => 'form_create_dbbl', 'class' => 'form-horizontal')); ?>
                     <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
                         <div class ="row">
-                            <div class="col-md-12"> <?php // echo $message;        ?> </div>
+                            <div class="col-md-12"> <?php // echo $message;         ?> </div>
                         </div>
                         <div class="form-group">
                             <label for="number" class="col-md-6 control-label requiredField">

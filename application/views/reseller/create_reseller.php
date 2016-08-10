@@ -3,6 +3,14 @@
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
+    function numberValidation(phoneNumber) {
+        var regexp = /^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
+        var validPhoneNumber = phoneNumber.match(regexp);
+        if (validPhoneNumber) {
+            return true;
+        }
+        return false;
+    }
     function create_reseller(resellerInfo) {
         if (typeof resellerInfo.username == "undefined" || resellerInfo.username.length == 0) {
             $("#content").html("Please give a User Name !");
@@ -14,41 +22,27 @@
             $('#common_modal').modal('show');
             return;
         }
-//        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-//            $("#content").html("Please give First Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
-//            $("#content").html("Please give Last Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-//            $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-//            $("#content").html("Please give Email address !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        var varificationResult = validateEmail(resellerInfo.email);
-//        if (varificationResult == false) {
-//            $("#content").html("Please Enter a valid Email Address!");
-//            $('#common_modal').modal('show');
-//            return false;
-//        }
-//        if (typeof resellerInfo.note == "undefined" || resellerInfo.note.length == 0) {
-//            $("#content").html("Please Give a Note !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-        angular.element($('#submit_create_reseller')).scope().createReseller(function (data) {
+        if (typeof resellerInfo.mobile != "undefined" || resellerInfo.mobile.length != 0) {
+            var varificationResult = numberValidation(resellerInfo.mobile);
+            if (varificationResult == false) {
+                $("#content").html("Please give valid Mobile Number ! Supported format is now 01XXXXXXXXX");
+                        $('#common_modal').modal('show');
+                return false;
+            }
+        }
+        if (typeof resellerInfo.email != "undefined" || resellerInfo.email.length != 0) {
+            var varificationResult = validateEmail(resellerInfo.email);
+            if (varificationResult == false) {
+                $("#content").html("Please Enter a valid Email Address! Supported format is abc@email.com");
+                $('#common_modal').modal('show');
+                return false;
+            }
+        }
+
+        angular.element($('#submit_create_reseller')).scope().createReseller(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>reseller/get_reseller_list';
             });
         });
@@ -62,7 +56,7 @@
 <div class="ezttle"><span class="text"><?php echo $title; ?></span></div>
 <div class="mypage" ng-controller="resellerController">
     <div class="top10">&nbsp;</div>
-    <div class="row" ng-init="createResellerInitialize('<?php echo DEFAULT_PIN?>')">
+    <div class="row" ng-init="createResellerInitialize('<?php echo DEFAULT_PIN ?>')">
         <div class="col-md-12 fleft">	
             <?php // echo form_open("reseller/create_reseller", array('id' => 'form_create_reseller', 'class' => 'inform well', 'style' => 'width:650px;')); ?>
             <ng-from>    

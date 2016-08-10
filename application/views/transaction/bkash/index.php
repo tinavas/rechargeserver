@@ -1,14 +1,14 @@
 <script>
-    function send_code() 
+    function send_code()
     {
-        angular.element($('#bkash_cash_in_id')).scope().sendTransactionCode(function (data) {
+        angular.element($('#bkash_cash_in_id')).scope().sendTransactionCode(function(data) {
             $("#content").html(data);
             $('#common_modal').modal('show');
         });
     }
     function bkash(bkashInfo) {
         if (typeof bkashInfo.number == "undefined" || bkashInfo.number.length == 0) {
-            $("#content").html("Please give a bkash Number");
+            $("#content").html("Please give a bkash Account Number");
             $('#common_modal').modal('show');
             return;
         }
@@ -17,17 +17,27 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#bkash_cash_in_id')).scope().bkash(function (data) {
+        if (bkashInfo.amount < <?php echo BKASH_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo BKASH_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (topUpIbkashInfonfo.amount > <?php echo BKASH_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo BKASH_MAXIMUM_CASH_IN_AMOUNT; ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        angular.element($('#bkash_cash_in_id')).scope().bkash(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/bkash';
             });
         });
     }
 </script>
 
- <div class="loader"></div>
+<div class="loader"></div>
 <div class="ezttle"><span class="text">BKash CashIn</span></div>
 <div class="mypage" ng-controller="transctionController">
     <div class="row" style="margin-top:5px;">
@@ -57,26 +67,26 @@
                                 <input type="text" name="amount" ng-model="bkashInfo.amount" class="form-control"  placeholder='eg: 100'>  
                             </label>
                         </div>
-                        <?php if($code_verification){ ?>
-                        <div class="form-group">
-                            <label for="code" class="col-md-6 control-label requiredField">
-                                Code
-                            </label>
-                            <label for="code" class="col-md-6 control-label requiredField">
-                                <input type="text" name="amount" ng-model="bkashInfo.code" class="form-control">  
-                            </label>
-                        </div>
-                        <?php }?>
-                        <?php if($sms_or_email_verification){ ?>
-                        <div class="form-group">
-                            <label for="code" class="col-md-6 control-label requiredField">
-                                
-                            </label>
-                            <label for="code" class="col-md-6 control-label requiredField">
-                                <a href="#" onclick="send_code()">Send Code</a>
-                            </label>
-                        </div>
-                        <?php }?>
+                        <?php if ($code_verification) { ?>
+                            <div class="form-group">
+                                <label for="code" class="col-md-6 control-label requiredField">
+                                    Code
+                                </label>
+                                <label for="code" class="col-md-6 control-label requiredField">
+                                    <input type="text" name="amount" ng-model="bkashInfo.code" class="form-control">  
+                                </label>
+                            </div>
+                        <?php } ?>
+                        <?php if ($sms_or_email_verification) { ?>
+                            <div class="form-group">
+                                <label for="code" class="col-md-6 control-label requiredField">
+
+                                </label>
+                                <label for="code" class="col-md-6 control-label requiredField">
+                                    <a href="#" onclick="send_code()">Send Code</a>
+                                </label>
+                            </div>
+                        <?php } ?>
                         <div class="form-group">
                             <label for="submit_update_api" class="col-md-6 control-label requiredField">
 

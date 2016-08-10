@@ -9,42 +9,27 @@
             $('#common_modal').modal('show');
             return;
         }
-//        if (typeof resellerInfo.password == "undefined" || resellerInfo.password.length == 0) {
-//            $("#content").html("Please give Password  !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.first_name == "undefined" || resellerInfo.first_name.length == 0) {
-//            $("#content").html("Please give First Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.last_name == "undefined" || resellerInfo.last_name.length == 0) {
-//            $("#content").html("Please give Last Name !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.mobile == "undefined" || resellerInfo.mobile.length == 0) {
-//            $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (typeof resellerInfo.email == "undefined" || resellerInfo.email.length == 0) {
-//            $("#content").html("Please give Email address !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        var varificationResult = validateEmail(resellerInfo.email);
-//        if (varificationResult == false) {
-//            $("#content").html("Please Enter a valid Email Address!");
-//            $('#common_modal').modal('show');
-//            return false;
-//        }
-        angular.element($('#submit_update_reseller')).scope().updateReseller(function (data) {
+        if (typeof resellerInfo.mobile != "undefined" || resellerInfo.mobile.length != 0) {
+            var varificationResult = numberValidation(resellerInfo.mobile);
+            if (varificationResult == false) {
+                $("#content").html("Please give valid Mobile Number ! Supported format is now 01XXXXXXXXX");
+                        $('#common_modal').modal('show');
+                return false;
+            }
+        }
+        if (typeof resellerInfo.email != "undefined" || resellerInfo.email.length != 0) {
+            var varificationResult = validateEmail(resellerInfo.email);
+            if (varificationResult == false) {
+                $("#content").html("Please Enter a valid Email Address! Supported format is abc@email.com");
+                $('#common_modal').modal('show');
+                return false;
+            }
+        }
+        angular.element($('#submit_update_reseller')).scope().updateReseller(function(data) {
 
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>reseller/get_reseller_list';
             });
         });

@@ -12,10 +12,20 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#m_cash_in_id')).scope().mCash(function (data) {
+        if (mCashInfo.amount < <?php echo MCASH_MINIMUM_CASH_IN_AMOUNT ?>) {
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo MCASH_MINIMUM_CASH_IN_AMOUNT ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (mCashInfo.amount > <?php echo MCASH_MINIMUM_CASH_IN_AMOUNT; ?>) {
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo MCASH_MINIMUM_CASH_IN_AMOUNT; ?>');
+            $('#common_modal').modal('show');
+            return;
+        }
+        angular.element($('#m_cash_in_id')).scope().mCash(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/mcash';
             });
         });
