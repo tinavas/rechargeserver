@@ -526,20 +526,12 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.setTopupOperatorList = function(topupOperatorList) {
                 $scope.topupOperatorList = JSON.parse(topupOperatorList);
             }
-
-
-
             $scope.getAjaxTransactionList = function(serviceIdList) {
-                if ($scope.allow_transction == false) {
-                    return;
-                }
-                $scope.allow_transction = false;
-                console.log("Call here!" + serviceIdList);
-
+                  transctionService.getAjaxTransactionList(serviceIdList).
+                        success(function(data, status, headers, config) {
+                          $scope.transctionList = data.transaction_list;
+                        });
             }
-
-
-
             $scope.multipuleTopup = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
                     return;
@@ -552,10 +544,6 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             }
-
-
-
-
             $scope.deleteTransction = function(transactionInfo) {
                 var index = $scope.transactionDataList.indexOf(transactionInfo);
                 $scope.transactionDataList.splice(index, 1);

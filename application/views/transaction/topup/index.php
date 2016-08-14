@@ -1,7 +1,9 @@
 <script>
 
-    $(function () {
-        error_message = '<?php if (isset($error_message)) { echo $error_message; } ?>';
+    $(function() {
+        error_message = '<?php if (isset($error_message)) {
+    echo $error_message;
+} ?>';
         if (error_message != "") {
             $("#content").html(error_message);
             $('#common_modal').modal('show');
@@ -34,12 +36,12 @@
             return;
         }
         if (topUpInfo.amount < <?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>) {
-            $("#content").html("Please give a minimum amount TK. "+'<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>');
+            $("#content").html("Please give a minimum amount TK. " + '<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>');
             $('#common_modal').modal('show');
             return;
         }
         if (topUpInfo.amount > <?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>) {
-            $("#content").html("Please give a maximum amount TK. "+'<?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>');
+            $("#content").html("Please give a maximum amount TK. " + '<?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>');
             $('#common_modal').modal('show');
             return;
         }
@@ -53,7 +55,7 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#top_up_id')).scope().addTopUpData(function () {
+        angular.element($('#top_up_id')).scope().addTopUpData(function() {
         });
     }
 
@@ -90,13 +92,20 @@
                 }
             }
         }
-        angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
+        angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/topup';
             });
         });
+    }
+    $(function() {
+        setInterval(callFunction, <?php echo TRANSACTION_LIST_CALLING_INTERVER; ?>);
+    });
+    function callFunction() {
+        var serviceIdList = [<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>,<?php echo SERVICE_TYPE_ID_TOPUP_ROBI; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL;?>, <?php echo SERVICE_TYPE_ID_TOPUP_TELETALK; ?>];
+        angular.element($('#transaction_list_id')).scope().getAjaxTransactionList(serviceIdList);
     }
 </script>
 <div class="loader"></div>
@@ -182,14 +191,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
+<?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
                                 <div class="form-group">
                                     <label  class="col-md-2" for="fileupload">Upload:</label>
                                     <input class="col-md-4" id="fileupload" type="file" name="userfile">
                                     <div class="col-md-3"></div>
                                     <input id="submit_btn"  name="submit_btn" value="Upload" type="submit" class="col-md-2 button-custom"/>
                                 </div>
-                                <?php echo form_close(); ?>
+<?php echo form_close(); ?>
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-6">
@@ -211,7 +220,7 @@
                                         </thead>
                                         <?php if (isset($transactions_data)) { ?>
                                             <div ng-init="setTransctionDataList(<?php echo htmlspecialchars(json_encode($transactions_data)); ?>)"></div>
-                                        <?php } ?>
+<?php } ?>
                                         <tbody> 
                                             <tr ng-repeat="(key, transactionInfo) in transactionDataList">
                                                 <td>
@@ -243,7 +252,7 @@
 
                         <td>
                         </td>
-                        <td style="width:50%;vertical-align:top;padding-right:15px;"  ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
+                        <td  id="transaction_list_id" style="width:50%;vertical-align:top;padding-right:15px;"  ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
                             <p class="help-block">Last 10 Requests</p>
                             <div style="margin:0px;padding:0px;background:#fff;">
                                 <table class="table10" cellspacing="0">

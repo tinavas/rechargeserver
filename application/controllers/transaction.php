@@ -907,26 +907,25 @@ class Transaction extends Role_Controller {
         $this->template->load(null, 'transaction/sms/index', $this->data);
     }
 
-//    function get_transaction_list() {
-//        $response = array( 'transaction_list' => array());
-//        if (file_get_contents("php://input") != null) {
-//
-//            $user_id = $this->session->userdata('user_id');
-//            $service_id_list = array();
-//            $postdata = file_get_contents("php://input");
-//            $requestInfo = json_decode($postdata);
-//            if (property_exists($requestInfo, "serviceIdList")) {
-//                $service_id_list = $requestInfo->serviceIdList;
-//            }
-//            $transaction_list_array = $this->transaction_library->get_user_transaction_list($service_id_list, array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
-//            $transaction_list = array();
-//            if (!empty($transaction_list_array)) {
-//                $response['transaction_list'] = $transaction_list_array['transaction_list'];
-//            }
-//        }
-//         echo json_encode($response);
-//    }
-    
-   
+    function get_transaction_list() {
+        $response = array('transaction_list' => array());
+        if (file_get_contents("php://input") != null) {
+            $where = array(
+                'user_id' => $this->session->userdata('user_id')
+            );
+            $service_id_list = array();
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "serviceIdList")) {
+                $service_id_list = $requestInfo->serviceIdList;
+            }
+            $transaction_list_array = $this->transaction_library->get_user_transaction_list($service_id_list, array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+            $transaction_list = array();
+            if (!empty($transaction_list_array)) {
+                $response['transaction_list'] = $transaction_list_array['transaction_list'];
+            }
+        }
+        echo json_encode($response);
+    }
 
 }

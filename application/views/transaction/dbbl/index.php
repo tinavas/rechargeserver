@@ -12,7 +12,7 @@
             $('#common_modal').modal('show');
             return;
         }
-          if (dbblInfo.amount < <?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>) {
+        if (dbblInfo.amount < <?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>) {
             $("#content").html("Please give a minimum amount TK. " + '<?php echo DBBL_MINIMUM_CASH_IN_AMOUNT ?>');
             $('#common_modal').modal('show');
             return;
@@ -22,14 +22,21 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#dbbl_cash_in_id')).scope().dbbl(function (data) {
+        angular.element($('#dbbl_cash_in_id')).scope().dbbl(function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>transaction/dbbl';
             });
 
         });
+    }
+    $(function() {
+        setInterval(callFunction, <?php echo TRANSACTION_LIST_CALLING_INTERVER; ?>);
+    });
+    function callFunction() {
+        var serviceIdList = [<?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>];
+        angular.element($('#transaction_list_id')).scope().getAjaxTransactionList(serviceIdList);
     }
 </script>
 
@@ -46,7 +53,7 @@
                     <?php // echo form_open("transaction/dbbl", array('id' => 'form_create_dbbl', 'class' => 'form-horizontal')); ?>
                     <div class="row col-md-12" id="box_content_2" class="box-content" style="padding-top: 10px;">
                         <div class ="row">
-                            <div class="col-md-12"> <?php // echo $message;        ?> </div>
+                            <div class="col-md-12"> <?php // echo $message;          ?> </div>
                         </div>
                         <div class="form-group">
                             <label for="number" class="col-md-6 control-label requiredField">
@@ -80,7 +87,7 @@
                 <?php // echo form_close(); ?>
                 </td>
                 <td>
-                </td><td style="width:50%;vertical-align:top;padding-right:15px;"  ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
+                </td><td   id="transaction_list_id" style="width:50%;vertical-align:top;padding-right:15px;"  ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
                     <p class="help-block">Last 10 Requests</p>
                     <div style="margin:0px;padding:0px;background:#fff;">
                         <table class="table10" cellspacing="0">

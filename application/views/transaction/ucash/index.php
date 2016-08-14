@@ -31,6 +31,14 @@
 
         });
     }
+    
+     $(function() {
+        setInterval(callFunction, <?php echo TRANSACTION_LIST_CALLING_INTERVER; ?>);
+    });
+    function callFunction() {
+        var serviceIdList = [<?php echo SERVICE_TYPE_ID_UCASH_CASHIN; ?>];
+        angular.element($('#transaction_list_id')).scope().getAjaxTransactionList(serviceIdList);
+    }
 </script>
 <div class="loader"></div>
 <div class="ezttle"><span class="text">U-Cash</span></div>
@@ -74,7 +82,7 @@
                 </ng-form>
                 </td>
                 <td>
-                </td><td style="width:50%;vertical-align:top;padding-right:15px;" ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
+                </td><td  id="transaction_list_id" style="width:50%;vertical-align:top;padding-right:15px;" ng-init="setTransctionList(<?php echo htmlspecialchars(json_encode($transaction_list)); ?>)">
                     <p class="help-block">Last 10 Requests</p>
                     <div style="margin:0px;padding:0px;background:#fff;">
                         <table class="table10" cellspacing="0">

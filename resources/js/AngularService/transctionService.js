@@ -1,19 +1,18 @@
 angular.module('services.Transction', []).
-        factory('transctionService', function ($http, $location) {
+        factory('transctionService', function($http, $location) {
             var $app_name = "/rechargeserver";
             //var $app_name = "";
             var transctionService = {};
-            transctionService.sendTransactionCode = function () {
+            transctionService.sendTransactionCode = function() {
 
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/transaction/send_transaction_code',
                     data: {
-                        
                     }
                 });
             }
-            transctionService.sendSMS = function (transactionDataList, smsInfo) {
+            transctionService.sendSMS = function(transactionDataList, smsInfo) {
 
                 return $http({
                     method: 'post',
@@ -24,8 +23,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-
-            transctionService.multipuleTopup = function (transactionDataList) {
+            transctionService.multipuleTopup = function(transactionDataList) {
 
                 return $http({
                     method: 'post',
@@ -35,7 +33,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-            transctionService.bkash = function (bkashInfo) {
+            transctionService.bkash = function(bkashInfo) {
 
                 return $http({
                     method: 'post',
@@ -45,7 +43,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-            transctionService.dbbl = function (dbblInfo) {
+            transctionService.dbbl = function(dbblInfo) {
 
                 return $http({
                     method: 'post',
@@ -55,7 +53,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-            transctionService.mCash = function (mCashInfo) {
+            transctionService.mCash = function(mCashInfo) {
 
                 return $http({
                     method: 'post',
@@ -65,7 +63,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-            transctionService.uCash = function (uCashInfo) {
+            transctionService.uCash = function(uCashInfo) {
 
                 return $http({
                     method: 'post',
@@ -75,7 +73,7 @@ angular.module('services.Transction', []).
                     }
                 });
             }
-            transctionService.topUp = function (topUpInfo) {
+            transctionService.topUp = function(topUpInfo) {
 
                 return $http({
                     method: 'post',
@@ -85,7 +83,17 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getAllHistory = function (searchParam) {
+            transctionService.getAjaxTransactionList = function(serviceIdList) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/transaction/get_transaction_list',
+                    data: {
+                        serviceIdList: serviceIdList
+                    }
+                });
+            };
+            transctionService.getAllHistory = function(searchParam) {
 
                 return $http({
                     method: 'post',
@@ -95,7 +103,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getPaymentHistory = function (searchParam) {
+            transctionService.getPaymentHistory = function(searchParam) {
 
                 return $http({
                     method: 'post',
@@ -105,7 +113,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getPaymentHistoryByPagination = function (offset) {
+            transctionService.getPaymentHistoryByPagination = function(offset) {
 
                 return $http({
                     method: 'post',
@@ -115,7 +123,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getReceiveHistory = function (searchParam) {
+            transctionService.getReceiveHistory = function(searchParam) {
 
                 return $http({
                     method: 'post',
@@ -126,7 +134,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getTopupTransactionList = function (searchParam) {
+            transctionService.getTopupTransactionList = function(searchParam) {
 
                 return $http({
                     method: 'post',
@@ -137,7 +145,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getBkashTransactionList = function (searchParam) {
+            transctionService.getBkashTransactionList = function(searchParam) {
 
                 return $http({
                     method: 'post',
@@ -148,8 +156,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            
-            transctionService.getDBBLTransactionList = function (searchParam) {
+            transctionService.getDBBLTransactionList = function(searchParam) {
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/history/dbbl_transactions',
@@ -158,7 +165,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getMcashTransactionList = function (searchParam) {
+            transctionService.getMcashTransactionList = function(searchParam) {
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/history/mcash_transactions',
@@ -167,7 +174,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getUcashTransactionList = function (searchParam) {
+            transctionService.getUcashTransactionList = function(searchParam) {
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/history/ucash_transactions',
@@ -176,7 +183,7 @@ angular.module('services.Transction', []).
                     }
                 });
             };
-            transctionService.getSMSTransactionList = function (searchParam) {
+            transctionService.getSMSTransactionList = function(searchParam) {
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/history/sms_transactions',

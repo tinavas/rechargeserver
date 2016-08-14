@@ -7,6 +7,7 @@ define("TRANSACTION_STATUS_ID_PENDING",                     1);
 define("TRANSACTION_STATUS_ID_SUCCESSFUL",                  2);
 define("TRANSACTION_STATUS_ID_FAILED",                      3);
 define("TRANSACTION_STATUS_ID_CANCELLED",                   4);
+define("TRANSACTION_LIST_CALLING_INTERVER",                 5000);
 
 define("TRANSACTION_FLAG_LIVE",                             "LIVE");
 define("TRANSACTION_FLAG_WEBSERVER_TEST",                   "WEBSERVERTEST");
