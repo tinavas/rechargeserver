@@ -34,7 +34,6 @@
         if (typeof resellerInfo.email != "undefined" && resellerInfo.email.length != 0) {
             var varificationResult = validateEmail(resellerInfo.email);
             if (varificationResult == false) {
-                $("#content").html("Please Enter a valid Email Address!");
                 $('#common_modal').modal('show');
                 return;
             }
