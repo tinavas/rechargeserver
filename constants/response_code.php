@@ -8,4 +8,5 @@ define("ERROR_CODE_DB_SQL_EXCEPTION",                           5005);
 define("ERROR_CODE_DB_SETUP_EXCEPTION",                         5006);
 define("ERROR_CODE_SERVER_EXCEPTION",                           5007);
 define("ERROR_CODE_SESSION_EXPIRED",                            5001);
+define("ERROR_CODE_INVALID_PIC_CODE",                           5008);
 

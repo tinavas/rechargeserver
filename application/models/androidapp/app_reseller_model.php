@@ -6,8 +6,6 @@ class App_reseller_model extends Ion_auth_model {
         parent::__construct();
     }
 
-
-  
     /*
      * This method will return user info
      * @param $user_id, user id
@@ -38,8 +36,9 @@ class App_reseller_model extends Ion_auth_model {
 
     public function add_app_session_id($user_id, $session_id) {
         $this->db->where($this->tables['users'] . '.id', $user_id);
-       return $this->db->update($this->tables['users'], array('app_session_id' => $session_id));
+        return $this->db->update($this->tables['users'], array('app_session_id' => $session_id));
     }
+
     /*
      * This method will get app session id
      * @param $user_id, user id
@@ -47,9 +46,28 @@ class App_reseller_model extends Ion_auth_model {
      */
 
     public function get_app_session_id($user_id) {
-      $this->db->where($this->tables['users'] . '.id', $user_id);
+        $this->db->where($this->tables['users'] . '.id', $user_id);
         return $this->db->select($this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.app_session_id')
                         ->from($this->tables['users'])
+                        ->get();
+    }
+
+    /*
+     * This method will return pin info of a user
+     * @param $user_id, user id
+     * @param $pin_code, pin code
+     * @author rashida on 14th Aug 2016
+     */
+
+    public function get_pin_info() {
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        return $this->db->select('*')
+                        ->from($this->tables['users_pins'])
                         ->get();
     }
 
