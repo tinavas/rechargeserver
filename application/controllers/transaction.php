@@ -155,8 +155,13 @@ class Transaction extends Role_Controller {
                 }
             }
             if (isset($amount)) {
-                if ($amount < BKASH_MINIMUM_CASH_IN_AMOUNT || $amount > BKASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount among tk." + BKASH_MINIMUM_CASH_IN_AMOUNT + "to" + BKASH_MAXIMUM_CASH_IN_AMOUNT + "!";
+                if ($amount < BKASH_MINIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a minimum amount TK. " + BKASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    echo json_encode($response);
+                    return;
+                }
+                if ($amount > BKASH_MAXIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a maximum amount TK." + BKASH_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
@@ -296,8 +301,13 @@ class Transaction extends Role_Controller {
                 }
             }
             if (isset($amount)) {
-                if ($amount < DBBL_MINIMUM_CASH_IN_AMOUNT || $amount > DBBL_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount among tk." + DBBL_MINIMUM_CASH_IN_AMOUNT + "to" + DBBL_MAXIMUM_CASH_IN_AMOUNT + "!";
+                if ($amount < DBBL_MINIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a minimum amount TK. " + DBBL_MINIMUM_CASH_IN_AMOUNT + "!";
+                    echo json_encode($response);
+                    return;
+                }
+                if ($amount > DBBL_MAXIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a maximum amount TK." + DBBL_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
@@ -389,8 +399,13 @@ class Transaction extends Role_Controller {
                 }
             }
             if (isset($amount)) {
-                if ($amount < MCASH_MINIMUM_CASH_IN_AMOUNT || $amount > MCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount among tk." + MCASH_MINIMUM_CASH_IN_AMOUNT + "to" + MCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
+                if ($amount < MCASH_MINIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a minimum amount TK. " + MCASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    echo json_encode($response);
+                    return;
+                }
+                if ($amount > MCASH_MAXIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a maximum amount TK." + MCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
@@ -480,8 +495,13 @@ class Transaction extends Role_Controller {
                 }
             }
             if (isset($amount)) {
-                if ($amount < UCASH_MINIMUM_CASH_IN_AMOUNT || $amount > UCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please Give a Valid Amount among tk." + UCASH_MINIMUM_CASH_IN_AMOUNT + "to" + UCASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                if ($amount < UCASH_MINIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a minimum amount TK. " + UCASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    echo json_encode($response);
+                    return;
+                }
+                if ($amount > UCASH_MAXIMUM_CASH_IN_AMOUNT) {
+                    $response["message"] = "Please give a maximum amount TK." + UCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
                     echo json_encode($response);
                     return;
                 }
@@ -595,8 +615,13 @@ class Transaction extends Role_Controller {
                         $amount = $transaction_data->amount;
                         $total_amount = $total_amount + $amount;
                         if (isset($amount)) {
-                            if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT || $amount > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
-                                $response["message"] = "Please Give a Valid Amount at row number " . ($key + 1);
+                            if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT) {
+                                $response["message"] = "Please give a minimum amount TK. " + TOPUP_MINIMUM_CASH_IN_AMOUNT + "! at row number". ($key + 1);
+                                echo json_encode($response);
+                                return;
+                            }
+                            if ($amount > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
+                                $response["message"] = "Please give a maximum amount TK." + TOPUP_MAXIMUM_CASH_IN_AMOUNT + "! at row number". ($key + 1);
                                 echo json_encode($response);
                                 return;
                             }
