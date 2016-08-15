@@ -37,7 +37,11 @@ class Transaction extends CI_Controller {
 
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-            $response['message'] = $this->transaction_library->messages_array();
+            $this->load->library('reseller_library');
+			$current_balance = $this->reseller_library->get_user_current_balance($user_id);
+			$response['current_balance'] = $current_balance;
+			
+			$response['message'] = $this->transaction_library->messages_array();
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
         } else {
             $response['message'] = $this->transaction_library->errors_array();
@@ -74,7 +78,11 @@ class Transaction extends CI_Controller {
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-            $response['message'] = $this->transaction_library->messages_array();
+            $this->load->library('reseller_library');
+			$current_balance = $this->reseller_library->get_user_current_balance($user_id);
+			$response['current_balance'] = $current_balance;
+			
+			$response['message'] = $this->transaction_library->messages_array();
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
         } else {
             $response['message'] = $this->transaction_library->errors_array();
@@ -111,7 +119,11 @@ class Transaction extends CI_Controller {
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-            $response['message'] = $this->transaction_library->messages_array();
+            $this->load->library('reseller_library');
+			$current_balance = $this->reseller_library->get_user_current_balance($user_id);
+			$response['current_balance'] = $current_balance;
+			
+			$response['message'] = $this->transaction_library->messages_array();
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
         } else {
             $response['message'] = $this->transaction_library->errors_array();
@@ -148,7 +160,11 @@ class Transaction extends CI_Controller {
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-            $response['message'] = $this->transaction_library->messages_array();
+            $this->load->library('reseller_library');
+			$current_balance = $this->reseller_library->get_user_current_balance($user_id);
+			$response['current_balance'] = $current_balance;
+			
+			$response['message'] = $this->transaction_library->messages_array();
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
         } else {
             $response['message'] = $this->transaction_library->errors_array();
@@ -163,8 +179,9 @@ class Transaction extends CI_Controller {
         $amount = $this->input->post('amount');
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $service_id = $this->input->post('topup_type_id');
+        //$service_id = $this->input->post('topup_type_id');
         $topup_type_id = $this->input->post('operator_type_id');
+		
         $result = array();
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
@@ -174,6 +191,29 @@ class Transaction extends CI_Controller {
             echo json_encode($response);
             return;
         }
+		$api_key = "";
+		$service_id = 0;
+		if(strpos($cell_no,"+88017") === 0 || strpos($cell_no,"88017") === 0 || strpos($cell_no,"017") === 0 )
+		{
+			$service_id = 101;
+		}
+		else if(strpos($cell_no,"+88018") === 0 || strpos($cell_no,"88018") === 0 || strpos($cell_no,"018") === 0 )
+		{
+			$service_id = 102;
+		}
+		if(strpos($cell_no,"+88019") === 0 || strpos($cell_no,"88019") === 0 || strpos($cell_no,"019") === 0 )
+		{
+			$service_id = 103;
+		}
+		if(strpos($cell_no,"+88016") === 0 || strpos($cell_no,"88016") === 0 || strpos($cell_no,"016") === 0 )
+		{
+			$service_id = 104;
+		}
+		if(strpos($cell_no,"+88015") === 0 || strpos($cell_no,"88015") === 0 || strpos($cell_no,"015") === 0 )
+		{
+			$service_id = 105;
+		}
+		
         if ($service_id == SERVICE_TYPE_ID_TOPUP_GP) {
             $api_key = API_KEY_CASHIN_GP;
         } else if ($service_id == SERVICE_TYPE_ID_TOPUP_ROBI) {
@@ -197,7 +237,11 @@ class Transaction extends CI_Controller {
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
-            $response['message'] = $this->transaction_library->messages_array();
+            $this->load->library('reseller_library');
+			$current_balance = $this->reseller_library->get_user_current_balance($user_id);
+			$response['current_balance'] = $current_balance;
+			
+			$response['message'] = $this->transaction_library->messages_array();
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
         } else {
             $response['message'] = $this->transaction_library->errors_array();
@@ -399,10 +443,9 @@ class Transaction extends CI_Controller {
 
     public function get_payment_transaction_list() {
         $user_id = $this->input->post('user_id');
-        $session_id = $this->input->post('session_id');
+		$session_id = $this->input->post('session_id');
         $response = array(
-            'response_code' => RESPONSE_CODE_SUCCESS,
-            'transaction_list' => array()
+            'response_code' => RESPONSE_CODE_SUCCESS
         );
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
@@ -415,31 +458,22 @@ class Transaction extends CI_Controller {
         $where = array(
             'user_id' => $user_id
         );
+		$payment_list = array();
         $this->load->library('payment_library');
         $payment_info_list = $this->payment_library->get_payment_history(array(PAYMENT_TYPE_ID_SEND_CREDIT, PAYMENT_TYPE_ID_RETURN_CREDIT), array(), 0, 0, PAYMENT_LIST_DEAFULT_LIMIT, PAYMENT_LIST_DEAFULT_OFFSET, 'desc', $where);
         if (!empty($payment_info_list)) {
             foreach ($payment_info_list['payment_list'] as $temp_payment_info) {
                 $payment_info = array(
+                    'username' => $temp_payment_info['username'],
                     'amount' => $temp_payment_info['balance_out'],
-                    'date' => $temp_payment_info['created_on'],
-                    'description' => $temp_payment_info['description'],
-                    'type_id' => $temp_payment_info['type_id']
+                    'date' => $temp_payment_info['created_on']
                 );
-                $transaction_list[] = $transaction_info;
+                $payment_list[] = $payment_info;
             }
-            $response['payment_list'] = $payment_info_list['payment_list'];
+            $response['payment_list'] = $payment_list;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
             $response['message'] = "Transaction list.";
         }
         echo json_encode($response);
     }
-
-    public function qrtransaction() {
-        $cell_no = $this->input->post('number');
-        $amount = $this->input->post('amount');
-        $response['response_code'] = 2000;
-        $response['message'] = "Transaction is executed successfully";
-        echo json_encode($response);
-    }
-
 }

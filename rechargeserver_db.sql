@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_name` varchar(50) DEFAULT NULL,
   `company` varchar(100) DEFAULT NULL,
   `mobile` varchar(20) DEFAULT NULL,
-  `app_session_id` varchar(30) DEFAULT NULL,
+  `app_session_id` varchar(100) DEFAULT NULL,
   `note`text DEFAULT '',
   `account_status_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
