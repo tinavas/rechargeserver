@@ -9,12 +9,7 @@
 
 
 </script>
-<div class="ud">
-    <marquee scrollamount="4" onmouseover="this.scrollAmount = 0" onmouseout="this.scrollAmount = 4" behavior="SCROLL" class="marquee">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text 
-        ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-    </marquee>
-</div>
+<!--<div class="ud"><marquee scrollamount="4" onmouseover="this.scrollAmount = 0" onmouseout="this.scrollAmount = 4" behavior="SCROLL" height="20px" bgcolor="#22468E" width="100%"><b style="color:#fff;font-size:12px;padding:5px;height:20px;line-height:20px;">ঢাকা - মালেশিয়া - ঢাকা ২৭০০০টাকা, ভিসা প্রসেসিং সহ যে কোনো দেশের বিমানের টিকেট পাওয়া যায়। ###  সাওয়ারি ওভারশিস ০১৮৭৩৩৪৪৫৫৬   ###</b></marquee></div>-->
 <div  ng-controller="resellerController">
     <div class="mypage" style="width:100%;float:left;padding-bottom:0px;padding-left:30px;">
         <ul class="shortcurt" id="set_service_id">
