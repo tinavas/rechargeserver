@@ -35,3 +35,10 @@
     max-height: 400px;
     overflow-y: scroll;
 }
+
+.marquee{
+    color: #fff;
+    padding: 5px;
+    font-weight: bold;
+    background-color: #22468E;
+}
