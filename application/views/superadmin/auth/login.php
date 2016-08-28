@@ -9,7 +9,7 @@
                 <div id="infoMessage"><?php echo $message; ?></div> 
             </div>
             <div class="form-group">
-                <label  class="control" for="username">Username or Email</label>
+                <label  class="control" for="username">Username</label>
                 <?php echo form_input($identity + array('class' => 'form-control')); ?>
             </div>
             <div class="form-group">
