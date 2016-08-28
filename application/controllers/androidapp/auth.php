@@ -30,25 +30,24 @@ class Auth extends CI_Controller {
             $this->load->library('reseller_library');
             $user_info_array = $this->reseller_model->get_user_info($user_id)->result_array();
             if (!empty($user_info_array)) {
-                $user_info = array(
+                //we will show username instead of first name and last name
+				$user_info = array(
                     'user_id' => $user_id,
-                    'first_name' => $user_info_array[0]['first_name'],
-                    'last_name' => $user_info_array[0]['last_name']
+                    'first_name' => $user_info_array[0]['username'],
+                    'last_name' => ''
                 );
                 $current_balance = $this->reseller_library->get_user_current_balance($user_id);
                 $result['user_info'] = $user_info;
                 $result['current_balance'] = $current_balance;
-                $service_id_list = array(
-                    SERVICE_TYPE_ID_BKASH_CASHIN,
-                    SERVICE_TYPE_ID_DBBL_CASHIN,
-                    SERVICE_TYPE_ID_MCASH_CASHIN,
-                    SERVICE_TYPE_ID_UCASH_CASHIN,
-                    SERVICE_TYPE_ID_TOPUP_GP,
-                    SERVICE_TYPE_ID_TOPUP_ROBI,
-                    SERVICE_TYPE_ID_TOPUP_BANGLALINK,
-                    SERVICE_TYPE_ID_TOPUP_AIRTEL,
-                    SERVICE_TYPE_ID_TOPUP_TELETALK
-                );
+                $service_id_list = array();
+                $this->load->model('service_model');
+                $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+                if (!empty($service_list)) {
+                    foreach ($service_list as $service) {
+                        //in json int database type will be used
+						$service_id_list[] = +($service['service_id']);                        
+                    }
+                }
                 $result['service_id_list'] = $service_id_list;
                 $response['result_event'] = $result;
                 $response['response_code'] = RESPONSE_CODE_SUCCESS;
@@ -66,6 +65,11 @@ class Auth extends CI_Controller {
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
         
+        //check if user name or password or pin code is changed or not. If changed then return an error code
+        $user_name = $this->input->post('user_name');
+        $password = $this->input->post('password');
+        $pin_code = $this->input->post('pin_code');
+        
         $this->load->model('androidapp/app_reseller_model');
         $app_session_id_array = $this->app_reseller_model->get_app_session_id($user_id)->result_array();
         if (!empty($app_session_id_array) && $session_id != $app_session_id_array[0]['app_session_id']) {
@@ -81,27 +85,26 @@ class Auth extends CI_Controller {
         $this->load->model('androidapp/app_reseller_model');
         $user_info_array = $this->app_reseller_model->where($where)->get_user_information()->result_array();
         if (!empty($user_info_array)) {
-            $user_info = array(
-                'user_id' => $user_id,
-                'first_name' => $user_info_array[0]['first_name'],
-                'last_name' => $user_info_array[0]['last_name']
-            );
+            //we will show username instead of first name and last name
+			$user_info = array(
+				'user_id' => $user_id,
+				'first_name' => $user_info_array[0]['username'],
+				'last_name' => ''
+			);
             $result['user_info'] = $user_info;
             $this->load->library('reseller_library');
             $current_balance = $this->reseller_library->get_user_current_balance($user_id);
             $result['current_balance'] = $current_balance;
-			$result['session_id'] = $session_id;
-            $service_id_list = array(
-                SERVICE_TYPE_ID_BKASH_CASHIN,
-                SERVICE_TYPE_ID_DBBL_CASHIN,
-                SERVICE_TYPE_ID_MCASH_CASHIN,
-                SERVICE_TYPE_ID_UCASH_CASHIN,
-                SERVICE_TYPE_ID_TOPUP_GP,
-                SERVICE_TYPE_ID_TOPUP_ROBI,
-                SERVICE_TYPE_ID_TOPUP_BANGLALINK,
-                SERVICE_TYPE_ID_TOPUP_AIRTEL,
-                SERVICE_TYPE_ID_TOPUP_TELETALK
-            );
+            $result['session_id'] = $session_id;
+            $service_id_list = array();
+                $this->load->model('service_model');
+                $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+                if (!empty($service_list)) {
+                    foreach ($service_list as $service) {
+                        //in json int database type will be used
+						$service_id_list[] = +($service['service_id']);                        
+                    }
+                }
             $result['service_id_list'] = $service_id_list;
             $response['result_event'] = $result;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
@@ -115,8 +118,8 @@ class Auth extends CI_Controller {
         $response = array();        
         $user_id = $this->input->post('user_id');
         $session_id = $this->input->post('session_id');
-        $pin_code = $this->input->post('pin_code');
-        $this->load->model('androidapp/app_reseller_model');
+        $pin_code = $this->input->post('pin_code');	
+		$this->load->model('androidapp/app_reseller_model');
         $pin_info_array = $this->app_reseller_model->where(array('user_id' => $user_id, 'pin' => $pin_code))->get_pin_info()->result_array();
         if (empty($pin_info_array)) {
             $response['response_code'] = ERROR_CODE_INVALID_PIC_CODE;
@@ -128,28 +131,27 @@ class Auth extends CI_Controller {
             'app_session_id' => $session_id
         );
         $user_info_array = $this->app_reseller_model->where($where)->get_user_information()->result_array();
-        if (!empty($user_info_array)) {
-            $user_info = array(
-                'user_id' => $user_id,
-                'first_name' => $user_info_array[0]['first_name'],
-                'last_name' => $user_info_array[0]['last_name']
-            );
+		if (!empty($user_info_array)) {
+            //we will show username instead of first name and last name
+			$user_info = array(
+				'user_id' => $user_id,
+				'first_name' => $user_info_array[0]['username'],
+				'last_name' => ''
+			);
             $result['user_info'] = $user_info;
             $this->load->library('reseller_library');
             $current_balance = $this->reseller_library->get_user_current_balance($user_id);
             $result['current_balance'] = $current_balance;
 			$result['session_id'] = $session_id;
-            $service_id_list = array(
-                SERVICE_TYPE_ID_BKASH_CASHIN,
-                SERVICE_TYPE_ID_DBBL_CASHIN,
-                SERVICE_TYPE_ID_MCASH_CASHIN,
-                SERVICE_TYPE_ID_UCASH_CASHIN,
-                SERVICE_TYPE_ID_TOPUP_GP,
-                SERVICE_TYPE_ID_TOPUP_ROBI,
-                SERVICE_TYPE_ID_TOPUP_BANGLALINK,
-                SERVICE_TYPE_ID_TOPUP_AIRTEL,
-                SERVICE_TYPE_ID_TOPUP_TELETALK
-            );
+            $service_id_list = array();
+            $this->load->model('service_model');
+            $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+            if (!empty($service_list)) {
+                foreach ($service_list as $service) {
+                    //in json int database type will be used
+					$service_id_list[] = +($service['service_id']);                        
+                }
+            }
             $result['service_id_list'] = $service_id_list;
             $response['result_event'] = $result;
             $response['response_code'] = RESPONSE_CODE_SUCCESS;
