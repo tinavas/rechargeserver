@@ -108,6 +108,8 @@ class Auth extends CI_Controller {
                 //if the login is successful
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
+                //right now we are setting a default pin
+                $this->session->set_userdata(array('pin' => "1234"));
                 redirect('superadmin/auth/', 'refresh');
             } else {
                 //if the login was un-successful
