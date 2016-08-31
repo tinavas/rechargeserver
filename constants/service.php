@@ -20,3 +20,15 @@ define("OPERATOR_TYPE_ID_POSTPAID",                         2);
 define("MESSAGE_COUNTER1_LENGTH",                           160);
 define("MESSAGE_COUNTER2_LENGTH",                           320);
 define("MESSAGE_COUNTER3_LENGTH",                           480);
+
+define("SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER",     1);
+define("SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION",         2);
+define("SERVICE_STATUS_TYPE_ALLOW_TO_USE_WEBSERVER",        3);
+
+define("OPERATOR_CODE_GP",                                   "017");
+define("OPERATOR_CODE_ROBI",                                 "018");
+define("OPERATOR_CODE_BANGLALINK",                           "019");
+define("OPERATOR_CODE_AIRTEL",                               "016");
+define("OPERATOR_CODE_TELETALK",                             "015");
+
+

@@ -49,7 +49,7 @@ class Utils {
      */
 
     public function cell_number_validation($cell_no) {
-        if (preg_match("/^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
+        if (preg_match("/^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
             RETURN FALSE;
         } else {
             RETURN TRUE;
@@ -81,10 +81,53 @@ class Utils {
      */
 
     public function get_random_string() {
-         return random_string('unique');
+        return random_string('unique');
     }
-    
+
     public function get_transaction_verification_code() {
-         return rand(1000, 9999);
+        return rand(1000, 9999);
     }
+
+    /*
+     * This method will return local unix time of a user
+     * @param $country_code, country code
+     * @author rashida  on 29th August 2016
+     */
+
+    public function get_local_unix_time($country_code = 'GB') {
+        if ($country_code != COUNTRY_CODE_GB) {
+            $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+            $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+            $dateTime = new DateTime("now", $dateTimeZone);
+            return now() + $dateTime->getOffset();
+        } else {
+            return now();
+        }
+    }
+
+    
+      /*
+     * This method will return a operator type id 
+     * @param $cell_number, mobile number
+     * @author rashida  on 29th August 2016
+     */
+
+    public function get_operator_type_id($cell_number) {
+        $temp_cell_number = str_replace('+88', '', $cell_number);
+        $operator_code = substr($temp_cell_number, 0, 3);
+        if ($operator_code == OPERATOR_CODE_GP) {
+            return SERVICE_TYPE_ID_TOPUP_GP;
+        } else if ($operator_code == OPERATOR_CODE_ROBI) {
+            return SERVICE_TYPE_ID_TOPUP_ROBI;
+        } else if ($operator_code == OPERATOR_CODE_BANGLALINK) {
+            return SERVICE_TYPE_ID_TOPUP_BANGLALINK;
+        } else if ($operator_code == OPERATOR_CODE_AIRTEL) {
+            return SERVICE_TYPE_ID_TOPUP_AIRTEL;
+        } else if ($operator_code == OPERATOR_CODE_TELETALK) {
+            return SERVICE_TYPE_ID_TOPUP_TELETALK;
+        } else {
+            return $operator_code;
+        }
+    }
+
 }

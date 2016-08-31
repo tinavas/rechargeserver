@@ -1,9 +1,11 @@
 <script>
 
-    $(function() {
-        error_message = '<?php if (isset($error_message)) {
+    $(function () {
+        error_message = '<?php
+if (isset($error_message)) {
     echo $error_message;
-} ?>';
+}
+?>';
         if (error_message != "") {
             $("#content").html(error_message);
             $('#common_modal').modal('show');
@@ -18,8 +20,22 @@
         }
         return false;
     }
-    function add_topup_data(topUpInfo) {
-
+    function  getTopupOperatorId(number) {
+        var temNumber = number.replace("+88", "");
+        var operatorCode = temNumber.substr(0, 3);
+        if (operatorCode == '<?php echo OPERATOR_CODE_GP ?>') {
+            return '<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>';
+        } else if (operatorCode == '<?php echo OPERATOR_CODE_ROBI ?>') {
+            return '<?php echo SERVICE_TYPE_ID_TOPUP_ROBI; ?>';
+        } else if (operatorCode == '<?php echo OPERATOR_CODE_AIRTEL ?>') {
+            return '<?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL; ?>';
+        } else if (operatorCode == '<?php echo OPERATOR_CODE_TELETALK ?>') {
+            return '<?php echo SERVICE_TYPE_ID_TOPUP_TELETALK; ?>';
+        } else if (operatorCode == '<?php echo OPERATOR_CODE_BANGLALINK ?>') {
+            return '<?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>';
+        }
+    }
+    function add_topup_data(topUpInfo, selectedOprator) {
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
             $('#common_modal').modal('show');
@@ -35,7 +51,16 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (topUpInfo.amount < <?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>) {
+        topUpInfo.topupType = selectedOprator.id;
+        topUpInfo.topupOperatorId = getTopupOperatorId(topUpInfo.number);
+
+        if (topUpInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>' && topUpInfo.topupType == '<?php echo OPERATOR_TYPE_ID_POSTPAID; ?>') {
+            if (topUpInfo.amount < <?php echo TOPUP_POSTPAID_GP_MINIMUM_CASH_IN_AMOUNT ?>) {
+                $("#content").html("Please give minimum amount TK. " + '<?php echo TOPUP_POSTPAID_GP_MINIMUM_CASH_IN_AMOUNT ?>' +" for GP Postpaid");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }else if (topUpInfo.amount < <?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>) {
             $("#content").html("Please give a minimum amount TK. " + '<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>');
             $('#common_modal').modal('show');
             return;
@@ -45,17 +70,7 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof topUpInfo.topupType == "undefined" || topUpInfo.topupType.length == 0) {
-            $("#content").html("Please Select a Operator Type ");
-            $('#common_modal').modal('show');
-            return;
-        }
-        if (typeof topUpInfo.topupOperatorId == "undefined" || topUpInfo.topupOperatorId.length == 0) {
-            $("#content").html("Please Select an Operator ");
-            $('#common_modal').modal('show');
-            return;
-        }
-        angular.element($('#top_up_id')).scope().addTopUpData(function() {
+        angular.element($('#top_up_id')).scope().addTopUpData(topUpInfo, function () {
         });
     }
 
@@ -92,19 +107,19 @@
                 }
             }
         }
-        angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function(data) {
+        angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function() {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>transaction/topup';
             });
         });
     }
-    $(function() {
+    $(function () {
         setInterval(callFunction, <?php echo TRANSACTION_LIST_CALLING_INTERVER; ?>);
     });
     function callFunction() {
-        var serviceIdList = [<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>,<?php echo SERVICE_TYPE_ID_TOPUP_ROBI; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL;?>, <?php echo SERVICE_TYPE_ID_TOPUP_TELETALK; ?>];
+        var serviceIdList = [<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>,<?php echo SERVICE_TYPE_ID_TOPUP_ROBI; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_AIRTEL; ?>, <?php echo SERVICE_TYPE_ID_TOPUP_TELETALK; ?>];
         angular.element($('#transaction_list_id')).scope().getAjaxTransactionList(serviceIdList);
     }
 </script>
@@ -153,29 +168,28 @@
                                             </label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select  for="type" id="type"  ng-model="topUpInfo.topupType" class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
-                                                <option class="form-control" value="">Please select</option>
-                                                <option class=form-control ng-repeat="topupType in topupTypeList" value="{{topupType.id}}">{{topupType.title}}</option>
-                                            </select>
+                                            <select  class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)"
+                                                     ng-options="topupType.title for topupType in data.topupTypeList track by topupType.id"
+                                                     ng-model="data.selectedOption"></select>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-5">
-                                            <label for="operator" class="col-md-6 control-label requiredField label_custom">
-                                                Operator
-                                            </label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <select for="operator" id="operator" ng-model="topUpInfo.topupOperatorId" class=" form-control control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
-                                                <option class="form-control" value="">Please select</option>
-                                                <option class=form-control ng-repeat="topupOperator in topupOperatorList" value="{{topupOperator.id}}">{{topupOperator.title}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <!--                                    <div class="row form-group">
+                                                                            <div class="col-md-5">
+                                                                                <label for="operator" class="col-md-6 control-label requiredField label_custom">
+                                                                                    Operator
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-7">
+                                                                                <select for="operator" id="operator" ng-model="topUpInfo.topupOperatorId" class=" form-control control-label requiredField" ng-init="setTopupOperatorList(<?php echo htmlspecialchars(json_encode($topup_operator_list)); ?>)">
+                                                                                    <option class="form-control" value="">Please select</option>
+                                                                                    <option class=form-control ng-repeat="topupOperator in topupOperatorList" value="{{topupOperator.id}}">{{topupOperator.title}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>-->
                                     <div class="row form-group">
                                         <div for="submit_update_api" class="col-md-6 control-label requiredField label_custom"> </div>
                                         <div class ="col-md-6">
-                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo)">Add</button>
+                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo, angular.element(this).scope().data.selectedOption)">Add</button>
                                         </div> 
                                     </div>
 
@@ -191,14 +205,14 @@
                                 </div>
                             </div>
                             <div class="row">
-<?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
+                                <?php echo form_open_multipart('transaction/topup', array('name' => 'file_upload')); ?>
                                 <div class="form-group">
                                     <label  class="col-md-2" for="fileupload">Upload:</label>
                                     <input class="col-md-4" id="fileupload" type="file" name="userfile">
                                     <div class="col-md-3"></div>
                                     <input id="submit_btn"  name="submit_btn" value="Upload" type="submit" class="col-md-2 button-custom"/>
                                 </div>
-<?php echo form_close(); ?>
+                                <?php echo form_close(); ?>
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-6">
@@ -220,7 +234,7 @@
                                         </thead>
                                         <?php if (isset($transactions_data)) { ?>
                                             <div ng-init="setTransctionDataList(<?php echo htmlspecialchars(json_encode($transactions_data)); ?>)"></div>
-<?php } ?>
+                                        <?php } ?>
                                         <tbody> 
                                             <tr ng-repeat="(key, transactionInfo) in transactionDataList">
                                                 <td>

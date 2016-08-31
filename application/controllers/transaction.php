@@ -21,6 +21,22 @@ class Transaction extends Role_Controller {
         //handle code if you want to redirect to any other location
     }
 
+//
+    public function get_current_unix_time() {
+        $response = $this->utils->cell_number_validation("+8801623598606");
+        var_dump($response);
+    }
+
+    public function test() {
+        $this->load->model('service_model');
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_BANGLALINK))->result_array();
+        foreach ($service_info_array as $service_info) {
+            $service_info_list[$service_info['service_id']] = $service_info;
+        }
+        var_dump($service_info_list[SERVICE_TYPE_ID_TOPUP_GP]['type_id']);
+        exit;
+    }
+
     /*
      * This method will send transaction code to the user via sms or email based on configuration. 
      * //right now we are using this feature for bkash service
@@ -81,6 +97,7 @@ class Transaction extends Role_Controller {
     public function bkash($transaction_id = '') {
         $user_id = $this->session->userdata('user_id');
         //checking whether user has permission for bkash transaction
+        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
         $permission_exists = FALSE;
         $bkash_service_info = array();
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -98,8 +115,17 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
+        if (!empty($service_info_array)) {
+            $service_status_type = $service_info_array[0]['type_id'];
+        }
         if (file_get_contents("php://input") != null) {
             $response = array();
+            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+                echo json_encode($response);
+                return;
+            }
             $transaction_id = "";
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
@@ -156,12 +182,12 @@ class Transaction extends Role_Controller {
             }
             if (isset($amount)) {
                 if ($amount < BKASH_MINIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a minimum amount TK. " + BKASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a minimum amount TK. " . BKASH_MINIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
                 if ($amount > BKASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a maximum amount TK." + BKASH_MAXIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a maximum amount TK." . BKASH_MAXIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
@@ -180,6 +206,7 @@ class Transaction extends Role_Controller {
                 'amount' => $amount,
                 'cell_no' => $cell_no,
                 'description' => $description,
+                'type_id' => $service_status_type,
                 'editable' => true
             );
             $this->load->library("security");
@@ -201,6 +228,12 @@ class Transaction extends Role_Controller {
             return;
         }
 
+        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $code_verification = false;
         $sms_or_email_verification = false;
         //if we have code/sms verification/email verification then we will display user to assign code
@@ -279,8 +312,19 @@ class Transaction extends Role_Controller {
      */
 
     public function dbbl() {
+        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_DBBL_CASHIN))->result_array();
+        if (!empty($service_info_array)) {
+            $service_status_type = $service_info_array[0]['type_id'];
+        }
+
         if (file_get_contents("php://input") != null) {
             $response = array();
+            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+                echo json_encode($response);
+                return;
+            }
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "dbblInfo")) {
@@ -302,12 +346,12 @@ class Transaction extends Role_Controller {
             }
             if (isset($amount)) {
                 if ($amount < DBBL_MINIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a minimum amount TK. " + DBBL_MINIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a minimum amount TK. " . DBBL_MINIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
                 if ($amount > DBBL_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a maximum amount TK." + DBBL_MAXIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a maximum amount TK." . DBBL_MAXIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
@@ -327,7 +371,8 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_DBBL_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description
+                'description' => $description,
+                'type_id' => $service_status_type
             );
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
@@ -338,6 +383,12 @@ class Transaction extends Role_Controller {
             }
 
             echo json_encode($response);
+            return;
+        }
+        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
         //checking whether user has permission for dbbl transaction
@@ -376,9 +427,20 @@ class Transaction extends Role_Controller {
      */
 
     public function mcash() {
+        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_MCASH_CASHIN))->result_array();
+        if (!empty($service_info_array)) {
+            $service_status_type = $service_info_array[0]['type_id'];
+        }
+
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
+            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+                echo json_encode($response);
+                return;
+            }
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "mCashInfo")) {
@@ -400,12 +462,12 @@ class Transaction extends Role_Controller {
             }
             if (isset($amount)) {
                 if ($amount < MCASH_MINIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a minimum amount TK. " + MCASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a minimum amount TK. " . MCASH_MINIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
                 if ($amount > MCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a maximum amount TK." + MCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a maximum amount TK." . MCASH_MAXIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
@@ -424,7 +486,8 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_MCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description
+                'description' => $description,
+                'type_id' => $service_status_type
             );
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
@@ -435,6 +498,12 @@ class Transaction extends Role_Controller {
             }
 
             echo json_encode($response);
+            return;
+        }
+        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
         //checking whether user has permission for mcash transaction
@@ -472,9 +541,20 @@ class Transaction extends Role_Controller {
      */
 
     public function ucash() {
+        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_UCASH_CASHIN))->result_array();
+        if (!empty($service_info_array)) {
+            $service_status_type = $service_info_array[0]['type_id'];
+        }
+
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
+            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+                echo json_encode($response);
+                return;
+            }
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "uCashInfo")) {
@@ -496,12 +576,12 @@ class Transaction extends Role_Controller {
             }
             if (isset($amount)) {
                 if ($amount < UCASH_MINIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a minimum amount TK. " + UCASH_MINIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a minimum amount TK. " . UCASH_MINIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
                 if ($amount > UCASH_MAXIMUM_CASH_IN_AMOUNT) {
-                    $response["message"] = "Please give a maximum amount TK." + UCASH_MAXIMUM_CASH_IN_AMOUNT + "!";
+                    $response["message"] = "Please give a maximum amount TK." . UCASH_MAXIMUM_CASH_IN_AMOUNT . "!";
                     echo json_encode($response);
                     return;
                 }
@@ -520,7 +600,8 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_UCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description
+                'description' => $description,
+                'type_id' => $service_status_type
             );
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
@@ -532,6 +613,12 @@ class Transaction extends Role_Controller {
             }
 
             echo json_encode($response);
+            return;
+        }
+        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
         //checking whether user has permission for ucash transaction
@@ -569,6 +656,17 @@ class Transaction extends Role_Controller {
      */
 
     public function topup() {
+        $service_info_list = array();
+        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK))->result_array();
+        foreach ($service_info_array as $service_info) {
+            $service_info_list[$service_info['service_id']] = $service_info;
+        }
+        if ($service_info_list[SERVICE_TYPE_ID_TOPUP_GP]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_ROBI]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_BANGLALINK]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_AIRTEL]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_TELETALK]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+            $this->data['app'] = TRANSCATION_APP;
+            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->template->load(null, 'common/error_message', $this->data);
+            return;
+        }
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -597,17 +695,49 @@ class Transaction extends Role_Controller {
                         'description' => $description,
                         'mapping_id' => $mapping_id
                     );
+                    if (property_exists($transaction_data, "topupOperatorId")) {
+                        $service_id = $transaction_data->topupOperatorId;
+                        if (!in_array($service_id, $user_assigned_service_id_list)) {
+                            $response["message"] = "The Operator Id  is not assigned to you at serial number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
+                        if ($service_info_list[$service_id]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                            $response["message"] = $service_info_list[$service_id]['title'] . " Service Unavailable right now that you assigned  at serial number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
 
+                        $topup_data_info['service_id'] = $service_id;
+                        $topup_data_info['type_id'] = $service_info_list[$service_id]['type_id'];
+                    } else {
+                        $response["message"] = "Operator Id  is Required at serial number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
                     if (property_exists($transaction_data, "number")) {
                         $cell_no = $transaction_data->number;
                         if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-                            $response["message"] = "Please Enter a Valid Cell Number at row number " . ($key + 1);
+                            $response["message"] = "Please Enter a Valid Cell Number at serial number " . ($key + 1);
                             echo json_encode($response);
                             return;
                         }
                         $topup_data_info['cell_no'] = $cell_no;
                     } else {
-                        $response["message"] = "Please give a Cell number! Cell Number is Required   at row number " . ($key + 1);
+                        $response["message"] = "Please give a Cell number! Cell Number is Required   at serial number " . ($key + 1);
+                        echo json_encode($response);
+                        return;
+                    }
+                    if (property_exists($transaction_data, "topupType")) {
+                        $topup_type_id = $transaction_data->topupType;
+                        if ($topup_type_id != OPERATOR_TYPE_ID_PREPAID && $topup_type_id != OPERATOR_TYPE_ID_POSTPAID) {
+                            $response["message"] = "Please give valid Operator Type Id at serial number " . ($key + 1);
+                            echo json_encode($response);
+                            return;
+                        }
+                        $topup_data_info['operator_type_id'] = $topup_type_id;
+                    } else {
+                        $response["message"] = "Operator Type Id  is Required at serial number " . ($key + 1);
                         echo json_encode($response);
                         return;
                     }
@@ -615,46 +745,26 @@ class Transaction extends Role_Controller {
                         $amount = $transaction_data->amount;
                         $total_amount = $total_amount + $amount;
                         if (isset($amount)) {
-                            if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT) {
-                                $response["message"] = "Please give a minimum amount TK. " + TOPUP_MINIMUM_CASH_IN_AMOUNT + "! at row number". ($key + 1);
+                            if ($transaction_data->topupType == OPERATOR_TYPE_ID_POSTPAID && $transaction_data->topupOperatorId == SERVICE_TYPE_ID_TOPUP_GP) {
+                                if ($amount < TOPUP_POSTPAID_GP_MINIMUM_CASH_IN_AMOUNT) {
+                                    $response["message"] = "Please give GP postpaid minimum amount TK. " . TOPUP_POSTPAID_GP_MINIMUM_CASH_IN_AMOUNT . "! at serial number" . ($key + 1);
+                                    echo json_encode($response);
+                                    return;
+                                }
+                            } else if ($amount < TOPUP_MINIMUM_CASH_IN_AMOUNT) {
+                                $response["message"] = "Please give a minimum amount TK. " . TOPUP_MINIMUM_CASH_IN_AMOUNT . "! at serial number" . ($key + 1);
                                 echo json_encode($response);
                                 return;
                             }
                             if ($amount > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
-                                $response["message"] = "Please give a maximum amount TK." + TOPUP_MAXIMUM_CASH_IN_AMOUNT + "! at row number". ($key + 1);
+                                $response["message"] = "Please give a maximum amount TK." . TOPUP_MAXIMUM_CASH_IN_AMOUNT . "! at serial number" . ($key + 1);
                                 echo json_encode($response);
                                 return;
                             }
                         }
                         $topup_data_info['amount'] = $amount;
                     } else {
-                        $response["message"] = "Please give an Amount! Amount is Required   at row number " . ($key + 1);
-                        echo json_encode($response);
-                        return;
-                    }
-                    if (property_exists($transaction_data, "topupOperatorId")) {
-                        $service_id = $transaction_data->topupOperatorId;
-                        if (!in_array($service_id, $user_assigned_service_id_list)) {
-                            $response["message"] = "The Operator Id  is not assigned to you at row number " . ($key + 1);
-                            echo json_encode($response);
-                            return;
-                        }
-                        $topup_data_info['service_id'] = $service_id;
-                    } else {
-                        $response["message"] = "Operator Id  is Required at row number " . ($key + 1);
-                        echo json_encode($response);
-                        return;
-                    }
-                    if (property_exists($transaction_data, "topupType")) {
-                        $topup_type_id = $transaction_data->topupType;
-                        if ($topup_type_id != OPERATOR_TYPE_ID_PREPAID && $topup_type_id != OPERATOR_TYPE_ID_POSTPAID) {
-                            $response["message"] = "Please give valid Operator Type Id at row number " . ($key + 1);
-                            echo json_encode($response);
-                            return;
-                        }
-                        $topup_data_info['operator_type_id'] = $topup_type_id;
-                    } else {
-                        $response["message"] = "Operator Type Id  is Required at row number " . ($key + 1);
+                        $response["message"] = "Please give an Amount! Amount is Required   at serial number " . ($key + 1);
                         echo json_encode($response);
                         return;
                     }
@@ -721,7 +831,7 @@ class Transaction extends Role_Controller {
                         $error_messages[] = 'Row no ' . $row_counter . ' is not a valid row';
                         break;
                     }
-                    if (strip_tags($result_data['A']) == '' || strip_tags($result_data['B']) == '' || strip_tags($result_data['C']) == '' || strip_tags($result_data['D']) == '') {
+                    if (strip_tags($result_data['A']) == '' || strip_tags($result_data['B']) == '' || strip_tags($result_data['C']) == '') {
                         $row_counter++;
                         continue;
                     }
@@ -739,8 +849,8 @@ class Transaction extends Role_Controller {
                     $transction_data = array(
                         'number' => strip_tags($result_data['A']),
                         'amount' => strip_tags($result_data['B']),
-                        'topupOperatorId' => strip_tags($result_data['C']),
-                        'topupType' => strip_tags($result_data['D'])
+                        'topupType' => strip_tags($result_data['C']),
+                        'topupOperatorId' => $this->utils->get_operator_type_id(strip_tags($result_data['A']))
                     );
                     $transction_list[] = $transction_data;
                 }

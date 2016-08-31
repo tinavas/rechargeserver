@@ -14,3 +14,7 @@ define("TRANSACTION_FLAG_LIVE",                             "LIVE");
 define("TRANSACTION_FLAG_WEBSERVER_TEST",                   "WEBSERVERTEST");
 define("TRANSACTION_FLAG_WEBSERVICE_TEST",                  "WEBSERVICETEST");
 define("TRANSACTION_FLAG_LOCALSERVER_TEST",                 "LOCALSERVERTEST");
+
+define("TRANSACTION_STATUS_FLAG_AUTO",                      0);
+define("TRANSACTION_STATUS_FLAG_MANUAL",                    1);
+

@@ -111,19 +111,20 @@ ALTER TABLE `relations`
 CREATE TABLE IF NOT EXISTS `services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
+  `type_id` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   
-INSERT INTO `services` (`id`, `title`) VALUES
-(1, 'bkash (CashIn)'),
-(2, 'DBBL (CashIn)'),
-(3, 'M-Cash (CashIn)'),
-(4, 'U-Cash (CashIn)'),
-(101, 'Topup GP'),
-(102, 'Topup ROBI'),
-(103, 'Topup BanglaLink'),
-(104, 'Topup Airtel'),
-(105, 'Topup TeleTalk'),
-(1001, 'Send SMS');
+INSERT INTO `services` (`id`, `title`,type_id) VALUES
+(1, 'bkash (CashIn)', 1),
+(2, 'DBBL (CashIn)', 1),
+(3, 'M-Cash (CashIn)', 1),
+(4, 'U-Cash (CashIn)', 1),
+(101, 'Topup GP', 1),
+(102, 'Topup ROBI', 1),
+(103, 'Topup BanglaLink', 1),
+(104, 'Topup Airtel', 1),
+(105, 'Topup TeleTalk', 1),
+(1001, 'Send SMS', 1);
 CREATE TABLE IF NOT EXISTS `users_services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
@@ -234,6 +235,7 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   `editable` BOOLEAN DEFAULT FALSE,
   `created_on` int(11) unsigned DEFAULT NULL,
   `modified_on` int(11) unsigned DEFAULT NULL,
+  `status_flag` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`),
   KEY `fk_user_transactions_users1_idx` (`user_id`),
   KEY `fk_user_transactions_operator_idx` (`operator_id`),

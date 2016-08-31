@@ -5,12 +5,13 @@ class Service_model extends Ion_auth_model {
     public function __construct() {
         parent::__construct();
     }
-    
+
     /*
      * this method will return assigned services of a user
      * @param  $user_id  user id
      * @author nazmul hasan on 27th february 2016
      */
+
     public function get_user_assigned_services($user_id) {
         $this->db->where($this->tables['users_services'] . '.user_id', $user_id);
         $this->db->where($this->tables['users_services'] . '.status', 1);
@@ -19,12 +20,13 @@ class Service_model extends Ion_auth_model {
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['users_services'] . '.service_id')
                         ->get();
     }
-    
+
     /*
      * this method will retun entire service list of a user assigned or unassigned
      * @param  $user_id  user id
      * @author nazmul hasan on 28th february 2016
      */
+
     public function get_user_all_services($user_id) {
         $this->db->where($this->tables['users_services'] . '.user_id', $user_id);
         return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*,' . $this->tables['users_services'] . '.*,' . $this->tables['users_services'] . '.id as user_service_id')
@@ -32,12 +34,13 @@ class Service_model extends Ion_auth_model {
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['users_services'] . '.service_id')
                         ->get();
     }
-    
+
     /*
      * This method will update user rates
      * @param $new_rate_list, new rate list
      * @author nazmul hasan on 29th february 2016
      */
+
     public function update_user_rates($new_rate_list) {
         //try to use update batch instead of loop
         foreach ($new_rate_list as $new_rate_info) {
@@ -46,8 +49,6 @@ class Service_model extends Ion_auth_model {
         }
         return TRUE;
     }
-    
-    
 
     public function get_all_services() {
         return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
@@ -55,7 +56,6 @@ class Service_model extends Ion_auth_model {
                         ->get();
     }
 
-    
     /**
      * this method will retun a user services
      * @param  $user_id  user id
@@ -98,5 +98,11 @@ class Service_model extends Ion_auth_model {
                         ->get();
     }
 
+    public function get_service_status_info($service_id_list) {
+         $this->db->where_in($this->tables['services'] . '.id', $service_id_list);
+        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
+                        ->from($this->tables['services'])
+                        ->get();
+    }
 
 }
