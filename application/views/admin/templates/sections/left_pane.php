@@ -21,7 +21,7 @@
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
                     <li><a href="<?php echo base_url() . 'history/all_transactions' ?>">All History</a></li>
-                    <li  ng-if="topup_service_allow_flag != false"> <a href ="<?php echo base_url() . 'history/topup_transactions' ?>">Topup</a></li>						
+                    <li  ng-if="'<?php echo $topup_service_allow_flag; ?>' != false"> <a href ="<?php echo base_url() . 'history/topup_transactions' ?>">Topup</a></li>						
                     <div ng-repeat="service in serviceList">
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'history/bkash_transactions' ?>">bKash</a></li>						
                         <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_DBBL_CASHIN; ?>"><a href="<?php echo base_url() . 'history/dbbl_transactions' ?>">DBBL</a></li>						

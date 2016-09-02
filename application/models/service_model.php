@@ -97,9 +97,17 @@ class Service_model extends Ion_auth_model {
                         ->from($this->tables['operator_types'])
                         ->get();
     }
-
-    public function get_service_status_info($service_id_list) {
-         $this->db->where_in($this->tables['services'] . '.id', $service_id_list);
+    
+    /*
+     * This method will return service info list
+     * @param service_id_list
+     * @author nazmul hasan on 1st september 2016
+     */
+    public function get_service_info_list($service_id_list) {
+        if(!empty($service_id_list))
+        {
+            $this->db->where_in($this->tables['services'] . '.id', $service_id_list);
+        }        
         return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
                         ->from($this->tables['services'])
                         ->get();

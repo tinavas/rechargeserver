@@ -35,7 +35,7 @@ if (isset($error_message)) {
             return '<?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>';
         }
     }
-    function add_topup_data(topUpInfo, selectedOprator) {
+    function add_topup_data(topUpInfo) {
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
             $('#common_modal').modal('show');
@@ -51,7 +51,11 @@ if (isset($error_message)) {
             $('#common_modal').modal('show');
             return;
         }
-        topUpInfo.topupType = selectedOprator.id;
+        if (typeof topUpInfo.topupType == "undefined" || topUpInfo.topupType.length == 0) {
+            $("#content").html("Please select Topup Type.");
+            $('#common_modal').modal('show');
+            return;
+        }
         topUpInfo.topupOperatorId = getTopupOperatorId(topUpInfo.number);
 
         if (topUpInfo.topupOperatorId == '<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>' && topUpInfo.topupType == '<?php echo OPERATOR_TYPE_ID_POSTPAID; ?>') {
@@ -168,11 +172,24 @@ if (isset($error_message)) {
                                             </label>
                                         </div>
                                         <div class="col-md-7">
+                                            <select  for="type" id="type"  ng-model="topUpInfo.topupType" class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)">
+                                                <option class="form-control" value="">Please select</option>
+                                                <option class=form-control ng-repeat="topupType in topupTypeList" value="{{topupType.id}}">{{topupType.title}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+<!--                                    <div class="row form-group">
+                                        <div class="col-md-5">
+                                            <label for="type" class="col-md-6 control-label requiredField label_custom">
+                                                Type
+                                            </label>
+                                        </div>
+                                        <div class="col-md-7">
                                             <select  class="form-control control-label requiredField" ng-init="setTopUpTypeList(<?php echo htmlspecialchars(json_encode($topup_type_list)); ?>)"
                                                      ng-options="topupType.title for topupType in data.topupTypeList track by topupType.id"
                                                      ng-model="data.selectedOption"></select>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <!--                                    <div class="row form-group">
                                                                             <div class="col-md-5">
                                                                                 <label for="operator" class="col-md-6 control-label requiredField label_custom">
@@ -189,7 +206,7 @@ if (isset($error_message)) {
                                     <div class="row form-group">
                                         <div for="submit_update_api" class="col-md-6 control-label requiredField label_custom"> </div>
                                         <div class ="col-md-6">
-                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo, angular.element(this).scope().data.selectedOption)">Add</button>
+                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo)">Add</button>
                                         </div> 
                                     </div>
 

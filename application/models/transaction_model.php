@@ -16,11 +16,12 @@ class Transaction_model extends Ion_auth_model {
      * @author nazmul hasan on 24th february 2016
      */
 
-    public function update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number) {
+    public function update_transaction_callbackws($transaction_id, $status_id, $sender_cell_number, $trx_id_operator) {
         $this->db->trans_begin();
         $transaction_data = array(
             'status_id' => $status_id,
-            'sender_cell_no' => $sender_cell_number
+            'sender_cell_no' => $sender_cell_number,
+            'trx_id_operator' => $trx_id_operator,
         );
         $this->db->where('transaction_id', $transaction_id);
         $this->db->update('user_transactions', $transaction_data);
@@ -120,7 +121,7 @@ class Transaction_model extends Ion_auth_model {
         if (array_key_exists("operator_type_id", $transaction_data)) {
             $package_id = $transaction_data['operator_type_id'];
         }
-        if ($transaction_data['type_id'] == SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER) {
+        if ($transaction_data['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_AUTO) {
             $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
             $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
             $result_event = json_decode($this->curl->execute());
@@ -167,7 +168,9 @@ class Transaction_model extends Ion_auth_model {
                     return FALSE;
                 }
             }
-        } else {
+        } 
+        else {
+            //manual transaction at webserver by superadmin
             $this->db->trans_commit();
             $this->set_message('transaction_successful');
             return TRUE;
@@ -185,13 +188,14 @@ class Transaction_model extends Ion_auth_model {
      */
 
     public function add_transactions($transction_list, $user_profit_list) {
+        $is_transaction_manual = false;
         $transaction_list_for_webservice = array();
         $user_transaction_list = array();
         $payment_list = array();
         $user_profits = array();
         $current_time = now();
         foreach ($transction_list as $transaction_info) {
-            if ($transaction_info['type_id'] == SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER) {
+            if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_AUTO) {
                 $service_id = $transaction_info['service_id'];
                 $transaction_info_for_webservice = array();
                 if ($service_id == SERVICE_TYPE_ID_BKASH_CASHIN) {
@@ -244,7 +248,8 @@ class Transaction_model extends Ion_auth_model {
                 'created_on' => $current_time,
                 'modified_on' => $current_time
             );
-            if ($transaction_info['type_id'] == SERVICE_STATUS_TYPE_ALLOW_TO_USE_WEBSERVER) {
+            if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_MANUAL) {
+                $is_transaction_manual = true;
                 $trx_id = $this->utils->get_transaction_id();
                 $transaction_info['transaction_id'] = $trx_id;
                 $payment_info['transaction_id'] = $trx_id;
@@ -256,7 +261,7 @@ class Transaction_model extends Ion_auth_model {
             $user_transaction_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
             $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
         }
-        if ($transction_list[0]['type_id'] == SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER) {
+        if (!$is_transaction_manual) {
             $this->curl->create(WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS);
             $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "transction_list" => json_encode($transaction_list_for_webservice)));
             $result_event = json_decode($this->curl->execute());
@@ -304,7 +309,8 @@ class Transaction_model extends Ion_auth_model {
             } else {
                 $this->set_error('error_webservice_unavailable');
             }
-        } else if ($transction_list[0]['type_id'] == SERVICE_STATUS_TYPE_ALLOW_TO_USE_WEBSERVER) {
+        } 
+        else{
             $this->db->trans_begin();
             $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list);
             $this->db->insert_batch($this->tables['user_payments'], $payment_list);

@@ -21,22 +21,6 @@ class Transaction extends Role_Controller {
         //handle code if you want to redirect to any other location
     }
 
-//
-    public function get_current_unix_time() {
-        $response = $this->utils->cell_number_validation("+8801623598606");
-        var_dump($response);
-    }
-
-    public function test() {
-        $this->load->model('service_model');
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_BANGLALINK))->result_array();
-        foreach ($service_info_array as $service_info) {
-            $service_info_list[$service_info['service_id']] = $service_info;
-        }
-        var_dump($service_info_list[SERVICE_TYPE_ID_TOPUP_GP]['type_id']);
-        exit;
-    }
-
     /*
      * This method will send transaction code to the user via sms or email based on configuration. 
      * //right now we are using this feature for bkash service
@@ -97,7 +81,7 @@ class Transaction extends Role_Controller {
     public function bkash($transaction_id = '') {
         $user_id = $this->session->userdata('user_id');
         //checking whether user has permission for bkash transaction
-        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_status_type = SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER;
         $permission_exists = FALSE;
         $bkash_service_info = array();
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -115,14 +99,14 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
+        $service_info_array = $this->service_model->get_service_info_list(array(SERVICE_TYPE_ID_BKASH_CASHIN))->result_array();
         if (!empty($service_info_array)) {
             $service_status_type = $service_info_array[0]['type_id'];
         }
         if (file_get_contents("php://input") != null) {
             $response = array();
-            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
-                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+            if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Bkash service is unavailable right now! please try again later!.";
                 echo json_encode($response);
                 return;
             }
@@ -206,9 +190,17 @@ class Transaction extends Role_Controller {
                 'amount' => $amount,
                 'cell_no' => $cell_no,
                 'description' => $description,
-                'type_id' => $service_status_type,
                 'editable' => true
             );
+            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
+            }
+            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
+                $transaction_data['editable'] = false;
+            }
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
             if ($transaction_id == '') {
@@ -228,9 +220,9 @@ class Transaction extends Role_Controller {
             return;
         }
 
-        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+        if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->data['error_message'] = "Sorry !! Bkash service is unavailable right now! please try again later!.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
@@ -312,16 +304,16 @@ class Transaction extends Role_Controller {
      */
 
     public function dbbl() {
-        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_DBBL_CASHIN))->result_array();
+        $service_status_type = SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_info_list(array(SERVICE_TYPE_ID_DBBL_CASHIN))->result_array();
         if (!empty($service_info_array)) {
             $service_status_type = $service_info_array[0]['type_id'];
         }
 
         if (file_get_contents("php://input") != null) {
             $response = array();
-            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
-                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+            if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! DBBL service is unavailable right now! please try again later!.";
                 echo json_encode($response);
                 return;
             }
@@ -371,9 +363,16 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_DBBL_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'type_id' => $service_status_type
+                'description' => $description
             );
+            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
+            }
+            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
+            }
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -385,9 +384,9 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+        if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->data['error_message'] = "Sorry !! DBBL service is unavailable right now! please try again later!.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
@@ -427,8 +426,8 @@ class Transaction extends Role_Controller {
      */
 
     public function mcash() {
-        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_MCASH_CASHIN))->result_array();
+        $service_status_type = SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_info_list(array(SERVICE_TYPE_ID_MCASH_CASHIN))->result_array();
         if (!empty($service_info_array)) {
             $service_status_type = $service_info_array[0]['type_id'];
         }
@@ -436,8 +435,8 @@ class Transaction extends Role_Controller {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
-            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
-                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+            if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Mcash service is unavailable right now! please try again later!.";
                 echo json_encode($response);
                 return;
             }
@@ -486,9 +485,16 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_MCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'type_id' => $service_status_type
+                'description' => $description
             );
+            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
+            }
+            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
+            }
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -500,9 +506,9 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+        if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->data['error_message'] = "Sorry !! Mcash service is unavailable right now! please try again later!.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
@@ -541,8 +547,8 @@ class Transaction extends Role_Controller {
      */
 
     public function ucash() {
-        $service_status_type = SERVICE_STATUS_TYPE_ALLOW_TO_USE_LOCAL_SERVER;
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_UCASH_CASHIN))->result_array();
+        $service_status_type = SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER;
+        $service_info_array = $this->service_model->get_service_info_list(array(SERVICE_TYPE_ID_UCASH_CASHIN))->result_array();
         if (!empty($service_info_array)) {
             $service_status_type = $service_info_array[0]['type_id'];
         }
@@ -550,8 +556,8 @@ class Transaction extends Role_Controller {
         $user_id = $this->session->userdata('user_id');
         if (file_get_contents("php://input") != null) {
             $response = array();
-            if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
-                $response["message"] = "Sorry !! Service is unavailable right now! please try again later!.";
+            if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
+                $response["message"] = "Sorry !! Ucash service is unavailable right now! please try again later!.";
                 echo json_encode($response);
                 return;
             }
@@ -600,9 +606,16 @@ class Transaction extends Role_Controller {
                 'service_id' => SERVICE_TYPE_ID_UCASH_CASHIN,
                 'amount' => $amount,
                 'cell_no' => $cell_no,
-                'description' => $description,
-                'type_id' => $service_status_type
+                'description' => $description
             );
+            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
+            }
+            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
+            {
+                $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
+            }
             $this->load->library("security");
             $transaction_data = $this->security->xss_clean($transaction_data);
             if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -615,9 +628,9 @@ class Transaction extends Role_Controller {
             echo json_encode($response);
             return;
         }
-        if ($service_status_type == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+        if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->data['error_message'] = "Sorry !! Ucash service is unavailable right now! please try again later!.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
@@ -657,13 +670,13 @@ class Transaction extends Role_Controller {
 
     public function topup() {
         $service_info_list = array();
-        $service_info_array = $this->service_model->get_service_status_info(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK))->result_array();
+        $service_info_array = $this->service_model->get_service_info_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK))->result_array();
         foreach ($service_info_array as $service_info) {
             $service_info_list[$service_info['service_id']] = $service_info;
         }
-        if ($service_info_list[SERVICE_TYPE_ID_TOPUP_GP]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_ROBI]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_BANGLALINK]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_AIRTEL]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_TELETALK]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+        if ($service_info_list[SERVICE_TYPE_ID_TOPUP_GP]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_ROBI]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_BANGLALINK]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_AIRTEL]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION && $service_info_list[SERVICE_TYPE_ID_TOPUP_TELETALK]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $this->data['app'] = TRANSCATION_APP;
-            $this->data['error_message'] = "Sorry !! Service is unavailable right now! please try again later!.";
+            $this->data['error_message'] = "Sorry !! Topup service is unavailable right now! please try again later!.";
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
@@ -702,14 +715,21 @@ class Transaction extends Role_Controller {
                             echo json_encode($response);
                             return;
                         }
-                        if ($service_info_list[$service_id]['type_id'] == SERVICE_STATUS_TYPE_NOT_ALLOW_TRNASCATION) {
+                        if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
                             $response["message"] = $service_info_list[$service_id]['title'] . " Service Unavailable right now that you assigned  at serial number " . ($key + 1);
                             echo json_encode($response);
                             return;
                         }
 
                         $topup_data_info['service_id'] = $service_id;
-                        $topup_data_info['type_id'] = $service_info_list[$service_id]['type_id'];
+                        if($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
+                        {
+                            $topup_data_info['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
+                        }
+                        else if($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
+                        {
+                            $topup_data_info['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
+                        }
                     } else {
                         $response["message"] = "Operator Id  is Required at serial number " . ($key + 1);
                         echo json_encode($response);

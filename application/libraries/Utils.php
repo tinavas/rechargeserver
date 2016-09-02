@@ -89,24 +89,6 @@ class Utils {
     }
 
     /*
-     * This method will return local unix time of a user
-     * @param $country_code, country code
-     * @author rashida  on 29th August 2016
-     */
-
-    public function get_local_unix_time($country_code = 'GB') {
-        if ($country_code != COUNTRY_CODE_GB) {
-            $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
-            $dateTimeZone = new DateTimeZone($time_zone_array[0]);
-            $dateTime = new DateTime("now", $dateTimeZone);
-            return now() + $dateTime->getOffset();
-        } else {
-            return now();
-        }
-    }
-
-    
-      /*
      * This method will return a operator type id 
      * @param $cell_number, mobile number
      * @author rashida  on 29th August 2016
