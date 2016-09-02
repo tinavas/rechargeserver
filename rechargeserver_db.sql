@@ -107,13 +107,25 @@ ALTER TABLE `relations`
   ADD CONSTRAINT `fk_relations_users1` FOREIGN KEY (`parent_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_relations_users2` FOREIGN KEY (`child_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+CREATE TABLE IF NOT EXISTS `service_types` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   
+INSERT INTO `service_types` (`id`, `title`) VALUES
+(1, 'Local Server'),
+(2, 'Stop Service'),
+(3, 'Web Server');  
 
 CREATE TABLE IF NOT EXISTS `services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
-  `type_id` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`)
+  `type_id` int(11) unsigned DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_services_service_types1_idx` (`type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   
+ALTER TABLE `services`
+  ADD CONSTRAINT `fk_services_service_types1` FOREIGN KEY (`type_id`) REFERENCES `service_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
 INSERT INTO `services` (`id`, `title`,type_id) VALUES
 (1, 'bkash (CashIn)', 1),
 (2, 'DBBL (CashIn)', 1),

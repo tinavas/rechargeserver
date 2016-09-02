@@ -46,6 +46,7 @@ $config['tables']['login_attempts']         = 'login_attempts';
 $config['tables']['relations']              = 'relations';
 $config['tables']['operators']              = 'operators';
 $config['tables']['operator_types']         = 'operator_types';
+$config['tables']['service_types']                          = 'service_types';
 $config['tables']['services']                               = 'services';
 $config['tables']['users_services']                         = 'users_services';
 $config['tables']['user_transaction_statuses']              = 'user_transaction_statuses';
