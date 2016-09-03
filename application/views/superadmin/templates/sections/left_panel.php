@@ -9,11 +9,14 @@
         <li id="payment">
             <a href="<?php echo base_url() ?>superadmin/payment/show_payments">Payments</a>
         </li>
-        <li id="transaction">
+-->        <li id="transaction">
             <a href="<?php echo base_url() ?>superadmin/transaction/show_transactions">Transactions</a>
-        </li>-->
+        </li>
         <li id="sim">
             <a href="<?php echo base_url() ?>superadmin/sim">Sims</a>
+        </li>
+        <li >
+            <a href="<?php echo base_url() ?>superadmin/configuration">Configuration</a>
         </li>
         <li id="logout">
             <a href="<?php echo base_url() ?>superadmin/auth/logout">Log out</a>                                

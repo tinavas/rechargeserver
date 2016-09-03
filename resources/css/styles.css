@@ -19,7 +19,7 @@
     list-style-type: circle;
 }
 
-.paymentHistorySearch li{
+.paymentHistorySearch li,.topUpHistorySearch li{
     display: inline-block!important;
 }
 
