@@ -422,7 +422,7 @@ table.table_show{
     border:1px solid #ccc;
 }
 table.table_show thead th{
-    background:#E9ECF1 url(../img/th.png) repeat-x left top;
+    background:#E9ECF1;
     height:26px;
     border-right:0px solid #CFCFCF;
     border-left:0px solid #FFFFFF;
@@ -446,7 +446,7 @@ table.table10{
 }
 
 table.table10 thead th{
-    background:#E9ECF1 url(../img/th.png) repeat-x left top;
+    background:#E9ECF1 repeat-x left top;
     height:26px;
     border-right:0px solid #CFCFCF;
     border-left:0px solid #FFFFFF;
@@ -503,7 +503,7 @@ p.last{padding-bottom:10px;}
 .usage .table{min-height:261px;}
 .usage td{padding:7px 0px;font-size:14px;color:#898F9C;border-bottom:1px solid #E5E5E5;}
 .usage td.tk{text-align:right;color:#333333;font-weight:bold;font-size:12px;}
-.usage h2{background:#FAFBFB url(../img/h2home.png) no-repeat right center;border-bottom:1px solid #E5E5E5;height:46px;line-height:46px;margin:0px;padding:0px 17px; font-weight:normal;font-size:14px;color:#333333;}
+.usage h2{background:#FAFBFB;border-bottom:1px solid #E5E5E5;height:46px;line-height:46px;margin:0px;padding:0px 17px; font-weight:normal;font-size:14px;color:#333333;}
 .usage h3{background:#FAFBFB;border-top:1px solid #E5E5E5;height:46px;line-height:46px;margin:0px;padding:0px 17px; font-weight:normal;font-size:14px;color:#333333;}
 .usage h3 span.left{float:left;width:150px;text-align:left;font-weight:normal;font-size:14px;color:#333333;}
 .usage h3 span.right{float:right;width:100px;text-align:right;color:#333333;font-weight:bold;font-size:15px;}
