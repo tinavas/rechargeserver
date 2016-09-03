@@ -20,6 +20,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.totalAmount = 0;
             $scope.currentPageAmount = 0;
             $scope.allTransactions = false;
+            $scope.topUpTypes = {};
             $scope.searchInfo = {};
             $scope.smsInfo = {};
             $scope.sendTransactionCode = function(callbackFunction) {
@@ -522,7 +523,12 @@ var transactionController = angular.module('controller.Transction', ['services.T
             }
             $scope.setTopUpTypeList = function(topupTypeList) {
                 $scope.topupTypeList = JSON.parse(topupTypeList);
-            }
+                $scope.topUpTypes = {
+                    topupTypeList:  $scope.topupTypeList,
+                    selectedOption: $scope.topupTypeList[0]
+                }
+            };
+            
             $scope.setTopupOperatorList = function(topupOperatorList) {
                 $scope.topupOperatorList = JSON.parse(topupOperatorList);
             }
