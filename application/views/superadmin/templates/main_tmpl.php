@@ -11,34 +11,43 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/css/superadmin/admin_menu.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/image-crop-styles.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/recharge.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">
 
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
+                <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/image-crop.js"></script>
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular-animate.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular-bootstrap/ui-bootstrap.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/ng-google-chart.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/image-crop.js"></script>
         <!--<angular Services>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/serviceService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/subscriberService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/transctionService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/historyService.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/companyInfoConfigurationService.js"></script>
         <!--<angular Controller>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/serviceController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/subscriberController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/transctionController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/historyController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/imageCropController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/companyInfoConfigurationController.js"></script>
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/serviceApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/subscriberApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/transctionApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/historyApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/configurationApp.js"></script>
     </head>
     <body ng-app="<?php echo $app; ?>">
         <?php $this->load->view("superadmin/templates/sections/header"); ?>
