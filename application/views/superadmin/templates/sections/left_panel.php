@@ -17,9 +17,9 @@
         <li id="sim">
             <a href="<?php echo base_url() ?>superadmin/sim">Sims</a>
         </li>
-        <li >
+<!--        <li >
             <a href="<?php echo base_url() ?>superadmin/configuration">Configuration</a>
-        </li>
+        </li>-->
         <li id="logout">
             <a href="<?php echo base_url() ?>superadmin/auth/logout">Log out</a>                                
         </li>                            
