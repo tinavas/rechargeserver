@@ -20,7 +20,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
-                <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/image-crop.js"></script>
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>
@@ -29,6 +29,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/bootstrap.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/ng-google-chart.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/image-crop.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/dirPagination.js"></script>
         <!--<angular Services>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/serviceService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/subscriberService.js"></script>

@@ -3,30 +3,30 @@ angular.module('service.Transction', []).
             var $app_name = "/rechargeserver";
             //var $app_name = "";
             var transctionService = {};
-            transctionService.updateTransction = function (transctionInfo) {
+            transctionService.updateTransction = function (transactionInfo) {
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/transaction/update_transaction/' + transctionInfo.transactionId ,
+                    url: $location.path() + $app_name + '/superadmin/transaction/update_transaction/' + transactionInfo.transaction_id,
                     data: {
-                        transctionInfo : transctionInfo
+                        transactionInfo: transactionInfo
                     }
                 });
             };
             transctionService.addSim = function (simInfo) {
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/sim/add_sim/' ,
+                    url: $location.path() + $app_name + '/superadmin/sim/add_sim/',
                     data: {
-                        simInfo : simInfo
+                        simInfo: simInfo
                     }
                 });
             };
             transctionService.editSim = function (simInfo) {
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/sim/edit_sim/'+simInfo.sim_no ,
+                    url: $location.path() + $app_name + '/superadmin/sim/edit_sim/' + simInfo.sim_no,
                     data: {
-                        simInfo : simInfo
+                        simInfo: simInfo
                     }
                 });
             };
@@ -34,9 +34,9 @@ angular.module('service.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/transaction/add_service_balance/' ,
+                    url: $location.path() + $app_name + '/superadmin/transaction/add_service_balance/',
                     data: {
-                        balanceInfo : balanceInfo
+                        balanceInfo: balanceInfo
                     }
                 });
             };
@@ -44,9 +44,9 @@ angular.module('service.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/transaction/get_sim_service_list/' ,
+                    url: $location.path() + $app_name + '/superadmin/transaction/get_sim_service_list/',
                     data: {
-                        simNumber : simNumber
+                        simNumber: simNumber
                     }
                 });
             };
@@ -54,9 +54,9 @@ angular.module('service.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/transaction/get_sim_transactions/' ,
+                    url: $location.path() + $app_name + '/superadmin/transaction/get_sim_transactions/',
                     data: {
-                        searchInfo : searchInfo
+                        searchInfo: searchInfo
                     }
                 });
             };
@@ -64,9 +64,19 @@ angular.module('service.Transction', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/transaction/get_transaction_list/' ,
+                    url: $location.path() + $app_name + '/superadmin/transaction/get_transaction_list/',
                     data: {
-                        searchInfo : searchInfo
+                        searchInfo: searchInfo
+                    }
+                });
+            };
+            transctionService.getTransactionByPagination = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/transaction/get_transaction_list/',
+                    data: {
+                        searchInfo: searchInfo
                     }
                 });
             };

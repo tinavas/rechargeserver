@@ -1,5 +1,7 @@
 angular.module('controller.Transction', ['service.Transction']).
         controller('transctionController', function ($scope, transctionService) {
+            $scope.currentPage = 1;
+            $scope.pageSize = 3;
             $scope.transactionInfo = {};
             $scope.simInfo = {};
             $scope.searchInfo = {};
@@ -8,16 +10,28 @@ angular.module('controller.Transction', ['service.Transction']).
             $scope.simList = [];
             $scope.simServiceList = [];
             $scope.transctionInfoList = [];
+            $scope.transactionStatusList = [];
 //            $scope.serviceRateList = [];
             $scope.allow_action = true;
+            $scope.allTransactions = false;
 
 
-            $scope.setTransctionList = function (transctionList) {
+            $scope.setTransctionList = function (transctionList, collectionCounter) {
                 $scope.transctionInfoList = JSON.parse(transctionList);
+                setCollectionLength(collectionCounter);
             }
+            $scope.getTransactionByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getTransactionByPagination($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                        });
+            };
             $scope.setTransactionInfo = function (transactionInfo) {
                 $scope.transactionInfo = JSON.parse(transactionInfo);
-                console.log($scope.transactionInfo);
+            }
+            $scope.setTansactionStatusList = function (transactionStatusList) {
+                $scope.transactionStatusList = JSON.parse(transactionStatusList);
             }
 
             $scope.updateTransction = function (callbackFunction) {
@@ -25,9 +39,8 @@ angular.module('controller.Transction', ['service.Transction']).
                     return;
                 }
                 $scope.allow_action = false;
-                transctionService.updateTransction($scope.transctionInfo).
+                transctionService.updateTransction($scope.transactionInfo).
                         success(function (data, status, headers, config) {
-
                             $scope.allow_action = true;
                             callbackFunction(data);
                         });
@@ -138,6 +151,9 @@ angular.module('controller.Transction', ['service.Transction']).
                     return;
                 }
                 $scope.allow_action = false;
+                if ($scope.allTransactions != false) {
+                    $scope.searchInfo.limit = $scope.allTransactions;
+                }
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -145,9 +161,21 @@ angular.module('controller.Transction', ['service.Transction']).
                 transctionService.getTransactionList($scope.searchInfo).
                         success(function (data, status, headers, config) {
                             $scope.transctionInfoList = data.transaction_list;
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
+                            setCollectionLength(data.total_transactions);
                             $scope.allow_action = true;
                         });
             };
+
+            //pagination
+            function getOffset(number) {
+                var initIndex;
+                initIndex = $scope.pageSize * (number - 1);
+                return initIndex;
+            }
 
 
         });

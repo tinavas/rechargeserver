@@ -4,9 +4,9 @@
         $('#start_date').val('<?php echo $current_date ?>');
         $('#end_date').Zebra_DatePicker();
         $('#end_date').val('<?php echo $current_date ?>');
-        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_PENDING?>');
+        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_PENDING ?>');
     });
-     function search_transaction() {
+    function search_transaction() {
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
         angular.element($("#search_submit_btn")).scope().getTransactionList(startDate, endDate);
@@ -29,8 +29,8 @@
                 <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
             </select>
         </li>
-<!--        <li>Show All</li>-->
-        <!--<li> <input type="checkbox" ng-model="allTransactions"></li>-->
+        <li>Show All</li>
+        <li> <input type="checkbox" ng-model="allTransactions"></li>
         <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_transaction()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
@@ -48,7 +48,7 @@
         </thead>
         <tbody>
         </tbody>
-        <tfoot ng-init="setTransctionList('<?php echo htmlspecialchars(json_encode($transction_list)) ?>')">
+        <tfoot ng-init="setTransctionList('<?php echo htmlspecialchars(json_encode($transaction_list)) ?>', '<?php echo htmlspecialchars(json_encode($total_transactions)) ?>')">
             <tr ng-repeat="transctionInfo in transctionInfoList">
                 <th>{{transctionInfo.service_title}}</th>
                 <th>{{transctionInfo.trx_id_operator}}</th>
@@ -58,11 +58,18 @@
                 <th>{{transctionInfo.status}}</th>
                 <th>{{transctionInfo.created_on}}</th>
                 <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>' && transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'"><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
-                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_FAILED; ?>'">delete</th>
+                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_FAILED; ?>' || transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>'">delete</th>
+                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>'">No Action</th>
             </tr>
         </tfoot>
     </table>
+    <li style="display: none" dir-paginate="transactionInfo in transctionInfoList|itemsPerPage:3" current-page="currentPage"></li>
+    <div class="other-controller">
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="getTransactionByPagination(newPageNumber)" template-url="<?php echo base_url(); ?>superadmin/transaction/pagination_tmpl_load"></dir-pagination-controls>
+        </div>
+    </div>
 </div>
 
 <?php
-$this->load->view("superadmin/transaction/modal_delete_transaction");
+//$this->load->view("superadmin/transaction/modal_delete_transaction");

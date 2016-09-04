@@ -44,14 +44,22 @@ class Transaction extends CI_Controller {
                     $status_id = $search_param->statusId;
                     $status_id_list = array($status_id);
                 }
+                if (property_exists($search_param, "limit") != FALSE) {
+                    $limit_status = $search_param->limit;
+                    if ($limit_status != FALSE) {
+                        $limit = 0;
+                    }
+                }
             }
-            $transction_list = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), $from_date, $to_date, $offset, $limit);
-            $response['transaction_list'] = $transction_list;
+            $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), $from_date, $to_date, $offset, $limit);
+            $response['transaction_list'] = $transction_list_array['transaction_list'];
+            $response['total_transactions'] = $transction_list_array['total_transactions'];
             echo json_encode($response);
             return;
         }
-        $transction_list = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
-        $this->data['transction_list'] = $transction_list;
+        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
+        $this->data['transaction_list'] = $transction_list_array['transaction_list'];
+        $this->data['total_transactions'] = $transction_list_array['total_transactions'];
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
@@ -60,77 +68,52 @@ class Transaction extends CI_Controller {
     }
 
     public function update_transaction($transction_id = 0) {
-        $transaction_info = array();
-        $transaction_info_array = $this->transaction_model->get_transaction_info($transction_id)->result_array();
-        if(!empty($transaction_info_array)){
-            $transaction_info = $transaction_info_array[0];
-        }
-        $this->data['transaction_info'] = $transaction_info;
-        $this->data['app'] = TRANSCATION_APP;
-        $this->template->load(null, "superadmin/transaction/update_transaction", $this->data);
-    }
-
-    public function update_transaction_old($transction_id = 0) {
-        $response = array();
         if (file_get_contents("php://input") != null) {
+            $response = array();
+            $transction_info = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
-            if (property_exists($requestInfo, "transctionInfo") != FALSE) {
-                $transctionInfo = $requestInfo->transctionInfo;
-            }
-            $transction_info = new stdClass();
-            if (property_exists($transctionInfo, "transactionId")) {
-                $transction_info->transactionId = $transctionInfo->transactionId;
-            }
-            if (property_exists($transctionInfo, "apikey")) {
-                $transction_info->apikey = $transctionInfo->apikey;
-            }
-            if (property_exists($transctionInfo, "balanceIn")) {
-                $transction_info->balanceIn = $transctionInfo->balanceIn;
-            }
-            if (property_exists($transctionInfo, "balanceOut")) {
-                $transction_info->balanceOut = $transctionInfo->balanceOut;
-            }
-            if (property_exists($transctionInfo, "transactionStatusId")) {
-                $transction_info->transactionStatusId = $transctionInfo->transactionStatusId;
-            }
-            if (property_exists($transctionInfo, "transactionTypeId")) {
-                $transction_info->transactionTypeId = $transctionInfo->transactionTypeId;
-            }
-            if (property_exists($transctionInfo, "cellNumber")) {
-                $transction_info->cellNumber = $transctionInfo->cellNumber;
-            }
-            if (property_exists($transctionInfo, "description")) {
-                $transction_info->description = $transctionInfo->description;
-            }
-            if (property_exists($transctionInfo, "createdOn")) {
-                $transction_info->createdOn = $transctionInfo->createdOn;
-            }
-            if (property_exists($transctionInfo, "modifiedOn")) {
-                $transction_info->modifiedOn = $transctionInfo->modifiedOn;
-            }
-            $result_event = $this->transaction_model->update_transction_info($transction_info);
-            if (property_exists($result_event, "responseCode") != FALSE) {
-                $response_code = $result_event->responseCode;
-                if ($response_code == RESPONSE_CODE_SUCCESS) {
-                    $response['message'] = "Transction is updated successfully.";
-                } else {
-                    $response['message'] = 'Error while updating a service.';
+            if (property_exists($requestInfo, "transactionInfo") != FALSE) {
+                $transactionInfo = $requestInfo->transactionInfo;
+                if (property_exists($transactionInfo, "transaction_id")) {
+                    $transaction_id = $transactionInfo->transaction_id;
+                }
+                if (property_exists($transactionInfo, "trx_id_operator")) {
+                    $transction_info['trx_id_operator'] = $transactionInfo->trx_id_operator;
+                }
+                if (property_exists($transactionInfo, "status_id")) {
+                    $transction_info['status_id'] = $transactionInfo->status_id;
                 }
             }
-
+            $result = $this->transaction_model->update_transction_info($transaction_id, $transction_info);
+            if ($result != false) {
+                $response['message'] = "Transction is updated successfully.";
+            } else {
+                $response['message'] = 'Error while updating a service.';
+            }
             echo json_encode($response);
             return;
         }
-        $transction_info = $this->transaction_model->get_transction_info($transction_id);
-        if (property_exists($transction_info, "result")) {
-            $transction_info = $transction_info->result;
+        $transaction_info = array();
+        $transaction_info_array = $this->transaction_model->get_transaction_info($transction_id)->result_array();
+        if (!empty($transaction_info_array)) {
+            $transaction_info = $transaction_info_array[0];
         }
-        $this->data['transction_info'] = $transction_info;
+        $transaction_status_list = array();
+        $transaction_status_array = $this->transaction_model->get_transaction_status_list()->result_array();
+        foreach ($transaction_status_array as $status_info) {
+            if ($status_info['id'] == $transaction_info['status_id']) {
+                $status_info['selected'] = true;
+            } else {
+                $status_info['selected'] = false;
+            }
+            $transaction_status_list[] = $status_info;
+        }
+        $this->data['transaction_info'] = $transaction_info;
+        $this->data['transaction_status_list'] = $transaction_status_list;
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/update_transaction", $this->data);
     }
-
     public function delete_transaction() {
         $response = array();
         $transction_id = $this->input->post('transction_id');
