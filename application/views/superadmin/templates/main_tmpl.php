@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/image-crop-styles.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/recharge.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
