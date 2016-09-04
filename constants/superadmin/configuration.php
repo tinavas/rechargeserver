@@ -1,5 +1,6 @@
 <?php
 //Added by Nazmul
+define("LOCAL_SERVER_IDENTIFIER",                              "rimitells");
 define("WEBSERVICE_ADD_SIM",                                   "http://localhost:4040/addsim");
 define("WEBSERVICE_GET_ALL_SIMS",                              "http://localhost:4040/getallsims");
 define("WEBSERVICE_GET_SIM_INFO",                              "http://localhost:4040/getsiminfo");

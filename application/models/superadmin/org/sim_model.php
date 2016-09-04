@@ -26,7 +26,7 @@ class Sim_model extends Ion_auth_model {
     {
         $sim_list = array();
         $this->curl->create(WEBSERVICE_GET_ALL_SIMS);
-        $this->curl->post();
+        $this->curl->post(array("identifier" => LOCAL_SERVER_IDENTIFIER));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
             $response_code = '';

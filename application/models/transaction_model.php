@@ -188,13 +188,28 @@ class Transaction_model extends Ion_auth_model {
      */
 
     public function add_transactions($transction_list, $user_profit_list) {
-        $is_transaction_manual = false;
         $transaction_list_for_webservice = array();
-        $user_transaction_list = array();
-        $payment_list = array();
-        $user_profits = array();
+        $user_transaction_list_auto = array();
+        $payment_list_auto = array();
+        $profit_list_auto = array();
+        $user_transaction_list_manual = array();
+        $payment_list_manual = array();
+        $profit_list_manual = array();
         $current_time = now();
         foreach ($transction_list as $transaction_info) {
+            $transaction_info['created_on'] = $current_time;
+            $transaction_info['modified_on'] = $current_time;
+            $transaction_info['status_id'] = TRANSACTION_STATUS_ID_PENDING;
+            $payment_info = array(
+                'user_id' => $transaction_info['user_id'],
+                'reference_id' => $transaction_info['user_id'],
+                'status_id' => TRANSACTION_STATUS_ID_PENDING,
+                'balance_in' => 0,
+                'balance_out' => $transaction_info['amount'],
+                'type_id' => PAYMENT_TYPE_ID_USE_SERVICE,
+                'created_on' => $current_time,
+                'modified_on' => $current_time
+            );
             if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_AUTO) {
                 $service_id = $transaction_info['service_id'];
                 $transaction_info_for_webservice = array();
@@ -228,40 +243,27 @@ class Transaction_model extends Ion_auth_model {
                 $transaction_info_for_webservice['cell_no'] = $transaction_info['cell_no'];
                 $transaction_info_for_webservice['description'] = $transaction_info['description'];
                 $transaction_list_for_webservice[] = $transaction_info_for_webservice;
+                
+                $user_transaction_list_auto[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
+                $payment_list_auto[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
             }
-//                'id' => $transaction_info['mapping_id'],
-//                'APIKey' => $api_key,
-//                'amount' => $transaction_info['amount'],
-//                'cell_no' => $transaction_info['cell_no'],
-//                'description' => $transaction_info['description']
-//            );
-            $transaction_info['created_on'] = $current_time;
-            $transaction_info['modified_on'] = $current_time;
-            $transaction_info['status_id'] = TRANSACTION_STATUS_ID_PENDING;
-            $payment_info = array(
-                'user_id' => $transaction_info['user_id'],
-                'reference_id' => $transaction_info['user_id'],
-                'status_id' => TRANSACTION_STATUS_ID_PENDING,
-                'balance_in' => 0,
-                'balance_out' => $transaction_info['amount'],
-                'type_id' => PAYMENT_TYPE_ID_USE_SERVICE,
-                'created_on' => $current_time,
-                'modified_on' => $current_time
-            );
-            if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_MANUAL) {
-                $is_transaction_manual = true;
+            else if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_MANUAL) {
                 $trx_id = $this->utils->get_transaction_id();
                 $transaction_info['transaction_id'] = $trx_id;
                 $payment_info['transaction_id'] = $trx_id;
                 foreach ($user_profit_list as $user_profit_info) {
-                    $user_profit_info['transaction_id'] = $trx_id;
-                    $user_profits_for_webserver[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
-                }
+                    if($user_profit_info['mapping_id'] == $transaction_info['mapping_id'])
+                    {
+                        $user_profit_info['transaction_id'] = $trx_id;
+                        $profit_list_manual[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
+                    }
+                }                
+                $user_transaction_list_manual[] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
+                $payment_list_manual[] = $this->_filter_data($this->tables['user_payments'], $payment_info);
             }
-            $user_transaction_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
-            $payment_list[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
+            
         }
-        if (!$is_transaction_manual) {
+        if (!empty($user_transaction_list_auto)) {
             $this->curl->create(WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS);
             $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "transction_list" => json_encode($transaction_list_for_webservice)));
             $result_event = json_decode($this->curl->execute());
@@ -279,23 +281,21 @@ class Transaction_model extends Ion_auth_model {
                         } else {
                             foreach ($mapping_info_list as $mapping_info) {
                                 $mapping_id = $mapping_info->referenceId;
-                                $user_transaction_list[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
-                                $payment_list[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
+                                $user_transaction_list_auto[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
+                                $payment_list_auto[$mapping_id]['transaction_id'] = $mapping_info->transactionId;
                                 foreach ($user_profit_list as $user_profit_info) {
                                     if ($user_profit_info['mapping_id'] == $mapping_info->referenceId) {
                                         $user_profit_info['transaction_id'] = $mapping_info->transactionId;
-                                        $user_profits[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
+                                        $profit_list_auto[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
                                     }
                                 }
                             }
-
                             $this->db->trans_begin();
-                            $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list);
-                            $this->db->insert_batch($this->tables['user_payments'], $payment_list);
-                            $this->db->insert_batch($this->tables['user_profits'], $user_profits);
-                            $this->db->trans_commit();
-                            $this->set_message('transaction_successful');
-                            return TRUE;
+                            $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list_auto);
+                            $this->db->insert_batch($this->tables['user_payments'], $payment_list_auto);
+                            $this->db->insert_batch($this->tables['user_profits'], $profit_list_auto);
+                            $this->db->trans_commit();                            
+                            //after the successful insertion check for any manual transactions
                         }
                     } else {
                         $this->set_error('error_no_result_event');
@@ -308,18 +308,19 @@ class Transaction_model extends Ion_auth_model {
                 }
             } else {
                 $this->set_error('error_webservice_unavailable');
+                return FALSE;
             }
         } 
-        else{
+        if(!empty($user_transaction_list_manual))
+        {
             $this->db->trans_begin();
-            $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list);
-            $this->db->insert_batch($this->tables['user_payments'], $payment_list);
-            $this->db->insert_batch($this->tables['user_profits'], $user_profits_for_webserver);
-            $this->db->trans_commit();
-            $this->set_message('transaction_successful');
-            return TRUE;
+            $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list_manual);
+            $this->db->insert_batch($this->tables['user_payments'], $payment_list_manual);
+            $this->db->insert_batch($this->tables['user_profits'], $profit_list_manual);
+            $this->db->trans_commit();          
         }
-        return FALSE;
+        $this->set_message('transaction_successful');
+        return TRUE;
     }
 
     /*
