@@ -3,6 +3,7 @@ angular.module('controller.Service', ['service.Service']).
             $scope.serviceInfo = {};
 //            $scope.resellerList = [];
             $scope.serviceList = [];
+            $scope.serviceTypeList = [];
 //            $scope.serviceRateList = [];
             $scope.allow_service_action = true;
 
@@ -12,7 +13,9 @@ angular.module('controller.Service', ['service.Service']).
             $scope.setServiceInfo = function (serviceInfo) {
                 $scope.serviceInfo = JSON.parse(serviceInfo);
             }
-
+            $scope.setServiceTypeList = function (serviceTypeList) {
+                $scope.serviceTypeList = JSON.parse(serviceTypeList);
+            }
             $scope.createService = function (callbackFunction) {
                 if ($scope.allow_service_action == false) {
                     return;

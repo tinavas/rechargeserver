@@ -16,22 +16,61 @@ class Transaction extends CI_Controller {
         
     }
 
-    public function show_transactions($user_id = 0, $offset = 0, $limit = 0) {
-        $offset = 0;
-        $limit = 0;
+    public function get_transaction_list() {
+        $this->load->library("superadmin/org/transaction_library");
+        $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
+        $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
         $transction_list = array();
-        $resulted_transction_list = $this->transaction_model->get_all_transactions($user_id, $offset, $limit);
-        if (!empty($resulted_transction_list)) {
-            if (property_exists($resulted_transction_list, "result")) {
-                $transction_list = $resulted_transction_list->result;
+        $service_id_list = array();
+        if (file_get_contents("php://input") != null) {
+            $response = array();
+            $status_id_list = array();
+            $from_date = 0;
+            $to_date = 0;
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "searchInfo") != FALSE) {
+                $search_param = $requestInfo->searchInfo;
+                if (property_exists($search_param, "fromDate") != FALSE) {
+                    $from_date = $search_param->fromDate;
+                }
+                if (property_exists($search_param, "toDate") != FALSE) {
+                    $to_date = $search_param->toDate;
+                }
+                if (property_exists($search_param, "offset") != FALSE) {
+                    $offset = $search_param->offset;
+                }
+                if (property_exists($search_param, "statusId") != FALSE) {
+                    $status_id = $search_param->statusId;
+                    $status_id_list = array($status_id);
+                }
             }
+            $transction_list = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), $from_date, $to_date, $offset, $limit);
+            $response['transaction_list'] = $transction_list;
+            echo json_encode($response);
+            return;
         }
+        $transction_list = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
         $this->data['transction_list'] = $transction_list;
+        $this->load->library('Date_utils');
+        $current_date = $this->date_utils->get_current_date();
+        $this->data['current_date'] = $current_date;
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/index", $this->data);
     }
 
     public function update_transaction($transction_id = 0) {
+        $transaction_info = array();
+        $transaction_info_array = $this->transaction_model->get_transaction_info($transction_id)->result_array();
+        if(!empty($transaction_info_array)){
+            $transaction_info = $transaction_info_array[0];
+        }
+        $this->data['transaction_info'] = $transaction_info;
+        $this->data['app'] = TRANSCATION_APP;
+        $this->template->load(null, "superadmin/transaction/update_transaction", $this->data);
+    }
+
+    public function update_transaction_old($transction_id = 0) {
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -434,6 +473,15 @@ class Transaction extends CI_Controller {
         $this->data['transction_list'] = json_encode($transctionList);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/transactions", $this->data);
+    }
+
+    /*
+     * This method will load pagination template
+     * @author rashida on 26th April 2016 
+     */
+
+    function pagination_tmpl_load() {
+        $this->load->view('dir_pagination');
     }
 
 }

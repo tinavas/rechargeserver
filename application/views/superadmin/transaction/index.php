@@ -1,13 +1,21 @@
 <script type="text/javascript">
     $(function () {
         $('#start_date').Zebra_DatePicker();
+        $('#start_date').val('<?php echo $current_date ?>');
         $('#end_date').Zebra_DatePicker();
+        $('#end_date').val('<?php echo $current_date ?>');
+        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_PENDING?>');
     });
+     function search_transaction() {
+        var startDate = $("#start_date").val();
+        var endDate = $("#end_date").val();
+        angular.element($("#search_submit_btn")).scope().getTransactionList(startDate, endDate);
+    }
 </script>
 <div class="loader"></div>
-<div class="ezttle"><span class="text">TopUp History</span></div>
+<div class="ezttle"><span class="text">Transaction History</span></div>
 <div class="mypage" ng-controller="transctionController">
-    <ul class="list-unstyled topUpHistorySearch">
+    <ul class="list-unstyled paymentHistorySearch">
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
@@ -21,18 +29,19 @@
                 <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
             </select>
         </li>
-        <li>Show All</li>
-        <li> <input type="checkbox" ng-model="allTransactions"></li>
-        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_bkash()" class="button-custom"></li>
+<!--        <li>Show All</li>-->
+        <!--<li> <input type="checkbox" ng-model="allTransactions"></li>-->
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_transaction()" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
         <thead>
             <tr>
-                <th><a href="">Sender</a></th>
+                <th><a href="">Title</a></th>
+                <th><a href="">Trans.op.Id</a></th>
+                <th><a href="">Trans.Id</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
-                <th><a href="">Trans.ID</a></th>
                 <th><a href="">Date</a></th>
                 <th><a href="">Action</a></th>
             </tr>
@@ -40,16 +49,20 @@
         <tbody>
         </tbody>
         <tfoot ng-init="setTransctionList('<?php echo htmlspecialchars(json_encode($transction_list)) ?>')">
-
             <tr ng-repeat="transctionInfo in transctionInfoList">
-                <th>{{transctionInfo.sender_cell_no}}</th>
+                <th>{{transctionInfo.service_title}}</th>
+                <th>{{transctionInfo.trx_id_operator}}</th>
+                <th>{{transctionInfo.transaction_id}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
-                <th>{{transctionInfo.transaction_id}}</th>
                 <th>{{transctionInfo.created_on}}</th>
-                <th>{{transctionInfo.created_on}}</th>
+                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>' && transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'"><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
+                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_FAILED; ?>'">delete</th>
             </tr>
         </tfoot>
     </table>
 </div>
+
+<?php
+$this->load->view("superadmin/transaction/modal_delete_transaction");
