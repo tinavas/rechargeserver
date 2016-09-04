@@ -25,13 +25,14 @@ class Transaction extends CI_Controller {
         $api_key = API_KEY_BKASH_CASHIN;
         $transaction_id = "";
         $description = "test";
-        $data['non_xss'] = $transaction_data = array(
+        $transaction_data = array(
             'user_id' => $user_id,
             'transaction_id' => $transaction_id,
             'service_id' => SERVICE_TYPE_ID_BKASH_CASHIN,
             'amount' => $amount,
             'cell_no' => $cell_no,
-            'description' => $description
+            'description' => $description,
+            'process_type_id' => TRANSACTION_PROCESS_TYPE_ID_AUTO
         );
    
 
@@ -74,7 +75,8 @@ class Transaction extends CI_Controller {
             'service_id' => SERVICE_TYPE_ID_DBBL_CASHIN,
             'amount' => $amount,
             'cell_no' => $cell_no,
-            'description' => $description
+            'description' => $description,
+            'process_type_id' => TRANSACTION_PROCESS_TYPE_ID_AUTO
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -115,7 +117,8 @@ class Transaction extends CI_Controller {
             'service_id' => SERVICE_TYPE_ID_MCASH_CASHIN,
             'amount' => $amount,
             'cell_no' => $cell_no,
-            'description' => $description
+            'description' => $description,
+            'process_type_id' => TRANSACTION_PROCESS_TYPE_ID_AUTO
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -156,7 +159,8 @@ class Transaction extends CI_Controller {
             'service_id' => SERVICE_TYPE_ID_UCASH_CASHIN,
             'amount' => $amount,
             'cell_no' => $cell_no,
-            'description' => $description
+            'description' => $description,
+            'process_type_id' => TRANSACTION_PROCESS_TYPE_ID_AUTO
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {
@@ -233,7 +237,8 @@ class Transaction extends CI_Controller {
             'service_id' => $service_id,
             'amount' => $amount,
             'cell_no' => $cell_no,
-            'description' => $description
+            'description' => $description,
+            'process_type_id' => TRANSACTION_PROCESS_TYPE_ID_AUTO
         );
         $this->load->library('transaction_library');
         if ($this->transaction_library->add_transaction($api_key, $transaction_data) !== FALSE) {

@@ -25,7 +25,7 @@
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Last Update</th>
                                     <th style="text-align: center;">Edit</th>
-                                    <th style="text-align: center;">Generate Balance</th>
+                                    <th style="text-align: center;">Show Balance</th>
                                 </tr>
                                 <tr ng-repeat="simInfo in simList">
                                     <th style="text-align: center;">{{simInfo.sim_no}}</th>
@@ -35,7 +35,7 @@
                                     <th style="text-align: center;">{{simInfo.status}}</th>
                                     <th style="text-align: center;">{{simInfo.modified_on}}</th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>
-                                    <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/get_sim_balance/"; ?>{{simInfo.sim_no}}">Generate</a></th>
+                                    <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/get_sim_balance/"; ?>{{simInfo.sim_no}}">Update</a></th>
                                 </tr>
                             </thead>
                         </table>
