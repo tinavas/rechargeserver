@@ -1,10 +1,10 @@
 <script type="text/javascript">
     $(function () {
         $('#start_date').Zebra_DatePicker();
-        $('#start_date').val('<?php echo $current_date?>');
+        $('#start_date').val('<?php echo $current_date ?>');
         $('#end_date').Zebra_DatePicker();
-        $('#end_date').val('<?php echo $current_date?>');
-        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL?>');
+        $('#end_date').val('<?php echo $current_date ?>');
+        $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>');
     });
     function search_bkash() {
         var startDate = $("#start_date").val();
@@ -36,11 +36,12 @@
     <table class="table table-striped table-hover"> 
         <thead>
             <tr>
+                <th><a href="">Id</a></th>
                 <th><a href="">Sender</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
-                <th><a href="">Trans.ID</a></th>
+                <th><a href="">Transaction Id</a></th>
                 <th><a href="">Date</a></th>
             </tr>
         </thead>
@@ -49,11 +50,12 @@
         <tfoot ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
 
             <tr ng-repeat="transctionInfo in transctionInfoList">
+                <th>{{transctionInfo.transaction_id}}</th>
                 <th>{{transctionInfo.sender_cell_no}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
-                <th>{{transctionInfo.transaction_id}}</th>
+                <th>{{transctionInfo.trx_id_operator}}</th>
                 <th>{{transctionInfo.created_on}}</th>
             </tr>
         </tfoot>
