@@ -1,22 +1,23 @@
 angular.module('controller.Transction', ['service.Transction']).
         controller('transctionController', function ($scope, transctionService) {
-            $scope.transctionInfo = {};
+            $scope.transactionInfo = {};
             $scope.simInfo = {};
             $scope.searchInfo = {};
             $scope.loadBalanceInfo = {};
             $scope.serviceList = [];
             $scope.simList = [];
             $scope.simServiceList = [];
-            $scope.transctionList = [];
+            $scope.transctionInfoList = [];
 //            $scope.serviceRateList = [];
             $scope.allow_action = true;
 
 
             $scope.setTransctionList = function (transctionList) {
-                $scope.transctionList = JSON.parse(transctionList);
+                $scope.transctionInfoList = JSON.parse(transctionList);
             }
-            $scope.setTransctionInfo = function (transctionInfo) {
-                $scope.transctionInfo = JSON.parse(transctionInfo);
+            $scope.setTransactionInfo = function (transactionInfo) {
+                $scope.transactionInfo = JSON.parse(transactionInfo);
+                console.log($scope.transactionInfo);
             }
 
             $scope.updateTransction = function (callbackFunction) {
@@ -87,10 +88,10 @@ angular.module('controller.Transction', ['service.Transction']).
                 $scope.allow_action = false;
                 $scope.simInfo = simInfo;
                 transctionService.editSim($scope.simInfo).
-                    success(function (data, status, headers, config) {
-                        $scope.allow_action = true;
-                        callbackFunction(data);
-                    });
+                        success(function (data, status, headers, config) {
+                            $scope.allow_action = true;
+                            callbackFunction(data);
+                        });
             };
             $scope.loadBalance = function (balanceInfo, callbackFunction) {
                 if ($scope.allow_action == false) {
@@ -131,6 +132,22 @@ angular.module('controller.Transction', ['service.Transction']).
                             $scope.allow_service_action = true;
                         });
             }
+
+            $scope.getTransactionList = function (startDate, endDate) {
+                if ($scope.allow_action == false) {
+                    return;
+                }
+                $scope.allow_action = false;
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                transctionService.getTransactionList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.allow_action = true;
+                        });
+            };
 
 
         });

@@ -1,6 +1,5 @@
 <script>
     function update_service(serviceInfo) {
-
         if (typeof serviceInfo.title == "undefined" || serviceInfo.title.length == 0) {
             $("#content").html("Please give a Service Title !");
             $('#common_modal').modal('show');
@@ -21,7 +20,7 @@
 
 <div class="panel panel-default" ng-controller="serviceController">
     <div class="panel-heading">Update Service</div>
-    <div class="panel-body" ng-init="setServiceInfo(<?php echo htmlentities(json_encode($service_info))?>)">
+    <div class="panel-body" ng-init="setServiceInfo(<?php echo htmlentities(json_encode($service_info)) ?>)">
         <form>
             <div class="form-background top-bottom-padding">
                 <div class="row">
@@ -29,10 +28,20 @@
 
                         <div class=" row form-group">
                             <label for="service_title" class="col-md-6 control-label requiredField">
-                                Title
+                                Title:
                             </label>
                             <div class ="col-md-6">
                                 <input type="text" value="" class="form-control" placeholder="service title"  ng-model="serviceInfo.title">
+                            </div> 
+                        </div>
+                        <div class=" row form-group">
+                            <label for="service_title" class="col-md-6 control-label requiredField">
+                                Type:
+                            </label>
+                            <div class ="col-md-6">
+                                <select  for="type" id="type"  ng-model="serviceInfo.type_id" class="form-control control-label requiredField" ng-init="setServiceTypeList('<?php echo htmlspecialchars(json_encode($service_type_list)); ?>')">
+                                    <option ng-selected="serviceType.selected" class=form-control ng-repeat="serviceType in serviceTypeList" value="{{serviceType.id}}">{{serviceType.title}}</option>
+                                </select>
                             </div> 
                         </div>
                         <div class="row form-group">

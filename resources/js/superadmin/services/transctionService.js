@@ -60,6 +60,16 @@ angular.module('service.Transction', []).
                     }
                 });
             };
+            transctionService.getTransactionList = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/transaction/get_transaction_list/' ,
+                    data: {
+                        searchInfo : searchInfo
+                    }
+                });
+            };
             return transctionService;
         });
 

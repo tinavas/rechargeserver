@@ -7,8 +7,9 @@ if (!defined('BASEPATH'))
  *
  */
 class Transaction_library {
+
     public function __construct() {
-        $this->load->model('org/transaction_model');
+        $this->load->model("superadmin/org/transaction_model");
     }
 
     /**
@@ -39,4 +40,24 @@ class Transaction_library {
     public function __get($var) {
         return get_instance()->$var;
     }
+
+    public function get_transaction_list($service_id_list, $status_id_list, $process_id_list, $from_date = 0,  $to_date = 0, $offset = 0, $limit = 0) {
+        $this->load->library('date_utils');
+        if ($from_date != 0) {
+            $from_date = $this->date_utils->server_start_unix_time_of_date($from_date);
+        }
+        if ($to_date != 0) {
+            $to_date = $this->date_utils->server_end_unix_time_of_date($to_date);
+        }
+        $transaction_list = $this->transaction_model->get_transaction_list($service_id_list, $status_id_list, $process_id_list, $offset, $limit)->result_array();
+        $transaction_info_list = array();
+        if (!empty($transaction_list)) {
+            foreach ($transaction_list as $transaction_info) {
+                $transaction_info['created_on'] = $this->date_utils->get_unix_to_display($transaction_info['created_on']);
+                $transaction_info_list[] = $transaction_info;
+            }
+        }
+        return $transaction_info_list;
+    }
+
 }

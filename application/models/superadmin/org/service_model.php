@@ -12,15 +12,10 @@ class Service_model extends Ion_auth_model {
      */
 
     public function get_service_info($service_id) {
-        $this->curl->create(WEBSERVICE_SERVICE_PATH . "getserviceinfo");
-        $this->curl->post(array("service_id" => $service_id));
-        return json_decode($this->curl->execute());
-
-//        $service_info = array(
-//            'service_id' => 1,
-//            'title' => 'Bkash Send Money'
-//        );
-//        return $service_info;
+        $this->db->where($this->tables['services'] . '.id', $service_id);
+        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
+                        ->from($this->tables['services'])
+                        ->get();
     }
 
     /*
@@ -46,19 +41,29 @@ class Service_model extends Ion_auth_model {
     /*
      * This method will update a service info
      * @param $service_id, service id
-     * @param $service_data, service data
+     * @param $service_info, service data
      */
 
-    public function update_service($service_id, $title) {
-        $this->curl->create(WEBSERVICE_SERVICE_PATH . "updateserviceinfo");
-        $this->curl->post(array("service_id" => $service_id, "title" => $title));
-        return json_decode($this->curl->execute());
-
-//        return true;
+    public function update_service($service_id, $service_info) {
+        $this->db->where('id', $service_id);
+       return $this->db->update($this->tables['services'], $service_info);
     }
 
     public function delete_service() {
         
+    }
+
+    public function get_all_service_list() {
+        return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*,' . $this->tables['service_types'] . '.title as process_type')
+                        ->from($this->tables['services'])
+                        ->join($this->tables['service_types'], $this->tables['service_types'] . '.id=' . $this->tables['services'] . '.type_id')
+                        ->get();
+    }
+
+    public function get_service_type_list() {
+        return $this->db->select($this->tables['service_types'] . '.*')
+                        ->from($this->tables['service_types'])
+                        ->get();
     }
 
 }

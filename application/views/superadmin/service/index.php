@@ -15,10 +15,12 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
+                                <th>Process type</th>
                                 <th style="text-align: center">Edit</th>
                             </tr>
                             <tr ng-repeat="serviceInfo in serviceList">
                                 <td>{{serviceInfo.title}}</td>
+                                <td>{{serviceInfo.process_type}}</td>
                                 <td>
                                     <a href="<?php echo base_url() . "superadmin/service/update_service/" ; ?>{{serviceInfo.id}}">
                                         Edit

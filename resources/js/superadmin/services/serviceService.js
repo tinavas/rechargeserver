@@ -16,7 +16,7 @@ angular.module('service.Service', []).
 
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/service/update_service',
+                    url: $location.path() + $app_name + '/superadmin/service/update_service/' + serviceInfo.id,
                     data: {
                         serviceInfo : serviceInfo
                     }
