@@ -30,79 +30,87 @@ class Sim extends CI_Controller {
      */
 
     public function add_sim() {
-        $response = array();
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "simInfo") != FALSE) {
+                $additional_sim_info = array();
                 $sim_info = $requestInfo->simInfo;
-                $sim_no = "";
-                $identifier = "";
-                $description = "";
-                $current_balance = 0;
-                $status = 0;
-                if (property_exists($sim_info, "sim_no")) {
-                    $sim_no = $sim_info->sim_no;
-                }
-                $this->load->library('utils');
-                if ($this->utils->cell_number_validation($sim_no) == FALSE) {
-                    $response["message"] = "Please Enter a Valid Cell Number !!";
+                if (property_exists($sim_info, "simNo")) {
+                    $sim_no = $sim_info->simNo;
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($sim_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number !!Supported format is now 01XXXXXXXXX. ";
+                        echo json_encode($response);
+                        return;
+                    }
+                    $additional_sim_info['sim_no'] = $sim_no;
+                } else {
+                    $response["message"] = " Please give a sim number! Sim Number is Required !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($sim_info, "identifier")) {
-                    $identifier = $sim_info->identifier;
-                }
-                if (property_exists($sim_info, "description")) {
-                    $description = $sim_info->description;
-                }
-                if (property_exists($sim_info, "current_balance")) {
-                    $current_balance = $sim_info->current_balance;
+                    $additional_sim_info['identifier'] = $sim_info->identifier;
+                } else {
+                    $response["message"] = " Please give an identifier ! Identifier is Required !!";
+                    echo json_encode($response);
+                    return;
                 }
                 if (property_exists($sim_info, "status")) {
-                    $status = $sim_info->status;
+                    $additional_sim_info['status'] = $sim_info->status;
                 }
-                $additional_data = array(
-                    'sim_no' => $sim_no,
-                    'identifier' => $identifier,
-                    'description' => $description,
-                    'current_balance' => $current_balance,
-                    'status' => $status
-                );
-            }
-            $result_event = $this->sim_model->add_sim($additional_data);
-            if (!empty($result_event)) {
-                if (property_exists($result_event, "responseCode") != FALSE) {
-                    if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
-                        $response['message'] = 'Sim is added successfully.';
+                if (property_exists($sim_info, "status")) {
+                    $additional_sim_info['description'] = $sim_info->description;
+                }
+
+
+                $sim_service_list = array();
+                if (property_exists($sim_info, "serviceInfoList")) {
+                    $sim_service_list = $sim_info->serviceInfoList;
+                } else {
+                    $response["message"] = " Please assaign at least one service !";
+                    echo json_encode($response);
+                    return;
+                }
+                $result_event = $this->sim_model->add_sim($additional_sim_info, $sim_service_list);
+                if (!empty($result_event)) {
+                    if (property_exists($result_event, "responseCode") != FALSE) {
+                        if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
+                            $response['message'] = 'Sim is added successfully.';
+                        } else {
+                            $response['message'] = 'Failed to add sim.';
+                        }
                     } else {
-                        $response['message'] = 'Failed to add sim.';
+                        $response['message'] = 'Error while adding the sim. Please try again later.';
                     }
                 } else {
-                    $response['message'] = 'Error while adding the sim. Please try again later.';
+                    $response['message'] = 'Server is unaviable right now. Please try again later.';
                 }
+                echo json_encode($response);
+                return;
+            } else {
+                $response['message'] = 'Invalid input formate. Please try again later.';
+                echo json_encode($response);
+                return;
             }
-            echo json_encode($response);
-            return;
         }
 
-        $obj = new stdClass();
-        $obj->id = SIM_CATEGORY_TYPE_AGENT;
-        $obj->title = "Agent";
-        $obj->selected = true;
-        $obj1 = new stdClass();
-        $obj1->id = SIM_CATEGORY_TYPE_PERSONAL;
-        $obj1->title = "Personal";
-        $obj1->selected = false;
 
-        $sim_category_list = array(
-        );
-        $sim_category_list[] = $obj;
-        $sim_category_list[] = $obj1;
         $this->load->model('superadmin/org/service_model');
-        $service_list = $this->service_model->get_all_services()->result_array();
+        $service_list_array = $this->service_model->get_all_services()->result_array();
+        foreach ($service_list_array as $service_info) {
+            if ($service_info['service_id'] == SERVICE_TYPE_ID_BKASH_CASHIN) {
+                $service_info['selected'] = true;
+            }
+            $service_list[] = $service_info;
+        }
+        $sim_category_list = $this->sim_model->get_sim_category_list();
+        $sim_status_list = $this->sim_model->get_sim_status_list();
         $this->data['service_list'] = json_encode($service_list);
         $this->data['sim_category_list'] = $sim_category_list;
+        $this->data['sim_status_list'] = $sim_status_list;
         $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/create_sim", $this->data);
     }
@@ -114,61 +122,94 @@ class Sim extends CI_Controller {
 
     public function edit_sim($sim_no) {
         if (file_get_contents("php://input") != null) {
+            $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "simInfo") != FALSE) {
+                $updated_sim_info = array();
                 $sim_info = $requestInfo->simInfo;
-                $sim_no = "";
-                $identifier = "";
-                $description = "";
-                $current_balance = 0;
-                $status = 0;
-                if (property_exists($sim_info, "sim_no")) {
-                    $sim_no = $sim_info->sim_no;
-                }
-                $this->load->library('utils');
-                if ($this->utils->cell_number_validation($sim_no) == FALSE) {
-                    $response["message"] = "Please Enter a Valid Cell Number !!";
+                if (property_exists($sim_info, "simNo")) {
+                    $sim_no = $sim_info->simNo;
+                    $this->load->library('utils');
+                    if ($this->utils->cell_number_validation($sim_no) == FALSE) {
+                        $response["message"] = "Please Enter a Valid Cell Number !!Supported format is now 01XXXXXXXXX. ";
+                        echo json_encode($response);
+                        return;
+                    }
+                    $updated_sim_info['sim_no'] = $sim_no;
+                } else {
+                    $response["message"] = " Please give a sim number! Sim Number is Required !!";
                     echo json_encode($response);
                     return;
                 }
                 if (property_exists($sim_info, "identifier")) {
-                    $identifier = $sim_info->identifier;
-                }
-                if (property_exists($sim_info, "description")) {
-                    $description = $sim_info->description;
-                }
-                if (property_exists($sim_info, "current_balance")) {
-                    $current_balance = $sim_info->current_balance;
+                    $updated_sim_info['identifier'] = $sim_info->identifier;
+                } else {
+                    $response["message"] = " Please give an identifier ! Identifier is Required !!";
+                    echo json_encode($response);
+                    return;
                 }
                 if (property_exists($sim_info, "status")) {
-                    $status = $sim_info->status;
+                    $updated_sim_info['status'] = $sim_info->status;
                 }
-                $additional_data = array(
-                    'sim_no' => $sim_no,
-                    'identifier' => $identifier,
-                    'description' => $description,
-                    'current_balance' => $current_balance,
-                    'status' => $status
-                );
-            }
-            $result_event = $this->sim_model->edit_sim($additional_data);
-            if (!empty($result_event)) {
-                if (property_exists($result_event, "responseCode") != FALSE) {
-                    if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
-                        $response['message'] = 'Sim is updated successfully.';
+                if (property_exists($sim_info, "status")) {
+                    $updated_sim_info['description'] = $sim_info->description;
+                }
+
+
+                $sim_service_list = array();
+                if (property_exists($sim_info, "serviceInfoList")) {
+                    $sim_service_list = $sim_info->serviceInfoList;
+                } else {
+                    $response["message"] = " Please assaign at least one service !";
+                    echo json_encode($response);
+                    return;
+                }
+
+                $result_event = $this->sim_model->edit_sim($updated_sim_info, $sim_service_list);
+                if (!empty($result_event)) {
+                    if (property_exists($result_event, "responseCode") != FALSE) {
+                        if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
+                            $response['message'] = 'Sim informations is updated successfully.';
+                        } else {
+                            $response['message'] = 'Failed to update sim informations.';
+                        }
                     } else {
-                        $response['message'] = 'Failed to update sim.';
+                        $response['message'] = 'Error while updating the sim informations. Please try again later.';
                     }
                 } else {
-                    $response['message'] = 'Error while updating the sim. Please try again later.';
+                    $response['message'] = 'Server is unaviable right now. Please try again later.';
                 }
+            } else {
+                $response['message'] = 'Invalid input formate. Please try again later.';
             }
             echo json_encode($response);
             return;
         }
         $sim_info = $this->sim_model->get_sim_info($sim_no);
+        $sim_status_list = $this->sim_model->get_sim_status_list();
+        $sim_service_list = $sim_info['simServiceList'];
+        $this->load->model('superadmin/org/service_model');
+        $sim_category_list = $this->sim_model->get_sim_category_list();
+        $service_list_array = $this->service_model->get_all_services()->result_array();
+        $service_list = array();
+        foreach ($service_list_array as $service_info) {
+            foreach ($sim_service_list as $sim_service) {
+                $service_info['categoryId'] = SIM_CATEGORY_TYPE_AGENT;
+                if ($sim_service->serviceId == $service_info['service_id']) {
+                    $service_info['selected'] = true;
+                    $service_info['categoryId'] = $sim_service->categoryId;
+                    $service_info['currentBalance'] = $sim_service->currentBalance;
+                }
+            }
+
+            $service_list[] = $service_info;
+        }
+
         $this->data['sim_info'] = json_encode($sim_info);
+        $this->data['service_list'] = json_encode($service_list);
+        $this->data['sim_category_list'] = $sim_category_list;
+        $this->data['sim_status_list'] = $sim_status_list;
         $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/edit_sim", $this->data);
     }

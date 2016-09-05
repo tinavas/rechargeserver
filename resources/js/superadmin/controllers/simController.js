@@ -6,6 +6,7 @@ angular.module('controller.Sim', ['service.Sim']).
             $scope.simCategoryList = [];
             $scope.simList = [];
             $scope.simServiceList = [];
+            $scope.simStatusList = [];
             $scope.allow_action = true;
 
             $scope.setSimInfo = function (simInfo) {
@@ -22,6 +23,9 @@ angular.module('controller.Sim', ['service.Sim']).
             };
             $scope.setSimCategoryList = function (simCategoryList) {
                 $scope.simCategoryList = JSON.parse(simCategoryList);
+            };
+            $scope.setSimStatusList = function (simStatusList) {
+                $scope.simStatusList = JSON.parse(simStatusList);
             };
             $scope.checkAll = function () {
                 if ($scope.selectedAll) {
@@ -46,14 +50,24 @@ angular.module('controller.Sim', ['service.Sim']).
                 }
                 $scope.allow_action = false;
                 $scope.simInfo = simInfo;
-//                if (typeof $scope.simInfo.selectedIdList == "undefined") {
-//                    $scope.simInfo.selectedIdList = [];
-//                }
-//                angular.forEach($scope.serviceList, function (service) {
-//                    if (service.selected == true) {
-//                        $scope.simInfo.selectedIdList.push(service.service_id);
-//                    }
-//                });
+                if (typeof $scope.simInfo.serviceInfoList == "undefined") {
+                    $scope.simInfo.serviceInfoList = [];
+                }
+                angular.forEach($scope.serviceList, function (service) {
+                    if (service.selected == true) {
+                        var serviceInfo = {};
+                        serviceInfo.serviceId = service.service_id;
+                        if (typeof service.categoryId == "undefined" || service.categoryId == "") {
+                            service.categoryId = $scope.simCategoryList[0]['id'] + "";
+                        }
+                        serviceInfo.categoryId = service.categoryId;
+                        serviceInfo.currentBalance = service.currentBalance;
+                        $scope.simInfo.serviceInfoList.push(serviceInfo);
+                    }
+                });
+                if (typeof $scope.simInfo.status == "undefined" || $scope.simInfo.status.categoryId == "") {
+                    $scope.simInfo.status = $scope.simStatusList[0]['id'] + "";
+                }
                 simService.addSim($scope.simInfo).
                         success(function (data, status, headers, config) {
                             $scope.allow_action = true;
@@ -66,6 +80,18 @@ angular.module('controller.Sim', ['service.Sim']).
                 }
                 $scope.allow_action = false;
                 $scope.simInfo = simInfo;
+                if (typeof $scope.simInfo.serviceInfoList == "undefined") {
+                    $scope.simInfo.serviceInfoList = [];
+                }
+                angular.forEach($scope.serviceList, function (service) {
+                    if (service.selected == true) {
+                        var serviceInfo = {};
+                        serviceInfo.serviceId = service.service_id;
+                        serviceInfo.categoryId = service.categoryId;
+                        serviceInfo.currentBalance = service.currentBalance;
+                        $scope.simInfo.serviceInfoList.push(serviceInfo);
+                    }
+                });
                 simService.editSim($scope.simInfo).
                         success(function (data, status, headers, config) {
                             $scope.allow_action = true;

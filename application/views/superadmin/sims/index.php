@@ -21,7 +21,6 @@
                                     <th style="text-align: center;">Sim Number</th>
                                     <th style="text-align: center;">Identifier</th>
                                     <th style="text-align: center;">Description</th>
-                                    <th style="text-align: center;">Balance</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Last Update</th>
                                     <th style="text-align: center;">Edit</th>
@@ -31,7 +30,6 @@
                                     <th style="text-align: center;">{{simInfo.sim_no}}</th>
                                     <th style="text-align: center;">{{simInfo.identifier}}</th>
                                     <th style="text-align: center;">{{simInfo.description}}</th>
-                                    <th style="text-align: center;">{{simInfo.current_balance}}</th>
                                     <th style="text-align: center;">{{simInfo.status}}</th>
                                     <th style="text-align: center;">{{simInfo.modified_on}}</th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>

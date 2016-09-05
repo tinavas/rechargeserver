@@ -16,7 +16,7 @@ angular.module('service.Sim', []).
             simService.editSim = function (simInfo) {
                 return $http({
                     method: 'post',
-                    url: $location.path() + $app_name + '/superadmin/sim/edit_sim/' + simInfo.sim_no,
+                    url: $location.path() + $app_name + '/superadmin/sim/edit_sim/' + simInfo.simNo,
                     data: {
                         simInfo: simInfo
                     }
