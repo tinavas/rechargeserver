@@ -7363,7 +7363,8 @@ body.ur .ez-highlight-area .ez-button:first-child {
 footer {
     width:100%;
     background:#1c262b;
-    position:relative;
+    position:fixed;
+    bottom: 0px;
     z-index:101;
     padDing:30px 0
 }
