@@ -7423,9 +7423,17 @@ footer .ez-footer-accordion {
 footer .ez-footer-accordion li {
     padDing-right:10px
 }
-footer ul {
+/*footer ul {
     width:16.66%;
     float:left
+}*/
+.footer_text{
+    background-color: #1c262b;
+    color: #fff;
+    font-size: 16px;
+    height: 10px;
+    margin-top: -10px;
+    text-align: center;
 }
 footer li {
     font-size:14px;
@@ -7480,14 +7488,7 @@ body.ur footer li.ez-menu-header span {
     left:30px;
     right:initial
 }
-#ez-snippet-footersecuritylogos {
-    margin-top:18px;
-    padDing-top:26px;
-    border-top:1px solid rgba(255,
-    255,
-    255,
-    .1)
-}
+
 #ez-footer-cards {
     width:auto
 }
