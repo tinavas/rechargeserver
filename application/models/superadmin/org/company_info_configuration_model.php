@@ -28,14 +28,6 @@ class Company_info_configuration_model extends Ion_auth_model {
      * @param $service_id, service id
      * @param $service_data, service data
      */
-public function update_company_info($id, $service_info) {
-        $this->db->where('id', $service_id);
-       return $this->db->update($this->tables['services'], $service_info);
-    }
    
-
-    public function delete_service() {
-        
-    }
 
 }
