@@ -8,6 +8,7 @@
         <title>Admin API</title>
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/css/main.css">
 
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.min.js"></script>

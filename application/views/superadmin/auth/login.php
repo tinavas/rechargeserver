@@ -1,4 +1,3 @@
-
 <div>
     <h1><?php echo lang('login_heading'); ?></h1>
     <p><?php echo lang('login_subheading'); ?></p>
@@ -17,11 +16,9 @@
                 <?php echo form_input($password + array('class' => 'form-control')); ?>
             </div>
             <div class="form-group">
-                <?php echo form_submit($login + array('class' => 'form-control btn_custom_button')); ?>
+                <?php echo form_submit($login + array('class' => 'ez-full-width')); ?>
             </div>
-
             <?php echo form_close(); ?>
         </div>
-
     </div>
 </div>
