@@ -10,7 +10,7 @@
     }
 </script>
 
-<div class="panel panel-default" ng-controller="transctionController">
+<div class="panel panel-default" ng-controller="simController">
     <div class="panel-heading">Transactions</div>
 
     <div class="panel-body">

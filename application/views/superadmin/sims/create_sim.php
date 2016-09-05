@@ -42,7 +42,7 @@
 </script>
 <div class="panel panel-default">
     <div class="panel-heading">Add Sim</div>
-    <div class="panel-body" ng-controller="transctionController">
+    <div class="panel-body" ng-controller="simController">
         <div class="form-background top-bottom-padding">
             <div class="row">
                 <div class ="col-md-8 margin-top-bottom">
@@ -71,14 +71,14 @@
                                 <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.description">
                             </div> 
                         </div>
-                        <div class="row form-group">
+<!--                        <div class="row form-group">
                             <label for="current_balance" class="col-md-6 control-label requiredField">
                                 Current Balance:
                             </label>
                             <div class ="col-md-6">
                                 <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.current_balance">
                             </div> 
-                        </div>
+                        </div>-->
                         <div class="row form-group">
                             <label for="status" class="col-md-6 control-label requiredField">
                                 Status:
@@ -87,9 +87,19 @@
                                 <input type="text" placeholder="1 or 0" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.status">
                             </div> 
                         </div>
+                        <div class=" row form-group">
+                            <label for="service_title" class="col-md-6 control-label requiredField">
+                               Category Type:
+                            </label>
+                            <div class ="col-md-6">
+                                <select  for="type" id="type"  ng-model="simInfo.category_id" class="form-control control-label requiredField" ng-init="setSimCategoryList('<?php echo htmlspecialchars(json_encode($sim_category_list)); ?>')">
+                                    <option ng-selected="category.selected" class=form-control ng-repeat="category in simCategoryList" value="{{category.id}}">{{category.title}}</option>
+                                </select>
+                            </div> 
+                        </div>
                     </form>
                 </div>
-<!--                <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="row col-md-12">
                         <label for="sim_member" class="control-label requiredField">
                             Services
@@ -106,7 +116,8 @@
                             <input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.service_id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}
                         </div>
                     </div>
-                </div>-->
+
+                </div>
             </div>
             <div class="row form-group">
                 <div class ="col-md-3 pull-right">

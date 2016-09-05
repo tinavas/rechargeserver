@@ -36,6 +36,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/transctionService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/historyService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/companyInfoConfigurationService.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/simService.js"></script>
         <!--<angular Controller>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/serviceController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/subscriberController.js"></script>
@@ -43,12 +44,14 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/historyController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/imageCropController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/companyInfoConfigurationController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/simController.js"></script>
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/serviceApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/subscriberApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/transctionApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/historyApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/configurationApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/simApp.js"></script>
     </head>
     <body ng-app="<?php echo $app; ?>">
         <?php $this->load->view("superadmin/templates/sections/header"); ?>

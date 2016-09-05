@@ -9,7 +9,7 @@
 
     }
 </script>
-<div class="panel panel-default" ng-controller="transctionController">
+<div class="panel panel-default" ng-controller="simController">
     <div id="sim_details_id">  
         <div class="panel-heading">Sim Details -> <?php //echo $sim_info ?></div>
         <div class="panel-body">

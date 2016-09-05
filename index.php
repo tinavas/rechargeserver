@@ -11,6 +11,7 @@ include './constants/file_configuration.php';
 include './constants/superadmin/configuration.php';
 include './constants/superadmin/app_configaration.php';
 include './constants/superadmin/admin_templates.php';
+include './constants/superadmin/sim.php';
 
 define('GROUP_ADMIN', 'admin');
 define('GROUP_TYPE1', 'type1');

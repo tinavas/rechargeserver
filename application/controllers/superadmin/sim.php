@@ -16,19 +16,20 @@ class Sim extends CI_Controller {
      * Home page of sim
      * @author nazmul hasan on 11th June 2016
      */
+
     public function index() {
         $sim_list = $this->sim_model->get_sim_list();
         $this->data['sim_list'] = json_encode($sim_list);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/index", $this->data);
-    } 
-    
+    }
+
     /*
      * This method will add a new sim
      * @author nazmul hasan on 11th June 2016
      */
-    public function add_sim()
-    {
+
+    public function add_sim() {
         $response = array();
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
@@ -86,23 +87,32 @@ class Sim extends CI_Controller {
         }
 
         $obj = new stdClass();
-        $obj->service_id = SERVICE_TYPE_ID_BKASH_CASHIN;
-        $obj->title = "BKash";
-        
-        $service_list = array(
+        $obj->id = SIM_CATEGORY_TYPE_AGENT;
+        $obj->title = "Agent";
+        $obj->selected = true;
+        $obj1 = new stdClass();
+        $obj1->id = SIM_CATEGORY_TYPE_PERSONAL;
+        $obj1->title = "Personal";
+        $obj1->selected = false;
+
+        $sim_category_list = array(
         );
-        $service_list[] = $obj;
+        $sim_category_list[] = $obj;
+        $sim_category_list[] = $obj1;
+        $this->load->model('superadmin/org/service_model');
+        $service_list = $this->service_model->get_all_services()->result_array();
         $this->data['service_list'] = json_encode($service_list);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['sim_category_list'] = $sim_category_list;
+        $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/create_sim", $this->data);
     }
-    
+
     /*
      * This method will edit existing sim info
      * @author nazmul hasan on 11th June 2016
      */
-    public function edit_sim($sim_no)
-    {
+
+    public function edit_sim($sim_no) {
         if (file_get_contents("php://input") != null) {
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
@@ -159,14 +169,14 @@ class Sim extends CI_Controller {
         }
         $sim_info = $this->sim_model->get_sim_info($sim_no);
         $this->data['sim_info'] = json_encode($sim_info);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/edit_sim", $this->data);
     }
-    
-    public function get_sim_balance($sim_no)
-    {
+
+    public function get_sim_balance($sim_no) {
         $this->sim_model->check_sim_balance($sim_no);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/update_sim_balance", $this->data);
     }
+
 }

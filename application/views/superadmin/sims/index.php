@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="transctionController">
+<div class="panel panel-default" ng-controller="simController">
     <div id="sim_info_show">
         <div class="panel-heading">SIM List</div>
         <div class="panel-body">

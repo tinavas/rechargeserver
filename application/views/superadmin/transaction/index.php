@@ -36,9 +36,9 @@
     <table class="table table-striped table-hover"> 
         <thead>
             <tr>
+                <th><a href="">Id</a></th>
+                <th><a href="">Transaction Id</a></th>
                 <th><a href="">Title</a></th>
-                <th><a href="">Trans.op.Id</a></th>
-                <th><a href="">Trans.Id</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
@@ -50,9 +50,9 @@
         </tbody>
         <tfoot ng-init="setTransctionList('<?php echo htmlspecialchars(json_encode($transaction_list)) ?>', '<?php echo htmlspecialchars(json_encode($total_transactions)) ?>')">
             <tr ng-repeat="transctionInfo in transctionInfoList">
-                <th>{{transctionInfo.service_title}}</th>
-                <th>{{transctionInfo.trx_id_operator}}</th>
                 <th>{{transctionInfo.transaction_id}}</th>
+                <th>{{transctionInfo.trx_id_operator}}</th>
+                <th>{{transctionInfo.service_title}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
