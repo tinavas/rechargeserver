@@ -26,6 +26,12 @@ define("TOPUP_MINIMUM_CASH_IN_AMOUNT",                     "10");
 define("TOPUP_MAXIMUM_CASH_IN_AMOUNT",                     "50000");
 define("TOPUP_POSTPAID_GP_MINIMUM_CASH_IN_AMOUNT",         "50");
 
+define("COMPANY_LOGO_NAME",                                "company_logo");
+define("COMPANY_LOGO_PATH",                                "resources/images/company_logo/");
+define("COMPANY_LOGO_PATH_W333_H44",                       "resources/images/company_logo/333x44/");
+define("COMPANY_LOGO_H44",                                 "44");
+define("COMPANY_LOGO_W333",                                "333");
+
 define("WEBSERVICE_URL_REGISTER_MEMBER",                   "http://localhost:4040/registermember");
 define("WEBSERVICE_URL_CREATE_TRANSACTION",                "http://localhost:3030/addtransaction");
 define("WEBSERVICE_URL_UPDATE_TRANSACTION",                "http://localhost:3030/updatetransactioninfo");

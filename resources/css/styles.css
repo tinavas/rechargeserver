@@ -41,3 +41,128 @@
     font-weight: bold;
     background-color: #22468E;
 }
+
+.main {
+    padding-left:180px;
+}
+.sidebar {
+    width:180px;
+    float:left;
+}
+.mypage{
+    padding:20px;
+}
+
+.ezttle{
+    margin:0px;
+    padding:0px;
+    background:#F1F1F1;
+    height:40px;
+    padding:5px 10px; 
+    border-bottom:1px solid #ccc;
+}
+
+.ezttle span.text{
+    font-size:13px;
+    font-weight:bold;
+    width:40%;
+    float:left;
+    height:40px;
+    line-height:30px;
+}
+
+.ezttle span.acton{
+    float:right;
+    text-align:right;
+    margin-top: -1px;
+}
+
+#filtersdiv
+{	
+}
+#filtersdiv td{font-weight:bold;color:#666;}
+#filtersdiv td:first-child{padding-left:10px;}
+#filtersdiv tb.CellSpace{width:38px;}
+#filtersdiv select{font-size:11px;padding-right:2px;}
+#filtersdiv input{font-size:12px;}
+
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+    background-color: #fff;
+}
+
+.table-striped tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th {
+    background-color: #eeeeee;
+}
+
+.table {
+    margin-bottom: 0px;
+}
+
+.table > tbody > tr > td > a{
+    font-weight:bold;
+    font-size:11px;
+}
+
+.table > tbody > tr > td{
+    padding:4px 4px;
+    border:none;
+    font-size:12px;
+    vertical-align: middle;
+}
+
+.table > thead > tr > th{
+    padding:2px 4px;
+    border:none;
+    border-bottom:1px solid #ddd;
+    border-top:1px solid #ddd;
+    font-size:11px;
+    background:#e1e1e1;
+    vertical-align: middle;
+}
+
+.table > thead > tr > th a{display:block;margin:0px;padding:0px;text-decoration:none;}
+
+.table > tfoot > tr > th{
+    padding:2px 4px;
+    border:none;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    font-size:11px;
+    background:#EBEBEB
+}
+
+.table > thead:first-child > tr:first-child > th {
+    border-top:1px solid #ddd;
+}
+
+.table > tfoot:first-child > tr:first-child > th {
+    border-top:1px solid #ddd;
+}
+
+
+.table > thead > tr > th.sort_asc {
+    background-color: #F1F1F1;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    background-image:url('../img/sortasc.png');
+    background-repeat:no-repeat;
+    background-position:95% 50%;
+
+}
+.table > thead > tr > th.sort_desc {
+    background-color: #F1F1F1;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    background-image:url('../img/sortdesc.png');
+    background-repeat:no-repeat;
+    background-position:95% 50%;
+}
+
+.pagination {
+    margin:10px 0;
+}
+
+.input-xs{
+    height: 22px!important;
+    padding: 1px 5px!important;
+    font-size: 11px!important;
+    line-height: 1.5!important;
+}

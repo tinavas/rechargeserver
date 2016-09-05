@@ -7498,7 +7498,7 @@ body.ur footer li.ez-menu-header span {
 #ez-footer-cards li:first-child {
     margin-left:0
 }
-#ez-footer-cards li.ez-paypal {
+/*#ez-footer-cards li.ez-paypal {
     width:46px;
     background:url(../images/paypal_grey.png) 0 0 no-repeat;
     background-size:46px 25px
@@ -7512,7 +7512,7 @@ body.ur footer li.ez-menu-header span {
     width:46px;
     background:url(../images/visa_grey.png) 0 0 no-repeat;
     background-size:46px 25px
-}
+}*/
 #ez-footer-cards li.ez-diners {
     width:29px;
     background:url(../images/diners_grey.png) 0 0 no-repeat;

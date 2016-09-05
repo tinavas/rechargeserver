@@ -56,6 +56,7 @@ $config['tables']['user_transactions']                      = 'user_transactions
 $config['tables']['user_payment_types']                     = 'user_payment_types';
 $config['tables']['user_payments']                          = 'user_payments';
 $config['tables']['user_profits']                           = 'user_profits';
+$config['tables']['basic_configuration']                    = 'basic_configuration';
 
 $config['successor_group_id']['admin'] = '3';
 $config['successor_group_id']['type1'] = '4';

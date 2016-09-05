@@ -21,8 +21,8 @@
             <?php echo $contents;?>
         </section>
         <?php $this->load->view('nonmember/templates/sections/footer');?>
-        <script language="JavaScript">
-            <!--
+        <script type="text/javascript">
+            //<!--
             function autoResize(id) {
                 var newheight;
                 var newwidth;

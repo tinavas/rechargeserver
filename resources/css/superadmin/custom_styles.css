@@ -332,6 +332,9 @@ input[type="radio"], input[type="checkbox"] {
 
 
 
+
+
+
 /******************************  deshboard   *********************************************************/
 
 /*
@@ -521,4 +524,27 @@ input[type="radio"], input[type="checkbox"] {
     font-weight: bold;
     padding: 5px 30px !important;
     border-radius: 4px!important;
+}
+
+/***************************************** logo & company name configure **************************************************/
+.top-bottom-padding
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.logo_upload_background{
+    background-color: #7ebdea; 
+    padding: 5px; 
+    margin: 0px; 
+    border-radius: 4px;
+}
+
+.custom_logo_change_button,.custom_logo_change_button:hover,.custom_logo_change_button:visited,.custom_logo_change_button:focus{
+    background-color: #0072C6!important; 
+    border: 1px solid #0072C6;
+}
+
+.logo_upload_icons{
+    background-color: #7EBDEA;
 }

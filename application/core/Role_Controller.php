@@ -19,6 +19,13 @@ class Role_Controller extends CI_Controller{
         }
         $this->data['service_list'] = $service_list;
         $this->data['topup_service_allow_flag'] = $topup_service_allow_flag;
+        $this->load->model('superadmin/org/company_info_configuration_model');
+        $company_info = array();
+        $company_info_array = $this->company_info_configuration_model->get_company_info()->result_array();
+        if(!empty($company_info_array)){
+         $company_info =  $company_info_array[0];
+        }
+         $this->data['company_title'] = $company_info['title'];
 //        $this->load->library("org/profile/business/business_profile_library"); 
 //        $this->load->library('notification');
 //        $user_id = $this->session->userdata('user_id');

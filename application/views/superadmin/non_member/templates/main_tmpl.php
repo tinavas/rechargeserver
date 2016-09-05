@@ -7,15 +7,10 @@
         <meta name="keywords" content=""/>
         <title>Admin API</title>
 
-
-
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/css/admin/custom_styles.css">
 
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
     </head>
     <body>
