@@ -25,10 +25,12 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
 
 CREATE TABLE IF NOT EXISTS `basic_configuration` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(16) NOT NULL,
-  `logo` varchar(100) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `logo` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+INSERT INTO `basic_configuration` (`title`, `logo`) VALUES
+('RECHARGESERVER', 'company_log.png');
 
 CREATE TABLE IF NOT EXISTS `account_status` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

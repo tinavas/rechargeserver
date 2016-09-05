@@ -50,7 +50,7 @@ class Utils {
      */
 
     public function cell_number_validation($cell_no) {
-        if (preg_match("/^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
+        if (preg_match("/^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/", $cell_no) === 0) {
             RETURN FALSE;
         } else {
             RETURN TRUE;
@@ -97,7 +97,7 @@ class Utils {
      */
 
     public function get_operator_type_id($cell_number) {
-        $temp_cell_number = str_replace('+88', '', $cell_number);
+        $temp_cell_number = str_replace('88', '', $cell_number);
         $operator_code = substr($temp_cell_number, 0, 3);
         if ($operator_code == OPERATOR_CODE_GP) {
             return SERVICE_TYPE_ID_TOPUP_GP;

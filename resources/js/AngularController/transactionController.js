@@ -558,7 +558,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
             $scope.PhoneNumberValidityCheck = function(phoneNumber) {
 //                var phonenumber = "01623598606";
-                var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
+                var regexp = /^((^\880|0)[1][1|6|7|8|9])[0-9]{8}$/;
                 var validPhoneNumber = phoneNumber.match(regexp);
                 if (validPhoneNumber) {
                     return true;

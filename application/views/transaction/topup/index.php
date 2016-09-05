@@ -13,7 +13,7 @@ if (isset($error_message)) {
     });
 
     function number_validation(phoneNumber) {
-        var regexp = /^((^\+880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
+        var regexp = /^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
         var validPhoneNumber = phoneNumber.match(regexp);
         if (validPhoneNumber) {
             return true;
@@ -21,7 +21,7 @@ if (isset($error_message)) {
         return false;
     }
     function  getTopupOperatorId(number) {
-        var temNumber = number.replace("+88", "");
+        var temNumber = number.replace("88", "");
         var operatorCode = temNumber.substr(0, 3);
         if (operatorCode == '<?php echo OPERATOR_CODE_GP ?>') {
             return '<?php echo SERVICE_TYPE_ID_TOPUP_GP; ?>';

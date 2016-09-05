@@ -92,7 +92,7 @@ var smsFileUploadController = angular.module('controller.SmsFileUpload', ['servi
                 angular.forEach(row, function (key, element) {
                     if (element == 0) {
                         var tempNumber = 0 + key;
-                        var regexp = /^((^\+880|0)[1][1|6|7|8|9])[0-9]{8}$/;
+                        var regexp = /^((^\880|0)[1][1|6|7|8|9])[0-9]{8}$/;
                         var validPhoneNumber = tempNumber.match(regexp);
                         if (validPhoneNumber) {
                             tempObj.number = tempNumber;
