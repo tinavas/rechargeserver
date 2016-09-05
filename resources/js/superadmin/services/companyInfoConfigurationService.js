@@ -6,6 +6,7 @@ angular.module('service.CompanyInfoConfiguration', []).
             companyInfoConfigurationService.addCompanyInfo = function(companyInfo) {
                 return $http({
                     method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/company_info_configuration/add_company_info',
                     data: {
                        companyInfo: companyInfo
                     }

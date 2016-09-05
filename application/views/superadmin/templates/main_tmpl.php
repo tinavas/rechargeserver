@@ -12,16 +12,15 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/image-crop-styles.css" type="text/css">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/recharge.css" type="text/css">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
-
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">        
+        
+        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-1.11.1.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/image-crop.js"></script>
+
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular-animate.js"></script>
@@ -50,8 +49,10 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/subscriberApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/transctionApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/historyApp.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/configurationApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/simApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/companyInfoConfigurationApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/LoginAttemptApp.js"></script>
+
     </head>
     <body ng-app="<?php echo $app; ?>">
         <?php $this->load->view("superadmin/templates/sections/header"); ?>
