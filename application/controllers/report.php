@@ -1,4 +1,4 @@
-<?php
+get_total_report<?php
 
 class Report extends Role_Controller {
 
@@ -41,8 +41,6 @@ class Report extends Role_Controller {
             'user_id' => $user_id
         );
         $profit_list = $this->cost_profit_library->get_profit_history(array(), 0, 0, 0, 0, $where);
-        //print_r($profit_list);
-        //exit();
         $this->data['profit_list'] = json_encode($profit_list);
         $this->data['app'] = REPORT_APP;
         $this->template->load(null, 'report/total_report', $this->data);
