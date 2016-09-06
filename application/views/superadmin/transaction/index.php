@@ -21,7 +21,7 @@
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>Status Type</li>
-        <li> <select name="repeatSelect" id="repeatSelect" ng-model="searchInfo.statusId">
+        <li> <select name="repeatSelect" id="repeatSelect" ng-model="searchInfo.statusId" class="form-control input-xs customInputMargin">
                 <option  value="">Please select</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>

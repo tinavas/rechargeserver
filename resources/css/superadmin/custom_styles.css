@@ -9,6 +9,14 @@
 .table th {
     text-align: center;   
 }
+.table_heading_title > th{
+    border: 1px solid #0072C6!important;
+    background-color: #dddddd!important;
+}
+.table_content > td{
+    border: 1px solid #0072C6!important;
+    background-color: #fff!important;
+}
 .navbar-top {
     background: #ffffff url('../../images/bg2.png') top repeat-x;
     min-height:80px;
@@ -547,4 +555,8 @@ input[type="radio"], input[type="checkbox"] {
 
 .logo_upload_icons{
     background-color: #7EBDEA;
+}
+
+.hidden_class{
+    display: none;
 }
