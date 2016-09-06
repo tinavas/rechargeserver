@@ -33,10 +33,10 @@
                 }
             }
         }
-        angular.element($("#submit_create_sim")).scope().addSim(simInfo, function (data) {
+        angular.element($("#submit_create_sim")).scope().addSim(simInfo, function(data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
+            $('#modal_ok_click_id').on("click", function() {
                 window.location = '<?php echo base_url() ?>superadmin/sim';
             });
         });
@@ -56,7 +56,7 @@
                                 Sim Number:
                             </label>
                             <div class ="col-md-6">
-                                <input type="text" placeholder="88017XXXXXXXX" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.simNo">
+                                <input type="text" placeholder="88017XXXXXXXX" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.simNo">
                             </div> 
                         </div>
                         <div class="row form-group">
@@ -64,7 +64,7 @@
                                 Identifier:
                             </label>
                             <div class ="col-md-6">
-                                <input type="text" placeholder="localserver1" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.identifier">
+                                <input type="text" placeholder="localserver1" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.identifier">
                             </div> 
                         </div>
                         <div class="row form-group">
@@ -72,7 +72,7 @@
                                 Description:
                             </label>
                             <div class ="col-md-6">
-                                <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.description">
+                                <input type="text" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.description">
                             </div> 
                         </div>
                         <div class="row form-group"  ng-init="setSimStatusList('<?php echo htmlspecialchars(json_encode($sim_status_list)); ?>')">
@@ -80,7 +80,8 @@
                                 Status:
                             </label>
                             <div class ="col-md-6">
-                                <select  for="type" id="type"  ng-model="simInfo.status"  class="form-control">
+                                <select  for="type" id="type"  ng-model="simInfo.status"  class="form-control input-xs customInputMargin">
+                                     <option value="" class="hidden_class"></option>
                                     <option ng-selected="statusInfo.selected"  ng-repeat="statusInfo in simStatusList" value="{{statusInfo.id}}">{{statusInfo.title}}</option>
                                 </select>
                             </div> 
@@ -93,41 +94,53 @@
                             Services
                         </label>
                     </div>
-                    <div class="row">
-                        <label for=""  class="col-md-4 control-label requiredField">
-                            <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />
-                            Select All
-                        </label>
-                        <label for=""  class="col-md-4 control-label requiredField">
-                            category type
-                        </label>
-                        <label for=""  class="col-md-4 control-label requiredField">
-                            current balance
-                        </label>
-                    </div>
-                    <div class=" row"  ng-init="setServiceList(<?php echo htmlspecialchars(json_encode($service_list)); ?>)" >
-                        <div ng-repeat="serviceInfo in serviceList">
-                            <div class="col-md-4">
-                                <input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.service_id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}
-                            </div>
-                            <div class="col-md-4">
-                                <select  for="type" id="type"  ng-model="serviceInfo.categoryId" >
-                                    <option ng-selected="category.selected"  ng-repeat="category in simCategoryList" value="{{category.id}}">{{category.title}}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" value="" placeholder="1000"  id="" ng-model="serviceInfo.currentBalance">
-                            </div>
-
+                    
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr class="table_heading_title">
+                                <th>
+                                    <label for=""  class="control-label requiredField">
+                                        <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />
+                                        Select All
+                                    </label>
+                                </th>
+                                <th>
+                                    <label for=""  class="control-label requiredField">
+                                        Category type
+                                    </label> 
+                                </th>
+                                <th>
+                                    <label for=""  class="control-label requiredField">
+                                        Current balance
+                                    </label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <div ng-init="setServiceList(<?php echo htmlspecialchars(json_encode($service_list));  ?>)" >
+                            <tr ng-repeat="serviceInfo in serviceList" class="table_content">
+                                <td>
+                                    <input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.service_id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}
+                                </td>
+                                <td>
+                                    <select  for="type" id="type"  ng-model="serviceInfo.categoryId" class="form-control input-xs">
+                                        <option value="" class="hidden_class"></option>
+                                        <option ng-selected="category.selected"  ng-repeat="category in simCategoryList" value="{{category.id}}">{{category.title}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="" placeholder="1000"  id="" ng-model="serviceInfo.currentBalance"  class="form-control input-xs">
+                                </td>
+                            </tr>
                         </div>
-                    </div>
-
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="row form-group">
-            <div class ="col-md-3 pull-right">
-                <input id="submit_create_sim" name="submit_create_sim" class="btn btn_custom_button" type="submit" onclick="create_sim(angular.element(this).scope().simInfo, angular.element(this).scope().serviceList)" value="Add"/>
+            <div class ="col-md-offset-9 col-md-3">
+                <input id="submit_create_sim" name="submit_create_sim" class="btn btn_custom_button pull-right" type="submit" onclick="create_sim(angular.element(this).scope().simInfo, angular.element(this).scope().serviceList)" value="Add"/>
             </div> 
         </div>
     </div>
