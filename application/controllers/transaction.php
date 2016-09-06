@@ -56,9 +56,10 @@ class Transaction extends Role_Controller {
             $this->service_model->update_user_rates(array($updated_data));
             if ($bkash_service_info['sms_verification'] == 1) {
                 //send verification code via sms to the client
+                $response = "Code is sent successfully. Please check your phone.";
             }
             if ($bkash_service_info['email_verification'] == 1) {
-                //send verification code via email to the client
+//                send verification code via email to the client
                 $email = "";
                 $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
                 if (!empty($profile_info)) {
@@ -192,12 +193,9 @@ class Transaction extends Role_Controller {
                 'description' => $description,
                 'editable' => true
             );
-            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
-            {
+            if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
-            }
-            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
-            {
+            } else if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
                 $transaction_data['editable'] = false;
             }
@@ -365,12 +363,9 @@ class Transaction extends Role_Controller {
                 'cell_no' => $cell_no,
                 'description' => $description
             );
-            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
-            {
+            if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
-            }
-            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
-            {
+            } else if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
             }
             $this->load->library("security");
@@ -487,12 +482,9 @@ class Transaction extends Role_Controller {
                 'cell_no' => $cell_no,
                 'description' => $description
             );
-            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
-            {
+            if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
-            }
-            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
-            {
+            } else if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
             }
             $this->load->library("security");
@@ -608,12 +600,9 @@ class Transaction extends Role_Controller {
                 'cell_no' => $cell_no,
                 'description' => $description
             );
-            if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
-            {
+            if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
-            }
-            else if($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
-            {
+            } else if ($service_status_type == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
                 $transaction_data['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
             }
             $this->load->library("security");
@@ -722,12 +711,9 @@ class Transaction extends Role_Controller {
                         }
 
                         $topup_data_info['service_id'] = $service_id;
-                        if($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER)
-                        {
+                        if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                             $topup_data_info['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
-                        }
-                        else if($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER)
-                        {
+                        } else if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
                             $topup_data_info['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_MANUAL;
                         }
                     } else {
