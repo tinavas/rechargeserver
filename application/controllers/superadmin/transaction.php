@@ -60,8 +60,8 @@ class Transaction extends CI_Controller {
         $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
         $this->data['transaction_list'] = $transction_list_array['transaction_list'];
         $this->data['total_transactions'] = $transction_list_array['total_transactions'];
-        $this->load->library('superadmin/org/Date_utils');
-        $current_date = $this->date_utils->get_current_date();
+        $this->load->library('superadmin/org/super_utils');
+        $current_date = $this->super_utils->get_current_date();
         $this->data['current_date'] = $current_date;
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/index", $this->data);
@@ -156,8 +156,8 @@ class Transaction extends CI_Controller {
                 if (property_exists($balanceInfo, "simNumber")) {
                     $sim_no = $balanceInfo->simNumber;
                 }
-                $this->load->library('utils');
-                if ($this->utils->cell_number_validation($sim_no) == FALSE) {
+                $this->load->library('superadmin/org/super_utils');
+                if ($this->super_utils->cell_number_validation($sim_no) == FALSE) {
                     $response["message"] = "Please Enter a Valid Cell Number !!";
                     echo json_encode($response);
                     return;

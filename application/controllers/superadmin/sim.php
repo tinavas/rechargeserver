@@ -39,8 +39,8 @@ class Sim extends CI_Controller {
                 $sim_info = $requestInfo->simInfo;
                 if (property_exists($sim_info, "simNo")) {
                     $sim_no = $sim_info->simNo;
-                    $this->load->library('utils');
-                    if ($this->utils->cell_number_validation($sim_no) == FALSE) {
+                    $this->load->library('superadmin/org/super_utils');
+                    if ($this->super_utils->cell_number_validation($sim_no) == FALSE) {
                         $response["message"] = "Please Enter a Valid Cell Number !!Supported format is now 01XXXXXXXXX. ";
                         echo json_encode($response);
                         return;
@@ -130,8 +130,8 @@ class Sim extends CI_Controller {
                 $sim_info = $requestInfo->simInfo;
                 if (property_exists($sim_info, "simNo")) {
                     $sim_no = $sim_info->simNo;
-                    $this->load->library('utils');
-                    if ($this->utils->cell_number_validation($sim_no) == FALSE) {
+                    $this->load->library('superadmin/org/super_utils');
+                    if ($this->super_utils->cell_number_validation($sim_no) == FALSE) {
                         $response["message"] = "Please Enter a Valid Cell Number !!Supported format is now 01XXXXXXXXX. ";
                         echo json_encode($response);
                         return;
@@ -260,8 +260,8 @@ class Sim extends CI_Controller {
         $sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
         $this->data['sms_list'] = $sms_info_list['sms_list'];
         $this->data['total_counter'] = $sms_info_list['total_counter'];
-        $this->load->library('superadmin/org/date_utils');
-        $current_date = $this->date_utils->get_current_date();
+        $this->load->library('superadmin/org/super_utils');
+        $current_date = $this->super_utils->get_current_date();
         $this->data['current_date'] = $current_date;
         $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sms/index", $this->data);

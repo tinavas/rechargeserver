@@ -114,29 +114,5 @@ class Utils {
         }
     }
 
-    public function resize_image($source_path, $new_path, $height, $width) {
-        $result = array();
-        $config = array(
-            'image_library' => 'gd2',
-            'source_image' => FCPATH . $source_path,
-            'new_image' => FCPATH . $new_path,
-            'maintain_ratio' => FALSE,
-            'overwrite' => TRUE,
-            'height' => $height,
-            'width' => $width
-        );
-        $image_absolute_path = FCPATH . dirname($new_path);
-        if (!is_dir($image_absolute_path)) {
-            mkdir($image_absolute_path, 0777, TRUE);
-        }
-        $this->image_lib->clear();
-        $this->image_lib->initialize($config);
-        if (!$this->image_lib->resize()) {
-            $result['status'] = 0;
-            $result['message'] = $this->image_lib->display_errors();
-        } else {
-            $result['status'] = 1;
-        }
-        return $result;
-    }
+   
 }

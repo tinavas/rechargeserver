@@ -10,7 +10,6 @@ class Company_info_configuration extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->library('upload');
-        $this->load->library('utils');
     }
 
     public function index() {
@@ -70,6 +69,7 @@ class Company_info_configuration extends CI_Controller {
         if ($result['status'] != 0) {
             //resize profile picture 
             $file_temp = $company_logo_temp_path . $company_logo;
+            $this->load->library('superadmin/org/super_utils');
             $resize_response = $this->utils->resize_image($file_temp, COMPANY_LOGO_PATH_W333_H44 . $company_logo, COMPANY_LOGO_H44, COMPANY_LOGO_W333);
             if ($resize_response != 0) {
                 $response["message"] = "Company logo add successfully";
