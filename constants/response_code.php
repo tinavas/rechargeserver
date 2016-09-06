@@ -10,4 +10,5 @@ define("ERROR_CODE_SERVER_EXCEPTION",                           5007);
 define("ERROR_CODE_SESSION_EXPIRED",                            5001);
 define("ERROR_CODE_INVALID_PIC_CODE",                           5008);
 define("ERROR_CODE_UNABLE_TO_CREATE_SESSION",                   5009);
+define("ERROR_CODE_SERVICE_UNAVAILABLE",                        5010);
 
