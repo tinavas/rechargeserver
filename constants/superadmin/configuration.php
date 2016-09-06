@@ -42,5 +42,6 @@ define("WEBSERVICE_LOAD_SERVICE_BALANCE",                      "http://localhost
 define("WEBSERVICE_GET_SIM_SERVICE_LIST",                      "http://localhost:4040/getSimServiceList");
 define("WEBSERVICE_GET_SIM_TRANSACTION_LIST",                  "http://localhost:4040/getSimTransactionList");
 
+define("WEBSERVICE_GET_SMS_LIST",                              "http://localhost:4040/getSmsList");
 
 

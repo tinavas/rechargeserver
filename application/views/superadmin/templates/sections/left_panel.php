@@ -16,6 +16,9 @@
         <li id="sim">
             <a href="<?php echo base_url() ?>superadmin/sim">Sims</a>
         </li>
+        <li id="sms">
+            <a href="<?php echo base_url() ?>superadmin/sim/get_sms_list">SMS</a>
+        </li>
         <li >
             <a href="<?php echo base_url() ?>superadmin/company_info_configuration">Company info configure</a>
         </li>

@@ -13,7 +13,6 @@ class Login_attempt extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('superadmin/org/login_attemtps_library');
         $this->load->helper('url');
-        $this->load->library('Date_utils');
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -34,6 +33,7 @@ class Login_attempt extends CI_Controller {
         if (!empty($login_attempt_list_array)) {
             $login_attempt_list = $login_attempt_list_array;
         }
+        $this->load->library('superadmin/org/Date_utils');
         foreach ($login_attempt_list as $value) {
             $value['time'] = $this->date_utils->get_unix_to_human_date($value['time'], 1);
             $login_attempts[] = $value;

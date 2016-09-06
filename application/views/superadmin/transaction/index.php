@@ -63,7 +63,7 @@
             </tr>
         </tfoot>
     </table>
-    <li style="display: none" dir-paginate="transactionInfo in transctionInfoList|itemsPerPage:3" current-page="currentPage"></li>
+    <li style="display: none" dir-paginate="transactionInfo in transctionInfoList|itemsPerPage:pageSize" current-page="currentPage"></li>
     <div class="other-controller">
         <div class="text-center">
             <dir-pagination-controls boundary-links="true" on-page-change="getTransactionByPagination(newPageNumber)" template-url="<?php echo base_url(); ?>superadmin/transaction/pagination_tmpl_load"></dir-pagination-controls>

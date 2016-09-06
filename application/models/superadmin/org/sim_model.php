@@ -80,9 +80,9 @@ class Sim_model extends Ion_auth_model {
                     $obj1->serviceId = SERVICE_TYPE_ID_UCASH_CASHIN;
                     $obj1->categoryId = SIM_CATEGORY_TYPE_PERSONAL;
                     $obj1->currentBalance = 1000;
-                    
 
-                 
+
+
                     $simServiceList[] = $obj;
                     $simServiceList[] = $obj1;
                     // end 
@@ -167,6 +167,49 @@ class Sim_model extends Ion_auth_model {
         $sim_status_list[] = $obj;
         $sim_status_list[] = $obj1;
         return $sim_status_list;
+    }
+
+    public function get_sms_list($sim_no = 0, $offset = 0, $limit = 0, $from_date = 0, $to_date = 0) {
+        $sms_info_list = array();
+        //uncommet while work within
+//        $this->curl->create(WEBSERVICE_GET_SMS_LIST);
+//        $this->curl->post(array("simNo" => $sim_no, "offset" => $offset, "limit" => $limit, "from_date" => $from_date, "to_date" => $to_date));
+//        $result_event = json_decode($this->curl->execute());
+//        if (!empty($result_event)) {
+//            $response_code = '';
+//            if (property_exists($result_event, "responseCode") != FALSE) {
+//                $response_code = $result_event->responseCode;
+//            }
+//            if ($response_code == RESPONSE_CODE_SUCCESS) {
+//                if (property_exists($result_event, "result") != FALSE) {
+                    //discard while dynamic
+                    $obj = new stdClass();
+                    $obj->id = "1234";
+                    $obj->simNo = "01723598606";
+                    $obj->sender = "01678112509";
+                    $obj->sms = "Transaction successful! your tansaction id is 0123456789";
+                    $obj->createdOn = "2016-09-06";
+                    $obj1 = new stdClass();
+                    $obj1->id = "12345";
+                    $obj1->simNo = "01712341213";
+                    $obj1->sender = "01678112509";
+                    $obj1->sms = "Transaction successful! your tansaction id is 0123456789";
+                    $obj1->createdOn = "2016-09-05";
+                    $sms_list = array(
+                    );
+                    $sms_list[] = $obj;
+                    $sms_list[] = $obj1;
+                    // end 
+//                    $result = $result_event->result;
+//                    $smsList = $result->smsList;
+//                    $sms_counter = $result->totalCounter;
+//                   //
+                    $sms_info_list['sms_list'] = $sms_list;
+                    $sms_info_list['total_counter'] = 10;
+//                }
+//            }
+//        }
+        return $sms_info_list;
     }
 
 }

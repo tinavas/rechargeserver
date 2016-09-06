@@ -43,6 +43,24 @@ angular.module('service.Sim', []).
                     }
                 });
             };
+            simService.getSMSList = function (searchInfo) {
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/sim/get_sms_list/',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            };
+            simService.getSMSByPagination = function (searchInfo) {
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/sim/get_sms_list/',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            };
             return simService;
         });
 

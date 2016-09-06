@@ -18,8 +18,8 @@ class Transaction extends CI_Controller {
 
     public function get_transaction_list() {
         $this->load->library("superadmin/org/transaction_library");
-        $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
-        $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
+        $offset = S_TRANSACTION_PAGE_DEFAULT_OFFSET;
+        $limit = S_TRANSACTION_PAGE_DEFAULT_LIMIT;
         $transction_list = array();
         $service_id_list = array();
         if (file_get_contents("php://input") != null) {
@@ -60,7 +60,7 @@ class Transaction extends CI_Controller {
         $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
         $this->data['transaction_list'] = $transction_list_array['transaction_list'];
         $this->data['total_transactions'] = $transction_list_array['total_transactions'];
-        $this->load->library('Date_utils');
+        $this->load->library('superadmin/org/Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
         $this->data['app'] = TRANSCATION_APP;
@@ -114,6 +114,7 @@ class Transaction extends CI_Controller {
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/update_transaction", $this->data);
     }
+
     public function delete_transaction() {
         $response = array();
         $transction_id = $this->input->post('transction_id');

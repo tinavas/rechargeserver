@@ -220,4 +220,51 @@ class Sim extends CI_Controller {
         $this->template->load(null, "superadmin/sims/update_sim_balance", $this->data);
     }
 
+    public function get_sms_list() {
+        $sim_no = 0;
+        $offset = SMS_PAGE_DEFAULT_OFFSET;
+        $limit = SMS_PAGE_DEFAULT_LIMIT;
+        $from_date = 0;
+        $to_date = 0;
+        if (file_get_contents("php://input") != null) {
+            $response = array();
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "searchInfo") != FALSE) {
+                $search_param = $requestInfo->searchInfo;
+                if (property_exists($search_param, "simNo") != FALSE) {
+                    $sim_no = $search_param->simNo;
+                }
+                if (property_exists($search_param, "fromDate") != FALSE) {
+                    $from_date = $search_param->fromDate;
+                }
+                if (property_exists($search_param, "toDate") != FALSE) {
+                    $to_date = $search_param->toDate;
+                }
+                if (property_exists($search_param, "offset") != FALSE) {
+                    $offset = $search_param->offset;
+                }
+                if (property_exists($search_param, "limit") != FALSE) {
+                    $limit_status = $search_param->limit;
+                    if ($limit_status != FALSE) {
+                        $limit = 0;
+                    }
+                }
+            }
+            $sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
+            $response['sms_list'] = $sms_info_list['sms_list'];
+            $response['total_counter'] = $sms_info_list['total_counter'];
+            echo json_encode($response);
+            return;
+        }
+        $sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
+        $this->data['sms_list'] = $sms_info_list['sms_list'];
+        $this->data['total_counter'] = $sms_info_list['total_counter'];
+        $this->load->library('superadmin/org/date_utils');
+        $current_date = $this->date_utils->get_current_date();
+        $this->data['current_date'] = $current_date;
+        $this->data['app'] = SIM_APP;
+        $this->template->load(null, "superadmin/sms/index", $this->data);
+    }
+
 }

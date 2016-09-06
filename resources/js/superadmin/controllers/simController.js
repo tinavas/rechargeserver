@@ -7,7 +7,11 @@ angular.module('controller.Sim', ['service.Sim']).
             $scope.simList = [];
             $scope.simServiceList = [];
             $scope.simStatusList = [];
+            $scope.smsList = [];
             $scope.allow_action = true;
+            $scope.currentPage = 3;
+            $scope.pageSize = 1;
+            $scope.searchInfo = {};
 
             $scope.setSimInfo = function (simInfo) {
                 $scope.simInfo = JSON.parse(simInfo);
@@ -26,6 +30,41 @@ angular.module('controller.Sim', ['service.Sim']).
             };
             $scope.setSimStatusList = function (simStatusList) {
                 $scope.simStatusList = JSON.parse(simStatusList);
+            };
+            $scope.setSMSList = function (smsList, collectionCounter) {
+                $scope.smsList = JSON.parse(smsList);
+                setCollectionLength(collectionCounter);
+            };
+            $scope.getSMSList = function (startDate, endDate) {
+                if ($scope.allow_action == false) {
+                    return;
+                }
+                $scope.allow_action = false;
+                if ($scope.searchInfo.selectAll != false) {
+                    $scope.searchInfo.limit = $scope.searchInfo.selectAll;
+                }
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                simService.getSMSList($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.smsList = data.sms_list;
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_counter;
+                                $scope.allTransactions = false;
+                            }
+                            setCollectionLength(data.total_counter);
+                            $scope.allow_action = true;
+                        });
+
+            }
+            $scope.getSIMByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                simService.getSMSByPagination($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.smsList = data.sms_list;
+                        });
             };
             $scope.checkAll = function () {
                 if ($scope.selectedAll) {
@@ -125,6 +164,12 @@ angular.module('controller.Sim', ['service.Sim']).
                             $scope.transctionList = data.transction_list;
                             $scope.allow_service_action = true;
                         });
+            }
+            //pagination
+            function getOffset(number) {
+                var initIndex;
+                initIndex = $scope.pageSize * (number - 1);
+                return initIndex;
             }
 
         });
