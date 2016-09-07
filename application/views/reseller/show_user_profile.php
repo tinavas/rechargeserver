@@ -66,6 +66,14 @@
                     <div class="help-block">{{profileInfo.note}}</div>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <label>Message</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="help-block">{{profileInfo.message}}</div>
+                </div>
+            </div>
         </div>
         <div class="col-md-offset-1 col-md-5" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($service_list))?>')">
             <div class="row form-group">

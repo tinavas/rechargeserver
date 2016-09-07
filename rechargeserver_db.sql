@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `mobile` varchar(20) DEFAULT NULL,
   `app_session_id` varchar(100) DEFAULT NULL,
   `note`text DEFAULT '',
+  `message`text DEFAULT '',
   `account_status_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;

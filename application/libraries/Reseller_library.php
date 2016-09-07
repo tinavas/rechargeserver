@@ -40,13 +40,14 @@ class Reseller_library {
     public function __get($var) {
         return get_instance()->$var;
     }
-    
+
     /*
      * This method will return current available balance of a user
      * @param $user_id, user id
      * @return current available balance of the user 
      * @author nazmul hasan on 24th february 2016
      */
+
     public function get_user_current_balance($user_id = 0) {
         $current_balance = 0;
         if (0 == $user_id) {
@@ -59,15 +60,16 @@ class Reseller_library {
         }
         return $current_balance;
     }
-    
+
     /*
      * This method will return user title
      * @param $user_id, user id
      * @author nazmul hasan 24th february 2016
      */
+
     public function get_user_title($user_id = 0) {
         $user_title = "";
-        if ( 0 == $user_id) {
+        if (0 == $user_id) {
             $user_id = $this->session->userdata('user_id');
         }
         $user_title_info_array = $this->reseller_model->get_user_title_info($user_id)->result_array();
@@ -76,14 +78,15 @@ class Reseller_library {
         }
         return $user_title;
     }
-    
+
     /*
      * This method will return dashboard data of a user
      * @param $user_id, user id
      * @author nazmul hasan on 24th february 2016
      */
+
     public function get_user_dashboard_data($user_id, $group) {
-        if ( 0 == $user_id) {
+        if (0 == $user_id) {
             $user_id = $this->session->userdata('user_id');
         }
         $data = array();
@@ -92,18 +95,17 @@ class Reseller_library {
             'user_id' => $user_id
         );
         $pay_id_list = array(
-            PAYMENT_TYPE_ID_SEND_CREDIT,PAYMENT_TYPE_ID_RETURN_CREDIT
+            PAYMENT_TYPE_ID_SEND_CREDIT, PAYMENT_TYPE_ID_RETURN_CREDIT
         );
-        $data['payment_list'] = $this->payment_library->where($where_payment)->get_payment_history($pay_id_list, array(),0 ,0 ,DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
-        
+        $data['payment_list'] = $this->payment_library->where($where_payment)->get_payment_history($pay_id_list, array(), 0, 0, DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
+
         $receive_id_list = array(
-            PAYMENT_TYPE_ID_RECEIVE_CREDIT,PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
+            PAYMENT_TYPE_ID_RECEIVE_CREDIT, PAYMENT_TYPE_ID_RETURN_RECEIVE_CREDIT
         );
-        if(GROUP_ADMIN == $group)
-        {
+        if (GROUP_ADMIN == $group) {
             $receive_id_list[] = PAYMENT_TYPE_ID_LOAD_BALANCE;
         }
-        $data['receive_list'] = $this->payment_library->where($where_payment)->get_payment_history($receive_id_list, array(),0 ,0 ,DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
+        $data['receive_list'] = $this->payment_library->where($where_payment)->get_payment_history($receive_id_list, array(), 0, 0, DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
 
         $this->load->library('Date_utils');
         $this->load->model('transaction_model');
@@ -116,69 +118,54 @@ class Reseller_library {
         $service_id_list = array();
         $this->load->model('service_model');
         $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-        foreach($service_list as $service_info)
-        {
-            if(!in_array($service_info['service_id'], $service_id_list))
-            {
+        foreach ($service_list as $service_info) {
+            if (!in_array($service_info['service_id'], $service_id_list)) {
                 $service_id_list[] = $service_info['service_id'];
             }
-            if(SERVICE_TYPE_ID_BKASH_CASHIN == $service_info['service_id'])
-            {
+            if (SERVICE_TYPE_ID_BKASH_CASHIN == $service_info['service_id']) {
                 $today_usages['bkash'] = 0;
-            }
-            else if(SERVICE_TYPE_ID_DBBL_CASHIN == $service_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_DBBL_CASHIN == $service_info['service_id']) {
                 $today_usages['dbbl'] = 0;
-            }
-            else if(SERVICE_TYPE_ID_MCASH_CASHIN == $service_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_MCASH_CASHIN == $service_info['service_id']) {
                 $today_usages['mcash'] = 0;
-            }
-            else if(SERVICE_TYPE_ID_UCASH_CASHIN == $service_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_UCASH_CASHIN == $service_info['service_id']) {
                 $today_usages['ucash'] = 0;
-            }
-            else if(SERVICE_TYPE_ID_TOPUP_GP == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $service_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_TOPUP_GP == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $service_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $service_info['service_id']) {
                 $today_usages['topup'] = 0;
-            }
-            else if(SERVICE_TYPE_ID_SEND_SMS == $service_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_SEND_SMS == $service_info['service_id']) {
                 $today_usages['sms'] = 0;
             }
         }
         $transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL))->result_array();
         foreach ($transaction_list as $transaction_info) {
-            if(SERVICE_TYPE_ID_BKASH_CASHIN == $transaction_info['service_id'])
-            {
+            if (SERVICE_TYPE_ID_BKASH_CASHIN == $transaction_info['service_id']) {
                 $today_usages['bkash'] = $today_usages['bkash'] + $transaction_info['amount'];
-            }
-            else if(SERVICE_TYPE_ID_DBBL_CASHIN == $transaction_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_DBBL_CASHIN == $transaction_info['service_id']) {
                 $today_usages['dbbl'] = $today_usages['dbbl'] + $transaction_info['amount'];
-            }
-            else if(SERVICE_TYPE_ID_MCASH_CASHIN == $transaction_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_MCASH_CASHIN == $transaction_info['service_id']) {
                 $today_usages['mcash'] = $today_usages['mcash'] + $transaction_info['amount'];
-            }
-            else if(SERVICE_TYPE_ID_UCASH_CASHIN == $transaction_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_UCASH_CASHIN == $transaction_info['service_id']) {
                 $today_usages['ucash'] = $today_usages['ucash'] + $transaction_info['amount'];
-            }
-            else if(SERVICE_TYPE_ID_TOPUP_GP == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $transaction_info['service_id'])
-            {
+            } else if (SERVICE_TYPE_ID_TOPUP_GP == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_ROBI == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_BANGLALINK == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_AIRTEL == $transaction_info['service_id'] || SERVICE_TYPE_ID_TOPUP_TELETALK == $transaction_info['service_id']) {
                 $today_usages['topup'] = $today_usages['topup'] + $transaction_info['amount'];
             }
         }
-        if(in_array(SERVICE_TYPE_ID_SEND_SMS, $service_id_list))
-        {
+        if (in_array(SERVICE_TYPE_ID_SEND_SMS, $service_id_list)) {
             $sms_transaction_list = $this->transaction_model->where(array('user_id' => $user_id))->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL), $this->date_utils->server_start_unix_time_of_today(), $this->date_utils->server_end_unix_time_of_today())->result_array();
-            foreach($sms_transaction_list as $sms_transaction_info)
-            {
+            foreach ($sms_transaction_list as $sms_transaction_info) {
                 $today_usages['sms'] = $today_usages['sms'] + $sms_transaction_info['unit_price'];
             }
         }
         $data['today_usages'] = $today_usages;
+        $user_message = "";
+        $user_id_list[] = $this->get_parent_user_id($user_id);
+        $user_id_list[] = $user_id;
+        $user_message_array = $this->reseller_model->get_user_messages($user_id_list)->result_array();
+        foreach ($user_message_array as $user_message_info) {
+            $user_message = $user_message . "   " . $user_message_info['message'];
+        }
+        $data['user_message'] = $user_message;
+
         return $data;
     }
 
@@ -187,6 +174,7 @@ class Reseller_library {
      * @param $user_id, user id
      * @author nazmul hasan on 27th february 2016
      */
+
     public function get_reseller_list($user_id) {
         $reseller_list = array();
         $user_id_list = array();
@@ -215,17 +203,17 @@ class Reseller_library {
         }
         return $reseller_list;
     }
-    
+
     /*
      * $this method will return successor user id list of a user
      * @param $user_id, user id
      * @param $include_parent include parent
      * @author nazmul hasan on 27th february 2016
      */
+
     public function get_successor_id_list($user_id = 0, $include_parent = FALSE) {
         $successor_id_list = array();
-        if($include_parent)
-        {
+        if ($include_parent) {
             $successor_id_list[] = $user_id;
         }
         $flag = true;
@@ -248,12 +236,13 @@ class Reseller_library {
         }
         return $successor_id_list;
     }
-    
+
     /*
      * This method will return parent user id of a user
      * @param $user_id user id
      * @author nazmul hasan on 29th february 2016
      */
+
     public function get_parent_user_id($user_id = 0) {
         if ($user_id == 0) {
             $user_id = $this->session->userdata('user_id');
@@ -266,32 +255,32 @@ class Reseller_library {
         }
         return $parent_user_id;
     }
-    
+
     /*
      * This method will return predecessor user id list of a user
      * @param $user_id user id
      * @author nazmul hasan on 29th february 2016
      */
-    /*public function get_predecessor_id_list($user_id = 0) {
-        $user_id_list = array();
-        $flag = true;
-        while ($flag) {
-            $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
-            foreach ($parent_info_array as $parent_info) {
-                $user_id = $parent_info['parent_user_id'];
-                if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
-                    $user_id_list[] = $parent_info['parent_user_id'];
-                }
-            }
-            if (empty($parent_info_array)) {
-                $flag = false;
-            }
-        }
-        return $user_id_list;
-    }*/
+    /* public function get_predecessor_id_list($user_id = 0) {
+      $user_id_list = array();
+      $flag = true;
+      while ($flag) {
+      $parent_info_array = $this->reseller_model->get_parent_user_id($user_id)->result_array();
+      foreach ($parent_info_array as $parent_info) {
+      $user_id = $parent_info['parent_user_id'];
+      if (!in_array($parent_info['parent_user_id'], $user_id_list)) {
+      $user_id_list[] = $parent_info['parent_user_id'];
+      }
+      }
+      if (empty($parent_info_array)) {
+      $flag = false;
+      }
+      }
+      return $user_id_list;
+      } */
 
 
-    
+
 
     /*
      * This method will return maximum allowable users to be created under that user
@@ -311,8 +300,6 @@ class Reseller_library {
         }
         return 0;
     }
-
-    
 
     /**
      * this method will return all parents list of a user
@@ -339,7 +326,6 @@ class Reseller_library {
         return $user_id_list;
     }
 
-    
     public function get_bfs_user_id_list($user_id) {
         $user_id_list = array();
         $flag = true;

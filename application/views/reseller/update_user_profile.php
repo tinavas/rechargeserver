@@ -3,13 +3,21 @@
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
+    function numberValidation(phoneNumber) {
+        var regexp = /^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
+        var validPhoneNumber = phoneNumber.match(regexp);
+        if (validPhoneNumber) {
+            return true;
+        }
+        return false;
+    }
     function update_reseller(resellerInfo) {
         if (typeof resellerInfo.username == "undefined" || resellerInfo.username.length == 0) {
             $("#content").html("Please give a User Name !");
             $('#common_modal').modal('show');
             return;
         }
-    if (typeof resellerInfo.mobile != "undefined" && resellerInfo.mobile.length != 0) {
+        if (typeof resellerInfo.mobile != "undefined" && resellerInfo.mobile.length != 0) {
             var varificationResult = numberValidation(resellerInfo.mobile);
             if (varificationResult == false) {
                 $("#content").html("Please give Mobile Number ! Supported format is now 01XXXXXXXXX");
@@ -88,6 +96,11 @@
                                 <div class="form-group ">
                                     <label for="note">Note</label>
                                     <textarea rows="2" name="note" id="note" class="form-control input-sm" ng-model="resellerInfo.note"></textarea>
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="message">Message</label>
+                                    <textarea  rows="2" name="message" id="note" class="form-control input-sm" ng-model="resellerInfo.message"></textarea>
                                     <p class="help-block form_error"></p>
                                 </div>
                             </td>                            

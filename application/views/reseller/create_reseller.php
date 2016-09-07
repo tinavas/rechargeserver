@@ -39,10 +39,10 @@
                 return;
             }
         }
-        angular.element($('#submit_create_reseller')).scope().createReseller(function(data) {
+        angular.element($('#submit_create_reseller')).scope().createReseller(function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function() {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>reseller/get_reseller_list';
             });
         });
@@ -115,7 +115,7 @@
                                     <!--<input type="checkbox" onclick="checkallper(this);" ng-click="" value="1" id="allper" name="checkAll">--> 
                                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" />
                                     <label for="allper" style="cursor:pointer;">Reseller Permission</label> </p>
-                                <div class="form-group" ng-init="setServiceList(<?php echo htmlspecialchars(json_encode($service_list)); ?>)">
+                                <div class="form-group" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($service_list)); ?>')">
                                     <div ng-repeat="serviceInfo in serviceList">
                                         <div class="checkbox" ng-if="serviceInfo.status == 1">
                                             <label>
@@ -131,8 +131,13 @@
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="pin" class="control-label">Starting Balance</label>
+                                    <label for="balance" class="control-label">Starting Balance</label>
                                     <input type="text" value="" placeholder="" class="form-control input-sm" id="init_balance" name="init_balance" ng-model="resellerInfo.init_balance">
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="message">Message</label>
+                                    <textarea rows="2" name="message" id="note" class="form-control input-sm" ng-model="resellerInfo.message"></textarea>
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <p style="padding-top: 0px !important;padding-top: 0px !important;line-height:0px;" class="help-block">&nbsp;</p>

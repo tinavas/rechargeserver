@@ -96,6 +96,7 @@ class Reseller extends Role_Controller {
                 $first_name = "";
                 $last_name = "";
                 $note = "";
+                $message = "";
                 $pin = DEFAULT_PIN;
                 $init_balance = 0;
                 $resellerInfo = $requestInfo->resellerInfo;
@@ -132,6 +133,9 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "note")) {
                     $note = $resellerInfo->note;
+                }
+                if (property_exists($resellerInfo, "message")) {
+                    $message = $resellerInfo->message;
                 }
                 if (property_exists($resellerInfo, "pin")) {
                     $pin = $resellerInfo->pin;
@@ -177,6 +181,7 @@ class Reseller extends Role_Controller {
                     'last_name' => $last_name,
                     'mobile' => $cell_no,
                     'note' => $note,
+                    'message' => $message,
                     'max_user_no' => $max_user_no,
                     'parent_user_id' => $this->session->userdata('user_id'),
                     'user_service_list' => $user_service_list,
@@ -253,8 +258,8 @@ class Reseller extends Role_Controller {
         $this->data['title'] = $title;
 
         //by default providing bkash service
-      //  $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-        
+        //  $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+
         $user_service_list = array();
         foreach ($service_list as $service_info) {
             //before assigning a default service while creating a reseller 
@@ -265,7 +270,7 @@ class Reseller extends Role_Controller {
             $user_service_list[] = $service_info;
         }
 
-        $this->data['service_list'] = json_encode($user_service_list);
+        $this->data['service_list'] = $user_service_list;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/create_reseller', $this->data);
     }
@@ -620,6 +625,7 @@ class Reseller extends Role_Controller {
                 $first_name = "";
                 $last_name = "";
                 $mobile = "";
+                $message = "";
                 $pin = DEFAULT_PIN;
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a user name !!";
@@ -676,9 +682,12 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "mobile")) {
                     $mobile = $resellerInfo->mobile;
                 }
+                if (property_exists($resellerInfo, "message")) {
+                    $message = $resellerInfo->message;
+                }
                 if (isset($mobile) && $mobile != "") {
                     $this->load->library('utils');
-                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
+                    if ($this->utils->cell_number_validation($mobile) == FALSE) {
                         $response["message"] = "Please Enter a Valid Cell Number !Supported format is now 01XXXXXXXXX.";
                         echo json_encode($response);
                         return;
@@ -694,6 +703,7 @@ class Reseller extends Role_Controller {
                     'mobile' => $mobile,
                     'email' => $email,
                     'note' => $note,
+                    'message' => $message,
                     'pin' => $pin
                 );
             }
@@ -728,8 +738,6 @@ class Reseller extends Role_Controller {
 
     function show_user_profile($user_id = 0) {
         $user_id = $this->session->userdata('user_id');
-        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
-
         $user_profile_info = array();
         $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($profile_info)) {
@@ -741,7 +749,6 @@ class Reseller extends Role_Controller {
             }
         }
         $this->data['profile_info'] = $user_profile_info;
-        $this->data['service_list'] = $service_list;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/show_user_profile', $this->data);
     }

@@ -34,6 +34,19 @@ class Reseller_model extends Ion_auth_model {
                         ->from($this->tables['users'])
                         ->get();
     }
+    
+  /*
+     * This method will return user messages
+     * @param $user_id_list, user id list
+     * @return user message info
+     * @author rashida
+     */
+    public function get_user_messages($user_id_list) {
+        $this->db->where_in($this->tables['users'] . '.id', $user_id_list);
+        return $this->db->select($this->tables['users'] . '.message')
+                        ->from($this->tables['users'])
+                        ->get();
+    }
 
     /*
      * This method will retun user group info
@@ -101,19 +114,19 @@ class Reseller_model extends Ion_auth_model {
                         ->from($this->tables['users'])
                         ->get();
     }
-    
+
     /*
      * This method will return service info of users
      * @param $service_id, service id
      * @param $user_id_list, user id list   
      * @author nazmul hasan on 29th March 2016  
      */
+
     public function get_users_service_info($service_id, $user_id_list = array()) {
         $this->db->order_by("user_id", "asc");
-        if(!empty($user_id_list))
-        {
+        if (!empty($user_id_list)) {
             $this->db->where_in($this->tables['users_services'] . '.user_id', $user_id_list);
-        }        
+        }
         $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
         return $this->db->select($this->tables['users_services'] . '.*')
                         ->from($this->tables['users_services'])
@@ -159,14 +172,14 @@ class Reseller_model extends Ion_auth_model {
       ->get($this->tables['users_groups']);
       } */
 
-    /*public function get_users_service_info($user_ids = array(), $service_id) {
-        $this->db->order_by("user_id", "asc");
-        $this->db->where_in($this->tables['users_services'] . '.user_id', $user_ids);
-        $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
-        return $this->db->select($this->tables['users_services'] . '.*')
-                        ->from($this->tables['users_services'])
-                        ->get();
-    }*/
+    /* public function get_users_service_info($user_ids = array(), $service_id) {
+      $this->db->order_by("user_id", "asc");
+      $this->db->where_in($this->tables['users_services'] . '.user_id', $user_ids);
+      $this->db->where($this->tables['users_services'] . '.service_id', $service_id);
+      return $this->db->select($this->tables['users_services'] . '.*')
+      ->from($this->tables['users_services'])
+      ->get();
+      } */
 
     /**
      * this methord return user service info list
