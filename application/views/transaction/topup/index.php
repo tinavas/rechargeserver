@@ -1,11 +1,7 @@
 <script>
 
     $(function () {
-        error_message = '<?php
-if (isset($error_message)) {
-    echo $error_message;
-}
-?>';
+      var  error_message = '<?php if (isset($error_message)) {echo $error_message;}?>';
         if (error_message != "") {
             $("#content").html(error_message);
             $('#common_modal').modal('show');

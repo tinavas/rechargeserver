@@ -1,10 +1,12 @@
 
 <script>
     function update_transction(transactionInfo) {
-        if (typeof transactionInfo.trx_id_operator == "undefined" || transactionInfo.trx_id_operator.length == 0) {
-            $("#content").html("Please give Transaction operator id !");
-            $('#common_modal').modal('show');
-            return;
+        if (typeof transactionInfo.status_id != "undefined" && transactionInfo.status_id.length == 0 && transactionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>') {
+            if (typeof transactionInfo.trx_id_operator == "undefined" || transactionInfo.trx_id_operator.length == 0) {
+                $("#content").html("Please give Transaction operator id !");
+                $('#common_modal').modal('show');
+                return;
+            }
         }
         angular.element($("#submit_update_transction")).scope().updateTransction(function (data) {
             $("#content").html(data.message);
