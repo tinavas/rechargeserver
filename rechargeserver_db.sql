@@ -71,9 +71,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_laccount_status1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `max_user_no`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `mobile`, `app_session_id`) VALUES
-(2, '\0\0', 'superadmin', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'super@admin.com',  100000, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Super', 'admin', 'SUPER_ADMIN', '0','1234xyz'),
-(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com',  100000, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0', '1234xyz');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `max_user_no`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `mobile`, `app_session_id`,`message`) VALUES
+(2, '\0\0', 'superadmin', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'super@admin.com',  100000, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Super', 'admin', 'SUPER_ADMIN', '0','1234xyz', 'super admin message'),
+(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com',  100000, '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0', '1234xyz',' admin test message');
 
 
 CREATE TABLE IF NOT EXISTS `users_groups` (
