@@ -33,11 +33,11 @@
                 return;
             }
         }
-        angular.element($('#submit_update_reseller')).scope().updateReseller(function(data) {
+        angular.element($('#submit_update_reseller')).scope().updateReseller(function (data) {
 
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function() {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>reseller/get_reseller_list';
             });
         });
@@ -114,6 +114,11 @@
                                 <div class="form-group ">
                                     <label for="pin" class="control-label">Pin</label>
                                     <input type="text" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">
+                                    <p class="help-block form_error"></p>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="message">Message</label>
+                                    <textarea rows="2" name="message" id="note" class="form-control input-sm" ng-model="resellerInfo.message"></textarea>
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <p style="padding-top: 0px !important;padding-top: 0px !important;line-height:0px;" class="help-block">&nbsp;</p>

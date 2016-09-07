@@ -1,4 +1,4 @@
-get_total_report<?php
+<?php
 
 class Report extends Role_Controller {
 

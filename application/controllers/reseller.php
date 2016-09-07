@@ -727,6 +727,15 @@ class Reseller extends Role_Controller {
             }
             $this->data['reseller_info'] = json_encode($reseller_info);
         }
+        $groups = $this->ion_auth->get_current_user_types();
+        $message_editable_flag = false;
+        foreach ($groups as $group_info) {
+            if ($group_info == GROUP_ADMIN) {
+                $message_editable_flag = true;
+                break;
+            }
+        }
+        $this->data['message_editable_flag'] = $message_editable_flag;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/update_user_profile', $this->data);
     }

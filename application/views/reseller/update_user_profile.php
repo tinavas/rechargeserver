@@ -98,11 +98,13 @@
                                     <textarea rows="2" name="note" id="note" class="form-control input-sm" ng-model="resellerInfo.note"></textarea>
                                     <p class="help-block form_error"></p>
                                 </div>
-                                <div class="form-group ">
-                                    <label for="message">Message</label>
-                                    <textarea rows="2" name="message" id="note" class="form-control input-sm" ng-model="resellerInfo.message"></textarea>
-                                    <p class="help-block form_error"></p>
-                                </div>
+                                 <?php if ($message_editable_flag != false) { ?>
+                                    <div class="form-group ">
+                                        <label for="message">Message</label>
+                                        <textarea rows="2" name="message" id="note" class="form-control input-sm" ng-model="resellerInfo.message"></textarea>
+                                        <p class="help-block form_error"></p>
+                                    </div>
+                                <?php } ?>
                             </td>                            
                         </tr>
                     </tbody>
