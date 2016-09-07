@@ -59,7 +59,7 @@
                             Sim Number:
                         </label>
                         <div class ="col-md-6">
-                            <input type="text" placeholder="88017XXXXXXXX" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.simNo">
+                            <input type="text" placeholder="88017XXXXXXXX" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.simNo">
                         </div> 
                     </div>
                     <div class="row form-group">
@@ -67,7 +67,7 @@
                             Identifier:
                         </label>
                         <div class ="col-md-6">
-                            <input type="text" placeholder="localserver1" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.identifier">
+                            <input type="text" placeholder="localserver1" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.identifier">
                         </div> 
                     </div>
                     <div class="row form-group">
@@ -75,7 +75,7 @@
                             Description:
                         </label>
                         <div class ="col-md-6">
-                            <input type="text" value="" class="form-control" placeholder=""  id="" ng-model="simInfo.description">
+                            <input type="text" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.description">
                         </div> 
                     </div>
                     <div class="row form-group"  ng-init="setSimStatusList('<?php echo htmlspecialchars(json_encode($sim_status_list)); ?>')">
@@ -83,7 +83,7 @@
                             Status:
                         </label>
                         <div class ="col-md-6">
-                            <select  class="form-control" ng-model='simInfo.status' required ng-options='statusInfo.id as statusInfo.title for statusInfo in simStatusList'></select>
+                            <select  class="form-control input-xs customInputMargin" ng-model='simInfo.status' required ng-options='statusInfo.id as statusInfo.title for statusInfo in simStatusList'></select>
                         </div> 
                     </div>
                 </form>
