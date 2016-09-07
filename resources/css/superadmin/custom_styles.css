@@ -6,6 +6,10 @@
 .table td {
     text-align: center;   
 }
+.service {
+    padding-left: 10px!important; 
+    text-align: left!important; 
+}
 .table th {
     text-align: center;   
 }

@@ -119,7 +119,7 @@
                         <tbody>
                         <div ng-init="setServiceList(<?php echo htmlspecialchars(json_encode($service_list));  ?>)" >
                             <tr ng-repeat="serviceInfo in serviceList" class="table_content">
-                                <td>
+                                <td class="service">
                                     <input type="checkbox"  ng-model="serviceInfo.selected" value="{{serviceInfo.service_id}}" name="per[]"  ng-click="toggleSelection(serviceInfo)">{{serviceInfo.title}}
                                 </td>
                                 <td>
