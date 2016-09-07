@@ -1,6 +1,6 @@
 <div class="head">
     <div class="brand">
-        <a href="<?php echo base_url();?>"><?php echo SITE_TITLE;?></a>
+        <a href="<?php echo base_url();?>"><?php echo $company_title;?></a>
     </div> 
     <div class="head-right">
         <ul class="rsmenu">

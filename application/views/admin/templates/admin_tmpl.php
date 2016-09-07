@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo SITE_TITLE; ?></title>
+        <title><?php echo $company_title;?></title>
 
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="author" content="Nazmul Hasan, Alamgir Kabir, Rashida Sultana, Ridoy">
@@ -15,6 +15,7 @@
         <link href="<?php echo base_url(); ?>resources/css/recharge.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>resources/css/menu.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>resources/css/styles.css" rel="stylesheet">
+        <link href="<?php echo base_url(); ?>resources/css/loader.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>resources/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">

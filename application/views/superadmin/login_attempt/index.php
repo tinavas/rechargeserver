@@ -7,26 +7,48 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-offset-1 col-sm-10">
-                        <div class="table-responsive">
-                            <table class="table table-condensed table-bordered">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>IP address</th>
-                                    <th>Login</th>
-                                    <th>Time</th>
-                                    <th>Delete</th>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr class="table_heading_title">
+                                    <th>
+                                        <label for=""  class="control-label requiredField">
+                                            Id
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label for=""  class="control-label requiredField">
+                                            IP address
+                                        </label> 
+                                    </th>
+                                    <th>
+                                        <label for=""  class="control-label requiredField">
+                                            Login
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label for=""  class="control-label requiredField">
+                                            Time
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label for=""  class="control-label requiredField">
+                                            Delete
+                                        </label>
+                                    </th>
                                 </tr>
-                                <?php foreach($login_attempt_list as $login_attempt){?>
-                                <tr>
-                                    <td><?php echo $login_attempt['id']?></td>
-                                    <td><?php echo $login_attempt['ip_address']?></td>
-                                    <td><?php echo $login_attempt['login']?></td>
-                                    <td><?php echo $login_attempt['time']?></td>
-                                    <td><a onclick="open_modal_delete_confirm(<?php echo $login_attempt['id'] ?>)">Delete</a></td>
-                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($login_attempt_list as $login_attempt) { ?>
+                                    <tr class="table_content">
+                                        <td><?php echo $login_attempt['id'] ?></td>
+                                        <td><?php echo $login_attempt['ip_address'] ?></td>
+                                        <td><?php echo $login_attempt['login'] ?></td>
+                                        <td><?php echo $login_attempt['time'] ?></td>
+                                        <td><a class="cursor_pointer" onclick="open_modal_delete_confirm(<?php echo $login_attempt['id'] ?>)">Delete</a></td>
+                                    </tr>
                                 <?php } ?>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
