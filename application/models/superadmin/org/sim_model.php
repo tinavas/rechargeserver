@@ -36,14 +36,14 @@ class Sim_model extends Ion_auth_model {
             if ($response_code == RESPONSE_CODE_SUCCESS) {
                 if (property_exists($result_event, "result") != FALSE) {
                     $result = $result_event->result;
-                    $this->load->library('date_utils');
+                     $this->load->library('superadmin/org/super_utils');
                     foreach ($result as $simInfo) {
                         $sim_info = array();
                         $sim_info['sim_no'] = $simInfo->simNo;
                         $sim_info['identifier'] = $simInfo->identifier;
                         $sim_info['description'] = $simInfo->description;
                         $sim_info['status'] = $simInfo->status;
-                        $sim_info['modified_on'] = $this->date_utils->get_unix_to_display($simInfo->simServiceList[0]->modifiedOn);
+                        $sim_info['modified_on'] = $this->super_utils->get_unix_to_display($simInfo->simServiceList[0]->modifiedOn);
                         $sim_list[] = $sim_info;
                     }
                 }

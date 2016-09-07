@@ -42,9 +42,9 @@ class History_library {
     }
 
     public function get_deshbord_info() {
-        $this->load->library('date_utils');
-        $todays_unix_time = $this->date_utils->server_start_unix_time_of_today();
-        $prviuous_days_unix_time = $this->date_utils->server_start_unix_time_of_previous_day();
+        $this->load->library('superadmin/org/super_utils');
+        $todays_unix_time = $this->super_utils->server_start_unix_time_of_today();
+        $prviuous_days_unix_time = $this->super_utils->server_start_unix_time_of_previous_day();
         $result_event = $this->history_model->get_deshbord_info($todays_unix_time, $prviuous_days_unix_time);
         return $result_event;
     }
