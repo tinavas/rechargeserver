@@ -169,54 +169,18 @@ class Sim_model extends Ion_auth_model {
         return $sim_status_list;
     }
 
+    /*
+     * This method will return sim sms list from authentication server
+     * @param $sim_no
+     * @param $start_time
+     * @param $end_time
+     * @param $offset
+     * @param $limit
+     * @author nazmul hasan on 18th september 2016
+     */
     public function get_sms_list($sim_no, $start_time, $end_time, $offset = 0, $limit = 0) {
-        /*$sms_info_list = array();
-        //uncommet while work within
-//        $this->curl->create(WEBSERVICE_GET_SMS_LIST);
-//        $this->curl->post(array("simNo" => $sim_no, "offset" => $offset, "limit" => $limit, "from_date" => $from_date, "to_date" => $to_date));
-//        $result_event = json_decode($this->curl->execute());
-//        if (!empty($result_event)) {
-//            $response_code = '';
-//            if (property_exists($result_event, "responseCode") != FALSE) {
-//                $response_code = $result_event->responseCode;
-//            }
-//            if ($response_code == RESPONSE_CODE_SUCCESS) {
-//                if (property_exists($result_event, "result") != FALSE) {
-                    //discard while dynamic
-                    $obj = new stdClass();
-                    $obj->id = "1234";
-                    $obj->simNo = "01723598606";
-                    $obj->sender = "01678112509";
-                    $obj->sms = "Transaction successful! your tansaction id is 0123456789";
-                    $obj->createdOn = "2016-09-06";
-                    $obj1 = new stdClass();
-                    $obj1->id = "12345";
-                    $obj1->simNo = "01712341213";
-                    $obj1->sender = "01678112509";
-                    $obj1->sms = "Transaction successful! your tansaction id is 0123456789";
-                    $obj1->createdOn = "2016-09-05";
-                    $sms_list = array(
-                    );
-                    $sms_list[] = $obj;
-                    $sms_list[] = $obj1;
-                    // end 
-//                    $result = $result_event->result;
-//                    $smsList = $result->smsList;
-//                    $sms_counter = $result->totalCounter;
-//                   //
-                    $sms_info_list['sms_list'] = $sms_list;
-                    $sms_info_list['total_counter'] = 10;
-//                }
-//            }
-//        }
-        return $sms_info_list;*/
         $sms_info_list['sms_list'] = array();
         $sms_info_list['total_counter'] = 0;
-        $sim_no = "8801712341213";
-        $start_time = 0;
-        $end_time = 1574032339;
-        $offset = 0;
-        $limit = 5;
         $this->curl->create(WEBSERVICE_GET_SMS_LIST);
         $this->curl->post(array("sim_no" => $sim_no, "offset" => $offset, "limit" => $limit, "start_time" => $start_time, "end_time" => $end_time));
         $result_event = json_decode($this->curl->execute());
@@ -237,7 +201,7 @@ class Sim_model extends Ion_auth_model {
                         foreach ($result->simSMSList as $sim_sms_info) 
                         {                       
                             //reducing 2 hours from auth server and converting to human date format from unix format
-                            $sim_sms_info->createdOn = $this->super_utils->get_unix_to_human_date($sim_sms_info->createdOn-7200);
+                            $sim_sms_info->createdOn = $this->super_utils->get_auth_unix_to_human_date($sim_sms_info->createdOn);
                             $sim_sms_list[] = $sim_sms_info;
                         }
                    }                   
@@ -248,5 +212,4 @@ class Sim_model extends Ion_auth_model {
         }
         return $sms_info_list;
     }
-
 }
