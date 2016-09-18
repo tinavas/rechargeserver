@@ -342,6 +342,7 @@ class Reseller extends Role_Controller {
                 $cell_no = "";
                 $note = "";
                 $pin = DEFAULT_PIN;
+                $message = "";
                 if (!property_exists($resellerInfo, "username")) {
                     $response["message"] = "Please assign a username !!";
                     echo json_encode($response);
@@ -376,6 +377,9 @@ class Reseller extends Role_Controller {
                 }
                 if (property_exists($resellerInfo, "pin")) {
                     $pin = $resellerInfo->pin;
+                }
+                if (property_exists($resellerInfo, "message")) {
+                    $message = $resellerInfo->message;
                 }
                 if (isset($cell_no) && $cell_no != "") {
                     $this->load->library('utils');
@@ -413,7 +417,8 @@ class Reseller extends Role_Controller {
                     'user_service_list' => $user_service_list,
                     'child_id_list' => $child_id_list,
                     'inactive_service_list' => $inactive_service_list,
-                    'pin' => $pin
+                    'pin' => $pin,
+                    'message' => $message
                 );
                 if ($new_password != "") {
                     $additional_data['password'] = $new_password;
@@ -741,10 +746,10 @@ class Reseller extends Role_Controller {
     }
 
     /*
-     * This method will update user profile
+     * This method will display user profile info
+     * @param $user_id, user id
      * @author nazmul hasan on 2nd March 2016
      */
-
     function show_user_profile($user_id = 0) {
         $user_id = $this->session->userdata('user_id');
         $user_profile_info = array();

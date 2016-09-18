@@ -9,8 +9,8 @@ angular.module('controller.Sim', ['service.Sim']).
             $scope.simStatusList = [];
             $scope.smsList = [];
             $scope.allow_action = true;
-            $scope.currentPage = 3;
-            $scope.pageSize = 1;
+            $scope.currentPage = 1;
+            $scope.pageSize = 10;
             $scope.searchInfo = {};
 
             $scope.setSimInfo = function (simInfo) {

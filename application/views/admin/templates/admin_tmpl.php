@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo $company_title;?></title>
+        <title><?php echo $site_info['title']?></title>
 
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="author" content="Nazmul Hasan, Alamgir Kabir, Rashida Sultana, Ridoy">

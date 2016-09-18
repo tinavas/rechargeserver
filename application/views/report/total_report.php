@@ -44,6 +44,7 @@
             <tr>
                 <th><a href="">Id</a></th>
                 <th><a href="">Service</a></th>
+                <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Commission</a></th>
                 <th><a href="">Used By</a></th>
@@ -57,11 +58,13 @@
             <tr ng-repeat="profitInfo in profitList">
                 <th>{{profitInfo.transaction_id}}</th>
                 <th>{{profitInfo.service_title}}</th>
+                <th>{{profitInfo.cell_no}}</th>
                 <th>{{profitInfo.rate}}</th>
                 <th>{{profitInfo.amount}}</th>
                 <th>{{profitInfo.first_name}} {{profitInfo.last_name}}</th>                
                 <th>{{profitInfo.created_on}}</th>
                 <th ng-if="profitInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'">Pending</th>
+                <th ng-if="profitInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>'">Processed</th>
                 <th ng-if="profitInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>'">Success</th>
             </tr>
         </tfoot>

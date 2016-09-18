@@ -136,7 +136,7 @@ class Reseller_library {
                 $today_usages['sms'] = 0;
             }
         }
-        $transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL))->result_array();
+        $transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL))->result_array();
         foreach ($transaction_list as $transaction_info) {
             if (SERVICE_TYPE_ID_BKASH_CASHIN == $transaction_info['service_id']) {
                 $today_usages['bkash'] = $today_usages['bkash'] + $transaction_info['amount'];
@@ -151,14 +151,14 @@ class Reseller_library {
             }
         }
         if (in_array(SERVICE_TYPE_ID_SEND_SMS, $service_id_list)) {
-            $sms_transaction_list = $this->transaction_model->where(array('user_id' => $user_id))->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL), $this->date_utils->server_start_unix_time_of_today(), $this->date_utils->server_end_unix_time_of_today())->result_array();
+            $sms_transaction_list = $this->transaction_model->where(array('user_id' => $user_id))->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL), $this->date_utils->server_start_unix_time_of_today(), $this->date_utils->server_end_unix_time_of_today())->result_array();
             foreach ($sms_transaction_list as $sms_transaction_info) {
                 $today_usages['sms'] = $today_usages['sms'] + $sms_transaction_info['unit_price'];
             }
         }
         $data['today_usages'] = $today_usages;
         $user_message = "";
-        $user_id_list[] = $this->get_parent_user_id($user_id);
+        $user_id_list[] = ADMIN_USER_ID;
         $user_id_list[] = $user_id;
         $user_message_array = $this->reseller_model->get_user_messages($user_id_list)->result_array();
         foreach ($user_message_array as $user_message_info) {

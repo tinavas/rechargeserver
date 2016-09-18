@@ -56,7 +56,6 @@ class Transaction_model extends Ion_auth_model {
      * @param $user_profit_data, user profit data
      * @author nazmul hasan on 24th February 2016
      */
-
     public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
@@ -108,7 +107,9 @@ class Transaction_model extends Ion_auth_model {
                 $user_profit_list = array();
                 foreach ($users_profit_data as $user_profit_info) {
                     $user_profit_info['transaction_id'] = $trx_id;
-                    $user_profit_list[] = $user_profit_info;
+                    $user_profit_info['cell_no'] = $cell_no;
+                    $profit_data = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
+                    $user_profit_list[] = $profit_data;
                 }
                 $this->db->insert_batch($this->tables['user_profits'], $user_profit_list);
             }
@@ -117,10 +118,12 @@ class Transaction_model extends Ion_auth_model {
             $this->set_error('transaction_unsuccessful');
             return FALSE;
         }
+        //by default prepaid package is selected
         $package_id = OPERATOR_TYPE_ID_PREPAID;
         if (array_key_exists("operator_type_id", $transaction_data)) {
             $package_id = $transaction_data['operator_type_id'];
         }
+        //transaction will be executed at local server
         if ($transaction_data['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_AUTO) {
             $this->curl->create(WEBSERVICE_URL_CREATE_TRANSACTION);
             $this->curl->post(array("livetestflag" => TRANSACTION_FLAG_LIVE, "APIKey" => $api_key, "amount" => $amount, "cell_no" => $cell_no, "package_id" => $package_id, "description" => $description));
@@ -168,6 +171,12 @@ class Transaction_model extends Ion_auth_model {
                     return FALSE;
                 }
             }
+            else
+            {
+                $this->db->trans_rollback();
+                $this->set_error('error_webservice_unavailable');
+                return FALSE;
+            }
         } 
         else {
             //manual transaction at webserver by superadmin
@@ -176,7 +185,7 @@ class Transaction_model extends Ion_auth_model {
             return TRUE;
         }
         $this->db->trans_rollback();
-        $this->set_error('error_webservice_unavailable');
+        $this->set_error('transaction_unsuccessful');
         return FALSE;
     }
 
@@ -255,6 +264,7 @@ class Transaction_model extends Ion_auth_model {
                     if($user_profit_info['mapping_id'] == $transaction_info['mapping_id'])
                     {
                         $user_profit_info['transaction_id'] = $trx_id;
+                        $user_profit_info['cell_no'] = $transaction_info['cell_no'];
                         $profit_list_manual[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
                     }
                 }                
@@ -286,6 +296,7 @@ class Transaction_model extends Ion_auth_model {
                                 foreach ($user_profit_list as $user_profit_info) {
                                     if ($user_profit_info['mapping_id'] == $mapping_info->referenceId) {
                                         $user_profit_info['transaction_id'] = $mapping_info->transactionId;
+                                        $user_profit_info['cell_no'] = $user_transaction_list_auto[$mapping_id]['cell_no'];
                                         $profit_list_auto[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
                                     }
                                 }
@@ -663,7 +674,7 @@ class Transaction_model extends Ion_auth_model {
     public function get_user_profit($user_id, $service_ids) {
         $this->db->where($this->tables['user_profits'] . '.user_id', $user_id);
         $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_ids);
-        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->group_by('service_id');
         return $this->db->select($this->tables['user_profits'] . '.service_id, sum(rate) as total_used_amount, sum(amount) as total_profit,' . $this->tables['services'] . '.title')
                         ->from($this->tables['user_profits'])

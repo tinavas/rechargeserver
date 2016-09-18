@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title><?php echo $company_title;?></title>
+        <title><?php echo $site_info['title']?></title>
         <meta name="author" content="Nazmul Hasan, Alamgir Kabir, A.K.M. NAZMUL ISLAM">
         <meta name="description" content="Social">
         <meta name="keywords" content=""/>

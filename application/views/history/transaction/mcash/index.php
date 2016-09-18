@@ -26,6 +26,7 @@
                 <option  value="">Please select</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>
+                <option  value="<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>">Processed</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Failed</option>
                 <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
             </select>

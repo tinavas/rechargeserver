@@ -17,8 +17,9 @@ class Cost_profit_model extends Ion_auth_model {
         if(!empty($service_id_list))
         {
             $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_id_list);
-        }        
-        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        } 
+        //right now only successful status are handled. later we may considered pending and processed statuses
+        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->group_by('service_id');
         return $this->db->select($this->tables['user_profits'] . '.service_id, sum(rate) as total_used_amount, sum(amount) as total_profit,' . $this->tables['services'] . '.title')
                         ->from($this->tables['user_profits'])
@@ -35,7 +36,8 @@ class Cost_profit_model extends Ion_auth_model {
             }
             $this->_ion_where = array();
         }
-        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        //right now only successful status are handled. later we may considered pending and processed statuses
+        $this->db->where_in($this->tables['user_profits'] . '.status_id', array(TRANSACTION_STATUS_ID_SUCCESSFUL));
         if ($limit > 0) {
             $this->db->limit($limit);
         }

@@ -35,7 +35,7 @@ class Login_attempt extends CI_Controller {
         }
         $this->load->library('superadmin/org/super_utils');
         foreach ($login_attempt_list as $value) {
-            $value['time'] = $this->super_utils->get_unix_to_human_date($value['time'], 1);
+            $value['time'] = $this->super_utils->get_unix_to_human_date($value['time']);
             $login_attempts[] = $value;
         }
         $this->data['login_attempt_list'] = $login_attempts;

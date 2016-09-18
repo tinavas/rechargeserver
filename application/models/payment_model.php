@@ -12,7 +12,7 @@ class Payment_model extends Ion_auth_model {
      * @author nazmul hasan on 24th february 2016
      */
     public function get_users_current_balance($user_id_list = array()) {
-        $this->db->where_in('status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in('status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->where_in('user_id', $user_id_list);
         $this->db->group_by('user_id');
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
@@ -152,7 +152,7 @@ class Payment_model extends Ion_auth_model {
     
     
     public function get_user_current_balance($user_id) {
-        $this->db->where_in($this->tables['user_payments'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_SUCCESSFUL));
+        $this->db->where_in($this->tables['user_payments'] . '.status_id', array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL));
         $this->db->where($this->tables['user_payments'] . '.user_id', $user_id);
         return $this->db->select('user_id, sum(balance_in) - sum(balance_out) as current_balance')
                         ->from($this->tables['user_payments'])

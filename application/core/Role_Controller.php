@@ -19,22 +19,12 @@ class Role_Controller extends CI_Controller{
         }
         $this->data['service_list'] = $service_list;
         $this->data['topup_service_allow_flag'] = $topup_service_allow_flag;
-        $this->load->model('superadmin/org/company_info_configuration_model');
-        $company_info = array();
-        $company_info_array = $this->company_info_configuration_model->get_company_info()->result_array();
-        if(!empty($company_info_array)){
-         $company_info =  $company_info_array[0];
+        $this->load->model('company_model');
+        $site_info = array();
+        $basic_configuration_info_array = $this->company_model->get_basic_configuration_info()->result_array();
+        if(!empty($basic_configuration_info_array)){
+            $site_info =  $basic_configuration_info_array[0];
         }
-         $this->data['company_title'] = $company_info['title'];
-//        $this->load->library("org/profile/business/business_profile_library"); 
-//        $this->load->library('notification');
-//        $user_id = $this->session->userdata('user_id');
-//        $this->data['user_id'] = $user_id;
-//        $business_profile_info = $this->business_profile_library->get_profile_info();
-//        $this->data['business_profile_info'] = $business_profile_info;
-//        $this->data['total_unread_followers'] = 0;
-//        $this->data['total_unread_notifications'] = 0;
-//        $this->data['notification_list'] = array();        
+        $this->data['site_info'] = $site_info;       
     }
 }
-?>

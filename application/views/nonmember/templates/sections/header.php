@@ -2,7 +2,7 @@
     <div class="ez-wrap">
         <div id="ez-logo-wrap">
             <a id="ez-logo" tabindex="-1" href="<?php echo base_url();?>">
-                <img class="img-responsive" alt="<?php echo $company_title;?>" src="<?php echo base_url()?>resources/images/company_logo/333x44/company_logo.png">
+                <img class="img-responsive" alt="<?php echo $site_info['title']?>" src="<?php echo base_url()?>resources/images/company_logo/333x44/"<?php echo $site_info['logo']?>
             </a>
         </div>
         <a id="ez-logo" tabindex="-1" href=""> </a>

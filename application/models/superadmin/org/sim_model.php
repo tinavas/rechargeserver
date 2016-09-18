@@ -169,8 +169,8 @@ class Sim_model extends Ion_auth_model {
         return $sim_status_list;
     }
 
-    public function get_sms_list($sim_no = 0, $offset = 0, $limit = 0, $from_date = 0, $to_date = 0) {
-        $sms_info_list = array();
+    public function get_sms_list($sim_no, $start_time, $end_time, $offset = 0, $limit = 0) {
+        /*$sms_info_list = array();
         //uncommet while work within
 //        $this->curl->create(WEBSERVICE_GET_SMS_LIST);
 //        $this->curl->post(array("simNo" => $sim_no, "offset" => $offset, "limit" => $limit, "from_date" => $from_date, "to_date" => $to_date));
@@ -209,6 +209,43 @@ class Sim_model extends Ion_auth_model {
 //                }
 //            }
 //        }
+        return $sms_info_list;*/
+        $sms_info_list['sms_list'] = array();
+        $sms_info_list['total_counter'] = 0;
+        $sim_no = "8801712341213";
+        $start_time = 0;
+        $end_time = 1574032339;
+        $offset = 0;
+        $limit = 5;
+        $this->curl->create(WEBSERVICE_GET_SMS_LIST);
+        $this->curl->post(array("sim_no" => $sim_no, "offset" => $offset, "limit" => $limit, "start_time" => $start_time, "end_time" => $end_time));
+        $result_event = json_decode($this->curl->execute());
+        if (!empty($result_event)) {
+            $response_code = '';
+            if (property_exists($result_event, "responseCode") != FALSE) {
+                $response_code = $result_event->responseCode;
+            }
+            if ($response_code == RESPONSE_CODE_SUCCESS) {
+                if (property_exists($result_event, "result") != FALSE) {
+                   $this->load->library('superadmin/org/Super_utils');
+                   $result = $result_event->result;
+                   $sim_sms_list = array();
+                   $counter = 0;
+                   if(property_exists($result, "counter") != FALSE && property_exists($result, "simSMSList") != FALSE)
+                   {
+                        $counter = $result->counter;
+                        foreach ($result->simSMSList as $sim_sms_info) 
+                        {                       
+                            //reducing 2 hours from auth server and converting to human date format from unix format
+                            $sim_sms_info->createdOn = $this->super_utils->get_unix_to_human_date($sim_sms_info->createdOn-7200);
+                            $sim_sms_list[] = $sim_sms_info;
+                        }
+                   }                   
+                   $sms_info_list['sms_list'] = $sim_sms_list;
+                   $sms_info_list['total_counter'] = $counter;
+                }
+            }
+        }
         return $sms_info_list;
     }
 

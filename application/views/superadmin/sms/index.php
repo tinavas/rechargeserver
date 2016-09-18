@@ -27,7 +27,7 @@
     }
 </script>
 <div class="loader"></div>
-<div class="ezttle"><span class="text">Transaction History</span></div>
+<div class="ezttle"><span class="text">SMS History</span></div>
 <div class="mypage" ng-controller="simController">
     <ul class="list-unstyled paymentHistorySearch">
         <li>Sim No</li>

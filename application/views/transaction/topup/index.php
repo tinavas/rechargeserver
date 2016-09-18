@@ -106,6 +106,7 @@
             $("#content").html(data.message);
             $('#common_modal').modal('show');
             $('#modal_ok_click_id').on("click", function () {
+                //$(".loader").show();
                 window.location = '<?php echo base_url() ?>transaction/topup';
             });
         });

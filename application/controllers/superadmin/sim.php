@@ -9,7 +9,7 @@ class Sim extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('form_validation');
-        $this->load->model('superadmin/org/sim_model');
+        $this->load->library('superadmin/org/sim_library');
     }
 
     /*
@@ -251,15 +251,17 @@ class Sim extends CI_Controller {
                     }
                 }
             }
-            $sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
+            $sms_info_list = $this->sim_library->get_sms_list($sim_no, $from_date, $to_date, $offset, $limit);
             $response['sms_list'] = $sms_info_list['sms_list'];
             $response['total_counter'] = $sms_info_list['total_counter'];
             echo json_encode($response);
             return;
         }
-        $sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
-        $this->data['sms_list'] = $sms_info_list['sms_list'];
-        $this->data['total_counter'] = $sms_info_list['total_counter'];
+        //$sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
+        //$this->data['sms_list'] = $sms_info_list['sms_list'];
+        //$this->data['total_counter'] = $sms_info_list['total_counter'];
+        $this->data['sms_list'] = array();
+        $this->data['total_counter'] = 0;
         $this->load->library('superadmin/org/super_utils');
         $current_date = $this->super_utils->get_current_date();
         $this->data['current_date'] = $current_date;

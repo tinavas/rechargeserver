@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `basic_configuration` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 INSERT INTO `basic_configuration` (`title`, `logo`) VALUES
-('RECHARGESERVER', 'company_log.png');
+('RECHARGESERVER', 'company_logo.png');
 
 CREATE TABLE IF NOT EXISTS `account_status` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -188,7 +188,8 @@ INSERT INTO `user_transaction_statuses` (`id`, `title`) VALUES
 (1, 'Pending'),
 (2, 'Success'),
 (3, 'Failed'),
-(4, 'Cancelled');
+(4, 'Cancelled'),
+(5, 'Processed');
 
 
 
@@ -231,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `user_sms_transactions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `transaction_id` varchar(200),
   `sender_cell_no` varchar(100),
-  `cell_no` varchar(20),
+  `cell_no` varchar(200),
   `status_id` int(11) unsigned NOT NULL,
   `created_on` int(11) unsigned DEFAULT NULL,
   `modified_on` int(11) unsigned DEFAULT NULL,
@@ -250,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   `operator_id` int(11) unsigned   DEFAULT NULL,
   `operator_type_id` int(11) unsigned  DEFAULT NULL,
   `sender_cell_no` varchar(100),
-  `cell_no` varchar(20),
+  `cell_no` varchar(200),
   `description` varchar(200),
   `amount` double,
   `status_id` int(11) unsigned NOT NULL,
@@ -316,6 +317,7 @@ ALTER TABLE `user_payments`
   `transaction_id` varchar(200),
   `service_id` int(11) unsigned NOT NULL,
   `status_id` int(11) unsigned NOT NULL,
+  `cell_no` varchar(200) DEFAULT '',
   `rate` double,
   `amount` double,
   `created_on` int(11) unsigned DEFAULT NULL,
