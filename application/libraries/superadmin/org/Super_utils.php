@@ -57,7 +57,6 @@ class Super_utils {
      * @param $country_code, country code of this user
      * @Author Nazmul on 17 June 2014
      */
-
     public function get_unix_to_human_date($unix_time, $country_code = 'BD') {
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);
@@ -67,7 +66,93 @@ class Super_utils {
         return unix_to_human($unix_time + $offset);        
         
     }
+    
+    /*
+     * This method will convert unix time into human date dd-mm-yyyy format
+     * @param $unix_time, time in unix format
+     * @param $show_minute, whether minute will be showed or not
+     * @param $country_code, country code of this user
+     * @Author Nazmul on 17 June 2014
+     */
+    public function get_auth_unix_to_human_date($unix_time, $country_code = 'BD') {
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $offset = $dateTime->getOffset();
 
+        return unix_to_human($unix_time + $offset - 7200);        
+        
+    }
+    
+    /*
+     * This method will return unix time of start of a date
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 18th september 2016
+     */
+    public function server_start_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $offset = $dateTime->getOffset();
+
+        return $date_start_unix - $offset;
+    }
+
+    /*
+     * This method will return unix time of end of a date
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 18th september 2016
+     */
+    public function server_end_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $offset = $dateTime->getOffset();
+
+        return $date_start_unix - $offset + 86400;
+    }
+
+    /*
+     * This method will return unix time of start of a date at authentication server
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 18th september 2016
+     */
+    public function auth_server_start_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $offset = $dateTime->getOffset();
+
+        return $date_start_unix - $offset + 7200;
+    }
+
+    /*
+     * This method will return unix time of end of a date at authentication server
+     * @param $date, date in yyyy-mm-dd format
+     * @param $country_code country code
+     * @author nazmul hasan on 18th september 2016
+     */
+    public function auth_server_end_unix_time_of_date($date, $country_code = 'BD') {
+        $date_start_unix = human_to_unix($date . ' 00:00 AM');
+
+        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        $offset = $dateTime->getOffset();
+
+        return $date_start_unix - $offset + 86400 + 7200;
+    }
+
+    
     public function resize_image($source_path, $new_path, $height, $width) {
         $result = array();
         $config = array(
@@ -101,7 +186,6 @@ class Super_utils {
      * @author nazmul hasan on 3rd March 2016
      * @modified rashida on 7th Sep 2016
      */
-
     public function get_unix_to_display($time, $country_code = 'BD') {
         $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
         $dateTimeZone = new DateTimeZone($time_zone_array[0]);
@@ -127,23 +211,4 @@ class Super_utils {
         $date_array = explode(" ", $date);
         return human_to_unix($date_array[0] . ' 00:00 AM');
     }
-
-    /*
-     * This method will return unix time of start of a date
-     * @param $date, date in yyyy-mm-dd format
-     * @param $country_code country code
-     * @author nazmul hasan on 2nd March 2016
-     */
-
-    public function server_start_unix_time_of_date($date, $country_code = 'BD') {
-        $date_start_unix = human_to_unix($date . ' 00:00 AM');
-
-        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code);
-        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
-        $dateTime = new DateTime("now", $dateTimeZone);
-        $offset = $dateTime->getOffset();
-
-        return $date_start_unix - $offset;
-    }
-
 }

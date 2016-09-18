@@ -41,9 +41,19 @@ class Sim_library {
         return get_instance()->$var;
     }
 
+    /*
+     * This method will return sim sms list from authentication server
+     * @param $sim_no
+     * @param $start_date
+     * @param $end_date
+     * @param $offset
+     * @param $limit
+     * @author nazmul hasan on 18th september 2016
+     */
     public function get_sms_list($sim_no, $start_date, $end_date, $offset = 0, $limit = 0) {
-        $start_time = 0;
-        $end_time = 0;
+        $this->load->library('superadmin/org/Super_utils');
+        $start_time = $this->super_utils->auth_server_start_unix_time_of_date($start_date);
+        $end_time = $this->super_utils->auth_server_end_unix_time_of_date($end_date);
         return $this->sim_model->get_sms_list($sim_no, $start_time, $end_time, $offset, $limit);
     }
 
