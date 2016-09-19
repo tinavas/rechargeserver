@@ -10,6 +10,10 @@ class Payment extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->model("superadmin/org/payment_model");
+        $this->load->library('ion_auth');
+        if (!$this->ion_auth->logged_in()) {
+            redirect('superadmin/auth/login', 'refresh');
+        }
     }
 
     public function index() {

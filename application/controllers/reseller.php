@@ -750,8 +750,11 @@ class Reseller extends Role_Controller {
      * @param $user_id, user id
      * @author nazmul hasan on 2nd March 2016
      */
+
     function show_user_profile($user_id = 0) {
-        $user_id = $this->session->userdata('user_id');
+        if ($user_id == 0) {
+            $user_id = $this->session->userdata('user_id');
+        }
         $user_profile_info = array();
         $profile_info = $this->reseller_model->get_user_info($user_id)->result_array();
         if (!empty($profile_info)) {
@@ -762,6 +765,8 @@ class Reseller extends Role_Controller {
                 $user_profile_info['pin'] = $user_pin_info_array[0]['pin'];
             }
         }
+        $service_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
+        $this->data['service_list'] = $service_list;
         $this->data['profile_info'] = $user_profile_info;
         $this->data['app'] = RESELLER_APP;
         $this->template->load(null, 'reseller/show_user_profile', $this->data);

@@ -10,6 +10,10 @@ class Sim extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->library('superadmin/org/sim_library');
+        $this->load->library('ion_auth');
+        if (!$this->ion_auth->logged_in()) {
+            redirect('superadmin/auth/login', 'refresh');
+        }
     }
 
     /*

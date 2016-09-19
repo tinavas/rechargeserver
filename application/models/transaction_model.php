@@ -688,4 +688,10 @@ class Transaction_model extends Ion_auth_model {
         $this->curl->execute();
     }
 
+    
+    public function get_user_transaction_statuses() {
+        return $this->db->select($this->tables['user_transaction_statuses'] . '.*')
+                        ->from($this->tables['user_transaction_statuses'])
+                        ->get();
+    }
 }

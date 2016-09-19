@@ -18,8 +18,9 @@ class Login_attempt extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->load->library('ion_auth');
         if (!$this->ion_auth->logged_in()) {
-            redirect('superadmin/login_attempt', 'refresh');
+            redirect('superadmin/auth/login', 'refresh');
         }
         $this->tmpl = SUPER_ADMIN_TEMPLATE;
     }

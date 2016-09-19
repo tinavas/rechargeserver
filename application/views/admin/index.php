@@ -5,7 +5,7 @@
 </div>
 <div  ng-controller="resellerController">
     <div class="mypage" style="width:100%;float:left;padding-bottom:0px;padding-left:30px;">
-        <ul class="shortcurt" id="set_service_id" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($service_list))?>')" >
+        <ul class="shortcurt" id="set_service_id" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($my_service_list))?>')" >
             <li ng-if="'<?php echo $topup_service_allow_flag; ?>' != false"><a href="<?php echo base_url() . 'transaction/topup' ?>"><img src="<?php echo base_url(); ?>resources/images/flexiload.png" onerror="this.onerror=null;this.src='resources/images/default.png';">Topup</a></li>						
             <div ng-repeat="service in serviceList">
                 <li ng-if="service.service_id == <?php echo SERVICE_TYPE_ID_BKASH_CASHIN; ?>"><a href="<?php echo base_url() . 'transaction/bkash' ?>"> <img src="<?php echo base_url(); ?>resources/images/bkash.png" onerror="this.onerror=null;this.src='resources/images/default.png';">bKash</a></li>						

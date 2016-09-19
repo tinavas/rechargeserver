@@ -15,6 +15,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.paymentSearchList = [];
             $scope.topupTypeList = [];
             $scope.topupOperatorList = [];
+            $scope.transactionStatusList = [];
             $scope.topupDataList = [];
             $scope.allow_transction = true;
             $scope.totalAmount = 0;
@@ -92,6 +93,9 @@ var transactionController = angular.module('controller.Transction', ['services.T
             $scope.setTransctionDataList = function(transactionList) {
                 $scope.transactionDataList = JSON.parse(transactionList);
             };
+            $scope.setTransactionStatusList = function(transactionStatusList) {
+                $scope.transactionStatusList = JSON.parse(transactionStatusList);
+            };
 
             $scope.sendSMS = function(callbackFunction) {
                 if ($scope.allow_transction == false) {
@@ -136,6 +140,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                 setCollectionLength(collectionCounter);
             };
             $scope.getPaymentHistory = function(startDate, endDate) {
+                
                 if ($scope.allTransactions != false) {
                     $scope.searchInfo.limit = $scope.allTransactions;
                 }

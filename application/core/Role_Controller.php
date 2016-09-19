@@ -17,7 +17,7 @@ class Role_Controller extends CI_Controller{
                 }
             }
         }
-        $this->data['service_list'] = $service_list;
+        $this->data['my_service_list'] = $service_list;
         $this->data['topup_service_allow_flag'] = $topup_service_allow_flag;
         $this->load->model('company_model');
         $site_info = array();

@@ -6,11 +6,11 @@
     }
     $(function () {
         $('#start_date').Zebra_DatePicker();
-        $('#start_date').val('<?php echo $current_date?>');
+        $('#start_date').val('<?php echo $current_date ?>');
         $('#end_date').Zebra_DatePicker();
-        $('#end_date').val('<?php echo $current_date?>');
+        $('#end_date').val('<?php echo $current_date ?>');
         $('#payment_type').val('0');
-        $('#status_type').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL?>');
+        $('#status_type').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>');
     });
 </script>
 
@@ -34,13 +34,13 @@
                 </select>
             </li>
             <li>Status</li>
-            <li> <select name="status_type" id="status_type" ng-model="searchInfo.statusId">
-                    <option  value="">Please select</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>
+            <li> <select name="status_type" id="status_type" ng-model="searchInfo.statusId" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
+                    <option  value="">All</option>
+                    <option ng-repeat="status in transactionStatusList" value="{{status.id}}">{{status.title}}</option>
+<!--                    <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>
                     <option  value="<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>">Processed</option>
                     <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Failed</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
+                    <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>-->
                 </select>
             </li>
             <li>Show All</li>
