@@ -14,22 +14,21 @@
 </script>
 <div class="loader"></div>
 <div class="ezttle"><span class="text">Transaction History</span></div>
-<div class="mypage" ng-controller="transctionController">
+<div class="mypage" ng-controller="transctionController" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
     <ul class="list-unstyled paymentHistorySearch">
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-        <li>Status Type</li>
-        <li> <select name="repeatSelect" id="repeatSelect" ng-model="searchInfo.statusId" class="form-control input-xs customInputMargin">
-                <option  value="">Please select</option>
-                <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
-                <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>
-                <option  value="<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>">Processed</option>
-                <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Failed</option>
-                <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
-            </select>
-        </li>
+      <li>Status Type</li>
+            <li> 
+                  <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
+            </li>
+      <li ng-init="setTransactionProcessTypeList('<?php echo htmlspecialchars(json_encode($transaction_process_type_list)) ?>')">
+          Process Type</li>
+            <li> 
+                  <select  ng-model='searchInfo.processId' required ng-options='transactionProcessType.id as transactionProcessType.title for transactionProcessType in transactionProcessTypeList' class="form-control input-xs"></select>
+            </li>
         <li>Show All</li>
         <li> <input type="checkbox" ng-model="allTransactions"></li>
         <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_transaction()" class="button-custom"></li>

@@ -56,18 +56,17 @@ class Transaction_library {
         $users_profit_list = $this->calculate_transaction_profit_chain($user_id, $service_id, $amount);
         return $this->transaction_model->add_transaction($api_key, $transaction_data, $users_profit_list);
     }
-    
-    public function update_transaction_info($transaction_data)
-    {
+
+    public function update_transaction_info($transaction_data) {
         $profit_list = $this->calculate_transaction_profit_chain($transaction_data['user_id'], $transaction_data['service_id'], $transaction_data['amount']);
         $user_profit_list = array();
         foreach ($profit_list as $user_profit_info) {
             $user_profit_info['transaction_id'] = $transaction_data['transaction_id'];
             $user_profit_list[] = $user_profit_info;
         }
-        return $this->transaction_model->update_transaction_info($transaction_data,  $user_profit_list);
+        return $this->transaction_model->update_transaction_info($transaction_data, $user_profit_list);
     }
-    
+
     /*
      * this method add multipule transcations
      * @param $transaction_list, transction data list
@@ -76,6 +75,7 @@ class Transaction_library {
      * @param $user_id, user_id
      * @author rashida on 9th march 2016
      */
+
     public function add_multipule_transactions($transaction_list, $service_id_list, $total_amount, $user_id = 0) {
         if ($user_id == 0) {
             $user_id = $this->session->userdata('user_id');
@@ -289,8 +289,8 @@ class Transaction_library {
         $total_amount = 0;
         $transaction_summary_array = $this->transaction_model->where($where)->get_user_sms_transaction_summary($status_id_list, $from_date, $to_date)->result_array();
         if (!empty($transaction_summary_array)) {
-            $total_transactions = (int)$transaction_summary_array[0]['total_transactions'];
-            $total_amount = (double)$transaction_summary_array[0]['total_amount'];
+            $total_transactions = (int) $transaction_summary_array[0]['total_transactions'];
+            $total_amount = (double) $transaction_summary_array[0]['total_amount'];
         }
         $transaction_info_list = array();
         $transaction_list = $this->transaction_model->where($where)->get_user_sms_transaction_list($status_id_list, $from_date, $to_date, $limit, $offset)->result_array();
@@ -386,7 +386,7 @@ class Transaction_library {
         }
         return $payment_info_list;
     }
-    
+
     /*
      * This method will calculate profit chain from user to top parent for multipule transaction
      * @param $user_id user id
@@ -394,6 +394,7 @@ class Transaction_library {
      * @param $transction_data_list transction list
      * @author rashida on 9th march 2016
      */
+
     public function calculate_multipule_transactions_profit_chain($user_id, $service_id_list, $transaction_list) {
         $parent_child_id_map = array();
         $user_id_list = array($user_id);
@@ -447,6 +448,24 @@ class Transaction_library {
             }
         }
         return $user_profit_list;
+    }
+
+    public function get_user_transaction_statuses() {
+        $transction_status_list = array();
+        $select_all = array(
+            "id" => SELECT_ALL_STATUSES_TRANSACTIONS,
+            "title" => "All",
+            "selected" => true
+        );
+        $transction_status_list[] = $select_all;
+        $transction_status_list_array = $this->transaction_model->get_user_transaction_statuses()->result_array();
+        if (!empty($transction_status_list_array)) {
+            foreach ($transction_status_list_array as $transction_status) {
+                $transction_status['selected'] = false;
+                $transction_status_list[] = $transction_status;
+            }
+        }
+      return $transction_status_list;
     }
 
 }

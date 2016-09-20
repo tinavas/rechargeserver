@@ -11,8 +11,14 @@ angular.module('controller.Transction', ['service.Transction']).
 //            $scope.serviceRateList = [];
             $scope.allow_action = true;
             $scope.allTransactions = false;
-
-
+            $scope.setTransactionStatusList = function (transactionStatusList) {
+                $scope.transactionStatusList = JSON.parse(transactionStatusList);
+                $scope.searchInfo.statusId = 0;
+            };
+            $scope.setTransactionProcessTypeList = function (transactionProcessTypeList) {
+                $scope.transactionProcessTypeList = JSON.parse(transactionProcessTypeList);
+                $scope.searchInfo.processId = 0;
+            };
             $scope.setTransctionList = function (transctionList, collectionCounter) {
                 $scope.transctionInfoList = JSON.parse(transctionList);
                 setCollectionLength(collectionCounter);

@@ -16,7 +16,7 @@
 
 <div class="loader"></div>
 <div class="ezttle"><span class="text">Receive History</span></div>
-<div class="mypage" ng-controller="transctionController">  
+<div class="mypage" ng-controller="transctionController" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')"> 
     <ng-form>
         <ul class="list-unstyled paymentHistorySearch" ng-init="setPaymentTypeIds('<?php echo htmlspecialchars(json_encode($payment_type_ids)) ?>')">
             <li>Start Date</li>
@@ -30,14 +30,8 @@
                 </select>
             </li>
             <li>Status</li>
-            <li> <select name="status_type" id="status_type" ng-model="searchInfo.statusId">
-                    <option  value="">Please select</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>">Success</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Pending</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Failed</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>">Processed</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>
-                </select>
+            <li>
+                 <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
             </li>
             <li>Show All</li>
             <li> <input type="checkbox" ng-model="allTransactions"></li>

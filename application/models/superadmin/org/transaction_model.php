@@ -184,4 +184,15 @@ class Transaction_model extends Ion_auth_model {
                         ->get();
     }
 
+    /**
+     * this method will return transaction staus types
+     * return transaction statuses 
+     * @author Rashida on 22 Sep 2016
+     */
+    public function get_user_transaction_statuses() {
+        return $this->db->select($this->tables['user_transaction_statuses'] . '.*')
+                        ->from($this->tables['user_transaction_statuses'])
+                        ->get();
+    }
+
 }

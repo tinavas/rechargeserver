@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/history/payment_history.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/reseller/update_user_profile.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/views/history/receive_history.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/history.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/resources/js/AngularController/transactionController.js</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/models/transaction_model.php</file>
+            <file>file:/C:/xampp/htdocs/rechargeserver/application/controllers/superadmin/auth.php</file>
+        </group>
     </open-files>
 </project-private>

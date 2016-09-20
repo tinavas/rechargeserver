@@ -68,4 +68,42 @@ class Transaction_library {
         return $transaction_information;
     }
 
+    public function get_user_transaction_statuses() {
+        $transction_status_list = array();
+        $select_all = array(
+            "id" => SELECT_ALL_STATUSES_TRANSACTIONS,
+            "title" => "All",
+            "selected" => true
+        );
+        $transction_status_list[] = $select_all;
+        $transction_status_list_array = $this->transaction_model->get_user_transaction_statuses()->result_array();
+        if (!empty($transction_status_list_array)) {
+            foreach ($transction_status_list_array as $transction_status) {
+                $transction_status['selected'] = false;
+                $transction_status_list[] = $transction_status;
+            }
+        }
+        return $transction_status_list;
+    }
+
+    public function get_transactions_process_types() {
+        $transaction_process_type_list = array();
+        $type0 = array(
+            "id" => SELECT_ALL_PROCESSES_TRANSACTIONS,
+            "title" => "All"
+        );
+        $type1 = array(
+            "id" => TRANSACTION_PROCESS_TYPE_ID_AUTO,
+            "title" => "Auto"
+        );
+        $type2 = array(
+            "id" => TRANSACTION_PROCESS_TYPE_ID_MANUAL,
+            "title" => "Manual"
+        );
+        $transaction_process_type_list[] = $type0;
+        $transaction_process_type_list[] = $type1;
+        $transaction_process_type_list[] = $type2;
+        return $transaction_process_type_list;
+    }
+
 }

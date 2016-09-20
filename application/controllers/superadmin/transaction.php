@@ -24,11 +24,19 @@ class Transaction extends CI_Controller {
         $this->load->library("superadmin/org/transaction_library");
         $offset = S_TRANSACTION_PAGE_DEFAULT_OFFSET;
         $limit = S_TRANSACTION_PAGE_DEFAULT_LIMIT;
-        $transction_list = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
+        $transaction_process_types = array(
+            TRANSACTION_PROCESS_TYPE_ID_AUTO,
+            TRANSACTION_PROCESS_TYPE_ID_MANUAL
+        );
         $service_id_list = array();
         if (file_get_contents("php://input") != null) {
             $response = array();
-            $status_id_list = array();
             $from_date = 0;
             $to_date = 0;
             $postdata = file_get_contents("php://input");
@@ -46,7 +54,15 @@ class Transaction extends CI_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
+                }
+                if (property_exists($search_param, "processId") != FALSE) {
+                    $process_id = $search_param->processId;
+                    if ($process_id != SELECT_ALL_PROCESSES_TRANSACTIONS) {
+                        $transaction_process_types = array($process_id);
+                    }
                 }
                 if (property_exists($search_param, "limit") != FALSE) {
                     $limit_status = $search_param->limit;
@@ -55,18 +71,22 @@ class Transaction extends CI_Controller {
                     }
                 }
             }
-            $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), $from_date, $to_date, $offset, $limit);
+            $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, $from_date, $to_date, $offset, $limit);
             $response['transaction_list'] = $transction_list_array['transaction_list'];
             $response['total_transactions'] = $transction_list_array['total_transactions'];
             echo json_encode($response);
             return;
         }
-        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING), array(TRANSACTION_PROCESS_TYPE_ID_MANUAL), 0, 0, $offset, $limit);
+        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, 0, 0, $offset, $limit);
         $this->data['transaction_list'] = $transction_list_array['transaction_list'];
         $this->data['total_transactions'] = $transction_list_array['total_transactions'];
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->load->library('superadmin/org/super_utils');
         $current_date = $this->super_utils->get_current_date();
         $this->data['current_date'] = $current_date;
+        $transaction_process_type_list = $this->transaction_library->get_transactions_process_types();
+        $this->data['transaction_process_type_list'] = $transaction_process_type_list;
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/index", $this->data);
     }

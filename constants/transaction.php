@@ -18,4 +18,6 @@ define("TRANSACTION_FLAG_LOCALSERVER_TEST",                 "LOCALSERVERTEST");
 
 define("TRANSACTION_PROCESS_TYPE_ID_AUTO",                   1);
 define("TRANSACTION_PROCESS_TYPE_ID_MANUAL",                 2);
+define("SELECT_ALL_STATUSES_TRANSACTIONS",                   0);
+define("SELECT_ALL_PROCESSES_TRANSACTIONS",                  0);
 

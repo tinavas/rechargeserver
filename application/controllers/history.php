@@ -25,13 +25,19 @@ class History extends Role_Controller {
         $where = array(
             'user_id' => $this->session->userdata('user_id')
         );
+
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         if (file_get_contents("php://input") != null) {
             $response = array();
             $from_date = 0;
             $to_date = 0;
             $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "searchParam") != FALSE) {
@@ -53,7 +59,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -71,12 +79,14 @@ class History extends Role_Controller {
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, $where);
         if (!empty($transaction_list_array)) {
             $total_transactions = $transaction_list_array['total_transactions'];
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -91,6 +101,12 @@ class History extends Role_Controller {
 
     public function topup_transactions($user_id = 0) {
         $where = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $user_id == $current_user_id) {
             $where['user_id'] = $current_user_id;
@@ -111,7 +127,6 @@ class History extends Role_Controller {
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $from_date = 0;
             $to_date = 0;
@@ -139,7 +154,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -154,7 +171,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -163,6 +180,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -177,6 +196,12 @@ class History extends Role_Controller {
 
     public function bkash_transactions($user_id = 0) {
         $where = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $user_id == $current_user_id) {
             $where['user_id'] = $current_user_id;
@@ -197,7 +222,6 @@ class History extends Role_Controller {
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $from_date = 0;
             $to_date = 0;
@@ -225,7 +249,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -240,7 +266,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -249,6 +275,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -263,6 +291,12 @@ class History extends Role_Controller {
 
     public function dbbl_transactions($user_id = 0) {
         $where = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $user_id == $current_user_id) {
             $where['user_id'] = $current_user_id;
@@ -283,7 +317,6 @@ class History extends Role_Controller {
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $from_date = 0;
             $to_date = 0;
@@ -311,7 +344,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -326,7 +361,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -335,6 +370,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -349,6 +386,12 @@ class History extends Role_Controller {
 
     public function mcash_transactions($user_id = 0) {
         $where = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $user_id == $current_user_id) {
             $where['user_id'] = $current_user_id;
@@ -369,7 +412,6 @@ class History extends Role_Controller {
         $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $from_date = 0;
             $to_date = 0;
@@ -397,7 +439,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -412,7 +456,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -421,6 +465,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -435,6 +481,12 @@ class History extends Role_Controller {
 
     public function ucash_transactions($user_id = 0) {
         $where = array();
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $user_id == $current_user_id) {
             $where['user_id'] = $current_user_id;
@@ -458,7 +510,6 @@ class History extends Role_Controller {
             $response = array();
             $from_date = 0;
             $to_date = 0;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "searchParam") != FALSE) {
@@ -483,7 +534,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
@@ -498,7 +551,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, $offset, $where);
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -507,6 +560,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -520,6 +575,12 @@ class History extends Role_Controller {
      */
 
     public function sms_transactions($user_id = 0) {
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $current_user_id = $this->session->userdata('user_id');
         if ($user_id == 0 || $current_user_id == $user_id) {
             $user_id = $current_user_id;
@@ -537,7 +598,6 @@ class History extends Role_Controller {
         if (file_get_contents("php://input") != null) {
             $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
             $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $from_date = 0;
             $to_date = 0;
@@ -565,7 +625,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
             }
             $transction_information_array = $this->transaction_library->get_user_sms_transaction_list($status_id_list, $from_date, $to_date, $limit, $offset, array('user_id' => $user_id));
@@ -580,7 +642,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $transaction_list_array = $this->transaction_library->get_user_sms_transaction_list(array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, array('user_id' => $user_id));
+        $transaction_list_array = $this->transaction_library->get_user_sms_transaction_list($status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, array('user_id' => $user_id));
         $total_transactions = 0;
         $total_amount = 0;
         $transaction_list = array();
@@ -589,6 +651,8 @@ class History extends Role_Controller {
             $total_amount = $transaction_list_array['total_amount'];
             $transaction_list = $transaction_list_array['transaction_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['transaction_list'] = json_encode($transaction_list);
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -608,10 +672,15 @@ class History extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $offset = PAYMENT_LIST_DEAFULT_OFFSET;
         if (file_get_contents("php://input") != null) {
             $limit = PAYMENT_LIST_DEAFULT_LIMIT;
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $start_date = 0;
             $end_date = 0;
@@ -637,7 +706,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
                 if (property_exists($search_param, "paymentTypeId") != FALSE && $search_param->paymentTypeId != '0') {
                     $payment_type_id_list = $search_param->paymentTypeId;
@@ -664,7 +735,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $payment_list_array = $this->payment_library->get_payment_history($payment_type_id_list, array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, PAYMENT_LIST_DEAFULT_LIMIT, $offset, 'desc', $where);
+        $payment_list_array = $this->payment_library->get_payment_history($payment_type_id_list, $status_id_list, $current_date, $current_date, PAYMENT_LIST_DEAFULT_LIMIT, $offset, 'desc', $where);
         $total_transactions = 0;
         $total_amount = 0;
         if (!empty($payment_list_array)) {
@@ -676,7 +747,9 @@ class History extends Role_Controller {
             PAYMENT_TYPE_ID_SEND_CREDIT => 'Send credit',
             PAYMENT_TYPE_ID_RETURN_CREDIT => 'Return Credit',
             '0' => 'All'
-        );        
+        );
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['payment_type_ids'] = $payment_types;
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
@@ -706,10 +779,15 @@ class History extends Role_Controller {
         $where = array(
             'user_id' => $user_id
         );
+        $status_id_list = array(
+            TRANSACTION_STATUS_ID_PENDING,
+            TRANSACTION_STATUS_ID_SUCCESSFUL,
+            TRANSACTION_STATUS_ID_FAILED,
+            TRANSACTION_STATUS_ID_CANCELLED,
+            TRANSACTION_STATUS_ID_PROCESSED);
         $offset = PAYMENT_LIST_DEAFULT_OFFSET;
         $limit = PAYMENT_LIST_DEAFULT_LIMIT;
         if (file_get_contents("php://input") != null) {
-            $status_id_list = array(TRANSACTION_STATUS_ID_SUCCESSFUL);
             $response = array();
             $start_date = 0;
             $end_date = 0;
@@ -735,7 +813,9 @@ class History extends Role_Controller {
                 }
                 if (property_exists($search_param, "statusId") != FALSE) {
                     $status_id = $search_param->statusId;
-                    $status_id_list = array($status_id);
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
                 }
                 if (property_exists($search_param, "paymentTypeId") != FALSE && $search_param->paymentTypeId != '0') {
                     $payment_type_id_list = $search_param->paymentTypeId;
@@ -774,7 +854,7 @@ class History extends Role_Controller {
         $this->load->library('Date_utils');
         $current_date = $this->date_utils->get_current_date();
         $this->data['current_date'] = $current_date;
-        $payment_list_array = $this->payment_library->get_payment_history($payment_type_id_list, array(TRANSACTION_STATUS_ID_SUCCESSFUL), $current_date, $current_date, PAYMENT_LIST_DEAFULT_LIMIT, $offset, 'desc', $where);
+        $payment_list_array = $this->payment_library->get_payment_history($payment_type_id_list, $status_id_list, $current_date, $current_date, PAYMENT_LIST_DEAFULT_LIMIT, $offset, 'desc', $where);
         $total_transactions = 0;
         $total_amount = 0;
         if (!empty($payment_list_array)) {
@@ -782,6 +862,8 @@ class History extends Role_Controller {
             $total_amount = $payment_list_array['total_amount_in'];
             $payment_list = $payment_list_array['payment_list'];
         }
+        $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
         $this->data['total_transactions'] = json_encode($total_transactions);
         $this->data['total_amount'] = json_encode($total_amount);
         $this->data['payment_type_ids'] = $payment_types;

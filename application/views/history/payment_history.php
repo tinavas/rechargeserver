@@ -20,7 +20,7 @@
     <span class="acton"></span>
 </div>
 
-<div ng-controller="transctionController" class="mypage">
+<div ng-controller="transctionController" class="mypage" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
     <ng-form>
         <ul class="list-unstyled paymentHistorySearch" ng-init="setPaymentTypeIds('<?php echo htmlspecialchars(json_encode($payment_type_ids)) ?>')">
             <li>Start Date</li>
@@ -33,15 +33,9 @@
                     <option ng-repeat="(key, paymentType) in paymentTypeIds" value="{{key}}">{{paymentType}}</option>
                 </select>
             </li>
-            <li>Status</li>
-            <li> <select name="status_type" id="status_type" ng-model="searchInfo.statusId" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
-                    <option  value="">All</option>
-                    <option ng-repeat="status in transactionStatusList" value="{{status.id}}">{{status.title}}</option>
-<!--                    <option  value="<?php echo TRANSACTION_STATUS_ID_PENDING; ?>">Pending</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>">Processed</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_FAILED; ?>">Failed</option>
-                    <option  value="<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>">Canceled</option>-->
-                </select>
+            <li>Status Type</li>
+            <li>
+                 <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
             </li>
             <li>Show All</li>
             <li> <input type="checkbox" ng-model="allTransactions"></li>

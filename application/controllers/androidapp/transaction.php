@@ -291,7 +291,7 @@ class Transaction extends CI_Controller {
         }
         if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
             $response['response_code'] = ERROR_CODE_SERVICE_UNAVAILABLE;
-            $response["message"] = $service_info_list[$service_id]['title'] . " Service Unavailable right now that you assigned  at serial number " . ($key + 1);
+            $response["message"] = $service_info_list[$service_id]['title'] . " Service Unavailable right now that you assigned  at serial number ";
             echo json_encode($response);
             return;
         }
