@@ -55,13 +55,6 @@ class Sim extends CI_Controller {
                     echo json_encode($response);
                     return;
                 }
-                if (property_exists($sim_info, "identifier")) {
-                    $additional_sim_info['identifier'] = $sim_info->identifier;
-                } else {
-                    $response["message"] = " Please give an identifier ! Identifier is Required !!";
-                    echo json_encode($response);
-                    return;
-                }
                 if (property_exists($sim_info, "status")) {
                     $additional_sim_info['status'] = $sim_info->status;
                 }
@@ -78,12 +71,16 @@ class Sim extends CI_Controller {
                     echo json_encode($response);
                     return;
                 }
+                $additional_sim_info['identifier'] = LOCAL_SERVER_IDENTIFIER;
                 $result_event = $this->sim_model->add_sim($additional_sim_info, $sim_service_list);
                 if (!empty($result_event)) {
                     if (property_exists($result_event, "responseCode") != FALSE) {
                         if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
                             $response['message'] = 'Sim is added successfully.';
-                        } else {
+                        }
+                        else if ($result_event->responseCode == ERROR_CODE_ADDSIM_SIMNO_ALREADY_EXISTS) {
+                            $response['message'] = 'SIM NO is already exists. Please add a different SIM NO.';
+                        }else {
                             $response['message'] = 'Failed to add sim.';
                         }
                     } else {
@@ -118,6 +115,40 @@ class Sim extends CI_Controller {
         $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/create_sim", $this->data);
     }
+    
+    /*
+     * This method will edit existing sim info
+     * @author nazmul hasan on 11th June 2016
+     */
+
+    public function show_sim($sim_no) {
+        $sim_info = $this->sim_model->get_sim_info($sim_no);
+        $sim_status_list = $this->sim_model->get_sim_status_list();
+        $sim_service_list = $sim_info['simServiceList'];
+        $this->load->model('superadmin/org/service_model');
+        $sim_category_list = $this->sim_model->get_sim_category_list();
+        $service_list_array = $this->service_model->get_all_services()->result_array();
+        $service_list = array();
+        foreach ($service_list_array as $service_info) {
+            foreach ($sim_service_list as $sim_service) {
+                $service_info['categoryId'] = SIM_CATEGORY_TYPE_AGENT;
+                if ($sim_service->serviceId == $service_info['service_id']) {
+                    $service_info['selected'] = true;
+                    $service_info['categoryId'] = $sim_service->categoryId;
+                    $service_info['currentBalance'] = $sim_service->currentBalance;
+                    $service_info['modifiedOn'] = $sim_service->modifiedOn;
+                     $service_list[] = $service_info;
+                }
+            }
+        }
+        
+        $this->data['sim_info'] = json_encode($sim_info);
+        $this->data['service_list'] = json_encode($service_list);
+        $this->data['sim_category_list'] = $sim_category_list;
+        $this->data['sim_status_list'] = $sim_status_list;
+        $this->data['app'] = SIM_APP;
+        $this->template->load(null, "superadmin/sims/show_sim", $this->data);
+    }
 
     /*
      * This method will edit existing sim info
@@ -146,13 +177,6 @@ class Sim extends CI_Controller {
                     echo json_encode($response);
                     return;
                 }
-                if (property_exists($sim_info, "identifier")) {
-                    $updated_sim_info['identifier'] = $sim_info->identifier;
-                } else {
-                    $response["message"] = " Please give an identifier ! Identifier is Required !!";
-                    echo json_encode($response);
-                    return;
-                }
                 if (property_exists($sim_info, "status")) {
                     $updated_sim_info['status'] = $sim_info->status;
                 }
@@ -162,14 +186,14 @@ class Sim extends CI_Controller {
 
 
                 $sim_service_list = array();
-                if (property_exists($sim_info, "serviceInfoList")) {
-                    $sim_service_list = $sim_info->serviceInfoList;
-                } else {
-                    $response["message"] = " Please assaign at least one service !";
-                    echo json_encode($response);
-                    return;
-                }
-
+//                if (property_exists($sim_info, "serviceInfoList")) {
+//                    $sim_service_list = $sim_info->serviceInfoList;
+//                } else {
+//                    $response["message"] = " Please assaign at least one service !";
+//                    echo json_encode($response);
+//                    return;
+//                }
+                $updated_sim_info['identifier'] = LOCAL_SERVER_IDENTIFIER;
                 $result_event = $this->sim_model->edit_sim($updated_sim_info, $sim_service_list);
                 if (!empty($result_event)) {
                     if (property_exists($result_event, "responseCode") != FALSE) {

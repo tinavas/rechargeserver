@@ -18,15 +18,10 @@
             $('#common_modal').modal('show');
             return;
         }
-        if (typeof simInfo.identifier == "undefined" || simInfo.identifier.length == 0) {
-            $("#content").html("Please give an identifier !");
-            $('#common_modal').modal('show');
-            return;
-        }
         for (var i = 0; i < serviceList.length; i++) {
-            var serviceInfo = serviceList[i];
+            var serviceInfo = serviceList[i];             
             if (serviceInfo.selected == true) {
-                if (typeof serviceInfo.currentBalance == "undefined" || serviceInfo.currentBalance == 0) {
+                if (typeof serviceInfo.currentBalance == "undefined") {
                     $("#content").html("Please give an amount for " + serviceInfo.title);
                     $('#common_modal').modal('show');
                     return;
@@ -57,14 +52,6 @@
                             </label>
                             <div class ="col-md-6">
                                 <input type="text" placeholder="88017XXXXXXXX" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.simNo">
-                            </div> 
-                        </div>
-                        <div class="row form-group">
-                            <label for="identifier" class="col-md-6 control-label requiredField">
-                                Identifier:
-                            </label>
-                            <div class ="col-md-6">
-                                <input type="text" placeholder="localserver1" value="" class="form-control input-xs customInputMargin" placeholder=""  id="" ng-model="simInfo.identifier">
                             </div> 
                         </div>
                         <div class="row form-group">

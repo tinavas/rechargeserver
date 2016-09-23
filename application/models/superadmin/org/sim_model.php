@@ -5,24 +5,11 @@ class Sim_model extends Ion_auth_model {
     public function __construct() {
         parent::__construct();
     }
-
-    /*
-     * This method will call authentication server to add a new sim
-     * @param $additional_data, sim info to be added
-     * @author nazmul hasan on 11th June 2016
-     */
-
-    public function add_sim($additional_data, $service_info_list) {
-        $this->curl->create(WEBSERVICE_ADD_SIM);
-        $this->curl->post(array('sim_no' => $additional_data['sim_no'], 'identifier' => $additional_data['identifier'], 'description' => $additional_data['description'], 'status' => $additional_data['status'], 'sim_service_list' => json_encode($service_info_list)));
-        return json_decode($this->curl->execute());
-    }
-
+    
     /*
      * This method will call authentication server to return entire sim list
      * @author nazmul hasan on 11th June 2016
      */
-
     public function get_sim_list() {
         $sim_list = array();
         $this->curl->create(WEBSERVICE_GET_ALL_SIMS);
@@ -36,14 +23,11 @@ class Sim_model extends Ion_auth_model {
             if ($response_code == RESPONSE_CODE_SUCCESS) {
                 if (property_exists($result_event, "result") != FALSE) {
                     $result = $result_event->result;
-                     $this->load->library('superadmin/org/super_utils');
                     foreach ($result as $simInfo) {
                         $sim_info = array();
                         $sim_info['sim_no'] = $simInfo->simNo;
-                        $sim_info['identifier'] = $simInfo->identifier;
                         $sim_info['description'] = $simInfo->description;
                         $sim_info['status'] = $simInfo->status;
-                        $sim_info['modified_on'] = $this->super_utils->get_unix_to_display($simInfo->simServiceList[0]->modifiedOn);
                         $sim_list[] = $sim_info;
                     }
                 }
@@ -51,16 +35,26 @@ class Sim_model extends Ion_auth_model {
         }
         return $sim_list;
     }
+    /*
+     * This method will call authentication server to add a new sim with services
+     * @param $additional_data, sim info to be added
+     * @param $service_info_list, sim service info list
+     * @author nazmul hasan on 11th June 2016
+     */
+    public function add_sim($additional_data, $service_info_list) {
+        $this->curl->create(WEBSERVICE_ADD_SIM);
+        $this->curl->post(array('sim_no' => $additional_data['sim_no'], 'identifier' => $additional_data['identifier'], 'description' => $additional_data['description'], 'status' => $additional_data['status'], 'sim_service_list' => json_encode($service_info_list)));
+        return json_decode($this->curl->execute());
+    }
 
     /*
      * This method will call authentication server to return sim info
      * @param $sim_no, sim number
      * @author nazmul hasan on 11th June 2016
      */
-
     public function get_sim_info($sim_no) {
         $sim_info = array();
-        $this->curl->create(WEBSERVICE_GET_SIM_INFO);
+        $this->curl->create(WEBSERVICE_GET_SIM_SERVICE_INFO);
         $this->curl->post(array("sim_no" => $sim_no));
         $result_event = json_decode($this->curl->execute());
         if (!empty($result_event)) {
@@ -70,29 +64,25 @@ class Sim_model extends Ion_auth_model {
             }
             if ($response_code == RESPONSE_CODE_SUCCESS) {
                 if (property_exists($result_event, "result") != FALSE) {
-                    // start test data added when $result->simServiceList is dynamic then remove this
-                    $simServiceList = array();
-                    $obj = new stdClass();
-                    $obj->serviceId = SERVICE_TYPE_ID_BKASH_CASHIN;
-                    $obj->categoryId = SIM_CATEGORY_TYPE_AGENT;
-                    $obj->currentBalance = 5000;
-                    $obj1 = new stdClass();
-                    $obj1->serviceId = SERVICE_TYPE_ID_UCASH_CASHIN;
-                    $obj1->categoryId = SIM_CATEGORY_TYPE_PERSONAL;
-                    $obj1->currentBalance = 1000;
-
-
-
-                    $simServiceList[] = $obj;
-                    $simServiceList[] = $obj1;
-                    // end 
                     $result = $result_event->result;
                     $sim_info['simNo'] = $result->simNo;
                     $sim_info['identifier'] = $result->identifier;
                     $sim_info['description'] = $result->description;
                     $sim_info['status'] = $result->status;
-//                    $sim_info['simServiceList'] = $result->simServiceList;
-                    $sim_info['simServiceList'] = $simServiceList;
+                    $sim_service_list = array();
+                    
+                    $this->load->library('superadmin/org/super_utils');
+                    $simServiceList = $result->simServiceList;
+                    foreach ($simServiceList as $simServiceInfo) 
+                    {
+                        $simServiceObj = new stdClass();
+                        $simServiceObj->serviceId = $simServiceInfo->id;
+                        $simServiceObj->categoryId = $simServiceInfo->categoryId;
+                        $simServiceObj->currentBalance = $simServiceInfo->currentBalance;
+                        $simServiceObj->modifiedOn = $this->super_utils->get_auth_unix_to_human_date($simServiceInfo->modifiedOn);
+                        $sim_service_list[] = $simServiceObj;
+                    }
+                    $sim_info['simServiceList'] = $sim_service_list;
                 }
             }
         }

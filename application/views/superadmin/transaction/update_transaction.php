@@ -26,10 +26,17 @@
         <div class="form-background top-bottom-padding">
             <div class="row">
                 <div class ="col-md-8 margin-top-bottom">
-
+                    <div class="row form-group">
+                        <label for="sender_cell_no" class="col-md-6 control-label requiredField">
+                            Sender : 
+                        </label>
+                        <div class ="col-md-6">
+                            <input type="text" value="" class="form-control" ng-model="transactionInfo.sender_cell_no">
+                        </div> 
+                    </div>
                     <div class="row form-group">
                         <label for="transaction_operator_id" class="col-md-6 control-label requiredField">
-                            Tranx.op.Id : 
+                            Transaction Id : 
                         </label>
                         <div class ="col-md-6">
                             <input type="text" value="" class="form-control" ng-model="transactionInfo.trx_id_operator">
@@ -37,7 +44,7 @@
                     </div>
                     <div class="row form-group">
                         <label for="transaction_id" class="col-md-6 control-label requiredField">
-                            Tranx.Id : 
+                            Id : 
                         </label>
                         <div class ="col-md-6">
                             <input readonly="" type="text" value="" class="form-control" ng-model="transactionInfo.transaction_id">

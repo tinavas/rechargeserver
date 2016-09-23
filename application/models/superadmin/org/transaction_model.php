@@ -130,7 +130,7 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 4th September 2016
      */
 
-    public function get_transaction_list($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $from_date = 0, $to_date = 0, $offset = 0, $limit = 0) {
+    public function get_transaction_list($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $from_unix_time = 0, $to_unix_time = 0, $offset = 0, $limit = 0) {
 
         if ($limit > 0) {
             $this->db->limit($limit);
@@ -138,9 +138,9 @@ class Transaction_model extends Ion_auth_model {
         if ($offset > 0) {
             $this->db->offset($offset);
         }
-        if ($from_date != 0 && $to_date != 0) {
-            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
-            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
+        if ($from_unix_time != 0 && $to_unix_time != 0) {
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_unix_time);
+            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_unix_time);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -152,11 +152,12 @@ class Transaction_model extends Ion_auth_model {
             $this->db->where_in($this->tables['user_transactions'] . '.process_type_id', $process_id_list);
         }
         $this->db->order_by($this->tables['user_transactions'] . '.id', 'desc');
-        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title,' . $this->tables['service_types'] . '.title as process_type')
+        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title,' . $this->tables['service_types'] . '.title as process_type,' . $this->tables['users'] . '.username')
                         ->from($this->tables['user_transactions'])
                         ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_transactions'] . '.status_id')
                         ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
                         ->join($this->tables['service_types'], $this->tables['service_types'] . '.id=' . $this->tables['user_transactions'] . '.process_type_id')
+                        ->join($this->tables['users'], $this->tables['users'] . '.id=' . $this->tables['user_transactions'] . '.user_id')
                         ->get();
     }
 

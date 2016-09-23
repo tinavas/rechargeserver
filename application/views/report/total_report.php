@@ -61,7 +61,7 @@
                 <th>{{profitInfo.cell_no}}</th>
                 <th>{{profitInfo.rate}}</th>
                 <th>{{profitInfo.amount}}</th>
-                <th>{{profitInfo.first_name}} {{profitInfo.last_name}}</th>                
+                <th>{{profitInfo.username}}</th>                
                 <th>{{profitInfo.created_on}}</th>
                 <th ng-if="profitInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'">Pending</th>
                 <th ng-if="profitInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PROCESSED; ?>'">Processed</th>

@@ -1,7 +1,7 @@
 angular.module('controller.Transction', ['service.Transction']).
         controller('transctionController', function ($scope, transctionService) {
             $scope.currentPage = 1;
-            $scope.pageSize = 3;
+            $scope.pageSize = 10;
             $scope.transactionInfo = {};
             $scope.searchInfo = {};
             $scope.loadBalanceInfo = {};

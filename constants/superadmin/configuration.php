@@ -1,9 +1,9 @@
 <?php
 //Added by Nazmul
-define("LOCAL_SERVER_IDENTIFIER",                              "demols1");
+define("LOCAL_SERVER_IDENTIFIER",                              "demols");
 define("WEBSERVICE_ADD_SIM",                                   "http://localhost:4040/addsim");
 define("WEBSERVICE_GET_ALL_SIMS",                              "http://localhost:4040/getallsims");
-define("WEBSERVICE_GET_SIM_INFO",                              "http://localhost:4040/getsiminfo");
+define("WEBSERVICE_GET_SIM_SERVICE_INFO",                      "http://localhost:4040/getsimserviceinfo");
 define("WEBSERVICE_EDIT_SIM",                                  "http://localhost:4040/editsim");
 define("WEBSERVICE_CHECK_SIM_BALANCE",                         "http://localhost:4040/checksimbalance");
 define("WEBSERVICE_GET_SMS_LIST",                              "http://localhost:4040/getsimmessages");

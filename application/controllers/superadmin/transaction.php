@@ -77,13 +77,13 @@ class Transaction extends CI_Controller {
             echo json_encode($response);
             return;
         }
-        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, 0, 0, $offset, $limit);
+        $this->load->library('superadmin/org/super_utils');
+        $current_date = $this->super_utils->get_current_date();
+        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, $current_date, $current_date, $offset, $limit);
         $this->data['transaction_list'] = $transction_list_array['transaction_list'];
         $this->data['total_transactions'] = $transction_list_array['total_transactions'];
         $transction_status_list = $this->transaction_library->get_user_transaction_statuses();
         $this->data['transction_status_list'] = $transction_status_list;
-        $this->load->library('superadmin/org/super_utils');
-        $current_date = $this->super_utils->get_current_date();
         $this->data['current_date'] = $current_date;
         $transaction_process_type_list = $this->transaction_library->get_transactions_process_types();
         $this->data['transaction_process_type_list'] = $transaction_process_type_list;
@@ -101,6 +101,9 @@ class Transaction extends CI_Controller {
                 $transactionInfo = $requestInfo->transactionInfo;
                 if (property_exists($transactionInfo, "transaction_id")) {
                     $transaction_id = $transactionInfo->transaction_id;
+                }
+                if (property_exists($transactionInfo, "sender_cell_no")) {
+                    $transction_info['sender_cell_no'] = $transactionInfo->sender_cell_no;
                 }
                 if (property_exists($transactionInfo, "trx_id_operator")) {
                     $transction_info['trx_id_operator'] = $transactionInfo->trx_id_operator;

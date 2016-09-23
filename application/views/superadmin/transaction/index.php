@@ -38,7 +38,9 @@
             <tr>
                 <th><a href="">Id</a></th>
                 <th><a href="">Transaction Id</a></th>
+                <th><a href="">User</a></th>
                 <th><a href="">Title</a></th>
+                <th><a href="">Sender</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
@@ -52,14 +54,17 @@
             <tr ng-repeat="transctionInfo in transctionInfoList">
                 <th>{{transctionInfo.transaction_id}}</th>
                 <th>{{transctionInfo.trx_id_operator}}</th>
+                <th>{{transctionInfo.username}}</th>
                 <th>{{transctionInfo.service_title}}</th>
+                <th>{{transctionInfo.sender_cell_no}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
                 <th>{{transctionInfo.created_on}}</th>
-                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>' && transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'"><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
+                <th><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
+<!--                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>' && transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'"><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
                 <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_FAILED; ?>' || transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>'">delete</th>
-                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>'">No Action</th>
+                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>'">No Action</th>-->
             </tr>
         </tfoot>
     </table>

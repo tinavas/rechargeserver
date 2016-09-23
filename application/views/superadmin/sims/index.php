@@ -19,19 +19,17 @@
                             <thead>
                                 <tr class="table_row_style">
                                     <th style="text-align: center;">Sim Number</th>
-                                    <th style="text-align: center;">Identifier</th>
                                     <th style="text-align: center;">Description</th>
                                     <th style="text-align: center;">Status</th>
-                                    <th style="text-align: center;">Last Update</th>
+                                    <th style="text-align: center;">Show</th>
                                     <th style="text-align: center;">Edit</th>
-                                    <th style="text-align: center;">Show Balance</th>
+                                    <th style="text-align: center;">Balance</th>
                                 </tr>
                                 <tr ng-repeat="simInfo in simList">
                                     <th style="text-align: center;">{{simInfo.sim_no}}</th>
-                                    <th style="text-align: center;">{{simInfo.identifier}}</th>
                                     <th style="text-align: center;">{{simInfo.description}}</th>
                                     <th style="text-align: center;">{{simInfo.status}}</th>
-                                    <th style="text-align: center;">{{simInfo.modified_on}}</th>
+                                    <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/show_sim/"; ?>{{simInfo.sim_no}}">Show</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/get_sim_balance/"; ?>{{simInfo.sim_no}}">Update</a></th>
                                 </tr>

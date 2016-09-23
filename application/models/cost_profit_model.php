@@ -52,7 +52,7 @@ class Cost_profit_model extends Ion_auth_model {
             $this->db->where_in($this->tables['user_profits'] . '.service_id', $service_id_list);
         }
         $this->db->order_by($this->tables['user_profits'].'.id','desc');
-        return $this->db->select($this->tables['user_profits'] . '.*,' . $this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.first_name,' . $this->tables['users'] . '.last_name,'. $this->tables['services'] . '.title as service_title')
+        return $this->db->select($this->tables['user_profits'] . '.*,' . $this->tables['users'] . '.id as user_id,' . $this->tables['users'] . '.first_name,' . $this->tables['users'] . '.last_name,' . $this->tables['users'] . '.username,'. $this->tables['services'] . '.title as service_title')
                     ->from($this->tables['user_profits'])
                     ->join($this->tables['users'], $this->tables['users'] . '.id=' . $this->tables['user_profits'] . '.reference_id')
                     ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_profits'] . '.service_id')
