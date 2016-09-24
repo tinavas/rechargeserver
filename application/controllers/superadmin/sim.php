@@ -77,10 +77,9 @@ class Sim extends CI_Controller {
                     if (property_exists($result_event, "responseCode") != FALSE) {
                         if ($result_event->responseCode == RESPONSE_CODE_SUCCESS) {
                             $response['message'] = 'Sim is added successfully.';
-                        }
-                        else if ($result_event->responseCode == ERROR_CODE_ADDSIM_SIMNO_ALREADY_EXISTS) {
+                        } else if ($result_event->responseCode == ERROR_CODE_ADDSIM_SIMNO_ALREADY_EXISTS) {
                             $response['message'] = 'SIM NO is already exists. Please add a different SIM NO.';
-                        }else {
+                        } else {
                             $response['message'] = 'Failed to add sim.';
                         }
                     } else {
@@ -115,7 +114,7 @@ class Sim extends CI_Controller {
         $this->data['app'] = SIM_APP;
         $this->template->load(null, "superadmin/sims/create_sim", $this->data);
     }
-    
+
     /*
      * This method will edit existing sim info
      * @author nazmul hasan on 11th June 2016
@@ -137,11 +136,11 @@ class Sim extends CI_Controller {
                     $service_info['categoryId'] = $sim_service->categoryId;
                     $service_info['currentBalance'] = $sim_service->currentBalance;
                     $service_info['modifiedOn'] = $sim_service->modifiedOn;
-                     $service_list[] = $service_info;
+                    $service_list[] = $service_info;
                 }
             }
         }
-        
+
         $this->data['sim_info'] = json_encode($sim_info);
         $this->data['service_list'] = json_encode($service_list);
         $this->data['sim_category_list'] = $sim_category_list;
@@ -243,9 +242,11 @@ class Sim extends CI_Controller {
     }
 
     public function get_sim_balance($sim_no) {
+        $response = array();
         $this->sim_model->check_sim_balance($sim_no);
-        $this->data['app'] = SIM_APP;
-        $this->template->load(null, "superadmin/sims/update_sim_balance", $this->data);
+        $response["message"] = " A request is sent to generate current balance of the SIM. Updated balance will be reflected soon.";
+        echo json_encode($response);
+        return;
     }
 
     public function get_sms_list() {

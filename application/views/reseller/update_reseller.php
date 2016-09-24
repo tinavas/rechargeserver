@@ -111,6 +111,11 @@
                                     </div>
                                     <p class="help-block form_error"></p>
                                 </div>
+                                <div class="form-group " ng-init="setAccountStatusList('<?php echo htmlspecialchars(json_encode($account_status_list)); ?>')">
+                                    <label for="status">Account Status</label>
+                                    <select  ng-model='resellerInfo.account_status_id' required ng-options='accountStatus.id as accountStatus.description for accountStatus in accountStatusList' class="form-control input-xs"></select>
+                                    <p class="help-block form_error"></p>
+                                </div>
                                 <div class="form-group ">
                                     <label for="pin" class="control-label">Pin</label>
                                     <input type="text" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">

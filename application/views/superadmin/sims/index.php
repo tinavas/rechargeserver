@@ -1,3 +1,16 @@
+<script>
+    function update_balance(simNumber) {
+        
+       angular.element($("#update_balance_id")).scope().updateBalance(simNumber, function(data) {
+            $("#content").html(data.message);
+            $('#common_modal').modal('show');
+            $('#modal_ok_click_id').on("click", function() {
+                window.location = '<?php echo base_url() ?>superadmin/sim';
+            });
+        });
+
+    }
+</script>
 <div class="panel panel-default" ng-controller="simController">
     <div id="sim_info_show">
         <div class="panel-heading">SIM List</div>
@@ -31,7 +44,7 @@
                                     <th style="text-align: center;">{{simInfo.status}}</th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/show_sim/"; ?>{{simInfo.sim_no}}">Show</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>
-                                    <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/get_sim_balance/"; ?>{{simInfo.sim_no}}">Update</a></th>
+                                    <th style="text-align: center"><a id="update_balance_id" onclick="update_balance(angular.element(this).scope().simInfo.sim_no)">Update</a></th>
                                 </tr>
                             </thead>
                         </table>

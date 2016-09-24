@@ -938,7 +938,21 @@ class Ion_auth_model extends CI_Model {
                 if ($user->account_status_id == $this->account_status_list['inactive_id']) {
                     $this->trigger_events('post_login_unsuccessful');
                     $this->set_error('login_unsuccessful_not_active');
-
+                    return FALSE;
+                }
+                else if ($user->account_status_id == $this->account_status_list['suspended_id']) {
+                    $this->trigger_events('post_login_unsuccessful');
+                    $this->set_error('login_unsuccessful_user_suspended');
+                    return FALSE;
+                }
+                if ($user->account_status_id == $this->account_status_list['deactivated_id']) {
+                    $this->trigger_events('post_login_unsuccessful');
+                    $this->set_error('login_unsuccessful_user_deactivated');
+                    return FALSE;
+                }
+                if ($user->account_status_id == $this->account_status_list['blocked_id']) {
+                    $this->trigger_events('post_login_unsuccessful');
+                    $this->set_error('login_unsuccessful_user_blocked');
                     return FALSE;
                 }
 

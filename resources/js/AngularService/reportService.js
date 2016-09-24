@@ -14,6 +14,26 @@ angular.module('services.Report', []).
                     }
                 });
             }
+            reportService.getRepotHistory = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/report/get_total_report',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            }
+            reportService.getBkashTransactionList = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/report/get_total_report',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            }
            
             return reportService;
         });

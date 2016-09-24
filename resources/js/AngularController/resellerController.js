@@ -4,6 +4,7 @@ angular.module('controller.Reseller', ['services.Reseller']).
             $scope.profileInfo = {};
             $scope.resellerList = [];
             $scope.serviceList = [];
+            $scope.accountStatusList = [];
             $scope.serviceRateList = [];
             $scope.allow_reseller_action = true;
             $scope.topup_service_allow_flag = false;
@@ -22,6 +23,9 @@ angular.module('controller.Reseller', ['services.Reseller']).
             }
             $scope.setServiceList = function (serviceList) {
                 $scope.serviceList = JSON.parse(serviceList);
+            }
+            $scope.setAccountStatusList = function (accountStatusList) {
+                $scope.accountStatusList = JSON.parse(accountStatusList);
             }
             $scope.setServiceRateList = function (serviceRateList) {
                 $scope.serviceRateList = JSON.parse(serviceRateList);

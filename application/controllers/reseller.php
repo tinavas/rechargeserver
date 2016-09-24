@@ -378,6 +378,9 @@ class Reseller extends Role_Controller {
                 if (property_exists($resellerInfo, "pin")) {
                     $pin = $resellerInfo->pin;
                 }
+                if (property_exists($resellerInfo, "account_status_id")) {
+                    $account_status_id = $resellerInfo->account_status_id;
+                }
                 if (property_exists($resellerInfo, "message")) {
                     $message = $resellerInfo->message;
                 }
@@ -418,6 +421,7 @@ class Reseller extends Role_Controller {
                     'child_id_list' => $child_id_list,
                     'inactive_service_list' => $inactive_service_list,
                     'pin' => $pin,
+                    'account_status_id' => $account_status_id,
                     'message' => $message
                 );
                 if ($new_password != "") {
@@ -461,6 +465,8 @@ class Reseller extends Role_Controller {
         }
         $this->data['allow_user_edit'] = TRUE;
         $this->data['service_list'] = json_encode($user_available_services);
+        $account_status_list = $this->reseller_model->get_account_status_list()->result_array();
+        $this->data['account_status_list'] = $account_status_list;
         $group = $this->session->userdata('group');
         $successor_group_title = $this->config->item('successor_group_title', 'ion_auth');
         $title = $successor_group_title[$group];

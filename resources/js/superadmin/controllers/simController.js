@@ -66,6 +66,12 @@ angular.module('controller.Sim', ['service.Sim']).
                             $scope.smsList = data.sms_list;
                         });
             };
+            $scope.updateBalance = function (simNumber, callbackFunction) {
+                simService.updateBalance(simNumber).
+                        success(function (data, status, headers, config) {
+                            callbackFunction(data);
+                        });
+            };
             $scope.checkAll = function () {
                 if ($scope.selectedAll) {
                     $scope.selectedAll = true;

@@ -34,13 +34,14 @@ class Reseller_model extends Ion_auth_model {
                         ->from($this->tables['users'])
                         ->get();
     }
-    
-  /*
+
+    /*
      * This method will return user messages
      * @param $user_id_list, user id list
      * @return user message info
      * @author rashida
      */
+
     public function get_user_messages($user_id_list) {
         $this->db->where_in($this->tables['users'] . '.id', $user_id_list);
         return $this->db->select($this->tables['users'] . '.message')
@@ -193,6 +194,12 @@ class Reseller_model extends Ion_auth_model {
         $this->db->where_in($this->tables['users_services'] . '.service_id', $service_id_list);
         return $this->db->select($this->tables['users_services'] . '.*')
                         ->from($this->tables['users_services'])
+                        ->get();
+    }
+
+    public function get_account_status_list() {
+        return $this->db->select($this->tables['account_status'] . '.*')
+                        ->from($this->tables['account_status'])
                         ->get();
     }
 

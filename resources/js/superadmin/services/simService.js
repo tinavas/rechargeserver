@@ -22,6 +22,15 @@ angular.module('service.Sim', []).
                     }
                 });
             };
+            simService.updateBalance = function (simNo) {
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/superadmin/sim/get_sim_balance/' + simNo,
+                    data: {
+                        simNo: simNo
+                    }
+                });
+            };
 
             simService.getSimServiceList = function (simNumber) {
 
