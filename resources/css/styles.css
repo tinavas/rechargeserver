@@ -166,3 +166,91 @@
     font-size: 11px!important;
     line-height: 1.5!important;
 }
+
+
+
+/* ------------------------------- Detailed Report --------------------------------------*/
+
+.custom_form_control{
+    font-size: 12px!important;
+    height: 24px!important;
+    padding: 0!important;
+}
+.green_color_table > thead > tr > th, .green_color_table > tfoot > tr > td, 
+.green_color_header_table > thead > tr > th {
+    background-color: #548235!important;
+    color: #fff!important;
+    border-bottom: 2px solid #548235!important;
+}
+.green_color_table > thead > tr > th > a, .green_color_table > tfoot > tr > td > a,
+.green_color_header_table > thead > tr > th > a{
+    color: #fff!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.green_color_header_table > thead > tr > th > a{
+    color: #fff!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.green_color_table > tbody > tr > td > a,
+.green_color_header_table > tbody > tr > td > a{
+    color: #000!important;
+    text-decoration: none;
+    font-weight: normal;
+}
+.green_color_table > thead > tr > th > a:hover, .green_color_table > tbody > tr > td > a:hover {
+    text-decoration: none;
+}
+.green_color_table tbody > tr:nth-child(odd) > td, .green_color_table tbody > tr:nth-child(odd) > th {
+    background-color: #E2EFDA;
+}
+
+.green_color_table tbody > tr:nth-child(even) > td, .green_color_table tbody > tr:nth-child(even) > th {
+    background-color: #A9D08E;
+}
+.pink_color_header_table > thead > tr > th{
+    background-color: #DDCCEE!important;
+    border-bottom: 2px solid #DDCCEE!important;
+}
+.pink_color_header_table > thead > tr > th > a{
+    color: #000!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.pink_color_header_table > tbody > tr > td > a{
+    font-weight: normal;
+}
+.pink_color_table > thead > tr > th{
+    background-color: #DDCCEE!important;
+    border-bottom: 2px solid #DDCCEE!important;
+}
+.pink_color_table > thead > tr > th > a{
+    color: #000!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.pink_color_table > tfoot > tr{
+    background-color: #FFE6CE!important;
+}
+.pink_color_table > tfoot > tr > td{
+    color: #000!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.pink_color_table > tfoot > tr > td > a{
+    color: #000!important;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.page_number p{
+    font-size: 11px;
+    padding: 5px 2px;
+    color: #666;
+    font-weight: normal;
+}
+
+.custom_unorder_list li{
+    display: inline-block!important;
+}
