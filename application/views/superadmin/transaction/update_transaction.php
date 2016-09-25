@@ -31,7 +31,7 @@
                             Sim : 
                         </label>
                         <div class ="col-md-6">
-                            <select name="sender_cell_no" id="payment_type"  ng-model="transactionInfo.sender_cell_no">
+                            <select name="sender_cell_no" id="payment_type"  ng-model="transactionInfo.sender_cell_no" class="form-control">
                                 <option  value="">Please select</option>
                                 <option ng-repeat="simInfo in simList" value="{{simInfo.sim_no}}">{{simInfo.sim_no}}</option>
                             </select>
