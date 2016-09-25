@@ -39,6 +39,7 @@ define("WEBSERVICE_GET_SERVICE_RPOFIT_LIST",                   "http://localhost
 define("WEBSERVICE_GET_TOP_CUSTOMER_LIST",                     "http://localhost:4040/getCustomerList");
 
 define("WEBSERVICE_EDIT_SIM_INFORMATION",                      "http://localhost:4040/editSim");
+define("WEBSERVICE_ADD_SIM_INFORMATION",                       "http://localhost:4040/addSim");
 define("WEBSERVICE_LOAD_SERVICE_BALANCE",                      "http://localhost:4040/loadServiceBalance");
 define("WEBSERVICE_GET_SIM_SERVICE_LIST",                      "http://localhost:4040/getSimServiceList");
 define("WEBSERVICE_GET_SIM_TRANSACTION_LIST",                  "http://localhost:4040/getSimTransactionList");

@@ -286,6 +286,8 @@ class Sim extends CI_Controller {
             echo json_encode($response);
             return;
         }
+        $sim_list = $this->sim_library->get_sim_list();
+        $this->data['sim_list'] = json_encode($sim_list);
         //$sms_info_list = $this->sim_model->get_sms_list($sim_no, $offset, $limit, $from_date, $to_date);
         //$this->data['sms_list'] = $sms_info_list['sms_list'];
         //$this->data['total_counter'] = $sms_info_list['total_counter'];

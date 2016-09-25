@@ -26,6 +26,17 @@
         <div class="form-background top-bottom-padding">
             <div class="row">
                 <div class ="col-md-8 margin-top-bottom">
+                    <div class="row form-group" ng-init="setSimList(<?php echo htmlspecialchars(json_encode($sim_list)) ?>)">
+                        <label for="sender_cell_no" class="col-md-6 control-label requiredField">
+                            Sim : 
+                        </label>
+                        <div class ="col-md-6">
+                            <select name="sender_cell_no" id="payment_type"  ng-model="transactionInfo.sender_cell_no">
+                                <option  value="">Please select</option>
+                                <option ng-repeat="simInfo in simList" value="{{simInfo.sim_no}}">{{simInfo.sim_no}}</option>
+                            </select>
+                        </div> 
+                    </div>
                     <div class="row form-group">
                         <label for="sender_cell_no" class="col-md-6 control-label requiredField">
                             Sender : 

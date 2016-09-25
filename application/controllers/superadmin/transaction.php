@@ -10,6 +10,7 @@ class Transaction extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->model("superadmin/org/transaction_model");
+
         $this->load->library('ion_auth');
         if (!$this->ion_auth->logged_in()) {
             redirect('superadmin/auth/login', 'refresh');
@@ -136,6 +137,9 @@ class Transaction extends CI_Controller {
             }
             $transaction_status_list[] = $status_info;
         }
+        $this->load->model("superadmin/org/sim_model");
+        $sim_list = $this->sim_model->get_sim_list();
+        $this->data['sim_list'] = json_encode($sim_list);
         $this->data['transaction_info'] = $transaction_info;
         $this->data['transaction_status_list'] = $transaction_status_list;
         $this->data['app'] = TRANSCATION_APP;
@@ -155,15 +159,8 @@ class Transaction extends CI_Controller {
     }
 
     public function show_sims() {
-        $result_event = $this->transaction_model->get_sim_list();
-        $sim_info = new stdClass();
-        $sim_info->sim_id = "1";
-        $sim_info->sim_no = "01723598606";
-        $sim_info->regitration_date = "16-05-16";
-        $sim_info->total_balance = "5000";
-        $sim_info->status = "1";
-        $sim_list = array();
-        $sim_list[] = $sim_info;
+        $this->load->model("superadmin/org/sim_model");
+        $sim_list = $this->sim_model->get_sim_list();
         $this->data['sim_list'] = json_encode($sim_list);
         $this->data['app'] = TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/index", $this->data);

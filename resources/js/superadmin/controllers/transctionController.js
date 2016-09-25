@@ -8,12 +8,16 @@ angular.module('controller.Transction', ['service.Transction']).
             $scope.serviceList = [];
             $scope.transctionInfoList = [];
             $scope.transactionStatusList = [];
+            $scope.simList = [];
 //            $scope.serviceRateList = [];
             $scope.allow_action = true;
             $scope.allTransactions = false;
             $scope.setTransactionStatusList = function (transactionStatusList) {
                 $scope.transactionStatusList = JSON.parse(transactionStatusList);
                 $scope.searchInfo.statusId = 0;
+            };
+            $scope.setSimList = function (simList) {
+                $scope.simList = JSON.parse(simList);
             };
             $scope.setTransactionProcessTypeList = function (transactionProcessTypeList) {
                 $scope.transactionProcessTypeList = JSON.parse(transactionProcessTypeList);

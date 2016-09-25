@@ -30,8 +30,21 @@
 <div class="ezttle"><span class="text">SMS History</span></div>
 <div class="mypage" ng-controller="simController">
     <ul class="list-unstyled paymentHistorySearch">
+        <div class="row form-group" ng-init="setSimList(<?php echo htmlspecialchars(json_encode($sim_list)) ?>)">
+            <label for="sender_cell_no" class="col-md-6 control-label requiredField">
+                Sim : 
+            </label>
+            <div class ="col-md-6">
+
+            </div> 
+        </div>
         <li>Sim No</li>
-        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="88017XXXXXXXX" ng-model="searchInfo.simNo"></li>
+        <li ng-init="setSimList(<?php echo htmlspecialchars(json_encode($sim_list)) ?>)">
+            <select name="sender_cell_no"  ng-model="searchInfo.simNo">
+                <option  value="">Please select</option>
+                <option ng-repeat="simInfo in simList" value="{{simInfo.sim_no}}">{{simInfo.sim_no}}</option>
+            </select>
+        </li>
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
