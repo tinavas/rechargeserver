@@ -7,7 +7,7 @@
         }
         return false;
     }
-    function create_sim(simInfo, serviceList) {
+    function create_sim(simInfo) {
         if (typeof simInfo.simNo == "undefined" || simInfo.simNo.length == 0) {
             $("#content").html("Please give sim naumber !");
             $('#common_modal').modal('show');
@@ -17,16 +17,6 @@
             $("#content").html("Please give a valid SIM Number");
             $('#common_modal').modal('show');
             return;
-        }
-        for (var i = 0; i < serviceList.length; i++) {
-            var serviceInfo = serviceList[i];             
-            if (serviceInfo.selected == true) {
-                if (typeof serviceInfo.currentBalance == "undefined") {
-                    $("#content").html("Please give an amount for " + serviceInfo.title);
-                    $('#common_modal').modal('show');
-                    return;
-                }
-            }
         }
         angular.element($("#submit_create_sim")).scope().addSim(simInfo, function(data) {
             $("#content").html(data.message);
@@ -127,7 +117,7 @@
         </div>
         <div class="row form-group">
             <div class ="col-md-offset-9 col-md-3">
-                <input id="submit_create_sim" name="submit_create_sim" class="btn btn_custom_button pull-right" type="submit" onclick="create_sim(angular.element(this).scope().simInfo, angular.element(this).scope().serviceList)" value="Add"/>
+                <input id="submit_create_sim" name="submit_create_sim" class="btn btn_custom_button pull-right" type="submit" onclick="create_sim(angular.element(this).scope().simInfo)" value="Add"/>
             </div> 
         </div>
     </div>

@@ -142,7 +142,7 @@ class Transaction extends CI_Controller {
         $this->data['sim_list'] = json_encode($sim_list);
         $this->data['transaction_info'] = $transaction_info;
         $this->data['transaction_status_list'] = $transaction_status_list;
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = S_TRANSCATION_APP;
         $this->template->load(null, "superadmin/transaction/update_transaction", $this->data);
     }
 
@@ -162,7 +162,7 @@ class Transaction extends CI_Controller {
         $this->load->model("superadmin/org/sim_model");
         $sim_list = $this->sim_model->get_sim_list();
         $this->data['sim_list'] = json_encode($sim_list);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = S_TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/index", $this->data);
     }
 
@@ -252,7 +252,7 @@ class Transaction extends CI_Controller {
         $service_list[] = $obj8;
         $service_list[] = $obj9;
         $this->data['service_list'] = json_encode($service_list);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = S_TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/create_sim", $this->data);
     }
 
@@ -270,7 +270,7 @@ class Transaction extends CI_Controller {
         $sim_service_info_list[] = $obj2;
         $this->data['sim_service_info_list'] = json_encode($sim_service_info_list);
         $this->data['sim_no'] = $sim_no;
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = S_TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/sim_details", $this->data);
     }
 
@@ -479,7 +479,7 @@ class Transaction extends CI_Controller {
         $transctionList = array();
         $transctionList[] = $obj;
         $this->data['transction_list'] = json_encode($transctionList);
-        $this->data['app'] = TRANSCATION_APP;
+        $this->data['app'] = S_TRANSCATION_APP;
         $this->template->load(null, "superadmin/sims/transactions", $this->data);
     }
 

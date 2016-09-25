@@ -113,7 +113,7 @@ class Report extends Role_Controller {
             "title" => "All"
         );
         $service_list[] = $service_all;
-        $service_list_array = $this->service_model->get_all_services()->result_array();
+        $service_list_array = $this->service_model->get_user_all_services($user_id)->result_array();
         if (!empty($service_list_array)) {
             foreach ($service_list_array as $service_info) {
                 $service_list[] = $service_info;
