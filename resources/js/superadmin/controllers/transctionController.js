@@ -89,9 +89,7 @@ angular.module('controller.Transction', ['service.Transction']).
                     return;
                 }
                 $scope.allow_action = false;
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;

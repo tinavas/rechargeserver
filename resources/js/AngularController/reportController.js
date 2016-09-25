@@ -34,10 +34,7 @@ angular.module('controller.Report', ['services.Report']).
             }
             $scope.getRepotHistory = function (startDate, endDate) {
 
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
-                ;
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;

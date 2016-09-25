@@ -75,9 +75,18 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
 
-            $scope.addTopUpData = function () {
+            $scope.addTopUp = function (callbackFunction) {
                 $scope.transactionDataList.push($scope.topUpInfo);
-                $scope.topUpInfo = {};
+                if ($scope.allow_transction == false) {
+                    return;
+                }
+                $scope.allow_transction = false;
+                transctionService.multipuleTopup($scope.transactionDataList).
+                        success(function (data, status, headers, config) {
+                            $scope.allow_transction = true;
+                            callbackFunction(data);
+                            $scope.topUpInfo = {};
+                        });
             };
             $scope.addSMSData = function () {
                 $scope.transactionDataList.push({"number": $scope.smsInfo.number});
@@ -142,10 +151,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
             $scope.getPaymentHistory = function (startDate, endDate) {
 
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
-                ;
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -167,9 +173,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.getReceiveHistory = function (startDate, endDate) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -191,9 +195,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.getTopupTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -217,9 +219,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
             $scope.getBkashTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -245,9 +245,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
 
 
             $scope.getDBBLTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -271,9 +269,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
             $scope.getMcashTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -298,9 +294,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.getUcashTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -324,9 +318,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
             };
             $scope.getSMSTransactionList = function (startDate, endDate, userId) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;
@@ -487,9 +479,7 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.getAllHistory = function (startDate, endDate) {
-                if ($scope.allTransactions != false) {
-                    $scope.searchInfo.limit = $scope.allTransactions;
-                }
+                $scope.searchInfo.limit = $scope.allTransactions;
                 if (startDate != "" && endDate != "") {
                     $scope.searchInfo.fromDate = startDate;
                     $scope.searchInfo.toDate = endDate;

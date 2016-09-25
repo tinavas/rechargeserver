@@ -1,7 +1,11 @@
 <script>
 
     $(function () {
-      var  error_message = '<?php if (isset($error_message)) {echo $error_message;}?>';
+        var error_message = '<?php
+if (isset($error_message)) {
+    echo $error_message;
+}
+?>';
         if (error_message != "") {
             $("#content").html(error_message);
             $('#common_modal').modal('show');
@@ -31,7 +35,7 @@
             return '<?php echo SERVICE_TYPE_ID_TOPUP_BANGLALINK; ?>';
         }
     }
-    function add_topup_data(topUpInfo, topupType) {
+    function add_topup(topUpInfo, topupType) {
         if (typeof topUpInfo.number == "undefined" || topUpInfo.number.length == 0) {
             $("#content").html("Please give a TopUP Number");
             $('#common_modal').modal('show');
@@ -65,7 +69,17 @@
             $('#common_modal').modal('show');
             return;
         }
-        angular.element($('#top_up_id')).scope().addTopUpData(topUpInfo, function () {
+
+        $("#content").html("Are you sure to submit topup?");
+        $('#common_modal').modal('show');
+        $('#modal_ok_click_id').on("click", function () {
+            angular.element($('#top_up_id')).scope().addTopUp(function (data) {
+                $("#content").html(data.message);
+                $('#common_modal').modal('show');
+                $('#modal_ok_click_id').on("click", function () {
+                    window.location = '<?php echo base_url() ?>transaction/topup';
+                });
+            });
         });
     }
 
@@ -102,12 +116,17 @@
                 }
             }
         }
-        angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
-            $("#content").html(data.message);
-            $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function () {
-                //$(".loader").show();
-                window.location = '<?php echo base_url() ?>transaction/topup';
+
+        $("#content").html("Are you sure to submit topups?");
+        $('#common_modal').modal('show');
+        $('#modal_ok_click_id').on("click", function () {
+            angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
+                $("#content").html(data.message);
+                $('#common_modal').modal('show');
+                $('#modal_ok_click_id').on("click", function () {
+                    //$(".loader").show();
+                    window.location = '<?php echo base_url() ?>transaction/topup';
+                });
             });
         });
     }
@@ -172,7 +191,7 @@
                                     <div class="row form-group">
                                         <div for="submit_update_api" class="col-md-6 control-label requiredField label_custom"> </div>
                                         <div class ="col-md-6">
-                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup_data(angular.element(this).scope().topUpInfo, angular.element(this).scope().topUpTypes.selectedOption.id)">Add</button>
+                                            <button id="top_up_id" class="button-custom pull-right"  onclick="add_topup(angular.element(this).scope().topUpInfo, angular.element(this).scope().topUpTypes.selectedOption.id)">Add</button>
                                         </div> 
                                     </div>
 
