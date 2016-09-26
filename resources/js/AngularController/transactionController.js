@@ -76,12 +76,13 @@ var transactionController = angular.module('controller.Transction', ['services.T
             };
 
             $scope.addTopUp = function (callbackFunction) {
-                $scope.transactionDataList.push($scope.topUpInfo);
                 if ($scope.allow_transction == false) {
                     return;
                 }
                 $scope.allow_transction = false;
-                transctionService.multipuleTopup($scope.transactionDataList).
+                var tempArray = [];
+                tempArray.push($scope.topUpInfo);
+                transctionService.multipuleTopup(tempArray).
                         success(function (data, status, headers, config) {
                             $scope.allow_transction = true;
                             callbackFunction(data);
