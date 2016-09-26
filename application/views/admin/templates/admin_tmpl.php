@@ -80,4 +80,5 @@
     </body>
 </html>
 <?php $this->load->view('common/common_modal'); ?>
+<?php $this->load->view('common/common_confirmation_modal'); ?>
 <?php $this->load->view('wating_loader'); ?>
