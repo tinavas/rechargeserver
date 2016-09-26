@@ -1,6 +1,6 @@
 <script>
 
-    $(function () {
+    $(function() {
         var error_message = '<?php
 if (isset($error_message)) {
     echo $error_message;
@@ -70,16 +70,19 @@ if (isset($error_message)) {
             return;
         }
 
-        $("#content").html("Are you sure to submit topup?");
-        $('#common_modal').modal('show');
-        $('#modal_ok_click_id').on("click", function () {
-            angular.element($('#top_up_id')).scope().addTopUp(function (data) {
+        $("#confirmation_content").html("Are you sure to submit topup?");
+        $('#common_confirmation_modal').modal('show');
+        $('#modal_confirm_click_id').on("click", function() {
+            angular.element($('#top_up_id')).scope().addTopUp(function(data) {
                 $("#content").html(data.message);
                 $('#common_modal').modal('show');
-                $('#modal_ok_click_id').on("click", function () {
+                $('#modal_ok_click_id').on("click", function() {
                     window.location = '<?php echo base_url() ?>transaction/topup';
                 });
             });
+        });
+        $('#modal_cancel_click_id').on("click", function() {
+            window.location = '<?php echo base_url() ?>transaction/topup';
         });
     }
 
@@ -117,20 +120,23 @@ if (isset($error_message)) {
             }
         }
 
-        $("#content").html("Are you sure to submit topups?");
-        $('#common_modal').modal('show');
-        $('#modal_ok_click_id').on("click", function () {
-            angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function (data) {
+        $("#confirmation_content").html("Are you sure to submit topups?");
+        $('#common_confirmation_modal').modal('show');
+        $('#modal_confirm_click_id').on("click", function() {
+            angular.element($('#multipule_top_up_id')).scope().multipuleTopup(function(data) {
                 $("#content").html(data.message);
                 $('#common_modal').modal('show');
-                $('#modal_ok_click_id').on("click", function () {
+                $('#modal_ok_click_id').on("click", function() {
                     //$(".loader").show();
                     window.location = '<?php echo base_url() ?>transaction/topup';
                 });
             });
         });
+        $('#modal_cancel_click_id').on("click", function() {
+            window.location = '<?php echo base_url() ?>transaction/topup';
+        });
     }
-    $(function () {
+    $(function() {
         setInterval(callFunction, <?php echo TRANSACTION_LIST_CALLING_INTERVER; ?>);
     });
     function callFunction() {
