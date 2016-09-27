@@ -1,10 +1,10 @@
 <script>
     function update_balance(simNumber) {
-        
-       angular.element($("#update_balance_id")).scope().updateBalance(simNumber, function(data) {
+
+        angular.element($("#update_balance_id")).scope().updateBalance(simNumber, function (data) {
             $("#content").html(data.message);
             $('#common_modal').modal('show');
-            $('#modal_ok_click_id').on("click", function() {
+            $('#modal_ok_click_id').on("click", function () {
                 window.location = '<?php echo base_url() ?>superadmin/sim';
             });
         });
@@ -34,17 +34,24 @@
                                     <th style="text-align: center;">Sim Number</th>
                                     <th style="text-align: center;">Description</th>
                                     <th style="text-align: center;">Status</th>
+                                    <th style="text-align: center;">Current balance</th>
+                                    <th style="text-align: center;">Today's uses</th>
+                                    <th style="text-align: center;">Number of Transactions</th>
+                                    <th style="text-align: center;">Balance</th>
                                     <th style="text-align: center;">Show</th>
                                     <th style="text-align: center;">Edit</th>
-                                    <th style="text-align: center;">Balance</th>
                                 </tr>
                                 <tr ng-repeat="simInfo in simList">
                                     <th style="text-align: center;">{{simInfo.sim_no}}</th>
                                     <th style="text-align: center;">{{simInfo.description}}</th>
-                                    <th style="text-align: center;">{{simInfo.status}}</th>
+                                    <th style="text-align: center;" ng-if="simInfo.status == '<?php echo SIM_STATUS_ENABLE ?>'">Active</th>
+                                    <th style="text-align: center;" ng-if="simInfo.status == '<?php echo SIM_STATUS_DISABLE ?>'">Inactive</th>
+                                    <th style="text-align: center;">{{simInfo.current_balance}}</th>
+                                    <th style="text-align: center;">{{simInfo.todays_uses}}</th>
+                                    <th style="text-align: center;">{{simInfo.no_of_transaction}}</th>
+                                    <th style="text-align: center"><a id="update_balance_id" onclick="update_balance(angular.element(this).scope().simInfo.sim_no)">Update</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/show_sim/"; ?>{{simInfo.sim_no}}">Show</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>
-                                    <th style="text-align: center"><a id="update_balance_id" onclick="update_balance(angular.element(this).scope().simInfo.sim_no)">Update</a></th>
                                 </tr>
                             </thead>
                         </table>
@@ -53,7 +60,7 @@
             </div>
         </div>
     </div>
-<!--    <div id="edit_sim_info" style="display: none">
-        <?php //$this->load->view("superadmin/sims/edit_sim"); ?>     
-    </div>-->
+    <!--    <div id="edit_sim_info" style="display: none">
+    <?php //$this->load->view("superadmin/sims/edit_sim"); ?>     
+        </div>-->
 </div>

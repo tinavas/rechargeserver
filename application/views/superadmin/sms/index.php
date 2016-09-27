@@ -30,14 +30,6 @@
 <div class="ezttle"><span class="text">SMS History</span></div>
 <div class="mypage" ng-controller="simController">
     <ul class="list-unstyled paymentHistorySearch">
-        <div class="row form-group" ng-init="setSimList(<?php echo htmlspecialchars(json_encode($sim_list)) ?>)">
-            <label for="sender_cell_no" class="col-md-6 control-label requiredField">
-                Sim : 
-            </label>
-            <div class ="col-md-6">
-
-            </div> 
-        </div>
         <li>Sim No</li>
         <li ng-init="setSimList(<?php echo htmlspecialchars(json_encode($sim_list)) ?>)">
             <select name="sender_cell_no"  ng-model="searchInfo.simNo">

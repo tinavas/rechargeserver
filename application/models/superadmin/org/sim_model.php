@@ -5,11 +5,12 @@ class Sim_model extends Ion_auth_model {
     public function __construct() {
         parent::__construct();
     }
-    
+
     /*
      * This method will call authentication server to return entire sim list
      * @author nazmul hasan on 11th June 2016
      */
+
     public function get_sim_list() {
         $sim_list = array();
         $this->curl->create(WEBSERVICE_GET_ALL_SIMS);
@@ -35,12 +36,14 @@ class Sim_model extends Ion_auth_model {
         }
         return $sim_list;
     }
+
     /*
      * This method will call authentication server to add a new sim with services
      * @param $additional_data, sim info to be added
      * @param $service_info_list, sim service info list
      * @author nazmul hasan on 11th June 2016
      */
+
     public function add_sim($additional_data, $service_info_list) {
         $this->curl->create(WEBSERVICE_ADD_SIM);
         $this->curl->post(array('sim_no' => $additional_data['sim_no'], 'identifier' => $additional_data['identifier'], 'description' => $additional_data['description'], 'status' => $additional_data['status'], 'sim_service_list' => json_encode($service_info_list)));
@@ -52,6 +55,7 @@ class Sim_model extends Ion_auth_model {
      * @param $sim_no, sim number
      * @author nazmul hasan on 11th June 2016
      */
+
     public function get_sim_info($sim_no) {
         $sim_info = array();
         $this->curl->create(WEBSERVICE_GET_SIM_SERVICE_INFO);
@@ -70,11 +74,10 @@ class Sim_model extends Ion_auth_model {
                     $sim_info['description'] = $result->description;
                     $sim_info['status'] = $result->status;
                     $sim_service_list = array();
-                    
+
                     $this->load->library('superadmin/org/super_utils');
                     $simServiceList = $result->simServiceList;
-                    foreach ($simServiceList as $simServiceInfo) 
-                    {
+                    foreach ($simServiceList as $simServiceInfo) {
                         $simServiceObj = new stdClass();
                         $simServiceObj->serviceId = $simServiceInfo->id;
                         $simServiceObj->categoryId = $simServiceInfo->categoryId;
@@ -104,7 +107,22 @@ class Sim_model extends Ion_auth_model {
     public function check_sim_balance($sim_no) {
         $this->curl->create(WEBSERVICE_CHECK_SIM_BALANCE);
         $this->curl->post(array('sim_no' => $sim_no));
-        return json_decode($this->curl->execute());
+        $result_event = json_decode($this->curl->execute());
+        if (!empty($result_event)) {
+            $response_code = '';
+            if (property_exists($result_event, "responseCode") != FALSE) {
+                $response_code = $result_event->responseCode;
+            }
+            if ($response_code == RESPONSE_CODE_SUCCESS) {
+                return TRUE;
+            } else {
+                $this->set_error('error_code_' . $response_code);
+                return FALSE;
+            }
+        } else {
+            $this->set_error('error_webservice_unavailable');
+            return FALSE;
+        }
     }
 
     public function add_service_balance($service_balance_info) {
@@ -168,6 +186,7 @@ class Sim_model extends Ion_auth_model {
      * @param $limit
      * @author nazmul hasan on 18th september 2016
      */
+
     public function get_sms_list($sim_no, $start_time, $end_time, $offset = 0, $limit = 0) {
         $sms_info_list['sms_list'] = array();
         $sms_info_list['total_counter'] = 0;
@@ -181,25 +200,24 @@ class Sim_model extends Ion_auth_model {
             }
             if ($response_code == RESPONSE_CODE_SUCCESS) {
                 if (property_exists($result_event, "result") != FALSE) {
-                   $this->load->library('superadmin/org/Super_utils');
-                   $result = $result_event->result;
-                   $sim_sms_list = array();
-                   $counter = 0;
-                   if(property_exists($result, "counter") != FALSE && property_exists($result, "simSMSList") != FALSE)
-                   {
+                    $this->load->library('superadmin/org/Super_utils');
+                    $result = $result_event->result;
+                    $sim_sms_list = array();
+                    $counter = 0;
+                    if (property_exists($result, "counter") != FALSE && property_exists($result, "simSMSList") != FALSE) {
                         $counter = $result->counter;
-                        foreach ($result->simSMSList as $sim_sms_info) 
-                        {                       
+                        foreach ($result->simSMSList as $sim_sms_info) {
                             //reducing 2 hours from auth server and converting to human date format from unix format
                             $sim_sms_info->createdOn = $this->super_utils->get_auth_unix_to_human_date($sim_sms_info->createdOn);
                             $sim_sms_list[] = $sim_sms_info;
                         }
-                   }                   
-                   $sms_info_list['sms_list'] = $sim_sms_list;
-                   $sms_info_list['total_counter'] = $counter;
+                    }
+                    $sms_info_list['sms_list'] = $sim_sms_list;
+                    $sms_info_list['total_counter'] = $counter;
                 }
             }
         }
         return $sms_info_list;
     }
+
 }

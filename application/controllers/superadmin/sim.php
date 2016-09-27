@@ -243,8 +243,12 @@ class Sim extends CI_Controller {
 
     public function get_sim_balance($sim_no) {
         $response = array();
-        $this->sim_model->check_sim_balance($sim_no);
-        $response["message"] = " A request is sent to generate current balance of the SIM. Updated balance will be reflected soon.";
+        $result_event = $this->sim_model->check_sim_balance($sim_no);
+        if ($this->sim_model->check_sim_balance($sim_no) !== FALSE) {
+            $response['message'] = " A request is sent to generate current balance of the SIM. Updated balance will be reflected soon.";
+        } else {
+            $response['message'] = $this->transaction_library->errors_array();
+        }
         echo json_encode($response);
         return;
     }
