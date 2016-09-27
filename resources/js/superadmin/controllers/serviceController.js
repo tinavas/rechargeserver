@@ -3,12 +3,16 @@ angular.module('controller.Service', ['service.Service']).
             $scope.serviceInfo = {};
 //            $scope.resellerList = [];
             $scope.serviceList = [];
+            $scope.timeList = [];
             $scope.serviceTypeList = [];
 //            $scope.serviceRateList = [];
             $scope.allow_service_action = true;
 
             $scope.setServiceList = function (serviceList) {
                 $scope.serviceList = JSON.parse(serviceList);
+            }
+            $scope.setTimeList = function (timeList) {
+                $scope.timeList = JSON.parse(timeList);
             }
             $scope.setServiceInfo = function (serviceInfo) {
                 $scope.serviceInfo = JSON.parse(serviceInfo);

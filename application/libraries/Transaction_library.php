@@ -465,7 +465,25 @@ class Transaction_library {
                 $transction_status_list[] = $transction_status;
             }
         }
-      return $transction_status_list;
+        return $transction_status_list;
+    }
+
+    public function check_transaction_interval_validation($cell_number_list = array(), $service_id_list = array(), $where = array()) {
+        $response['validation_flag'] = FALSE;
+        $this->load->model('service_model');
+        $service_List = $this->service_model->get_service_list($service_id_list)->result_array();
+        if(empty($service_List)){
+            return $response;
+        }
+        if (!empty($where)) {
+            $this->transaction_model->where($where);
+        }
+        $transction_list_array = $this->transaction_model->get_trnsaction_list($cell_number_list, $service_List);
+        if (!empty($transction_list_array[0])) {
+            $response['validation_flag'] = TRUE;
+            $response['transction_info'] = $transction_list_array[0];
+        }
+        return $response;
     }
 
 }

@@ -56,6 +56,7 @@ class Transaction_model extends Ion_auth_model {
      * @param $user_profit_data, user profit data
      * @author nazmul hasan on 24th February 2016
      */
+
     public function add_transaction($api_key, $transaction_data, $users_profit_data) {
         $amount = $transaction_data['amount'];
         $cell_no = $transaction_data['cell_no'];
@@ -170,15 +171,12 @@ class Transaction_model extends Ion_auth_model {
                     $this->set_error('error_code_' . $response_code);
                     return FALSE;
                 }
-            }
-            else
-            {
+            } else {
                 $this->db->trans_rollback();
                 $this->set_error('error_webservice_unavailable');
                 return FALSE;
             }
-        } 
-        else {
+        } else {
             //manual transaction at webserver by superadmin
             $this->db->trans_commit();
             $this->set_message('transaction_successful');
@@ -252,26 +250,23 @@ class Transaction_model extends Ion_auth_model {
                 $transaction_info_for_webservice['cell_no'] = $transaction_info['cell_no'];
                 $transaction_info_for_webservice['description'] = $transaction_info['description'];
                 $transaction_list_for_webservice[] = $transaction_info_for_webservice;
-                
+
                 $user_transaction_list_auto[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
                 $payment_list_auto[$transaction_info['mapping_id']] = $this->_filter_data($this->tables['user_payments'], $payment_info);
-            }
-            else if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_MANUAL) {
+            } else if ($transaction_info['process_type_id'] == TRANSACTION_PROCESS_TYPE_ID_MANUAL) {
                 $trx_id = $this->utils->get_transaction_id();
                 $transaction_info['transaction_id'] = $trx_id;
                 $payment_info['transaction_id'] = $trx_id;
                 foreach ($user_profit_list as $user_profit_info) {
-                    if($user_profit_info['mapping_id'] == $transaction_info['mapping_id'])
-                    {
+                    if ($user_profit_info['mapping_id'] == $transaction_info['mapping_id']) {
                         $user_profit_info['transaction_id'] = $trx_id;
                         $user_profit_info['cell_no'] = $transaction_info['cell_no'];
                         $profit_list_manual[] = $this->_filter_data($this->tables['user_profits'], $user_profit_info);
                     }
-                }                
+                }
                 $user_transaction_list_manual[] = $this->_filter_data($this->tables['user_transactions'], $transaction_info);
                 $payment_list_manual[] = $this->_filter_data($this->tables['user_payments'], $payment_info);
             }
-            
         }
         if (!empty($user_transaction_list_auto)) {
             $this->curl->create(WEBSERVICE_URL_CREATE_MULTIPULE_TRANSACTIONS);
@@ -305,7 +300,7 @@ class Transaction_model extends Ion_auth_model {
                             $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list_auto);
                             $this->db->insert_batch($this->tables['user_payments'], $payment_list_auto);
                             $this->db->insert_batch($this->tables['user_profits'], $profit_list_auto);
-                            $this->db->trans_commit();                            
+                            $this->db->trans_commit();
                             //after the successful insertion check for any manual transactions
                         }
                     } else {
@@ -321,14 +316,13 @@ class Transaction_model extends Ion_auth_model {
                 $this->set_error('error_webservice_unavailable');
                 return FALSE;
             }
-        } 
-        if(!empty($user_transaction_list_manual))
-        {
+        }
+        if (!empty($user_transaction_list_manual)) {
             $this->db->trans_begin();
             $this->db->insert_batch($this->tables['user_transactions'], $user_transaction_list_manual);
             $this->db->insert_batch($this->tables['user_payments'], $payment_list_manual);
             $this->db->insert_batch($this->tables['user_profits'], $profit_list_manual);
-            $this->db->trans_commit();          
+            $this->db->trans_commit();
         }
         $this->set_message('transaction_successful');
         return TRUE;
@@ -698,7 +692,35 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_transaction_statuses'])
                         ->get();
     }
-    
-    
-    
+
+    /**
+     * this method will return transaction list that
+     * @param  $cell_number_list cell number 
+     * @param  $service_List cell service info list 
+     * @author Rashida on 26 Sep 2016
+     */
+    public function get_trnsaction_list($cell_number_list = array(), $service_List = array()) {
+        $result = array();
+        foreach ($service_List as $service_info) {
+            $block_unix_time = now() - $service_info['transaction_intervel'];
+            //run each where that was passed
+            if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+                foreach ($this->_ion_where as $where) {
+                    $this->db->where($where);
+                }
+                $this->_ion_where = array();
+            }
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_number_list);
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $block_unix_time);
+            $this->db->where($this->tables['user_transactions'] . '.service_id', $service_info['service_id']);
+            $result = $this->db->select($this->tables['user_transactions'] . '.*')
+                            ->from($this->tables['user_transactions'])
+                            ->get()->result_array();
+            if (!empty($result)) {
+                return $result;
+            }
+        }
+        return $result;
+    }
+
 }

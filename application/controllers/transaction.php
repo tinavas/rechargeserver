@@ -81,6 +81,9 @@ class Transaction extends Role_Controller {
 
     public function bkash($transaction_id = '') {
         $user_id = $this->session->userdata('user_id');
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
         //checking whether user has permission for bkash transaction
         $service_status_type = SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER;
         $permission_exists = FALSE;
@@ -120,6 +123,12 @@ class Transaction extends Role_Controller {
                     $cell_no = $bkashInfo->number;
                 } else {
                     $response["message"] = " Please give a Cell number! Cell Number is Required !!";
+                    echo json_encode($response);
+                    return;
+                }
+                $validation_result = $this->transaction_library->check_transaction_interval_validation(array($cell_no), array(SERVICE_TYPE_ID_BKASH_CASHIN), $where);
+                if ($validation_result['validation_flag'] != FALSE) {
+                    $response["message"] = "Sorry !! Bkash service is unavailable right now! please try again later!.";
                     echo json_encode($response);
                     return;
                 }
@@ -283,9 +292,7 @@ class Transaction extends Role_Controller {
         }
 
         $this->data['transaction_info'] = json_encode($transaction_info);
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
@@ -307,6 +314,9 @@ class Transaction extends Role_Controller {
         if (!empty($service_info_array)) {
             $service_status_type = $service_info_array[0]['type_id'];
         }
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
 
         if (file_get_contents("php://input") != null) {
             $response = array();
@@ -323,6 +333,12 @@ class Transaction extends Role_Controller {
                     $cell_no = $dbblInfo->number;
                 } else {
                     $response["message"] = "  Please give a Cell number! Cell Number is Required    !!";
+                    echo json_encode($response);
+                    return;
+                }
+                $validation_result = $this->transaction_library->check_transaction_interval_validation(array($cell_no), array(SERVICE_TYPE_ID_DBBL_CASHIN), $where);
+                if ($validation_result['validation_flag'] != FALSE) {
+                    $response["message"] = "Sorry !! DBBL service is unavailable right now! please try again later!.";
                     echo json_encode($response);
                     return;
                 }
@@ -402,9 +418,7 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
@@ -428,6 +442,9 @@ class Transaction extends Role_Controller {
         }
 
         $user_id = $this->session->userdata('user_id');
+        $where = array(
+            'user_id' => $user_id
+        );
         if (file_get_contents("php://input") != null) {
             $response = array();
             if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
@@ -443,6 +460,12 @@ class Transaction extends Role_Controller {
                     $cell_no = $mCashInfo->number;
                 } else {
                     $response["message"] = "Please give a Cell number! Cell Number is Required    !!";
+                    echo json_encode($response);
+                    return;
+                }
+                $validation_result = $this->transaction_library->check_transaction_interval_validation(array($cell_no), array(SERVICE_TYPE_ID_MCASH_CASHIN), $where);
+                if ($validation_result['validation_flag'] != FALSE) {
+                    $response["message"] = "Sorry !! Mcash service is unavailable right now! please try again later!.";
                     echo json_encode($response);
                     return;
                 }
@@ -520,9 +543,7 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
@@ -546,6 +567,9 @@ class Transaction extends Role_Controller {
         }
 
         $user_id = $this->session->userdata('user_id');
+        $where = array(
+            'user_id' => $user_id
+        );
         if (file_get_contents("php://input") != null) {
             $response = array();
             if ($service_status_type == SERVICE_TYPE_ID_NOT_ALLOW_TRNASCATION) {
@@ -561,6 +585,12 @@ class Transaction extends Role_Controller {
                     $cell_no = $uCashInfo->number;
                 } else {
                     $response["message"] = "Please give a Cell number! Cell Number is Required    !!";
+                    echo json_encode($response);
+                    return;
+                }
+                $validation_result = $this->transaction_library->check_transaction_interval_validation(array($cell_no), array(SERVICE_TYPE_ID_UCASH_CASHIN), $where);
+                if ($validation_result['validation_flag'] != FALSE) {
+                    $response["message"] = "Sorry !! Ucash service is unavailable right now! please try again later!.";
                     echo json_encode($response);
                     return;
                 }
@@ -639,9 +669,7 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $where = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
@@ -670,10 +698,15 @@ class Transaction extends Role_Controller {
             return;
         }
         $user_id = $this->session->userdata('user_id');
+        $where = array(
+            'user_id' => $user_id
+        );
         if (file_get_contents("php://input") != null) {
             $response = array();
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
+            $cell_number_list = array();
+            $service_id_list = array();
             if (property_exists($requestInfo, "transactionDataList")) {
                 $user_assigned_service_id_list = array();
                 $user_topup_operator_id_list = $this->service_model->get_user_assigned_services($user_id)->result_array();
@@ -711,6 +744,7 @@ class Transaction extends Role_Controller {
                         }
 
                         $topup_data_info['service_id'] = $service_id;
+                        $service_id_list[] = $service_id;
                         if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_LOCAL_SERVER) {
                             $topup_data_info['process_type_id'] = TRANSACTION_PROCESS_TYPE_ID_AUTO;
                         } else if ($service_info_list[$service_id]['type_id'] == SERVICE_TYPE_ID_ALLOW_TO_USE_WEBSERVER) {
@@ -729,11 +763,13 @@ class Transaction extends Role_Controller {
                             return;
                         }
                         $topup_data_info['cell_no'] = $cell_no;
+                        $cell_number_list[] = $cell_no;
                     } else {
                         $response["message"] = "Please give a Cell number! Cell Number is Required   at serial number " . ($key + 1);
                         echo json_encode($response);
                         return;
                     }
+
                     if (property_exists($transaction_data, "topupType")) {
                         $topup_type_id = $transaction_data->topupType;
                         if ($topup_type_id != OPERATOR_TYPE_ID_PREPAID && $topup_type_id != OPERATOR_TYPE_ID_POSTPAID) {
@@ -775,7 +811,15 @@ class Transaction extends Role_Controller {
                         return;
                     }
                     $transction_list[] = $topup_data_info;
+                    $validation_result = $this->transaction_library->check_transaction_interval_validation($cell_number_list, $service_id_list, $where);
+                    if ($validation_result['validation_flag'] != FALSE) {
+                       $transction_info =  $validation_result['transction_info'];
+                        $response["message"] = "Sorry !!". $service_info_list[$transction_info['service_id']]['title'] . " service is unavailable right now for this number " . $transction_info['cell_no'];
+                        echo json_encode($response);
+                        return;
+                    }
                 }
+
                 $this->load->library("security");
                 $transction_list = $this->security->xss_clean($transction_list);
                 if ($this->transaction_library->add_multipule_transactions($transction_list, $user_assigned_service_id_list, $total_amount, $user_id) !== FALSE) {
@@ -885,9 +929,7 @@ class Transaction extends Role_Controller {
             $this->template->load(null, 'common/error_message', $this->data);
             return;
         }
-        $where = array(
-            'user_id' => $user_id
-        );
+
         $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
