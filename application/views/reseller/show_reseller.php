@@ -23,7 +23,7 @@
                     <label>Pin</label>
                 </div>
                 <div class="col-md-6">
-                    <div class="help-block">{{profileInfo.pin}}</div>
+                    <div type="password" class="help-block">{{profileInfo.pin}}</div>
                 </div>
             </div>
             <div class="row form-group">

@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="form-group ">
                                     <label for="pin" class="control-label">Pin</label>
-                                    <input type="pin" autocomplete="off" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">
+                                    <input type="password" autocomplete="off" value="" placeholder="" class="form-control input-sm" id="pin" name="pin" ng-model="resellerInfo.pin">
                                     <p class="help-block form_error"></p>
                                 </div>
                                 <div class="form-group ">
