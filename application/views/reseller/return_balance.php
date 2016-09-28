@@ -48,7 +48,7 @@
 
                             </label>
                             <div class ="col-md-3 pull-right">
-                                <button id="submit_create_payment" class="form-control button"  onclick="return_payment(angular.element(this).scope().paymentInfo)">Send</button>
+                                <button id="submit_create_payment" class="button-custom"  onclick="return_payment(angular.element(this).scope().paymentInfo)">Send</button>
                             </div> 
                         </div>
                     </div>

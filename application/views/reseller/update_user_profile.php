@@ -109,8 +109,12 @@
                         </tr>
                     </tbody>
                 </table>
-                <p class="help-block line">&nbsp;</p>               
-                <input id="submit_update_user_profile" name="submit_update_user_profile" class="btn btn-primary btn-sm" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Profile"/>
+                <p class="help-block line">&nbsp;</p> 
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <input id="submit_update_user_profile" name="submit_update_user_profile" class="button-custom pull-right" type="submit" onclick="update_reseller(angular.element(this).scope().resellerInfo)" value="Update Profile"/>
+                    </div>
+                </div>
             </ng-from>
         </div> 
     </div> 

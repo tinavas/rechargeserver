@@ -19,7 +19,7 @@
 </div>
 <div class="mypage" ng-controller="resellerController">
     <ng-form>
-        <table class="rates" ng-init="setServiceRateList(<?php echo htmlspecialchars(json_encode($rate_list)); ?>)">
+        <table class="table10" ng-init="setServiceRateList(<?php echo htmlspecialchars(json_encode($rate_list)); ?>)">
             <thead>
                 <tr>
                     <th>Service</th>
@@ -54,7 +54,7 @@
             </tbody>
         </table>
         <div class="top10">&nbsp;</div>
-        <input id="submit_update_rate" name="submit_update_rate" class="btn btn-primary btn-sm" type="submit" value="Update Rates" onclick="updateRate()"/>
+                <input id="submit_update_rate" name="submit_update_rate" class="button-custom" type="submit" value="Update Rates" onclick="updateRate()"/>
         <p class="help-block form_error"></p>
     </ng-form>
 </div>

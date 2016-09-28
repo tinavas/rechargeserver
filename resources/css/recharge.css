@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Tahoma';
+    src: local('Tahoma'), url(../fonts/Tahoma.ttf) format('ttf');
+}
 html,
 body {
     font-family: "Lucida Grande", Verdana, Arial, sans-serif!important;
@@ -35,15 +39,7 @@ body {
 .top20{height:20px;}
 
 
-.head{
-    z-index:1200;
-    width:100%;
-    min-width:1024px;
-    background-color: #0072C6;
-    border-color: #005798;
-    border-radius: 0;
-    height: 50px;
-}
+
 .brand{
     width:50%;
     float:left;
@@ -100,11 +96,7 @@ body {
     margin-bottom: 0px !important;
 }
 
-.navbar-default {
-    background-color: #0072C6;
-    border-color: #005798;
-    border-radius:none;
-}
+
 /* title */
 .navbar-default .navbar-brand {
     color: #fff;
@@ -164,10 +156,7 @@ body {
 .navbar-default .navbar-toggle {
     border-color: #fff;
 }
-.navbar-default .navbar-toggle:hover,
-.navbar-default .navbar-toggle:focus {
-    background-color: #0072C6;
-}
+
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #fff;
 }
@@ -446,7 +435,7 @@ table.table10{
 }
 
 table.table10 thead th{
-    background:#E9ECF1 repeat-x left top;
+    background: #E9ECF1 repeat-x left top;
     height:26px;
     border-right:0px solid #CFCFCF;
     border-left:0px solid #FFFFFF;
@@ -455,14 +444,7 @@ table.table10 thead th{
     font-size:11px;
 }
 
-table.table10 tbody td{
-    border-top:1px solid #EBEBEB;
-    height:24px;
-    padding:0px 5px;
-    border-right:0px solid #CFCFCF;
-    border-left:0px solid #FFFFFF;
-    font-size:11px;
-}
+
 
 tr.rowa{background:#fff;}
 tr.rowb{background:#f3f3f3;}
@@ -530,7 +512,7 @@ p.last{padding-bottom:10px;}
     line-height:16px;
 }
 
-.printhead{margin:0px;text-align:center;margin-top:10px;font-weight:bold;color:#0072C6;}
+
 .onprint{display: none;}
 
 @media print
@@ -624,7 +606,7 @@ ul.shortcurt li a:hover{color:#333;}
 }
 
 /*default*/
-.colorbox.default span.base{background: #0072C6 !important;}
+
 .colorbox.default span.hover{background: #005798 !important;}
 
 /*red*/

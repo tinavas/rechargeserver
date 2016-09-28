@@ -38,7 +38,7 @@
 
         <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history()" class="button-custom"></li>
     </ul>
-    <table class="table table-striped table-hover" ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
+    <table class="table10" ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
         <thead>
             <tr>
                 <th><a href="">Id</a></th>

@@ -45,15 +45,11 @@ ul#navmenu li a {
 	}
 ul#navmenu a.top {border-top:0px solid #E9E9E9;margin-top:-0px;}
 ul#navmenu li a.chld{background:url(../images/caret_n.png) no-repeat right center;}
-ul#navmenu li a.chld:hover{background:#0072C6 url(../images/caret_h.png) no-repeat right center;}
+
 /* Root Menu Hover Persistence */
 ul#navmenu a:hover,
 ul#navmenu li:hover a,
-ul#navmenu li.iehover a {
-	background:#0072C6;
-	color: #FFFFFF;
-	border-top:0px solid #2E69AE;
-	}
+
 
 /* 2nd Menu */
 ul#navmenu li ul li a {

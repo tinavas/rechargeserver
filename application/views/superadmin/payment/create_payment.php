@@ -33,7 +33,7 @@
                         <label for="submit_create_payment" class="col-md-6 control-label requiredField">
                         </label>
                         <div class ="col-md-3 pull-right">
-                            <input id="submit_create_payment" class="form-control button btn_custom_button" type="submit" value="create" name="submit_create_payment">
+                            <input id="submit_create_payment" class="form-control button btn_custom_button button-custom" type="submit" value="create" name="submit_create_payment">
                         </div> 
                     </div>
                 </div>

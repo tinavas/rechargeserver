@@ -28,7 +28,7 @@
         <li> <input type="checkbox" ng-model="allTransactions"></li>
         <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_bkash()" class="button-custom"></li>
     </ul>
-    <table class="table table-striped table-hover"> 
+    <table class="table10"> 
         <thead>
             <tr>
                 <th><a href="">Id</a></th>

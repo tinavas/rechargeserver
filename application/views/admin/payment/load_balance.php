@@ -48,8 +48,8 @@
                                 <label for="submit_create_payment" class="col-md-6 control-label requiredField">
 
                                 </label>
-                                <div class ="col-md-3 pull-right">
-                                    <button id="submit_create_payment" class="form-control button"  onclick="create_payment(angular.element(this).scope().paymentInfo)">Send</button>
+                                <div class ="col-md-offset-3 col-md-3">
+                                    <button id="submit_create_payment" class="button-custom pull-right"  onclick="create_payment(angular.element(this).scope().paymentInfo)">Send</button>
                                 </div> 
                             </div>
                         </div>

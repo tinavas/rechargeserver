@@ -42,7 +42,7 @@
             <li><input id="search_submit_btn" ng-model="search" type="submit" size="18" value="Search" onclick="search_payment_history()" class="button-custom"></li>
         </ul>
     </ng-form>
-    <table id="" class="table table-striped table-hover" ng-init="setPaymentInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
+    <table id="" class="table10" ng-init="setPaymentInfoList(<?php echo htmlspecialchars(json_encode($payment_info_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
         <thead>
             <tr>
                 <th><a href="">Amount</a></th>

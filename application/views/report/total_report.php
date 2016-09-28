@@ -34,7 +34,7 @@
             <li><input id="search_submit_btn" ng-model="search" type="submit" size="18" value="Search" onclick="search_report_history()" class="button-custom"></li>
         </ul>
     </ng-form>
-    <table class="table table-striped table-hover" ng-init="setProfitList(<?php echo htmlspecialchars(json_encode($profit_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>)">
+    <table class="table10" ng-init="setProfitList(<?php echo htmlspecialchars(json_encode($profit_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>)">
         <thead>
             <tr>
                 <th><a href="">Id</a></th>

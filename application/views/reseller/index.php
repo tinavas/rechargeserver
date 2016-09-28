@@ -8,7 +8,7 @@
     <?php } ?>
     <div class="top10">&nbsp;</div>
     <input type="hidden" style="display:none;" value="" name="elctkn">
-    <table class="table table-striped table-hover">
+    <table class="table10">
         <thead>
             <tr>
                 <th><a href="">Username</a></th>

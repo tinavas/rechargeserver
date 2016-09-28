@@ -61,7 +61,7 @@
     text-align:center
 }
 .fa-ul {
-    padDing-left:0;
+    padding-left:0;
     margin-left:2.14285714em;
     list-style-type:none
 }
@@ -79,7 +79,7 @@
     left:-1.85714286em
 }
 .fa-border {
-    padDing:.2em .25em .15em;
+    padding:.2em .25em .15em;
     border:solid .08em #eee;
     border-radius:.1em
 }
@@ -1906,7 +1906,7 @@
 }
 * {
     margin:0;
-    padDing:0;
+    padding:0;
     outline:none;
     box-sizing:border-box
 }
@@ -2183,7 +2183,7 @@ input[type=email],
 input[type=tel],
 input[type=number] {
     width:100%;
-    padDing:0 8px;
+    padding:0 8px;
     line-height:normal
 }
 input:-webkit-autofill {
@@ -2204,7 +2204,7 @@ input[type=number]::-webkit-outer-spin-button {
 textarea {
     width:100%;
     max-width:100%;
-    padDing:8px;
+    padding:8px;
     font-size:18px;
     line-height:22px;
     color:#4c4c59;
@@ -2244,7 +2244,7 @@ button,
 input[type=submit],
 .ez-button {
     line-height:50px;
-    padDing:0 10px;
+    padding:0 10px;
     text-align:center;
     font-size:22px;
     font-family:Roboto,
@@ -2392,8 +2392,8 @@ body.de .ez-button {
     color:#001a6e
 }
 .ez-padded-button {
-    padDing-left:30px;
-    padDing-right:30px
+    padding-left:30px;
+    padding-right:30px
 }
 input::-ms-clear {
     display:none
@@ -2588,7 +2588,7 @@ body.ur .ez-label-hint-icon {
     width:1px!important;
     height:1px!important;
     border:0!important;
-    padDing:0!important;
+    padding:0!important;
     display:inherit;
     margin:0
 }
@@ -2642,8 +2642,8 @@ a.ez-link-no-effect:hover {
 }
 .ez-tagline {
     background:#8a9597;
-    padDing-top:20px;
-    padDing-bottom:20px
+    padding-top:20px;
+    padding-bottom:20px
 }
 .ez-tagline h3,
 .ez-tagline h2 {
@@ -2697,7 +2697,7 @@ a.ez-link-no-effect:hover {
 }
 .ez-input-icon-wrap input,
 .ez-input-icon-wrap.ez-dplaceholder-wrap p {
-    padDing-left:40px
+    padding-left:40px
 }
 .ez-input-icon-wrap span {
     margin-top:-9px;
@@ -2720,7 +2720,7 @@ a.ez-link-no-effect:hover {
     z-index:1;
     line-height:52px;
     font-size:24px;
-    padDing-left:8px;
+    padding-left:8px;
     color:#a9a9a9
 }
 .ez-dplaceholder-wrap input {
@@ -2816,7 +2816,7 @@ a.ez-link-no-effect:hover {
 }
 .ez-select-wrap .ez-custom-select li {
     height:36px;
-    padDing:0 20px
+    padding:0 20px
 }
 .ez-select-wrap .ez-custom-select li:hover {
     background:#525f68
@@ -4726,7 +4726,7 @@ body[data-device="mobile"] .ez-custom-select-wrap select {
     transition:none
 }
 .ez-big-modal .ez-modal-content {
-    padDing:20px 24px 18px 20px
+    padding:20px 24px 18px 20px
 }
 div.simplemodal-close {
     line-height:44px
@@ -4736,7 +4736,7 @@ div.simplemodal-close {
     top:10px;
     right:4px;
     z-index:2;
-    padDing:10px;
+    padding:10px;
     line-height:normal
 }
 .simplemodal-close:hover {
@@ -4752,7 +4752,7 @@ div.simplemodal-close {
     font-weight:300;
     text-align:center;
     display:block;
-    padDing-left:1px;
+    padding-left:1px;
     border-radius:50%
 }
 .simplemodal-close em {
@@ -4792,7 +4792,7 @@ div.simplemodal-close {
 .ez-modal .ez-modal-header {
     background:#e5e5e6;
     text-align:center;
-    padDing:12px 20px;
+    padding:12px 20px;
     position:relative;
     z-index:2;
     bottom:-4px;
@@ -4803,7 +4803,7 @@ div.simplemodal-close {
     font-size:19px;
     font-weight:bold;
     color:#4c4c59;
-    padDing-right:26px
+    padding-right:26px
 }
 .ez-modal .ez-modal-header h3 .fa {
     margin:4px 10px 0 0
@@ -4818,7 +4818,7 @@ div.simplemodal-close {
 .ez-modal .ez-modal-content {
     min-height:200px;
     max-height:330px;
-    padDing:20px;
+    padding:20px;
     overflow:auto;
     font-size:16px;
     background:#fff;
@@ -4845,7 +4845,7 @@ div.simplemodal-close {
 .ez-modal .ez-modal-footer button {
     height:100%;
     min-width:50%;
-    padDing:0;
+    padding:0;
     display:table-cell;
     line-height:34px;
     font-size:16px;
@@ -4896,7 +4896,7 @@ div.simplemodal-close {
 }
 #ez-tc-modal-wrap table {
     border-bottom:1px solid #e5e5e6;
-    padDing-bottom:20px
+    padding-bottom:20px
 }
 #ez-tc-modal-wrap tr:first-child td:last-child strong {
     font-weight:normal
@@ -4958,7 +4958,7 @@ header,
 }
 header .ez-wrap,
 #div-header .ez-wrap {
-    padDing-top:0
+    padding-top:0
 }
 header #ez-logo-wrap,
 #div-header #ez-logo-wrap {
@@ -5001,7 +5001,7 @@ header nav ul,
 header nav li,
 #div-header nav li {
     display:inline-block;
-    padDing:0 12px
+    padding:0 12px
 }
 header nav a,
 #div-header nav a {
@@ -5014,8 +5014,8 @@ header nav a:hover,
 }
 header nav #ez-menu-list>li>a,
 #div-header nav #ez-menu-list>li>a {
-    padDing-left:5px;
-    padDing-right:5px
+    padding-left:5px;
+    padding-right:5px
 }
 header nav #ez-menu-list>li>a:hover,
 #div-header nav #ez-menu-list>li>a:hover {
@@ -5069,7 +5069,7 @@ header #ez-menu-main-items .ez-separator,
     width:1px;
     height:14px;
     margin-top:15px;
-    padDing:0;
+    padding:0;
     background:rgba(255,
     255,
     255,
@@ -5105,9 +5105,9 @@ header .ez-drop-down-holder,
 #div-header .ez-drop-down-holder {
     position:relative
 }
-header .ez-drop-down-holder.ez-padDing,
-#div-header .ez-drop-down-holder.ez-padDing {
-    padDing-right:29px
+header .ez-drop-down-holder.ez-padding,
+#div-header .ez-drop-down-holder.ez-padding {
+    padding-right:29px
 }
 header .ez-drop-down-holder a,
 #div-header .ez-drop-down-holder a {
@@ -5206,7 +5206,7 @@ header .ez-drop-down li,
     float:left;
     white-space:nowrap;
     border-top:1px solid #e7e7e7;
-    padDing:0
+    padding:0
 }
 header .ez-drop-down li:first-child,
 #div-header .ez-drop-down li:first-child {
@@ -5225,7 +5225,7 @@ header .ez-drop-down li:hover,
 }
 header .ez-drop-down a,
 #div-header .ez-drop-down a {
-    padDing:0 12px;
+    padding:0 12px;
     display:block
 }
 header .ez-drop-down a,
@@ -5255,7 +5255,7 @@ body.ur #div-header #ez-menu-main-items {
 body.ru header nav #ez-menu-list>li>a,
 body.de header nav #ez-menu-list>li>a,
 body.ta header nav #ez-menu-list>li>a {
-    padDing:0
+    padding:0
 }
 body.ta header nav>ul>li>a {
     font-size:17px
@@ -5270,7 +5270,7 @@ body.ta header nav>ul>li>a {
 .ez-header-notification .ez-header-notification-content,
 .ez-header-notification-red .ez-header-notification-content {
     color:#fff;
-    padDing:6px 0;
+    padding:6px 0;
     position:relative
 }
 .ez-header-notification .ez-header-notification-content p,
@@ -5303,7 +5303,7 @@ body.ta header nav>ul>li>a {
 .ez-header-notification .ez-header-notification-content .ez-hide-notification,
 .ez-header-notification-red .ez-header-notification-content .ez-hide-notification {
     font-size:24px;
-    padDing:0 12px;
+    padding:0 12px;
     color:#fff;
     margin-top:-22px;
     position:absolute;
@@ -5317,7 +5317,7 @@ nav#ez-mobile-menu {
     width:300px;
     height:100%;
     background:#0072C6;
-    padDing:30px 40px 30px 50px;
+    padding:30px 40px 30px 50px;
     position:fixed;
     top:0;
     right:-300px;
@@ -5348,7 +5348,7 @@ nav#ez-mobile-menu .ez-menu-close-btn {
 }
 nav#ez-mobile-menu ul {
     margin-top:28px;
-    padDing-bottom:28px;
+    padding-bottom:28px;
     border-bottom:1px solid #53616e
 }
 nav#ez-mobile-menu ul.ez-margin {
@@ -5387,7 +5387,7 @@ nav#ez-mobile-menu li#ez-lang-title {
 }
 nav#ez-mobile-menu .ez-submenu {
     width:250px;
-    padDing:30px 0;
+    padding:30px 0;
     height:100%;
     position:fixed;
     top:0;
@@ -5396,7 +5396,7 @@ nav#ez-mobile-menu .ez-submenu {
     overflow:auto
 }
 nav#ez-mobile-menu .ez-submenu .ez-submenu-header {
-    padDing:0 20px;
+    padding:0 20px;
     margin-bottom:30px
 }
 nav#ez-mobile-menu .ez-submenu .ez-submenu-header h3 {
@@ -5409,7 +5409,7 @@ nav#ez-mobile-menu .ez-submenu .ez-submenu-header .ez-menu-close-btn {
 }
 nav#ez-mobile-menu .ez-submenu ul {
     margin:0;
-    padDing:24px 20px;
+    padding:24px 20px;
     border:none
 }
 nav#ez-mobile-menu .ez-submenu li {
@@ -5418,7 +5418,7 @@ nav#ez-mobile-menu .ez-submenu li {
 nav#ez-mobile-menu .ez-submenu .ez-menu-back-btn {
     background:#0072C6;
     color:#8a9597;
-    padDing:12px 20px;
+    padding:12px 20px;
     cursor:pointer
 }
 nav#ez-mobile-menu .ez-submenu .ez-menu-back-btn span {
@@ -5439,7 +5439,7 @@ body.ar nav#ez-mobile-menu,
 body.ur nav#ez-mobile-menu {
     right:initial;
     left:-300px;
-    padDing:30px 52px 30px 40px
+    padding:30px 52px 30px 40px
 }
 body.ar nav#ez-mobile-menu .ez-asterisk,
 body.ur nav#ez-mobile-menu .ez-asterisk {
@@ -5515,12 +5515,12 @@ body.ur nav#ez-mobile-menu .ez-menu-back-btn .fa-angle-right {
 .ez-wrap {
     width:100%;
     margin:0 auto;
-    padDing-left:7%;
-    padDing-right:7%
+    padding-left:7%;
+    padding-right:7%
 }
 .ez-main-wrap {
-    padDing-top:40px;
-    padDing-bottom:30px;
+    padding-top:40px;
+    padding-bottom:30px;
     min-height:540px
 }
 .ez-wrap-margin-right {
@@ -5543,7 +5543,7 @@ body.ur nav#ez-mobile-menu .ez-menu-back-btn .fa-angle-right {
     color:#b1b1c6
 }
 .ez-details-wrap {
-    padDing:20px;
+    padding:20px;
     margin-bottom:30px;
     background:#fff
 }
@@ -5572,7 +5572,7 @@ body.ez-main-background .ez-details-wrap {
 }
 #ez-right-content #ez-right-content-info {
     margin-top:20px;
-    padDing:20px 20px;
+    padding:20px 20px;
     background:#fff
 }
 #ez-right-content #ez-site-map h2 {
@@ -5604,7 +5604,7 @@ body.ez-main-background .ez-details-wrap {
     min-width:initial
 }
 .ez-cmenu.ez-cmenu-table li a {
-    padDing:0
+    padding:0
 }
 .ez-cmenu li {
     min-width:150px;
@@ -5650,7 +5650,7 @@ body.ez-main-background .ez-details-wrap {
     font-size:18px;
     display:block;
     color:inherit;
-    padDing:0 6px
+    padding:0 6px
 }
 .ez-cmenu li a:hover {
     text-decoration:none
@@ -5673,7 +5673,7 @@ body.ta .ez-cmenu li a {
 }
 .auto-resizable-iframe>div {
     position:relative;
-    padDing-bottom:75%;
+    padding-bottom:75%;
     height:0
 }
 .auto-resizable-iframe iframe {
@@ -5719,7 +5719,7 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
 }
 .ez-form-hint {
     font-size:13px;
-    padDing:3px 5px 0 5px
+    padding:3px 5px 0 5px
 }
 .ez-show-password {
     font-size:22px;
@@ -5749,11 +5749,11 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
 .ez-hr-divide {
     display:table;
     text-align:center;
-    padDing:0 30px
+    padding:0 30px
 }
 .ez-hr-divide h4 {
     white-space:pre;
-    padDing:0 15px;
+    padding:0 15px;
     color:#b9c7c4
 }
 .ez-hr-divide:before,
@@ -5795,10 +5795,10 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
 }
 .ez-table th:first-child,
 .ez-table td:first-child {
-    padDing-left:16px
+    padding-left:16px
 }
 .ez-table th {
-    padDing-right:10px;
+    padding-right:10px;
     background:#001a6e;
     color:#fff;
     font-weight:normal;
@@ -5812,7 +5812,7 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
     line-height:48px
 }
 .ez-table th .ez-ellipsis-row {
-    padDing-right:6px;
+    padding-right:6px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis
@@ -5886,7 +5886,7 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
     color:#4c4c59
 }
 .ez-table .ez-table-row-compact .fa-chevron-right {
-    padDing:18px;
+    padding:18px;
     position:absolute;
     font-size:12px;
     top:6px;
@@ -5898,7 +5898,7 @@ body.ur .ez-form-checkbox .ez-checkbox-wrap {
 .ez-table .ez-table-row-compact .ez-table-bold {
     font-weight:normal;
     font-size:18px;
-    padDing-bottom:6px
+    padding-bottom:6px
 }
 body.ta .ez-table th,
 body.ru .ez-table th {
@@ -5924,8 +5924,8 @@ body.ar .ez-table th:first-child,
 body.ar .ez-table td:first-child,
 body.ur .ez-table th:first-child,
 body.ur .ez-table td:first-child {
-    padDing-left:0;
-    padDing-right:16px
+    padding-left:0;
+    padding-right:16px
 }
 body.ar .ez-table th a,
 body.ar .ez-table td a,
@@ -5949,7 +5949,7 @@ body.ur .ez-table td a:first-child {
     color:#4c4c59;
     font-weight:bold;
     background:#eeedef;
-    padDing:0 18px;
+    padding:0 18px;
     border-radius:4px
 }
 .ez-show-more a:hover {
@@ -5971,18 +5971,18 @@ body.ur .ez-table td a:first-child {
 }
 #ez-cookies-table li:nth-child(4n+1) {
     width:22%;
-    padDing-right:6px;
+    padding-right:6px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis
 }
 #ez-cookies-table li:nth-child(4n+2) {
     width:17%;
-    padDing-right:6px
+    padding-right:6px
 }
 #ez-cookies-table li:nth-child(4n+3) {
     width:16%;
-    padDing-right:6px
+    padding-right:6px
 }
 #ez-cookies-table li:nth-child(4n+4) {
     width:45%
@@ -6001,7 +6001,7 @@ body.ur .ez-table td a:first-child {
     position:relative
 }
 .ez-list li.ez-list-item p {
-    padDing:5px 0;
+    padding:5px 0;
     font-size:16px!important;
     white-space:nowrap;
     overflow:hidden;
@@ -6116,7 +6116,7 @@ body.ur .ez-table-list li.ez-last-cell {
 }
 .ez-alert-box {
     max-width:520px;
-    padDing-left:44px;
+    padding-left:44px;
     border:1px solid transparent;
     position:relative;
     display:inline-block;
@@ -6175,7 +6175,7 @@ body.ur .ez-table-list li.ez-last-cell {
     word-break:break-word;
     min-height:40px;
     background:#fff;
-    padDing:12px 20px;
+    padding:12px 20px;
     border-top-right-radius:4px;
     border-bottom-right-radius:4px
 }
@@ -6186,7 +6186,7 @@ body.ur .ez-table-list li.ez-last-cell {
     color:#001a6e
 }
 .ez-alert-box .ez-alert-box-message ul {
-    padDing:0 20px 12px 20px
+    padding:0 20px 12px 20px
 }
 .ez-alert-box .ez-alert-box-message ul li {
     list-style-type:disc
@@ -6428,7 +6428,7 @@ body.ur .ez-table-list li.ez-last-cell {
     color:#b1b1c6
 }
 .ez-airtime-wrap .ez-airtime-btn .fa-angle-down {
-    padDing:8px 9px;
+    padding:8px 9px;
     float:right;
     background:#fff;
     margin-top:-6px;
@@ -6501,7 +6501,7 @@ body.ur .ez-airtime-wrap .ez-airtime-btn.ez-airtime-full-btn .ez-flag {
 }
 #use-voucher-modal .ez-second-block .ez-note-head {
     display:table-cell;
-    padDing-right:6px;
+    padding-right:6px;
     color:#ac0000
 }
 #use-voucher-modal .ez-second-block .ez-note-text {
@@ -6556,7 +6556,7 @@ body.ur #ez-operators-wrap .ez-change-operator-btn {
     border-style:solid
 }
 #ez-denominations .ez-topup-carousel-item p {
-    padDing:3px 0 5px;
+    padding:3px 0 5px;
     line-height:16px
 }
 #ez-denominations-tax {
@@ -6565,7 +6565,7 @@ body.ur #ez-operators-wrap .ez-change-operator-btn {
 }
 #ez-order-summary {
     margin-top:30px;
-    padDing:20px;
+    padding:20px;
     background:#fff
 }
 #ez-order-summary label {
@@ -6628,7 +6628,7 @@ body.ez-paybtn-var2 .ez-original {
 }
 .ez-topup-btns {
     background:#8a9597;
-    padDing:10px 0;
+    padding:10px 0;
     text-align:center
 }
 .ez-topup-btns button,
@@ -6755,7 +6755,7 @@ body.ur .ez-topup-btns .ez-button.ez-margin-btn {
     direction:ltr
 }
 #ez-ild-add-credit input {
-    padDing-left:96px;
+    padding-left:96px;
     direction:ltr;
     font-family:Roboto,
     sans-serif
@@ -6778,7 +6778,7 @@ body.ar #ez-ild-add-credit .ez-separator {
     left:110px
 }
 body.ar #ez-ild-add-credit input {
-    padDing-left:118px
+    padding-left:118px
 }
 #ez-ild-rates-wrap .ez-ild-rates-row {
     width:100%
@@ -6804,7 +6804,7 @@ body.ar #ez-ild-add-credit input {
     background:#33c541
 }
 #ez-ild-rates-wrap ul {
-    padDing-top:7px;
+    padding-top:7px;
     float:left
 }
 #ez-ild-rates-wrap ul li {
@@ -6840,10 +6840,10 @@ body.ur #ez-ild-rates-wrap ul {
 }
 #ez-topup-section .ez-promo-details {
     width:80%;
-    padDing-left:5px
+    padding-left:5px
 }
 #ez-topup-section .ez-promotion {
-    padDing:10px 10px 3px 8px
+    padding:10px 10px 3px 8px
 }
 body.ar #ez-topup-section .ez-modal-terms-btn,
 body.ur #ez-topup-section .ez-modal-terms-btn {
@@ -6960,7 +6960,7 @@ body.ur .ez-transaction-status span {
     0)
 }
 .owl-wrapper-outer {
-    padDing-bottom:4px;
+    padding-bottom:4px;
     margin-bottom:-4px
 }
 .owl-item {
@@ -7028,7 +7028,7 @@ body.ur .ez-transaction-status span {
     display:block
 }
 .ez-topup-carousel-item span.ez-currency {
-    padDing-top:5px;
+    padding-top:5px;
     line-height:18px;
     font-size:14px;
     color:#8a9597
@@ -7038,7 +7038,7 @@ body.ur .ez-transaction-status span {
     margin-bottom:2px
 }
 .ez-topup-carousel-item p {
-    padDing:7px 0;
+    padding:7px 0;
     font-size:12px;
     font-weight:normal;
     line-height:normal;
@@ -7060,7 +7060,7 @@ body.ur .ez-topup-carousel-item {
     float:right
 }
 .ez-promotion-wrap {
-    padDing-left:45px;
+    padding-left:45px;
     background:#001a6e;
     border:1px solid #001a6e;
     clear:both;
@@ -7083,8 +7083,8 @@ body.ur .ez-topup-carousel-item {
 }
 body.ar .ez-promotion-wrap,
 body.ur .ez-promotion-wrap {
-    padDing-right:45px;
-    padDing-left:0
+    padding-right:45px;
+    padding-left:0
 }
 body.ar .ez-promotion-wrap .fa-tags,
 body.ur .ez-promotion-wrap .fa-tags {
@@ -7093,7 +7093,7 @@ body.ur .ez-promotion-wrap .fa-tags {
 }
 body.ar .ez-promotion,
 body.ur .ez-promotion {
-    padDing:10px 18px 13px;
+    padding:10px 18px 13px;
     text-align:right;
     border-radius:4px;
     border-top-right-radius:0;
@@ -7101,7 +7101,7 @@ body.ur .ez-promotion {
 }
 .ez-promotion {
     background:#fff;
-    padDing:13px 18px 10px;
+    padding:13px 18px 10px;
     text-align:left;
     border-top-right-radius:4px;
     border-bottom-right-radius:4px
@@ -7161,8 +7161,8 @@ body.ur .ez-promotion {
 }
 #ez-cms-content .ez-sitemap li a {
     line-height:normal;
-    padDing-top:9px;
-    padDing-bottom:9px;
+    padding-top:9px;
+    padding-bottom:9px;
     display:block
 }
 #ez-cms-content .ez-sitemap-operator-page li {
@@ -7171,7 +7171,7 @@ body.ur .ez-promotion {
 }
 #ez-cms-content .ez-sitemap-operator-page li a {
     display:inline-block;
-    padDing-left:5px
+    padding-left:5px
 }
 #ez-cms-content .ez-keybenefit {
     color:#33c541;
@@ -7229,7 +7229,7 @@ body.ur .ez-promotion {
 #ez-localposts-container .ez-post-content {
     width:67%;
     float:right;
-    padDing:10px 14px;
+    padding:10px 14px;
     background:#f6f6f6
 }
 #ez-localposts-container .ez-post-content h4 {
@@ -7300,10 +7300,10 @@ body.ur .ez-promotion {
     text-align:center
 }
 .ez-highlight-area h1 {
-    padDing-bottom:10px
+    padding-bottom:10px
 }
 .ez-highlight-area p {
-    padDing-bottom:12px;
+    padding-bottom:12px;
     font-size:18px;
     clear:both
 }
@@ -7353,7 +7353,7 @@ body.ur .ez-highlight-area .ez-button:first-child {
     margin-left:16px
 }
 .ez-customercare-panel {
-    padDing:20px;
+    padding:20px;
     background:#fff
 }
 .ez-customercare-panel img {
@@ -7366,7 +7366,7 @@ footer {
     position:fixed;
     bottom: 0px;
     z-index:101;
-    padDing:30px 0
+    padding:30px 0
 }
 
 footer #ez-footer-socials {
@@ -7376,7 +7376,7 @@ footer #ez-footer-socials {
 }
 footer #ez-footer-socials div {
     display:inline-block;
-    padDing:0 20px;
+    padding:0 20px;
     position:relative;
     z-index:2;
     background:#1c262b
@@ -7421,7 +7421,7 @@ footer .ez-footer-accordion {
     z-index:3
 }
 footer .ez-footer-accordion li {
-    padDing-right:10px
+    padding-right:10px
 }
 /*footer ul {
     width:16.66%;
@@ -7459,7 +7459,7 @@ footer li.ez-menu-header span {
     display:none
 }
 footer .language-container li {
-    padDing-right:0
+    padding-right:0
 }
 footer .ez-clear-footer-menu {
     display:none
@@ -7474,10 +7474,10 @@ footer #footer-terms li {
     float:left
 }
 footer #footer-terms li:first-child {
-    padDing-left:0
+    padding-left:0
 }
 footer #footer-terms .separator {
-    padDing:0 10px;
+    padding:0 10px;
     line-height:40px
 }
 footer #footer-terms a {
@@ -7591,7 +7591,7 @@ body.ur #ez-footer-security li.ez-incapsula {
     right:0;
     bottom:10px;
     z-index:1000;
-    padDing:10px 0 10px 10px;
+    padding:10px 0 10px 10px;
     border:2px solid #0072C6;
     background:rgba(0,
     26,
@@ -7615,7 +7615,7 @@ body.ur #ez-footer-security li.ez-incapsula {
     top:2px;
     right:0;
     bottom:0;
-    padDing-top:5px;
+    padding-top:5px;
     background:#0072C6
 }
 .ez-accordion {
@@ -7645,7 +7645,7 @@ body.ur #ez-footer-security li.ez-incapsula {
     -50%)
 }
 .ez-accordion .ez-accordiontitle {
-    padDing:18px 44px 18px 20px;
+    padding:18px 44px 18px 20px;
     font-size:20px;
     line-height:26px;
     position:relative;
@@ -7660,7 +7660,7 @@ body.ur #ez-footer-security li.ez-incapsula {
 .ez-accordion .ez-accordiontext {
     background:#f6f6f6;
     cursor:default;
-    padDing:20px
+    padding:20px
 }
 .ez-speeddial-bullet {
     width:30px;
@@ -7772,19 +7772,19 @@ body.ur #ez-send-topup .ez-airtime-wrap ul {
 .ez-mobile-menu {
     text-align:center;
     display:none;
-    padDing-top:10px;
+    padding-top:10px;
     background:#eeedef
 }
 .ez-mobile-menu li {
     width:120px;
     display:inline-block;
-    padDing:5px 0 4px 0;
+    padding:5px 0 4px 0;
     font-size:14px;
     margin-left:-6px;
     vertical-align:top
 }
 .ez-mobile-menu li div {
-    padDing:7px 6px;
+    padding:7px 6px;
     cursor:pointer;
     line-height:18px;
     border:1px solid #001a6e;
@@ -7846,11 +7846,11 @@ body.ur .ez-mobile-menu li div {
     float:left
 }
 #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap ul {
-    padDing-top:25px
+    padding-top:25px
 }
 #ez-ild-rates-page #ez-ild-rates-panel .ez-ild-rates-row {
     float:left;
-    padDing-top:0;
+    padding-top:0;
     margin-left:26px;
     width:auto
 }
@@ -7920,11 +7920,11 @@ body.ur .ez-mobile-menu li div {
     margin:4px 0 16px 0;
     font:300 54px/60px"Source Sans Pro",
     sans-serif;
-    padDing:0 20px
+    padding:0 20px
 }
 #ez-android-page p {
     color:#fff;
-    padDing:0 20px;
+    padding:0 20px;
     font-size:24px;
     font-weight:300;
     line-height:30px
@@ -7943,7 +7943,7 @@ body.ur .ez-mobile-menu li div {
 }
 #ez-android-page .ez-footer {
     width:100%;
-    padDing:20px 20px 12px 20px;
+    padding:20px 20px 12px 20px;
     background:#fff;
     position:fixed;
     left:0;
@@ -7988,7 +7988,7 @@ body.ur .ez-mobile-menu li div {
 }
 @media all and (max-height: 760px) {
     #ez-android-page {
-        padDing-bottom:0
+        padding-bottom:0
     }
 }
 @media all and (max-width: 400px) {
@@ -8112,7 +8112,7 @@ body.ez-mobile-app-page-redirect .loaDingProgressG {
     width:100%
 }
 .promocodeValidation div {
-    padDing:5px 15px
+    padding:5px 15px
 }
 .promocodeValidation div:nth-child(odd) {
     background-color:#eeedef
@@ -8143,7 +8143,7 @@ body.ez-mobile-app-page-redirect .loaDingProgressG {
     background-color:#fafada;
     font-size:14px;
     height:44px;
-    padDing-left:6%
+    padding-left:6%
 }
 #ez-top-notifier #ez-notifier-msgarea {
     line-height:44px
@@ -8163,17 +8163,17 @@ body.ez-mobile-app-page-redirect .loaDingProgressG {
     bottom:10px;
     right:0;
     z-index:900;
-    padDing:9px 8px 9px 16px;
+    padding:9px 8px 9px 16px;
     background:#ff3dd9;
-    -webkit-transition:padDing-right .2s ease;
-    transition:padDing-right .2s ease;
-    -moz-transition:padDing-right .2s ease;
-    -o-transition:padDing-right .2s ease;
+    -webkit-transition:padding-right .2s ease;
+    transition:padding-right .2s ease;
+    -moz-transition:padding-right .2s ease;
+    -o-transition:padding-right .2s ease;
     border-top-left-radius:50px;
     border-bottom-left-radius:50px
 }
 #ez-live-chat:hover {
-    padDing-right:24px
+    padding-right:24px
 }
 #ez-live-chat .fa-comments {
     font-size:32px;
@@ -8250,7 +8250,7 @@ body.ez-mobile-app-page-redirect .loaDingProgressG {
     display:block;
     color:#4c4c59;
     background:#fff;
-    padDing:1px 10px;
+    padding:1px 10px;
     border:none;
     border-bottom:1px solid #c2c2c2
 }
@@ -8304,7 +8304,7 @@ body.ur .ez-invite-social p {
     font-size:15px
 }
 .ez-light-modal .ez-modal-footer {
-    padDing:6px 0 20px 0;
+    padding:6px 0 20px 0;
     background:#fff
 }
 .ez-light-modal h3 {
@@ -8357,16 +8357,16 @@ body.ur .ez-invite-social p {
     color:#4c4c59;
     margin-bottom:40px;
     text-align:center;
-    padDing:0 30px
+    padding:0 30px
 }
 #ez-home .ez-button {
     margin-top:20px
 }
 #ez-home .ez-wrap {
-    padDing:40px 0 50px 0
+    padding:40px 0 50px 0
 }
-#ez-home .ez-wrap.ez-arrow-padDing {
-    padDing-bottom:70px
+#ez-home .ez-wrap.ez-arrow-padding {
+    padding-bottom:70px
 }
 #ez-home #ez-send-topup-wrap {
     width:100%;
@@ -8378,12 +8378,12 @@ body.ur .ez-invite-social p {
     width:100%;
     height:580px;
     text-align:center;
-    padDing-top:40px;
+    padding-top:40px;
     display:table-cell;
     vertical-align:middle
 }
 #ez-home #ez-send-topup.ez-wrap {
-    padDing:0 30px
+    padding:0 30px
 }
 #ez-home #ez-send-topup h1,
 #ez-home #ez-send-topup p {
@@ -8395,7 +8395,7 @@ body.ur .ez-invite-social p {
     margin-bottom:0
 }
 #ez-home #ez-send-topup p {
-    padDing-top:14px;
+    padding-top:14px;
     font-size:24px;
     line-height:30px;
     font-weight:300
@@ -8527,7 +8527,7 @@ body.fr #ez-home #ez-send-topup .ez-topup-btn {
 #ez-home-product-panel {
     position:relative;
     background:#eeedef;
-    padDing-bottom:70px
+    padding-bottom:70px
 }
 #ez-home-product-panel .ez-arrow.ez-767-hide {
     width:100%!important;
@@ -8584,7 +8584,7 @@ body.fr #ez-home #ez-send-topup .ez-topup-btn {
 #ez-home-product-panel .ez-home-product {
     width:38%;
     min-height:200px;
-    padDing:40px 20px;
+    padding:40px 20px;
     margin-right:8%;
     background:#fff;
     border:1px solid #e7e7e7;
@@ -8812,7 +8812,7 @@ body.ur #ez-home-trust-panel li p {
     position:absolute;
     top:50%;
     z-index:3;
-    padDing:0 30px;
+    padding:0 30px;
     -webkit-transform:translateY(-50%);
     -ms-transform:translateY(-50%);
     transform:translateY(-50%)
@@ -8834,7 +8834,7 @@ body.ur #ez-home-trust-panel li p {
 #ez-home-support-wrap li h4,
 #ez-home-support-wrap li span {
     color:#fff;
-    padDing-bottom:10px;
+    padding-bottom:10px;
     font-weight:300;
     font-size:44px;
     line-height:50px
@@ -9099,7 +9099,7 @@ body.es #ez-home-product-panel h3 {
         line-height:64px
     }
     #ez-home #ez-send-topup .ez-airtime-wrap {
-        padDing:0 20px
+        padding:0 20px
     }
     #ez-home #ez-send-topup .ez-topup-btn {
         font-size:20px
@@ -9127,7 +9127,7 @@ body.es #ez-home-product-panel h3 {
         float:none!important;
         display:block;
         border:none;
-        padDing:35px 10px;
+        padding:35px 10px;
         border-top:1px solid #ddd
     }
     #ez-home-product-panel .ez-button {
@@ -9169,7 +9169,7 @@ body.es #ez-home-product-panel h3 {
         color:#4c4c59;
         font-size:34px;
         line-height:34px;
-        padDing-bottom:0
+        padding-bottom:0
     }
     #ez-home-support-wrap li span {
         color:#4c4c59;
@@ -9180,7 +9180,7 @@ body.es #ez-home-product-panel h3 {
     body.ru #ez-home-support-wrap li h4 {
         font-size:28px;
         line-height:34px;
-        padDing-bottom:4px
+        padding-bottom:4px
     }
     body.ta #ez-home-support-wrap li span,
     body.ru #ez-home-support-wrap li span {
@@ -9193,7 +9193,7 @@ body.es #ez-home-product-panel h3 {
 }
 @media all and (max-width: 660px) {
     #ez-home #ez-send-topup .ez-airtime-wrap {
-        padDing:0
+        padding:0
     }
     #ez-main-img-wrap .ez-main-img {
         background-size:183%
@@ -9202,7 +9202,7 @@ body.es #ez-home-product-panel h3 {
         text-align:center
     }
     #ez-home-trust-panel ul {
-        padDing:0 20px
+        padding:0 20px
     }
     #ez-home-trust-panel li {
         width:100%;
@@ -9297,7 +9297,7 @@ body.es #ez-home-product-panel h3 {
         font-size:19px
     }
     #ez-home-support-wrap ul {
-        padDing-top:30px
+        padding-top:30px
     }
     #ez-home-support-wrap li h4 {
         font-size:26px;
@@ -9317,7 +9317,7 @@ body.es #ez-home-product-panel h3 {
         font-size:18px
     }
     body.ta #ez-home-support-wrap ul {
-        padDing-top:50px
+        padding-top:50px
     }
 }
 @media all and (max-width: 480px) {
@@ -9376,7 +9376,7 @@ body.es #ez-home-product-panel h3 {
         position:relative
     }
     #ez-home #ez-send-topup.ez-wrap {
-        padDing:0
+        padding:0
     }
     #ez-home #ez-send-topup h1 {
         position:absolute;
@@ -9421,7 +9421,7 @@ body.de .ez-account-page .ez-button {
     width:100%;
     float:right;
     margin-top:10px;
-    padDing-bottom:10px
+    padding-bottom:10px
 }
 #ez-overview-bottom li {
     width:49%;
@@ -9449,7 +9449,7 @@ body.de .ez-account-page .ez-button {
     color:#fff
 }
 #ez-overview-bottom li h3 {
-    padDing-top:4px;
+    padding-top:4px;
     font-weight:800;
     font-size:30px
 }
@@ -9481,13 +9481,13 @@ body.de .ez-account-page .ez-button {
     fill:#001a6e
 }
 #ez-overview-mobile-menu li div {
-    padDing-left:10px;
-    padDing-right:10px
+    padding-left:10px;
+    padding-right:10px
 }
 #ez-account-menu li a {
     line-height:20px;
-    padDing-top:5px;
-    padDing-bottom:5px
+    padding-top:5px;
+    padding-bottom:5px
 }
 #ez-account-menu span.fa-circle {
     color:#ff3dd9;
@@ -9676,7 +9676,7 @@ body.ur #ez-my-profile #FacebookLogin {
     margin-left:2%;
     background:#eeedef;
     float:left;
-    padDing:26px 24px;
+    padding:26px 24px;
     position:relative;
     border-bottom-left-radius:4px;
     border-bottom-right-radius:4px
@@ -9715,7 +9715,7 @@ body.ur #ez-my-profile #FacebookLogin {
 }
 .ez-account-tab-details {
     width:100%;
-    padDing-top:8px;
+    padding-top:8px;
     clear:both
 }
 .ez-account-tab-details li {
@@ -9736,7 +9736,7 @@ body.ur #ez-my-profile #FacebookLogin {
 .ez-account-tab-details li .ez-button {
     width:100%;
     min-width:100%!important;
-    padDing:0;
+    padding:0;
     line-height:44px
 }
 .ez-account-tab-details li.ez-full-width {
@@ -9753,7 +9753,7 @@ body.ur #ez-my-profile #FacebookLogin {
 .ez-account-tab-details li.ez-two-lines,
 .ez-account-tab-details li.ez-one-line {
     width:50%;
-    padDing-right:6px;
+    padding-right:6px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis
@@ -9771,14 +9771,14 @@ body.ur #ez-my-profile #FacebookLogin {
 }
 .ez-account-tab-details li.ez-contact-name {
     width:38%;
-    padDing-right:6px;
+    padding-right:6px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis
 }
 .ez-account-tab-details li.ez-amount {
     width:34%;
-    padDing-left:6px;
+    padding-left:6px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis
@@ -9852,7 +9852,7 @@ body.ur #ez-my-profile #FacebookLogin {
     position:relative;
     overflow:hidden;
     display:block!important;
-    padDing:0!important;
+    padding:0!important;
     border-radius:50%
 }
 #ez-my-profile #ez-account-tabs .ez-my-profile-img span {
@@ -9907,7 +9907,7 @@ body.ur #ez-my-profile #FacebookLogin {
     font-size:30px
 }
 #existing-user-modal p {
-    padDing-bottom:40px;
+    padding-bottom:40px;
     font-size:18px
 }
 #existing-user-modal p span.ez-highlight {
@@ -9940,7 +9940,7 @@ body.ur #ez-my-profile #FacebookLogin {
     background:#fff;
     text-align:center;
     margin-bottom:6px;
-    padDing:6px 0
+    padding:6px 0
 }
 #ez-register-rules {
     font-size:13px;
@@ -9990,7 +9990,7 @@ body.ur #ez-my-profile #FacebookLogin {
     255,
     .94)!important;
     box-shadow:2px 2px 2px #000;
-    padDing:20px!important
+    padding:20px!important
 }
 .blur-filter {
     filter:blur(3px);
@@ -10024,7 +10024,7 @@ body.ur #ez-my-profile #FacebookLogin {
     margin-top:10px
 }
 #invalid-referral-modal .ez-modal .ez-modal-content {
-    padDing-bottom:40px
+    padding-bottom:40px
 }
 #invalid-referral-modal .ez-modal .ez-modal-content h2 {
     text-transform:none;
@@ -10040,18 +10040,18 @@ body.ur #ez-my-profile #FacebookLogin {
     margin-right:10px
 }
 #invalid-referral-modal .ez-modal .ez-modal-footer {
-    padDing-top:20px;
+    padding-top:20px;
     height:62px;
-    padDing-bottom:20px;
-    padDing-left:30px;
-    padDing-right:30px;
+    padding-bottom:20px;
+    padding-left:30px;
+    padding-right:30px;
     background-color:#eeedef
 }
 #invalid-referral-modal .ez-modal .ez-modal-footer button {
     width:100%;
     background-color:#33c541;
     font-size:28px;
-    padDing:6px;
+    padding:6px;
     border-radius:4px
 }
 #ez-raf-title {
@@ -10105,7 +10105,7 @@ body.ur #ez-my-profile #FacebookLogin {
     margin:15px 0 -30px
 }
 #registerRAF .ez-registration-footer .ez-trusted {
-    padDing:20px 13%;
+    padding:20px 13%;
     background-color:#8a9597;
     color:#fff;
     font-size:28px;
@@ -10114,7 +10114,7 @@ body.ur #ez-my-profile #FacebookLogin {
     margin:0 -13%
 }
 #registerRAF .ez-registration-footer .ez-programme {
-    padDing:30px 13% 30px 13%;
+    padding:30px 13% 30px 13%;
     margin:0 -13%;
     position:relative;
     background:#f6f6f6
@@ -10195,7 +10195,7 @@ body.ur #ez-my-profile #FacebookLogin {
 }
 #registerRAF .ez-registration-footer .ez-whyDing .ez-Ding-commercial .ez-content {
     margin-top:25px;
-    padDing:0 10px
+    padding:0 10px
 }
 #registerRAF .ez-registration-footer .ez-whyDing .ez-Ding-commercial .ez-content .ez-commercial-box {
     float:left;
@@ -10252,7 +10252,7 @@ body.ur #ez-my-profile #FacebookLogin {
 #registerRAF .ez-payment-types {
     width:130%;
     margin:60px 0 0 -15%;
-    padDing:40px 0 30px 0;
+    padding:40px 0 30px 0;
     text-align:center;
     background-color:#8a9597
 }
@@ -10346,11 +10346,11 @@ body.ur #ez-my-profile #FacebookLogin {
 #activationRAF .ez-tagline {
     text-align:left;
     margin:100px -13% 0 -13%;
-    padDing:20px 13%
+    padding:20px 13%
 }
 body.ez-promotions-page .ez-main-wrap {
-    padDing-left:0;
-    padDing-right:0
+    padding-left:0;
+    padding-right:0
 }
 #ez-promo-countries-wrap {
     min-height:210px
@@ -10419,7 +10419,7 @@ body.ez-promotions-page .ez-main-wrap {
     display:inline-block
 }
 #ez-promos .owl-item {
-    padDing:0 50px 0 10px;
+    padding:0 50px 0 10px;
     margin-left:-40px
 }
 #ez-promos .owl-item:first-child,
@@ -10463,7 +10463,7 @@ body.ez-promotions-page .ez-main-wrap {
     height:140px;
     background:#ff3dd9;
     position:relative;
-    padDing:0 10px;
+    padding:0 10px;
     float:left;
     display:table
 }
@@ -10503,7 +10503,7 @@ body.ez-promotions-page .ez-main-wrap {
     width:70.4%;
     height:140px;
     float:right;
-    padDing:14px 0;
+    padding:14px 0;
     background:#eeedef
 }
 #ez-support-trust-panel ul {
@@ -10513,11 +10513,11 @@ body.ez-promotions-page .ez-main-wrap {
     margin-top:20px
 }
 #ez-support-content p {
-    padDing-right:40%
+    padding-right:40%
 }
 #ez-support-content .ez-accordion {
     background:#b9c7c4;
-    padDing:26px 20px 20px 20px;
+    padding:26px 20px 20px 20px;
     position:relative
 }
 #ez-support-content .ez-accordion h2 {
@@ -10526,12 +10526,12 @@ body.ez-promotions-page .ez-main-wrap {
     margin-bottom:22px
 }
 #ez-support-content .ez-accordion .ez-accordiontext {
-    padDing-right:40%
+    padding-right:40%
 }
 #ez-country-content-wrap {
     background:#f6f6f6;
-    padDing-top:10px;
-    padDing-bottom:10px
+    padding-top:10px;
+    padding-bottom:10px
 }
 #ez-country-content-wrap .ez-topup-btn {
     width:100%
@@ -10539,7 +10539,7 @@ body.ez-promotions-page .ez-main-wrap {
 .ez-lanDing-two #ez-country-content-wrap,
 .ez-lanDing-three #ez-country-content-wrap {
     margin-bottom:0;
-    padDing-top:0;
+    padding-top:0;
     margin-top:-10px;
     background:#fff
 }
@@ -10564,7 +10564,7 @@ body.ez-promotions-page .ez-main-wrap {
 .ez-lanDing-two .ez-lanDing-bottom,
 .ez-lanDing-three .ez-lanDing-bottom {
     margin-bottom:-30px;
-    padDing-bottom:30px;
+    padding-bottom:30px;
     background:#f6f6f6
 }
 .ez-lanDing-two .ez-lanDing-bottom .ez-asterisk.ez-svg path,
@@ -10581,8 +10581,8 @@ body.ez-promotions-page .ez-main-wrap {
     left:0
 }
 .ez-lanDing-three #ez-country-content-wrap {
-    padDing-top:30px;
-    padDing-bottom:10px
+    padding-top:30px;
+    padding-bottom:10px
 }
 .ez-country-content {
     width:48%;
@@ -10630,13 +10630,13 @@ body.ez-promotions-page .ez-main-wrap {
     float:left
 }
 #ez-lanDing-trust-panel {
-    padDing-top:40px;
-    padDing-bottom:40px;
+    padding-top:40px;
+    padding-bottom:40px;
     background:#fff
 }
 #ez-lanDing-trust-panel h2 {
     text-align:center;
-    padDing:0 15px;
+    padding:0 15px;
     margin-bottom:50px
 }
 #ez-lanDing-prmotion {
@@ -10655,7 +10655,7 @@ body.ez-promotions-page .ez-main-wrap {
     color:#fff;
     font-size:28px;
     margin-bottom:0!important;
-    padDing:20px 25px
+    padding:20px 25px
 }
 #ez-lanDing-prmotion .ez-svg {
     width:350px;
@@ -10674,7 +10674,7 @@ body.ez-promotions-page .ez-main-wrap {
 }
 .ez-wrap-subscription {
     background-color:#f6f6f6;
-    padDing-top:20px
+    padding-top:20px
 }
 #ez-subscribe-newsletter {
     width:100%;
@@ -10795,12 +10795,12 @@ body.ez-promotions-page .ez-main-wrap {
     position:relative;
     z-index:1;
     margin-top:-24px;
-    padDing-bottom:30px
+    padding-bottom:30px
 }
 #ez-migpage-middle>div:first-child {
     background:#f6f6f6;
-    padDing-top:30px;
-    padDing-bottom:50px
+    padding-top:30px;
+    padding-bottom:50px
 }
 #ez-migpage-middle>div:first-child p {
     margin:8px 0 24px 0;
@@ -10823,7 +10823,7 @@ body.ez-promotions-page .ez-main-wrap {
     font-size:28px
 }
 #ez-migpage-bottom {
-    padDing:30px 0;
+    padding:30px 0;
     margin-bottom:-30px;
     background:#001a6e
 }
@@ -10950,7 +10950,7 @@ body.ez-promotions-page .ez-main-wrap {
     color:#fff;
     font-size:100px;
     line-height:86px;
-    padDing-top:150px
+    padding-top:150px
 }
 #ez-careers-banner p {
     color:#fff;
@@ -10991,7 +10991,7 @@ body.ez-promotions-page .ez-main-wrap {
 #ez-careers-wrap .ez-careers-wrap {
     width:1070px;
     margin:0 auto;
-    padDing:44px 0
+    padding:44px 0
 }
 #ez-careers-wrap .ez-margin-bottom {
     margin-bottom:44px
@@ -11001,7 +11001,7 @@ body.ez-promotions-page .ez-main-wrap {
     font:bold 30px BrauerNeuePro,
     sans-serif;
     color:#fff;
-    padDing:0 30px;
+    padding:0 30px;
     opacity:1;
     border-radius:40px;
     -webkit-transition:opacity .6s ease;
@@ -11025,7 +11025,7 @@ body.ez-promotions-page .ez-main-wrap {
 }
 #ez-careers-wrap .ez-careers-box {
     background:#fff;
-    padDing:26px;
+    padding:26px;
     border:1px solid #e7e3e7;
     margin-bottom:20px;
     box-shadow:0,
@@ -11062,7 +11062,7 @@ body.ez-promotions-page .ez-main-wrap {
     float:left
 }
 #ez-careers-wrap .ez-careers-quote p {
-    padDing-left:45px;
+    padding-left:45px;
     margin-left:180px;
     font-size:24px;
     line-height:28px
@@ -11159,7 +11159,7 @@ body.ez-promotions-page .ez-main-wrap {
     height:290px;
     background:#fff;
     display:inline-block;
-    padDing-top:15px;
+    padding-top:15px;
     margin-left:15px;
     position:relative;
     box-shadow:0,
@@ -11268,7 +11268,7 @@ body.ez-promotions-page .ez-main-wrap {
     font-size:60px;
     opacity:.6;
     margin-top:0;
-    padDing:0 30px;
+    padding:0 30px;
     background:transparent;
     -webkit-transition:opacity .6s ease;
     transition:opacity .6s ease;
@@ -11291,8 +11291,8 @@ body.ez-promotions-page .ez-main-wrap {
     height:100px;
     color:#fff;
     border:2px solid #fff;
-    padDing-left:12px;
-    padDing-top:18px;
+    padding-left:12px;
+    padding-top:18px;
     border-radius:50%
 }
 #ez-careers-poster p {
@@ -11302,7 +11302,7 @@ body.ez-promotions-page .ez-main-wrap {
     line-height:48px;
     position:absolute;
     bottom:40px;
-    padDing:0 10px
+    padding:0 10px
 }
 #ez-careers-poster div {
     width:820px;
@@ -11429,8 +11429,8 @@ body.ez-promotions-page .ez-main-wrap {
     top:128px!important
 }
 .ez-careers-job {
-    padDing-top:20px!important;
-    padDing-bottom:20px!important
+    padding-top:20px!important;
+    padding-bottom:20px!important
 }
 .ez-careers-job p {
     float:right;
@@ -11491,8 +11491,8 @@ form#resellersForm span.ez-nocountry-placeholder-default {
 #ez-payment-response-page #left-side .ez-terms-panel-mobile {
     display:none;
     font-size:14px;
-    padDing-left:20px;
-    padDing-right:20px
+    padding-left:20px;
+    padding-right:20px
 }
 #ez-payment-response-page #left-side .ez-summary-type {
     display:block;
@@ -11542,8 +11542,8 @@ form#resellersForm span.ez-nocountry-placeholder-default {
 }
 .ez-post-preview-component #ez-account-menu li {}.ez-post-preview-component #ez-account-menu li a {
     line-height:45px;
-    padDing-top:5px;
-    padDing-bottom:5px
+    padding-top:5px;
+    padding-bottom:5px
 }
 .ez-post-preview-component .ez-post-tiled {
     background-color:#fff;
@@ -11570,7 +11570,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
 }
 .ez-post-preview-component h4.ez-post-title {
     text-align:center;
-    padDing:20px
+    padding:20px
 }
 .ez-post-preview-component h4.ez-post-title a,
 .ez-post-preview-component h4.ez-post-title a:hover {
@@ -11588,7 +11588,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     width:100%
 }
 .ez-post-preview-component .ez-post-content {
-    padDing:20px 20px 0 20px;
+    padding:20px 20px 0 20px;
     font-size:16px
 }
 .ez-post-preview-component .ez-post-content a.ez-button {
@@ -11729,7 +11729,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
 .ez-post-preview-component .ez-localblog-tilescontainer {
     background-color:#eeedef;
     margin-top:-30px;
-    padDing:20px 0 0 20px
+    padding:20px 0 0 20px
 }
 @media(max-width:500px){.ez-post-preview-component .ez-content-wrap {
     margin-top:-20px
@@ -11742,7 +11742,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     font-size:26px
 }
 .ez-post-preview-component .ez-localblog-tilescontainer {
-    padDing:0;
+    padding:0;
     margin-top:-20px
 }
 .ez-post-preview-component .ez-post-tiled {
@@ -11752,7 +11752,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     border-bottom:1px solid #ddd
 }
 .ez-post-preview-component .ez-post-foreground {
-    padDing-top:5px
+    padding-top:5px
 }
 .ez-post-preview-component .ez-post-coveringlink {
     display:block;
@@ -11761,7 +11761,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     height:114px
 }
 .ez-post-preview-component h4.ez-post-title {
-    padDing:0
+    padding:0
 }
 .ez-post-preview-component h4.ez-post-title a,
 .ez-post-preview-component h4.ez-post-title a:hover {
@@ -11825,7 +11825,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     font-size:26px
 }
 .ez-localposts-list .ez-localblog-tilescontainer {
-    padDing:0;
+    padding:0;
     margin-top:-20px
 }
 .ez-localposts-list .ez-post-tiled {
@@ -11836,7 +11836,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     border-bottom:1px solid #ddd
 }
 .ez-localposts-list .ez-post-foreground {
-    padDing-top:5px
+    padding-top:5px
 }
 .ez-localposts-list .ez-post-coveringlink {
     display:block;
@@ -11851,7 +11851,7 @@ form#resellersForm span.ez-nocountry-placeholder-default {
     width:54%;
     font-weight:normal;
     margin-right:13px;
-    padDing:0;
+    padding:0;
     text-align:left
 }
 .ez-localposts-list h4.ez-post-title a,
@@ -11920,13 +11920,13 @@ form#resellersForm span.ez-nocountry-placeholder-default {
 }
 .template_right_column .ez-right-zone {
     float:right;
-    padDing-top:25px;
+    padding-top:25px;
     display:table-cell;
     width:250px;
     margin-left:20px
 }
 .template_right_column .ez-content-wrap {
-    padDing-top:0
+    padding-top:0
 }
 @media(max-width:1010px){.template_right_column .ez-right-zone {
     display:none
@@ -12009,7 +12009,7 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
     display:none
 }
 #ez-vouchers-page .ez-invite-social {
-    padDing:20px;
+    padding:20px;
     background:#eeedef
 }
 #ez-vouchers-page .ez-vouchers-filter-band {
@@ -12020,7 +12020,7 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
     float:left
 }
 #ez-vouchers-page .ez-vouchers-filter-band .ez-mobile-menu {
-    padDing:0;
+    padding:0;
     display:inline-block;
     float:right;
     background:#fff
@@ -12030,8 +12030,8 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
     min-width:150px
 }
 #ez-vouchers-page .ez-vouchers-filter-band .ez-mobile-menu li div {
-    padDing-left:10px;
-    padDing-right:10px
+    padding-left:10px;
+    padding-right:10px
 }
 #ez-vouchers-page .ez-vouchers-filter-band .ez-button {
     position:absolute;
@@ -12053,7 +12053,7 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
 }
 #ez-vouchers-page .ez-vouchers-items .ez-table td,
 #ez-vouchers-page .ez-vouchers-expired .ez-table td {
-    padDing:0 8px
+    padding:0 8px
 }
 #ez-vouchers-page .ez-vouchers-items .ez-table .ez-table-voucher .ez-mobile,
 #ez-vouchers-page .ez-vouchers-expired .ez-table .ez-table-voucher .ez-mobile {
@@ -12121,7 +12121,7 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
 }
 #ez-vouchers-page .ez-vouchers-items .ez-table .ez-table-selector,
 #ez-vouchers-page .ez-vouchers-expired .ez-table .ez-table-selector {
-    padDing-left:0;
+    padding-left:0;
     text-align:center;
     font-size:24px
 }
@@ -12209,8 +12209,8 @@ span.ez-bonus-redeemed-checkout span.ez-highlight {
 }
 #ez-payments-wrap .ez-saved-card p {
     text-align:left;
-    padDing-left:6px;
-    padDing-right:6px
+    padding-left:6px;
+    padding-right:6px
 }
 #ez-payments-wrap .ez-saved-card p span {
     float:right
@@ -12337,7 +12337,7 @@ body.ur #ez-last-used p {
     width:120px;
     height:56px;
     text-align:center;
-    padDing-top:11px;
+    padding-top:11px;
     border:1px solid #c2c2c2;
     float:left;
     margin-right:10px;
@@ -12376,7 +12376,7 @@ body.ur #ez-last-used p {
 }
 #ez-amex-modal {
     background:#fff;
-    padDing-bottom:10px;
+    padding-bottom:10px;
     margin-bottom:40px;
     overflow:hidden;
     border-radius:4px
@@ -12386,7 +12386,7 @@ body.ur #ez-last-used p {
 }
 #modalInnerHeader {
     background:#eeedef;
-    padDing:14px 20px;
+    padding:14px 20px;
     margin-bottom:20px
 }
 #modalInnerHeader .DingLogo {
@@ -12403,7 +12403,7 @@ body.ur #ez-last-used p {
 }
 #closeDialogLink {
     float:right;
-    padDing:10px;
+    padding:10px;
     margin:-11px -20px 0 0;
     line-height:normal
 }
@@ -12429,7 +12429,7 @@ body.ur #ez-last-used p {
     display:none
 }
 #container {
-    padDing-top:10px
+    padding-top:10px
 }
 #container li>.imgB {
     display:none
@@ -12447,7 +12447,7 @@ body.ur #ez-last-used p {
     margin-bottom:5px;
     margin-right:10px;
     margin-left:10px;
-    padDing:6px
+    padding:6px
 }
 .basetable {
     width:100%
@@ -12535,7 +12535,7 @@ body.ur #ez-last-used p {
 }
 #cardExpiryInput-error {
     width:50%;
-    padDing-right:8px;
+    padding-right:8px;
     position:absolute;
     top:50px
 }
@@ -12587,7 +12587,7 @@ body.ar #cardExpiryInput-error {
     display:block
 }
 #ez-payment-response-page #ez-guest-message {
-    padDing:10px 0
+    padding:10px 0
 }
 #ez-payment-response-page #ez-guest-message div {
     color:#000
@@ -12609,7 +12609,7 @@ body.ur .basetable .fieldDiv {
     text-align:right
 }
 #ez-inapp-page {
-    padDing:0 20px 10px 20px
+    padding:0 20px 10px 20px
 }
 #ez-inapp-page * {
     color:#4d626c
@@ -12661,7 +12661,7 @@ body.ur .basetable .fieldDiv {
     color:#00b259
 }
 #ez-inapp-page .ez-accordiontitle {
-    padDing:16px 30px 16px 0;
+    padding:16px 30px 16px 0;
     font-size:14px;
     line-height:16px;
     font-weight:bold
@@ -12670,17 +12670,17 @@ body.ur .basetable .fieldDiv {
     color:#00b259!important
 }
 #ez-inapp-page .ez-accordiontext {
-    padDing:4px 30px 20px 0;
+    padding:4px 30px 20px 0;
     background-color:transparent
 }
 @media all and (min-width: 1601px) {
     .ez-wrap {
-        padDing-left:10%;
-        padDing-right:10%
+        padding-left:10%;
+        padding-right:10%
     }
     #ez-promo-countries-wrap {
-        padDing-left:10%;
-        padDing-right:10%
+        padding-left:10%;
+        padding-right:10%
     }
     .ez-wrap-margin-right {
         margin-right:16%
@@ -12703,7 +12703,7 @@ body.ur .basetable .fieldDiv {
     #ez-ild-rates-page #ez-ild-rates-panel .ez-ild-rates-row {
         margin-left:25px;
         width:auto;
-        padDing-top:27px
+        padding-top:27px
     }
     #ez-ild-rates-page #ez-ild-rates-panel .ez-rates-icon {
         width:80px;
@@ -12791,8 +12791,8 @@ body.ur .basetable .fieldDiv {
         width:100%
     }
     .ez-wrap {
-        padDing-left:6%;
-        padDing-right:6%
+        padding-left:6%;
+        padding-right:6%
     }
     .ez-wrap-margin-right {
         margin-right:6%
@@ -12807,7 +12807,7 @@ body.ur .basetable .fieldDiv {
         font-size:16px
     }
     header nav #ez-menu-list>li {
-        padDing:0 7px
+        padding:0 7px
     }
     body.ta header nav>ul>li>a {
         font-size:15px
@@ -12830,7 +12830,7 @@ body.ur .basetable .fieldDiv {
     footer .ez-footer-accordion ul {
         display:block;
         float:left;
-        padDing:0 0 40px 0;
+        padding:0 0 40px 0;
         width:28%;
         margin-left:4%
     }
@@ -12894,10 +12894,10 @@ body.ur .basetable .fieldDiv {
         width:66.4%
     }
     #ez-support-content p {
-        padDing-right:20%
+        padding-right:20%
     }
     #ez-support-content .ez-accordion .ez-accordiontext {
-        padDing-right:20%
+        padding-right:20%
     }
     #ez-lanDing-trust-panel,
     #ez-lanDing-prmotion,
@@ -12953,14 +12953,14 @@ body.ur .basetable .fieldDiv {
         text-align:center
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap ul {
-        padDing-top:8px;
+        padding-top:8px;
         margin-left:10px
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap .ez-ild-rates-row {
         float:none;
         display:inline-block;
         margin-left:0;
-        padDing-top:0
+        padding-top:0
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap .ez-rates-fixed {
         margin-right:0
@@ -13001,7 +13001,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-careers-wrap .ez-careers-wrap {
         width:100%;
-        padDing:44px 26px
+        padding:44px 26px
     }
     #ez-careers-wrap p {
         font-size:17px
@@ -13031,7 +13031,7 @@ body.ur .basetable .fieldDiv {
     .ez-two-in-one h3 {
         font-size:20px!important;
         font-weight:bold;
-        padDing-top:0!important;
+        padding-top:0!important;
         margin-bottom:5px!important
     }
 }
@@ -13055,7 +13055,7 @@ body.ur .basetable .fieldDiv {
         font-size:13px
     }
     header nav #ez-menu-list>li {
-        padDing:0 6px
+        padding:0 6px
     }
     header .ez-drop-down-holder #ez-account-menu {
         max-width:130px
@@ -13072,7 +13072,7 @@ body.ur .basetable .fieldDiv {
         font-size:13px
     }
     body.ta header nav li {
-        padDing:0 10px
+        padding:0 10px
     }
     #ez-send-topup .ez-asterisk.ez-svg {
         width:700px;
@@ -13223,8 +13223,8 @@ body.ur .basetable .fieldDiv {
 }
 @media all and (max-width: 860px) {
     .ez-wrap {
-        padDing-left:4%;
-        padDing-right:4%
+        padding-left:4%;
+        padding-right:4%
     }
     .ez-wrap-margin-right {
         margin-right:4%
@@ -13233,11 +13233,11 @@ body.ur .basetable .fieldDiv {
         margin-left:4%
     }
     header nav #ez-menu-list>li {
-        padDing:0 3px
+        padding:0 3px
     }
     header nav #ez-menu-list>li>a {
-        padDing-left:2px;
-        padDing-right:2px
+        padding-left:2px;
+        padding-right:2px
     }
     #ez-left-content,
     #ez-right-content {
@@ -13245,14 +13245,14 @@ body.ur .basetable .fieldDiv {
         float:none
     }
     #ez-snippet-footersecuritylogos {
-        padDing-top:24px
+        padding-top:24px
     }
     footer {
-        padDing-bottom:12px
+        padding-bottom:12px
     }
     footer #ez-footer-cards {
         width:100%;
-        padDing:0 30px 20px 30px;
+        padding:0 30px 20px 30px;
         text-align:center;
         float:none
     }
@@ -13262,11 +13262,11 @@ body.ur .basetable .fieldDiv {
         float:none
     }
     footer #ez-footer-security li.ez-trusted {
-        padDing-top:4px
+        padding-top:4px
     }
     footer #footer-terms {
         width:100%;
-        padDing-bottom:0;
+        padding-bottom:0;
         text-align:center;
         margin-top:9px
     }
@@ -13321,10 +13321,10 @@ body.ur .basetable .fieldDiv {
         margin-right:4px
     }
     #ez-support-content p {
-        padDing-right:0
+        padding-right:0
     }
     #ez-support-content .ez-accordion .ez-accordiontext {
-        padDing-right:20px;
+        padding-right:20px;
         text-align:left
     }
     .ez-vouchers-items .ez-vouchers-promotion,
@@ -13431,13 +13431,13 @@ body.ur .basetable .fieldDiv {
         border-bottom:4px solid #33c541
     }
     #ez-lanDing-trust-panel {
-        padDing-top:20px
+        padding-top:20px
     }
     #ez-lanDing-prmotion h2 {
         margin:30px
     }
     #ez-lanDing-prmotion p {
-        padDing-left:30px
+        padding-left:30px
     }
     #ez-suggested-articles,
     #ez-side-text {
@@ -13546,7 +13546,7 @@ body.ur .basetable .fieldDiv {
         font-size:20px
     }
     .ez-main-wrap {
-        padDing-top:20px
+        padding-top:20px
     }
     .ez-767-show {
         display:block!important
@@ -13563,7 +13563,7 @@ body.ur .basetable .fieldDiv {
         float:none
     }
     #ez-right-content {
-        padDing-bottom:20px
+        padding-bottom:20px
     }
     #ez-right-content #ez-asterisks-rain {
         display:none
@@ -13618,11 +13618,11 @@ body.ur .basetable .fieldDiv {
     header nav>ul>li>a {
         font-size:16px!important
     }
-    header nav .ez-nopadDing {
-        padDing-right:0
+    header nav .ez-nopadding {
+        padding-right:0
     }
     header nav #ez-account-link-mobile {
-        padDing-left:0!important
+        padding-left:0!important
     }
     header nav #ez-menu-main-items {
         background:none;
@@ -13648,19 +13648,19 @@ body.ur .basetable .fieldDiv {
     body.ur #div-header #ez-menu-main-items li {
         float:right
     }
-    body.ar header #ez-menu-main-items .ez-nopadDing,
-    body.ar #div-header #ez-menu-main-items .ez-nopadDing,
-    body.ur header #ez-menu-main-items .ez-nopadDing,
-    body.ur #div-header #ez-menu-main-items .ez-nopadDing {
-        padDing-left:0;
-        padDing-right:6px
+    body.ar header #ez-menu-main-items .ez-nopadding,
+    body.ar #div-header #ez-menu-main-items .ez-nopadding,
+    body.ur header #ez-menu-main-items .ez-nopadding,
+    body.ur #div-header #ez-menu-main-items .ez-nopadding {
+        padding-left:0;
+        padding-right:6px
     }
     body.ar header #ez-menu-main-items #ez-account-link-mobile,
     body.ar #div-header #ez-menu-main-items #ez-account-link-mobile,
     body.ur header #ez-menu-main-items #ez-account-link-mobile,
     body.ur #div-header #ez-menu-main-items #ez-account-link-mobile {
-        padDing-left:6px!important;
-        padDing-right:0
+        padding-left:6px!important;
+        padding-right:0
     }
     footer .language-container {
         width:30%
@@ -13671,7 +13671,7 @@ body.ur .basetable .fieldDiv {
     .ez-table td {
         line-height:22px;
         font-size:16px;
-        padDing:8px 0 8px 14px;
+        padding:8px 0 8px 14px;
         max-width:215px;
         overflow:hidden;
         text-overflow:ellipsis
@@ -13690,7 +13690,7 @@ body.ur .basetable .fieldDiv {
         text-align:center
     }
     .ez-table td.ez-table-resend {
-        padDing-left:0
+        padding-left:0
     }
     .ez-table td.ez-table-status,
     .ez-table td.ez-table-resend {
@@ -13711,7 +13711,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-cookies-table li {
         width:100%!important;
-        padDing-right:0!important;
+        padding-right:0!important;
         float:none;
         margin-bottom:6px;
         font-size:17px;
@@ -13737,7 +13737,7 @@ body.ur .basetable .fieldDiv {
     .ez-cmenu li {
         width:100%;
         text-align:left;
-        padDing:0 14px;
+        padding:0 14px;
         display:none;
         border-left:0;
         border-bottom:1px solid #c6ccce
@@ -13746,7 +13746,7 @@ body.ur .basetable .fieldDiv {
         background:#b4bec0
     }
     .ez-cmenu li a {
-        padDing:0!important;
+        padding:0!important;
         line-height:44px!important
     }
     .ez-cmenu li a br {
@@ -13810,7 +13810,7 @@ body.ur .basetable .fieldDiv {
         width:100%
     }
     #ez-account-tabs>li {
-        padDing:26px 14px
+        padding:26px 14px
     }
     #ez-account-tabs>li .ez-icon-text {
         margin-left:0
@@ -13850,7 +13850,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-contacts-wrap .ez-table td.ez-table-actions {
         float:right;
-        padDing:8px 14px
+        padding:8px 14px
     }
     #ez-contacts-wrap .ez-table td.ez-table-actions a {
         margin-left:0
@@ -13860,8 +13860,8 @@ body.ur .basetable .fieldDiv {
         min-height:180px;
         margin-left:0;
         background:transparent;
-        padDing-top:0;
-        padDing-bottom:0;
+        padding-top:0;
+        padding-bottom:0;
         display:block!important;
         border-top:none
     }
@@ -13894,7 +13894,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-vouchers-page .ez-invite-social {
         background:transparent;
-        padDing:0
+        padding:0
     }
     #ez-vouchers-page .ez-no-vouchers-invite p {
         font-size:17px;
@@ -13911,8 +13911,8 @@ body.ur .basetable .fieldDiv {
     }
     #ez-vouchers-page .ez-vouchers-items .ez-table td,
     #ez-vouchers-page .ez-vouchers-expired .ez-table td {
-        padDing-top:6px;
-        padDing-bottom:6px
+        padding-top:6px;
+        padding-bottom:6px
     }
     #ez-vouchers-page .ez-vouchers-items .ez-table .ez-table-selector,
     #ez-vouchers-page .ez-vouchers-expired .ez-table .ez-table-selector {
@@ -13979,19 +13979,19 @@ body.ur .basetable .fieldDiv {
     }
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps {
         width:100%;
-        padDing-left:50px;
+        padding-left:50px;
         margin-top:19px
     }
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step-inactive,
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step {
         width:70%;
         float:none;
-        padDing-top:23px;
+        padding-top:23px;
         clear:both
     }
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step-inactive:first-child,
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step:first-child {
-        padDing-top:0
+        padding-top:0
     }
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step-inactive:first-child .ez-number,
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step:first-child .ez-number {
@@ -14029,7 +14029,7 @@ body.ur .basetable .fieldDiv {
         font-size:22px
     }
     #registerRAF .ez-payment-types {
-        padDing-bottom:18px
+        padding-bottom:18px
     }
     #registerRAF .ez-payment-types .ez-payment-box {
         margin:0 0 12px 4px
@@ -14098,7 +14098,7 @@ body.ur .basetable .fieldDiv {
         margin-left:4%
     }
     #ez-promos .ez-promo-btns {
-        padDing-top:20px;
+        padding-top:20px;
         float:none!important;
         clear:both;
         text-align:center
@@ -14168,14 +14168,14 @@ body.ur .basetable .fieldDiv {
         text-align:center
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap ul {
-        padDing-top:8px;
+        padding-top:8px;
         margin-left:10px
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap .ez-ild-rates-row {
         float:none;
         display:inline-block;
         margin-left:0;
-        padDing-top:0
+        padding-top:0
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap .ez-rates-fixed {
         margin-right:0
@@ -14222,7 +14222,7 @@ body.ur .basetable .fieldDiv {
     }
     .ez-three-in-one h3.main {
         font-size:18px!important;
-        padDing-top:0!important;
+        padding-top:0!important;
         margin-bottom:0!important;
         margin-top:-5px!important;
         font-weight:bold!important
@@ -14235,7 +14235,7 @@ body.ur .basetable .fieldDiv {
     }
     .ez-three-in-one h3.others {
         font-size:16px!important;
-        padDing-top:0!important;
+        padding-top:0!important;
         margin-bottom:-10px!important;
         font-weight:bold!important
     }
@@ -14380,7 +14380,7 @@ body.ur .basetable .fieldDiv {
         position:initial
     }
     .ez-main-wrap {
-        padDing-top:20px;
+        padding-top:20px;
         min-height:initial
     }
     .ez-page-title {
@@ -14430,8 +14430,8 @@ body.ur .basetable .fieldDiv {
     }
     .ez-auth-pages {
         width:100%!important;
-        padDing-left:4%;
-        padDing-right:4%
+        padding-left:4%;
+        padding-right:4%
     }
     .ez-edit-wrap,
     .ez-content-left-info {
@@ -14470,7 +14470,7 @@ body.ur .basetable .fieldDiv {
         right:10px
     }
     .ez-accordion .ez-accordiontitle {
-        padDing:16px 44px 16px 12px;
+        padding:16px 44px 16px 12px;
         font-size:17px;
         line-height:23px
     }
@@ -14521,7 +14521,7 @@ body.ur .basetable .fieldDiv {
         margin-top:6px
     }
     #ez-live-chat {
-        padDing-right:0;
+        padding-right:0;
         -webkit-transition:none;
         transition:none;
         -moz-transition:none;
@@ -14531,13 +14531,13 @@ body.ur .basetable .fieldDiv {
         display:none
     }
     #ez-live-chat:hover {
-        padDing-right:0
+        padding-right:0
     }
     .ez-header-notification .ez-header-notification-content p,
     .ez-header-notification-red .ez-header-notification-content p {
         text-align:center;
         font-size:16px;
-        padDing-right:12px;
+        padding-right:12px;
         line-height:18px;
         position:relative;
         border-right:1px solid rgba(255,
@@ -14617,13 +14617,13 @@ body.ur .basetable .fieldDiv {
         color:#4c4c59
     }
     footer {
-        padDing-bottom:10px
+        padding-bottom:10px
     }
     footer .ez-wrap {
-        padDing:0
+        padding:0
     }
     footer #ez-footer-socials div {
-        padDing:0
+        padding:0
     }
     footer #ez-footer-socials a {
         margin-left:0
@@ -14638,11 +14638,11 @@ body.ur .basetable .fieldDiv {
         width:100%;
         margin:0;
         float:none;
-        padDing-bottom:5px
+        padding-bottom:5px
     }
     footer .ez-footer-accordion li {
         display:none;
-        padDing:0 30px;
+        padding:0 30px;
         background:#414c53
     }
     footer .ez-footer-accordion li.ez-menu-header {
@@ -14662,12 +14662,12 @@ body.ur .basetable .fieldDiv {
         width:100%
     }
     footer .language-container .ez-custom-select {
-        padDing-bottom:0
+        padding-bottom:0
     }
     footer .language-container li {
         display:block;
         background:none;
-        padDing:0 20px
+        padding:0 20px
     }
     footer .language-container li.ez-menu-header {
         display:none!important
@@ -14728,7 +14728,7 @@ body.ur .basetable .fieldDiv {
         font-size:21px!important
     }
     #ez-send-topup .ez-airtime-wrap ul input {
-        padDing:0 5px;
+        padding:0 5px;
         height:48px
     }
     #ez-send-topup .ez-airtime-wrap ul .ez-phone-prefix {
@@ -14742,7 +14742,7 @@ body.ur .basetable .fieldDiv {
     #ez-send-topup .ez-button {
         width:38%;
         font-size:20px;
-        padDing:0 6px
+        padding:0 6px
     }
     #use-voucher-modal .ez-second-block {
         width:100%
@@ -14751,7 +14751,7 @@ body.ur .basetable .fieldDiv {
         font-size:14px
     }
     .ez-topup-btns {
-        padDing:12px 10px
+        padding:12px 10px
     }
     .ez-topup-btns button,
     .ez-topup-btns input[type="submit"] {
@@ -14771,7 +14771,7 @@ body.ur .basetable .fieldDiv {
     .ez-topup-btns button.ez-three-btns,
     .ez-topup-btns input[type="submit"].ez-three-btns,
     .ez-topup-btns .ez-button.ez-three-btns {
-        padDing:0 5px;
+        padding:0 5px;
         width:32%!important
     }
     .ez-topup-btns button.ez-three-btns.ez-float-left-btn,
@@ -14825,7 +14825,7 @@ body.ur .basetable .fieldDiv {
     #ez-account-main-action {
         width:100%;
         height:initial;
-        padDing:0 14px 10px 14px
+        padding:0 14px 10px 14px
     }
     #ez-account-main-action .ez-icon {
         width:54px;
@@ -14864,7 +14864,7 @@ body.ur .basetable .fieldDiv {
     #ez-account-tabs>li {
         width:100%;
         height:initial;
-        padDing:0;
+        padding:0;
         margin:0 0 2px 0;
         background:#fff
     }
@@ -14882,12 +14882,12 @@ body.ur .basetable .fieldDiv {
     }
     #ez-account-tabs>li>ul {
         cursor:pointer;
-        padDing:7px 12px;
+        padding:7px 12px;
         background:#eeedef
     }
     #ez-account-tabs>li>div {
         display:none;
-        padDing:10px 0
+        padding:10px 0
     }
     #ez-account-tabs>li .ez-icon {
         width:44px;
@@ -14937,7 +14937,7 @@ body.ur .basetable .fieldDiv {
         line-height:24px!important
     }
     #ez-promos .ez-promo-btns {
-        padDing-top:0
+        padding-top:0
     }
     #ez-promos .ez-promo-btns .ez-desktop-hide {
         display:inline!important
@@ -14946,8 +14946,8 @@ body.ur .basetable .fieldDiv {
         width:100%;
         height:initial;
         display:block;
-        padDing-top:20px;
-        padDing-bottom:16px;
+        padding-top:20px;
+        padding-bottom:16px;
         text-align:center
     }
     #ez-support-chat ul {
@@ -14967,7 +14967,7 @@ body.ur .basetable .fieldDiv {
         width:50%;
         display:table-cell;
         vertical-align:middle;
-        padDing:8px
+        padding:8px
     }
     #ez-lanDing-prmotion h2 {
         font-size:50px;
@@ -14980,7 +14980,7 @@ body.ur .basetable .fieldDiv {
     #ez-localposts-container .ez-post-content {
         width:64%;
         height:100px;
-        padDing:0;
+        padding:0;
         overflow:hidden
     }
     #ez-localposts-container .ez-post-content p {
@@ -15044,7 +15044,7 @@ body.ur .basetable .fieldDiv {
         width:440px
     }
     #invalid-referral-modal .ez-modal .ez-modal-header {
-        padDing-bottom:34px
+        padding-bottom:34px
     }
     #invalid-referral-modal .ez-modal .ez-modal-header h3 {
         font-size:40px
@@ -15102,7 +15102,7 @@ body.ur .basetable .fieldDiv {
     #ez-careers-wrap .ez-careers-quote p {
         text-align:left;
         margin:20px 0 0 0!important;
-        padDing-left:0
+        padding-left:0
     }
     #ez-careers-wrap .ez-careers-quote p .fa-quote-left {
         display:none
@@ -15132,7 +15132,7 @@ body.ur .basetable .fieldDiv {
     #ez-careers-banner h1 {
         font-size:72px;
         line-height:64px;
-        padDing-top:60px
+        padding-top:60px
     }
     #ez-careers-banner p {
         font-size:26px!important;
@@ -15150,8 +15150,8 @@ body.ur .basetable .fieldDiv {
     #ez-careers-poster button .fa {
         width:40px;
         height:40px;
-        padDing-right:5px;
-        padDing-top:8px
+        padding-right:5px;
+        padding-top:8px
     }
     #ez-careers-poster #ez-video-btn {
         font-size:26px;
@@ -15174,7 +15174,7 @@ body.ur .basetable .fieldDiv {
         display:none
     }
     .ez-careers-job {
-        padDing:15px!important
+        padding:15px!important
     }
     .ez-careers-job p:first-child {
         font-size:21px!important
@@ -15264,7 +15264,7 @@ body.ur .basetable .fieldDiv {
         display:none!important
     }
     .ez-main-wrap {
-        padDing-top:20px
+        padding-top:20px
     }
     .ez-page-title {
         margin-bottom:16px
@@ -15296,7 +15296,7 @@ body.ur .basetable .fieldDiv {
         font-size:20px
     }
     .ez-airtime-wrap input {
-        padDing:0 5px
+        padding:0 5px
     }
     .ez-show-password {
         font-size:18px;
@@ -15341,7 +15341,7 @@ body.ur .basetable .fieldDiv {
         top:3px
     }
     .ez-modal .ez-modal-content {
-        padDing:10px;
+        padding:10px;
         font-size:16px;
         line-height:20px
     }
@@ -15360,7 +15360,7 @@ body.ur .basetable .fieldDiv {
         margin-bottom:14px
     }
     .ez-details-wrap {
-        padDing:20px 6px
+        padding:20px 6px
     }
     .ez-table-list li {
         max-width:55%;
@@ -15407,7 +15407,7 @@ body.ur .basetable .fieldDiv {
     }
     .ez-table td.ez-table-amount {
         text-align:right;
-        padDing:0 10px 0 0
+        padding:0 10px 0 0
     }
     #use-voucher-modal h3 .fa {
         display:none
@@ -15485,7 +15485,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-order-summary {
         margin-top:20px;
-        padDing:20px 10px
+        padding:20px 10px
     }
     #ez-order-summary .ez-mobile-menu {
         margin:-12px 0 4px 0;
@@ -15496,13 +15496,13 @@ body.ur .basetable .fieldDiv {
         margin-bottom:-10px
     }
     .ez-promotion-wrap {
-        padDing-left:40px
+        padding-left:40px
     }
     .ez-promotion-wrap .fa-tags {
         font-size:16px
     }
     .ez-promotion {
-        padDing:7px 10px 0
+        padding:7px 10px 0
     }
     .ez-promotion ul li {
         font-size:16px;
@@ -15512,7 +15512,7 @@ body.ur .basetable .fieldDiv {
         font-size:16px
     }
     #ez-promos .ez-promotion {
-        padDing-bottom:7px
+        padding-bottom:7px
     }
     #ez-promos ul li {
         font-size:17px
@@ -15532,7 +15532,7 @@ body.ur .basetable .fieldDiv {
         line-height:40px
     }
     #ez-ild-rates-wrap ul {
-        padDing-top:2px
+        padding-top:2px
     }
     #ez-ild-rates-wrap ul li {
         font-size:16px;
@@ -15561,7 +15561,7 @@ body.ur .basetable .fieldDiv {
         margin-left:0
     }
     #ez-contacts-wrap .ez-table td.ez-table-actions {
-        padDing:10px
+        padding:10px
     }
     #ez-contacts-wrap .ez-table .ez-button {
         min-width:70px!important
@@ -15576,15 +15576,15 @@ body.ur .basetable .fieldDiv {
     #ez-last-used .ez-img-wrap {
         width:100px;
         height:50px;
-        padDing-top:8px
+        padding-top:8px
     }
     #ez-last-used p {
         font-size:20px;
         line-height:26px
     }
     #ez-support-content .ez-accordion {
-        padDing-left:5px;
-        padDing-right:5px
+        padding-left:5px;
+        padding-right:5px
     }
     #ez-migpage-top h1 {
         font-size:50px;
@@ -15603,7 +15603,7 @@ body.ur .basetable .fieldDiv {
     }
     #ez-lanDing-prmotion p {
         font-size:22px;
-        padDing-left:20px
+        padding-left:20px
     }
     #ez-subscribe-newsletter {
         width:100%
@@ -15641,7 +15641,7 @@ body.ur .basetable .fieldDiv {
         text-align:left
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap ul {
-        padDing-top:12px;
+        padding-top:12px;
         margin-left:10px
     }
     #ez-ild-rates-page #ez-ild-rates-panel #ez-ild-rates-wrap .ez-ild-rates-row {
@@ -15663,7 +15663,7 @@ body.ur .basetable .fieldDiv {
         font-size:19px
     }
     #ez-android-page {
-        padDing-top:10px;
+        padding-top:10px;
         background-size:initial
     }
     #ez-android-page .ez-logo {
@@ -15679,7 +15679,7 @@ body.ur .basetable .fieldDiv {
     #ez-android-page p {
         font-size:17px;
         line-height:23px;
-        padDing:0 10px
+        padding:0 10px
     }
     #ez-payment-response-page #left-side .ez-subtitle {
         font-size:16px
@@ -15698,7 +15698,7 @@ body.ur .basetable .fieldDiv {
         width:100%
     }
     #invalid-referral-modal .ez-modal .ez-modal-header {
-        padDing-bottom:34px
+        padding-bottom:34px
     }
     #invalid-referral-modal .ez-modal .ez-modal-header h3 {
         font-size:31px
@@ -15708,7 +15708,7 @@ body.ur .basetable .fieldDiv {
         height:14px
     }
     #invalid-referral-modal .ez-modal .ez-modal-content {
-        padDing-bottom:24px
+        padding-bottom:24px
     }
     #invalid-referral-modal .ez-modal .ez-modal-content h2 {
         font-size:24px!important
@@ -15717,7 +15717,7 @@ body.ur .basetable .fieldDiv {
         font-size:12px
     }
     #invalid-referral-modal .ez-modal .ez-modal-footer {
-        padDing-bottom:16px
+        padding-bottom:16px
     }
     #invalid-referral-modal .ez-modal .ez-modal-footer button {
         font-size:20px;
@@ -15751,7 +15751,7 @@ body.ur .basetable .fieldDiv {
         width:14px;
         font-size:26px;
         line-height:24px;
-        padDing-right:8px;
+        padding-right:8px;
         margin-left:0
     }
     #registerRAF .ez-registration-footer .ez-programme .ez-refer-steps .ez-step-inactive .ez-title,
@@ -15817,7 +15817,7 @@ body.ur .basetable .fieldDiv {
         font-size:15px
     }
     #ez-careers-wrap .ez-careers-wrap {
-        padDing:30px 14px
+        padding:30px 14px
     }
     #ez-careers-wrap .ez-margin-bottom {
         margin-bottom:30px
@@ -15828,7 +15828,7 @@ body.ur .basetable .fieldDiv {
         line-height:24px
     }
     #ez-careers-wrap .ez-careers-quote.ez-quote-background {
-        padDing:18px
+        padding:18px
     }
     #ez-careers-wrap .ez-careers-signature {
         font-size:16px!important
@@ -15852,7 +15852,7 @@ body.ur .basetable .fieldDiv {
     #ez-careers-banner h1 {
         font-size:52px;
         line-height:46px;
-        padDing-top:50px
+        padding-top:50px
     }
     #ez-careers-banner p {
         font-size:24px!important
@@ -15941,7 +15941,7 @@ body.ur .basetable .fieldDiv {
         font-size:16px
     }
     header nav li {
-        padDing:0 6px
+        padding:0 6px
     }
     header #ez-logo-wrap {
         margin-left:-3px
@@ -15978,7 +15978,7 @@ body.ur .basetable .fieldDiv {
         font-size:16px
     }
     #invalid-referral-modal .ez-modal .ez-modal-header {
-        padDing-bottom:26px
+        padding-bottom:26px
     }
     #invalid-referral-modal .ez-modal .ez-modal-header h3 {
         font-size:24px
@@ -15988,7 +15988,7 @@ body.ur .basetable .fieldDiv {
         height:10px
     }
     #invalid-referral-modal .ez-modal .ez-modal-content {
-        padDing-bottom:24px
+        padding-bottom:24px
     }
     #invalid-referral-modal .ez-modal .ez-modal-content h2 {
         font-size:24px!important
@@ -15997,7 +15997,7 @@ body.ur .basetable .fieldDiv {
         font-size:12px
     }
     #invalid-referral-modal .ez-modal .ez-modal-footer {
-        padDing-bottom:6px
+        padding-bottom:6px
     }
     #invalid-referral-modal .ez-modal .ez-modal-footer button {
         font-size:15px;
@@ -16015,7 +16015,7 @@ body.ur .basetable .fieldDiv {
         min-width:initial!important
     }
     #ez-vouchers-page .ez-table-voucher {
-        padDing-left:6px;
+        padding-left:6px;
         line-height:16px
     }
     #ez-vouchers-page .ez-table-usewith {
@@ -16034,8 +16034,8 @@ body.ur .basetable .fieldDiv {
     body.ar #ez-vouchers-page .ez-vouchers-filter-band .ez-mobile-menu li div,
     body.hi #ez-vouchers-page .ez-vouchers-filter-band .ez-mobile-menu li div,
     body.ru #ez-vouchers-page .ez-vouchers-filter-band .ez-mobile-menu li div {
-        padDing-left:6px;
-        padDing-right:6px
+        padding-left:6px;
+        padding-right:6px
     }
     .ez-account-page .ez-mobile-menu li {
         width:33%!important;
@@ -16057,7 +16057,7 @@ body.ur .basetable .fieldDiv {
         font-size:24px
     }
     #ez-contacts-wrap .ez-table .ez-button {
-        padDing:0 10px
+        padding:0 10px
     }
     body.ru #ez-signup-with-email {
         font-size:15px
@@ -16069,11 +16069,11 @@ body.ur .basetable .fieldDiv {
         font-size:15px
     }
     #ez-promos .ez-promotion {
-        padDing-left:10px;
-        padDing-right:10px
+        padding-left:10px;
+        padding-right:10px
     }
     #ez-promos .ez-promo-btns button {
-        padDing:0 10px
+        padding:0 10px
     }
     #ez-lanDing-prmotion h2 {
         font-size:42px!important;
