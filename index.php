@@ -7,6 +7,7 @@ include './constants/service.php';
 include './constants/transaction.php';
 include './constants/payment.php';
 include './constants/app_configaration.php';
+include './constants/auth.php';
 include './constants/file_configuration.php';
 include './constants/superadmin/configuration.php';
 include './constants/superadmin/app_configaration.php';

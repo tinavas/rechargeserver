@@ -8,16 +8,16 @@
         return false;
     }
     function edit_sim(simInfo, serviceList) {
-//        if (typeof simInfo.simNo == "undefined" || simInfo.simNo.length == 0) {
-//            $("#content").html("Please give sim naumber !");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
-//        if (number_validation(simInfo.simNo) == false) {
-//            $("#content").html("Please give a valid SIM Number");
-//            $('#common_modal').modal('show');
-//            return;
-//        }
+        if (typeof simInfo.simNo == "undefined" || simInfo.simNo.length == 0) {
+            $("#content").html("Please give sim naumber !");
+            $('#common_modal').modal('show');
+            return;
+        }
+        if (number_validation(simInfo.simNo) == false) {
+            $("#content").html("Please give a valid SIM Number");
+            $('#common_modal').modal('show');
+            return;
+        }
 //        for (var i = 0; i < serviceList.length; i++) {
 //            var serviceInfo = serviceList[i];
 //            if (serviceInfo.selected == true) {

@@ -36,7 +36,7 @@
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Current balance</th>
                                     <th style="text-align: center;">Today's uses</th>
-                                    <th style="text-align: center;">Number of Transactions</th>
+                                    <th style="text-align: center;">No.Trans</th>
                                     <th style="text-align: center;">Balance</th>
                                     <th style="text-align: center;">Show</th>
                                     <th style="text-align: center;">Edit</th>

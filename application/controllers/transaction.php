@@ -813,8 +813,8 @@ class Transaction extends Role_Controller {
                     $transction_list[] = $topup_data_info;
                     $validation_result = $this->transaction_library->check_transaction_interval_validation($cell_number_list, $service_id_list, $where);
                     if ($validation_result['validation_flag'] != FALSE) {
-                       $transction_info =  $validation_result['transction_info'];
-                        $response["message"] = "Sorry !!". $service_info_list[$transction_info['service_id']]['title'] . " service is unavailable right now for this number " . $transction_info['cell_no'];
+                        $transction_info = $validation_result['transction_info'];
+                        $response["message"] = "Sorry !!" . $service_info_list[$transction_info['service_id']]['title'] . " service is unavailable right now for this number " . $transction_info['cell_no'];
                         echo json_encode($response);
                         return;
                     }
@@ -836,6 +836,7 @@ class Transaction extends Role_Controller {
             }
         } else if ($this->input->post('submit_btn')) {
             $error_messages = array();
+            $cell_number_list = array();
             $config['upload_path'] = TOPUP_FILE_UPLOAD_DIRECTORY;
             $config['allowed_types'] = 'xlsx';
             $random_string = $this->utils->get_random_string();
@@ -889,7 +890,11 @@ class Transaction extends Role_Controller {
                         $error_messages[] = 'Please Enter a Valid Cell Number at row number ' . $row_counter;
                         break;
                     }
-
+                    if (in_array($result_data['A'], $cell_number_list)) {
+                        $error_messages[] = 'Duplicate Number' . $result_data['A'] . 'at row number' . $row_counter;
+                        break;
+                    }
+                    $cell_number_list[] = ($result_data['A']);
                     if ((array_key_exists('B', $result_data)) && $result_data['B'] < TOPUP_MINIMUM_CASH_IN_AMOUNT || $result_data['B'] > TOPUP_MAXIMUM_CASH_IN_AMOUNT) {
 
                         $error_messages[] = 'Please Give a Valid Amount at row number ' . $row_counter;

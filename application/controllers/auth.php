@@ -9,7 +9,7 @@ class Auth extends Role_Controller {
         $this->load->library('ion_auth');
         $this->load->library('form_validation');
         $this->load->helper('url');
-       
+
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -31,8 +31,8 @@ class Auth extends Role_Controller {
         } else {
             $user_group = $this->ion_auth->get_current_user_types();
             foreach ($user_group as $group) {
-                $this->session->set_userdata(array('group'=>$group));
-                if($group == GROUP_ADMIN || $group == GROUP_TYPE1 || $group == GROUP_TYPE2 || $group == GROUP_TYPE3 || $group == GROUP_TYPE4){
+                $this->session->set_userdata(array('group' => $group));
+                if ($group == GROUP_ADMIN || $group == GROUP_TYPE1 || $group == GROUP_TYPE2 || $group == GROUP_TYPE3 || $group == GROUP_TYPE4) {
                     //set the flash data error message if there is one
                     $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -45,21 +45,15 @@ class Auth extends Role_Controller {
                     $this->data['app'] = RESELLER_APP;
                     $this->template->load(null, "admin/index", $this->data);
                     break;
-                }
-                elseif($group == MEMBER){
+                } elseif ($group == MEMBER) {
                     $this->template->load(NULL, MEMBER_LOGIN_SUCCESS_VIEW);
                     break;
-                }
-                else{
+                } else {
                     echo "Non member";
                 }
             }
-            
         }
     }
-    
- 
-   
 
     //log the user in
     function login() {
@@ -83,12 +77,14 @@ class Auth extends Role_Controller {
                 //if the login was un-successful
                 //redirect them back to the login page
                 $this->session->set_flashdata('message', $this->ion_auth->errors());
+                $this->session->set_flashdata('message_flag', ERROR_MESSAGE_FLAG);
                 redirect('auth/login', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
             }
         } else {
             //the user is not logging in so display the login page
             //set the flash data error message if there is one
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['message_flag'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_flag');
 
             $this->data['identity'] = array('name' => 'identity',
                 'id' => 'identity',
@@ -99,50 +95,36 @@ class Auth extends Role_Controller {
                 'id' => 'password',
                 'type' => 'password',
             );
-
             $this->template->load("nonmember/templates/main_tmpl", "nonmember/login", $this->data);
             //$this->template->load(NULL, LOGIN_TEMPLATE, $this->data);
             //$this->_render_page('auth/login', $this->data);
         }
     }
-    
-    function pin()
-    {
+
+    function pin() {
         $this->data['message'] = "";
         $this->form_validation->set_rules('pin', 'Pin', 'required');
-        if ($this->form_validation->run() == true) 
-        {
+        if ($this->form_validation->run() == true) {
             $pin = $this->input->post('pin');
             $user_id = $this->session->userdata('user_id');
-            if(isset($user_id))
-            {
+            if (isset($user_id)) {
                 //verify pin
                 $pin_info_array = $this->ion_auth->get_pin_info($user_id)->result_array();
-                if(!empty($pin_info_array))
-                {
-                    if($pin == $pin_info_array[0]['pin'])
-                    {
+                if (!empty($pin_info_array)) {
+                    if ($pin == $pin_info_array[0]['pin']) {
                         $this->session->set_userdata(array('pin' => $pin));
                         redirect('auth', 'refresh');
-                    }
-                    else
-                    {
+                    } else {
                         $this->data['message'] = "Invalid pin.";
                     }
-                }
-                else
-                {
+                } else {
                     $this->data['message'] = "Invalid user pin.";
                 }
-            }
-            else
-            {
+            } else {
                 $this->session->set_flashdata('message', "Invalid user.");
                 redirect('auth/login', 'refresh');
-            }            
-        }
-        else
-        {
+            }
+        } else {
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
         }
         $this->data['app'] = RESELLER_APP;
@@ -158,6 +140,7 @@ class Auth extends Role_Controller {
 
         //redirect them to the login page
         $this->session->set_flashdata('message', $this->ion_auth->messages());
+        $this->session->set_flashdata('message_flag', SUCCESS_MESSAGE_FLAG);
         redirect('auth/login', 'refresh');
     }
 
