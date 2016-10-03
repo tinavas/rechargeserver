@@ -1,1 +1,8 @@
 /* Default CSS loaded from main css */
+
+.message_flag_color_red{
+    color: red;
+}
+.message_flag_color_green{
+    color: green;
+}

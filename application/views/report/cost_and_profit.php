@@ -20,7 +20,7 @@
         <div class="col-md-12 ">
             <div class="report">
                 <h4>Cost &amp; Profit Report</h4>
-                <table>
+                <table class="table10">
                     <thead>
                         <tr>
                             <th width="100">Services</th>
