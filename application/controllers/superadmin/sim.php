@@ -61,8 +61,6 @@ class Sim extends CI_Controller {
                 if (property_exists($sim_info, "status")) {
                     $additional_sim_info['description'] = $sim_info->description;
                 }
-
-
                 $sim_service_list = array();
                 if (property_exists($sim_info, "serviceInfoList")) {
                     $sim_service_list = $sim_info->serviceInfoList;
@@ -243,11 +241,10 @@ class Sim extends CI_Controller {
 
     public function get_sim_balance($sim_no) {
         $response = array();
-        $result_event = $this->sim_model->check_sim_balance($sim_no);
         if ($this->sim_model->check_sim_balance($sim_no) !== FALSE) {
             $response['message'] = " A request is sent to generate current balance of the SIM. Updated balance will be reflected soon.";
         } else {
-            $response['message'] = $this->transaction_library->errors_array();
+            $response['message'] = $this->sim_model->errors_array();
         }
         echo json_encode($response);
         return;

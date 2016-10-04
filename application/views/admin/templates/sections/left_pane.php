@@ -1,6 +1,6 @@
 
 <div class="left_menu" ng-controller="leftController">
-    <div class="sidebar" id="set_user_service_id" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($my_service_list))?>')">
+    <div class="sidebar" id="set_user_service_id" ng-init="setServiceList('<?php echo htmlspecialchars(json_encode($my_service_list)) ?>')">
         <ul id="navmenu">
             <li class="home"><a href="<?php echo base_url(); ?>" id="homepage" class="top">Dashboard</a></li>
             <li>
@@ -40,6 +40,8 @@
                     <li><a href="<?php echo base_url() . 'report/get_cost_and_profit' ?>">Cost &amp; Profit</a></li>
                     <!--<li><a href="<?php echo base_url() . 'report/get_balance_report' ?>">Balance Report</a></li>-->
                     <li><a href="<?php echo base_url() . 'report/get_total_report' ?>">Total Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_detailed_report' ?>">Detailed Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_user_profit_loss' ?>">Profit/Loss Analysis</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>

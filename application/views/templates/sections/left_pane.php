@@ -64,6 +64,8 @@
                     <li><a href="<?php echo base_url() . 'report/get_cost_and_profit' ?>">Cost &amp; Profit</a></li>
                     <!--<li><a href="<?php echo base_url() . 'report/get_balance_report' ?>">Balance Report</a></li>-->
                     <li><a href="<?php echo base_url() . 'report/get_total_report' ?>">Total Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_detailed_report' ?>">Detailed Report</a></li>
+                    <li><a href="<?php echo base_url() . 'report/get_user_profit_loss' ?>">Profit/Loss Analysis</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0)" class="chld">My Account </a>

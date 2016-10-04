@@ -14,6 +14,16 @@ angular.module('services.Report', []).
                     }
                 });
             }
+            reportService.getDetailRepotHistory = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/report/get_detailed_report',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            }
             reportService.getRepotHistory = function (searchInfo) {
 
                 return $http({
@@ -29,6 +39,16 @@ angular.module('services.Report', []).
                 return $http({
                     method: 'post',
                     url: $location.path() + $app_name + '/report/get_total_report',
+                    data: {
+                        searchInfo: searchInfo
+                    }
+                });
+            }
+            reportService.getProfitLossHistory = function (searchInfo) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/report/get_user_profit_loss',
                     data: {
                         searchInfo: searchInfo
                     }

@@ -3,8 +3,10 @@ angular.module('controller.Report', ['services.Report']).
             $scope.currentPage = 1;
             $scope.pageSize = 10;
             $scope.profitList = [];
+            $scope.reportList = [];
             $scope.userProfits = [];
             $scope.serviceList = [];
+            $scope.reportSummery = {};
             $scope.transactionStatusList = [];
             $scope.userTotalProfitInfo = {};
             $scope.searchInfo = {};
@@ -32,6 +34,12 @@ angular.module('controller.Report', ['services.Report']).
                 $scope.serviceList = JSON.parse(serviceList);
                 $scope.searchInfo.serviceId = 0;
             }
+            $scope.setReportList = function (reportList, reportSummery) {
+                $scope.reportList = JSON.parse(reportList);
+                $scope.reportSummery = JSON.parse(reportSummery);
+            }
+
+
             $scope.getRepotHistory = function (startDate, endDate) {
 
                 $scope.searchInfo.limit = $scope.allTransactions;
@@ -47,6 +55,38 @@ angular.module('controller.Report', ['services.Report']).
                                 $scope.allTransactions = false;
                             }
                             setCollectionLength(data.total_transactions);
+                        });
+            };
+            $scope.getDetailRepotHistory = function (startDate, endDate) {
+
+                $scope.searchInfo.limit = $scope.allTransactions;
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                reportService.getDetailRepotHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.reportList = data.report_list;
+                            $scope.reportSummery = data.report_summary;
+                            if ($scope.allTransactions != false) {
+                                $scope.allTransactions = false;
+                            }
+                        });
+            };
+            $scope.getProfitLossHistory = function (startDate, endDate) {
+
+                $scope.searchInfo.limit = $scope.allTransactions;
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                reportService.getProfitLossHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.reportList = data.report_list;
+                            $scope.reportSummery = data.report_summary;
+                            if ($scope.allTransactions != false) {
+                                $scope.allTransactions = false;
+                            }
                         });
             };
             $scope.getProfitByPagination = function (num) {
