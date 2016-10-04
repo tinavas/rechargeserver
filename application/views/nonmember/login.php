@@ -2,7 +2,15 @@
     <div id="ez-wrap" class="ez-asterisk-holder ez-main-wrap ez-auth-pages ez-login-wrap">
         <div class="ez-page-title ">
             <h1>Login</h1>
-            <?php echo $message;?>
+            <?php if ($message_flag == 1) { ?>
+            <div class="message_flag_color_red">
+                    <?php echo strip_tags($message); ?>
+                </div>
+            <?php } else { ?>
+                <div class="message_flag_color_green">
+                    <?php echo strip_tags($message); ?>
+                </div>
+            <?php } ?>
 <!--                        <p id="ez-page-subtitle">
                 <a href="register">New to ewallet2u - Sign up here</a>
             </p>-->

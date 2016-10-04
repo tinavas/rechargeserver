@@ -336,10 +336,17 @@ input[type="radio"], input[type="checkbox"] {
     font-size: 14px;
 }
 .admin_header_text_style{
-    font-size: 20px;
-    font-weight: bold;
-    color:#fff;
-    font-family: verdana;
+    font-size: 20px!important;
+    font-weight: bold!important;
+    color:#fff!important;
+    font-family: verdana!important;
+}
+.admin_header_text_style:hover{
+    text-decoration: none!important;
+    font-size: 20px!important;
+    font-weight: bold!important;
+    color:#fff!important;
+    font-family: verdana!important;
 }
 
 

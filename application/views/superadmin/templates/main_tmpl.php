@@ -56,7 +56,7 @@
     </head>
     <body ng-app="<?php echo $app; ?>">
         <?php $this->load->view("superadmin/templates/sections/header"); ?>
-        <div class="container" style="padding-top: 50px">
+        <div class="container-fluid" style="padding-top: 50px">
             <div class="row">
                 <div class="col-md-2" >
                     <?php $this->load->view("superadmin/templates/sections/left_panel"); ?>
