@@ -203,4 +203,14 @@ class Reseller_model extends Ion_auth_model {
                         ->get();
     }
 
+    public function get_reseller_list_by_group($group_id) {
+        $this->db->order_by($this->tables['users'] . '.first_name', 'asc');
+        $this->db->where($this->tables['groups'] . '.id', $group_id);
+        return $this->db->select($this->tables['groups'] . '.id,' . $this->tables['users_groups'] . '.user_id,' . $this->tables['users'] . '.first_name, last_name')
+                        ->from($this->tables['users_groups'])
+                        ->join($this->tables['groups'], $this->tables['users_groups'] . '.group_id=' . $this->tables['groups'] . '.id')
+                        ->join($this->tables['users'], $this->tables['users_groups'] . '.user_id=' . $this->tables['users'] . '.id')
+                        ->get();
+    }
+
 }

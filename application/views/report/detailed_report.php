@@ -71,10 +71,10 @@
             <tr>
                 <td><a href="">Total</a></td>
                 <td>{{reportSummery.total_request}}</td>
-                <td>{{reportSummery.total_request}}</td>
                 <td>{{reportSummery.total_pending}}</td>
                 <td>{{reportSummery.total_success}}</td>
                 <td>{{reportSummery.total_processed}}</td>
+                <td>{{reportSummery.total_failed}}</td>
                 <td></td>
             </tr>
         </tfoot>
