@@ -643,34 +643,6 @@ class Reseller extends Role_Controller {
                     echo json_encode($response);
                     return;
                 }
-//                if (!property_exists($resellerInfo, "first_name")) {
-//                    $response["message"] = "Please assign first name !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
-//                if (!property_exists($resellerInfo, "last_name")) {
-//                    $response["message"] = "Please assign last name !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
-//                if (!property_exists($resellerInfo, "email")) {
-//                    $response["message"] = "Please assign email !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
-//                if (property_exists($resellerInfo, "mobile")) {
-//                    $cell_no = $resellerInfo->mobile;
-//                    $this->load->library('utils');
-//                    if ($this->utils->cell_number_validation($cell_no) == FALSE) {
-//                        $response["message"] = "Please Enter a Valid Cell Number !!";
-//                        echo json_encode($response);
-//                        return;
-//                    }
-//                } else {
-//                    $response["message"] = "Please Enter a Valid Cell Number !!";
-//                    echo json_encode($response);
-//                    return;
-//                }
 
                 if (property_exists($resellerInfo, "username")) {
                     $username = $resellerInfo->username;

@@ -467,6 +467,31 @@ class Transaction_library {
         }
         return $transction_status_list;
     }
+    
+    /*
+     * This method will return dropdown list to be displayed as status type at pending request page
+     * @author nazmul hasan on 8th october 2016
+     */
+    public function get_pending_request_statuses() {
+        $transction_status_list = array();
+        $select_all = array(
+            "id" => SELECT_ALL_STATUSES_TRANSACTIONS,
+            "title" => "All",
+            "selected" => true
+        );
+        $transction_status_list[] = $select_all;
+        $transction_status_list_array = $this->transaction_model->get_user_transaction_statuses()->result_array();
+        if (!empty($transction_status_list_array)) {
+            foreach ($transction_status_list_array as $transction_status) {
+                if($transction_status['id'] == TRANSACTION_STATUS_ID_PENDING || $transction_status['id'] == TRANSACTION_STATUS_ID_PROCESSED)
+                {
+                    $transction_status['selected'] = false;
+                    $transction_status_list[] = $transction_status;
+                }                
+            }
+        }
+        return $transction_status_list;
+    }
 
     public function check_transaction_interval_validation($cell_number_list = array(), $service_id_list = array(), $where = array()) {
         $response['validation_flag'] = FALSE;

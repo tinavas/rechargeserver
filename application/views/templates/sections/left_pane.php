@@ -43,6 +43,7 @@
                                 <li><a href="#">SMS History</a></li>
                             </ul>
                         </li>-->
+            <li><a href="<?php echo base_url(); ?>history/pending">Pending Request</a></li>
             <li><a href="javascript:void(0)" class="chld">History</a>
                 <ul id="baby">
                     <li><a href="<?php echo base_url() . 'history/all_transactions' ?>">All History</a></li>

@@ -31,58 +31,6 @@ class Auth extends CI_Controller {
             $user_group = $this->ion_auth->get_current_user_types();
             foreach ($user_group as $group) {
                 if ($group == SUPER_ADMIN) {
-                    /* $this->load->library('superadmin/org/history_library');
-                      $result_event = $this->history_library->get_deshbord_info();
-                      if (!empty($result_event)) {
-                      //                        if (property_exists($result_event_event, "responseCode") != FALSE) {
-                      //                            if ($result_event_event->responseCode == RESPONSE_CODE_SUCCESS) {
-                      //                                $result_event = $result_event_event->result;
-                      if (property_exists($result_event, "summaryInfo")) {
-                      $summary_info = $result_event->summaryInfo;
-                      $this->data['summary_info'] = $summary_info;
-                      }
-                      if (property_exists($result_event, "serviceRankByVolumnList")) {
-                      $service_volumn_rank_list = $result_event->serviceRankByVolumnList;
-                      $this->data['service_volumn_rank_list'] = json_encode($service_volumn_rank_list);
-                      }
-                      if (property_exists($result_event, "topCustomerList")) {
-                      $top_customer_list = $result_event->topCustomerList;
-                      $this->data['top_customer_list'] = json_encode($top_customer_list);
-                      }
-                      $service_profit_list = array();
-                      if (property_exists($result_event, "serviceProfitRankList")) {
-                      $profit_rank_list = $result_event->serviceProfitRankList;
-                      foreach ($profit_rank_list as $profit_rank_info) {
-                      $service_profit_info = array();
-                      if ($profit_rank_info->service_id == SERVICE_TYPE_ID_BKASH_CASHIN) {
-                      $service_profit_info['service'] = 'BKash';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_DBBL_CASHIN) {
-                      $service_profit_info['service'] = 'BDDL';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_MCASH_CASHIN) {
-                      $service_profit_info['service'] = 'M-Cash';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_UCASH_CASHIN) {
-                      $service_profit_info['service'] = 'U-Cash';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_TOPUP_GP) {
-                      $service_profit_info['service'] = 'Topup-Gp';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_TOPUP_ROBI) {
-                      $service_profit_info['service'] = 'Topup-Robi';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_TOPUP_BANGLALINK) {
-                      $service_profit_info['service'] = 'Topup-BLink';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_TOPUP_AIRTEL) {
-                      $service_profit_info['service'] = 'Topup-Airtel';
-                      }else if ($profit_rank_info->service_id == SERVICE_TYPE_ID_TOPUP_TELETALK) {
-                      $service_profit_info['service'] = 'Topup-Teletalk';
-                      }
-                      $service_profit_info['service_percentage'] = (int)$profit_rank_info->service_percentage;
-                      $service_profit_list[] = $service_profit_info;
-                      }
-                      $this->data['profit_rank_list'] = json_encode($service_profit_list);
-                      }
-                      }
-                      //                        }
-                      //                    }
-                      $this->data['app'] = HISTORY_APP;
-                      $this->template->load(null, "superadmin/index", $this->data); */
                     redirect("superadmin/sim", "refresh");
                 } else {
                     echo "Non member";
@@ -105,12 +53,15 @@ class Auth extends CI_Controller {
             $remember = (bool) $this->input->post('remember');
 
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
-                //if the login is successful
-                //redirect them back to the home page
-//                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                //right now we are setting a default pin
-//                $this->session->set_userdata(array('pin' => "1234"));
-                redirect('superadmin/auth/pin', 'refresh');
+                $user_group = $this->ion_auth->get_current_user_types();
+                foreach ($user_group as $group) {
+                    if ($group == SUPER_ADMIN) {
+                        redirect('superadmin/auth/pin', 'refresh');
+                    } else {
+                        redirect('superadmin/auth/logout', 'refresh');
+                    }
+                }
+                
             } else {
                 //if the login was un-successful
                 //redirect them back to the login page

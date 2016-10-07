@@ -25,6 +25,9 @@
         <li >
             <a href="<?php echo base_url() ?>superadmin/login_attempt">Login attempt</a>
         </li>
+        <li id="user">
+            <a href="<?php echo base_url() ?>superadmin/user/update_user">Update User</a>
+        </li>
         <li id="logout">
             <a href="<?php echo base_url() ?>superadmin/auth/logout">Log out</a>                                
         </li>                            

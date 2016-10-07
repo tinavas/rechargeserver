@@ -36,6 +36,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/historyService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/companyInfoConfigurationService.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/simService.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/services/userService.js"></script>
         <!--<angular Controller>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/serviceController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/subscriberController.js"></script>
@@ -44,6 +45,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/imageCropController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/companyInfoConfigurationController.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/simController.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/controllers/userController.js"></script>
         <!--<angular Apps>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/serviceApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/subscriberApp.js"></script>
@@ -52,6 +54,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/simApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/companyInfoConfigurationApp.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/LoginAttemptApp.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/superadmin/apps/userApp.js"></script>
 
     </head>
     <body ng-app="<?php echo $app; ?>">

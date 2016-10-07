@@ -509,6 +509,36 @@ var transactionController = angular.module('controller.Transction', ['services.T
                         });
 
             };
+            $scope.getPendingRequestHistory = function (startDate, endDate) {
+                $scope.searchInfo.limit = $scope.allTransactions;
+                if (startDate != "" && endDate != "") {
+                    $scope.searchInfo.fromDate = startDate;
+                    $scope.searchInfo.toDate = endDate;
+                }
+                transctionService.getPendingRequestHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            $scope.transctionInfoList = data.transaction_list;
+                            $scope.totalAmount = data.total_amount;
+                            getCurrentPageTransctionAmount();
+                            if ($scope.allTransactions != false) {
+                                $scope.pageSize = data.total_transactions;
+                                $scope.allTransactions = false;
+                            }
+                            setCollectionLength(data.total_transactions);
+                        });
+            };
+            $scope.getPendingRequestHistoryTransctionByPagination = function (num) {
+                $scope.searchInfo.offset = getOffset(num);
+                transctionService.getPendingRequestHistory($scope.searchInfo).
+                        success(function (data, status, headers, config) {
+                            if (typeof data.transaction_list != "undefined") {
+                                $scope.transctionInfoList = data.transaction_list;
+                                $scope.totalAmount = data.total_amount;
+                                getCurrentPageTransctionAmount();
+                            }
+                        });
+
+            };
             $scope.setBkashTransaction = function (transctionInfo) {
                 $scope.bkashInfo = JSON.parse(transctionInfo);
             }

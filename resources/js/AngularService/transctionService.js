@@ -103,6 +103,16 @@ angular.module('services.Transction', []).
                     }
                 });
             };
+            transctionService.getPendingRequestHistory = function(searchParam) {
+
+                return $http({
+                    method: 'post',
+                    url: $location.path() + $app_name + '/history/pending',
+                    data: {
+                        searchParam: searchParam
+                    }
+                });
+            };
             transctionService.getPaymentHistory = function(searchParam) {
 
                 return $http({

@@ -880,5 +880,81 @@ class History extends Role_Controller {
     function pagination_tmpl_load() {
         $this->load->view('dir_pagination');
     }
+    
+    
+    // ----------------------------------- Pending Request --------------------------------//
+    /*
+     * This method will display transaction list of pending request from left panel menu item
+     * @author nazmul hasan on 8th october 2016
+     */
+    function pending()
+    {
+        $this->data['message'] = "";
+        $where = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        //right now we are displaying pending and processed transaction statuses as pending request history page
+        $status_id_list = array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED);
+        if (file_get_contents("php://input") != null) {
+            $response = array();
+            $from_date = 0;
+            $to_date = 0;
+            $offset = TRANSACTION_PAGE_DEFAULT_OFFSET;
+            $limit = TRANSACTION_PAGE_DEFAULT_LIMIT;
+            $postdata = file_get_contents("php://input");
+            $requestInfo = json_decode($postdata);
+            if (property_exists($requestInfo, "searchParam") != FALSE) {
+                $search_param = $requestInfo->searchParam;
+                if (property_exists($search_param, "fromDate") != FALSE) {
+                    $from_date = $search_param->fromDate;
+                }
+                if (property_exists($search_param, "toDate") != FALSE) {
+                    $to_date = $search_param->toDate;
+                }
+                if (property_exists($search_param, "offset") != FALSE) {
+                    $offset = $search_param->offset;
+                }
+                if (property_exists($search_param, "limit") != FALSE) {
+                    $limit_status = $search_param->limit;
+                    if ($limit_status != FALSE) {
+                        $limit = 0;
+                    }
+                }
+                if (property_exists($search_param, "statusId") != FALSE) {
+                    $status_id = $search_param->statusId;
+                    if ($status_id != SELECT_ALL_STATUSES_TRANSACTIONS) {
+                        $status_id_list = array($status_id);
+                    }
+                }
+            }
+            $transction_information_array = $this->transaction_library->get_user_transaction_list(array(), $status_id_list, $from_date, $to_date, $limit, $offset, $where);
+            if (!empty($transction_information_array)) {
+                $response['total_transactions'] = $transction_information_array['total_transactions'];
+                $response['total_amount'] = $transction_information_array['total_amount'];
+                $response['transaction_list'] = $transction_information_array['transaction_list'];
+            }
+            echo json_encode($response);
+            return;
+        }
+        $this->load->library('Date_utils');
+        $current_date = $this->date_utils->get_current_date();
+        $this->data['current_date'] = $current_date;
+        $total_transactions = 0;
+        $total_amount = 0;
+        $transaction_list = array();
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(), $status_id_list, $current_date, $current_date, TRANSACTION_PAGE_DEFAULT_LIMIT, TRANSACTION_PAGE_DEFAULT_OFFSET, $where);
+        if (!empty($transaction_list_array)) {
+            $total_transactions = $transaction_list_array['total_transactions'];
+            $total_amount = $transaction_list_array['total_amount'];
+            $transaction_list = $transaction_list_array['transaction_list'];
+        }
+        $transction_status_list = $this->transaction_library->get_pending_request_statuses();
+        $this->data['transction_status_list'] = $transction_status_list;
+        $this->data['transaction_list'] = json_encode($transaction_list);
+        $this->data['total_transactions'] = json_encode($total_transactions);
+        $this->data['total_amount'] = json_encode($total_amount);
+        $this->data['app'] = TRANSCATION_APP;
+        $this->template->load(null, 'history/transaction/pending/index', $this->data);
+    }
 
 }
