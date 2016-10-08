@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo $site_info['title']?></title>
+        <title><?php echo $site_info['title'] ?></title>
 
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="author" content="Nazmul Hasan, Alamgir Kabir, Rashida Sultana, Ridoy">
@@ -31,7 +31,7 @@
         <script src="<?php echo base_url(); ?>resources/js/recharge.js" type="text/javascript"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
-
+        <script src="<?php echo base_url(); ?>resources/js/utils.js" type="text/javascript"></script>
 
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>

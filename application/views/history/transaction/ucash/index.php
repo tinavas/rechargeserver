@@ -6,7 +6,14 @@
         $('#end_date').val('<?php echo $current_date ?>');
         $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>');
     });
-    function search_ucash() {
+    function search_ucash(searchInfo) {
+         if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
+            if (number_validation(searchInfo.cellNo) == false) {
+                $("#content").html("Please give a valid cell Number");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
         angular.element($("#search_submit_btn")).scope().getUcashTransactionList(startDate, endDate, '<?php echo $user_id; ?>');
@@ -27,7 +34,7 @@
         </li>
         <li>Show All</li>
         <li> <input type="checkbox" ng-model="allTransactions"></li>
-        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_ucash()" class="button-custom"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_ucash(angular.element(this).scope().searchInfo)" class="button-custom"></li>
     </ul>
     <table class="table10"> 
         <thead>

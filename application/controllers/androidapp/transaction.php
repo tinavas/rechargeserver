@@ -359,7 +359,7 @@ class Transaction extends CI_Controller {
             'user_id' => $user_id
         );
         $this->load->library('transaction_library');
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_BKASH_CASHIN), array(), 0, 0, 0,TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
@@ -397,7 +397,7 @@ class Transaction extends CI_Controller {
             'user_id' => $user_id
         );
         $this->load->library('transaction_library');
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_DBBL_CASHIN), array(), 0, 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
@@ -435,7 +435,7 @@ class Transaction extends CI_Controller {
             'user_id' => $user_id
         );
         $this->load->library('transaction_library');
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_MCASH_CASHIN), array(), 0, 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
@@ -473,7 +473,7 @@ class Transaction extends CI_Controller {
             'user_id' => $user_id
         );
         $this->load->library('transaction_library');
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_UCASH_CASHIN), array(), 0, 0, 0,TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {
@@ -511,7 +511,7 @@ class Transaction extends CI_Controller {
             'user_id' => $user_id
         );
         $this->load->library('transaction_library');
-        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
+        $transaction_list_array = $this->transaction_library->get_user_transaction_list(array(SERVICE_TYPE_ID_TOPUP_GP, SERVICE_TYPE_ID_TOPUP_ROBI, SERVICE_TYPE_ID_TOPUP_BANGLALINK, SERVICE_TYPE_ID_TOPUP_AIRTEL, SERVICE_TYPE_ID_TOPUP_TELETALK), array(), 0, 0, 0, TRANSACTION_PAGE_DEFAULT_LIMIT, 0, $where);
         $transaction_list = array();
         if (!empty($transaction_list_array)) {
             foreach ($transaction_list_array['transaction_list'] as $temp_transaction_info) {

@@ -13,13 +13,14 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/image-crop-styles.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">        
-        
+
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
+        <script src="<?php echo base_url(); ?>resources/js/utils.js" type="text/javascript"></script>
 
         <!--<angular>-->
         <script type="text/javascript" src="<?php echo base_url(); ?>resources/js/angular/angular.js"></script>

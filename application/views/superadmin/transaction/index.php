@@ -6,14 +6,7 @@
         $('#end_date').val('<?php echo $current_date ?>');
         $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_PENDING ?>');
     });
-    function number_validation(phoneNumber) {
-        var regexp = /^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
-        var validPhoneNumber = phoneNumber.match(regexp);
-        if (validPhoneNumber) {
-            return true;
-        }
-        return false;
-    }
+   
     function search_transaction(searchInfo) {
         if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
             if (number_validation(searchInfo.cellNo) == false) {

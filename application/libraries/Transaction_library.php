@@ -228,7 +228,7 @@ class Transaction_library {
      * @author nazmul hasan on 24th february 2016
      */
 
-    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $where = array()) {
+    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(),$cell_no = 0,  $from_date = 0, $to_date = 0, $limit = 0, $offset = 0, $where = array()) {
         $this->load->library('date_utils');
         if ($from_date != 0) {
             $from_date = $this->date_utils->server_start_unix_time_of_date($from_date);
@@ -242,7 +242,7 @@ class Transaction_library {
         }
         $total_transactions = 0;
         $total_amount = 0;
-        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $from_date, $to_date)->result_array();
+        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $cell_no, $from_date, $to_date)->result_array();
         if (!empty($transaction_summary_array)) {
             $total_transactions = (int) $transaction_summary_array[0]['total_transactions'];
             $total_amount = (double) $transaction_summary_array[0]['total_amount'];
@@ -250,7 +250,7 @@ class Transaction_library {
         if (!empty($where)) {
             $this->transaction_model->where($where);
         }
-        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $status_id_list, $from_date, $to_date, $limit, $offset)->result_array();
+        $transaction_list = $this->transaction_model->get_user_transaction_list($service_id_list, $status_id_list, $cell_no, $from_date, $to_date, $limit, $offset)->result_array();
         $transaction_info_list = array();
         if (!empty($transaction_list)) {
             foreach ($transaction_list as $transaction_info) {

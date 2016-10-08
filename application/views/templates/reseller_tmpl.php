@@ -28,6 +28,7 @@
         <script src="<?php echo base_url(); ?>resources/js/ajax_req.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/smscounter.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>resources/js/recharge.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>resources/js/utils.js" type="text/javascript"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/superadmin/zebra_datepicker_core.js"></script>
         <!--<angular>-->

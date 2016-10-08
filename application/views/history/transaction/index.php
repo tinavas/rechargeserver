@@ -6,7 +6,14 @@
         $('#end_date').val('<?php echo $current_date ?>');
         $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>');
     });
-    function search_receive_history() {
+    function search_receive_history(searchInfo) {
+        if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
+            if (number_validation(searchInfo.cellNo) == false) {
+                $("#content").html("Please give a valid cell Number");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
         angular.element($("#search_submit_btn")).scope().getAllHistory(startDate, endDate);
@@ -17,14 +24,16 @@
 <div class="ezttle"><span class="text"> Transaction History</span></div>
 <div class="mypage" ng-controller="transctionController">
     <ul class="list-unstyled paymentHistorySearch" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
+        <li>Cell No</li>
+        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="88017XXXXXXXX" ng-model="searchInfo.cellNo"></li>
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-         <li>Status Type</li>
-            <li>
-                <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
-            </li>
+        <li>Status Type</li>
+        <li>
+            <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
+        </li>
         <li>Show All</li>
         <li> <input type="checkbox" ng-model="allTransactions"></li>
         <!--        <li>Type</li>
@@ -36,7 +45,7 @@
                     </select>
                 </li>-->
 
-        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history()" class="button-custom"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_receive_history(angular.element(this).scope().searchInfo)" class="button-custom"></li>
     </ul>
     <table class="table10" ng-init="setTransactionInfoList(<?php echo htmlspecialchars(json_encode($transaction_list)) ?>, <?php echo htmlspecialchars(json_encode($total_transactions)) ?>, <?php echo htmlspecialchars(json_encode($total_amount)) ?>)">
         <thead>

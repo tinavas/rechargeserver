@@ -502,7 +502,7 @@ class Transaction_model extends Ion_auth_model {
      * @author nazmul hasan on 24th February 2016
      */
 
-    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
+    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -515,6 +515,9 @@ class Transaction_model extends Ion_auth_model {
         }
         if ($offset > 0) {
             $this->db->offset($offset);
+        }
+        if ($cell_no != 0) {
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
         }
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
@@ -580,13 +583,16 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 26th April 2016
      */
 
-    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $from_date = 0, $to_date = 0) {
+    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
                 $this->db->where($where);
             }
             $this->_ion_where = array();
+        }
+        if ($cell_no != 0) {
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
         }
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
