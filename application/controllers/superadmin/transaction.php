@@ -40,10 +40,14 @@ class Transaction extends CI_Controller {
             $response = array();
             $from_date = 0;
             $to_date = 0;
+            $cell_no = 0;
             $postdata = file_get_contents("php://input");
             $requestInfo = json_decode($postdata);
             if (property_exists($requestInfo, "searchInfo") != FALSE) {
                 $search_param = $requestInfo->searchInfo;
+                if (property_exists($search_param, "cellNo") != FALSE) {
+                    $cell_no = $search_param->cellNo;
+                }
                 if (property_exists($search_param, "fromDate") != FALSE) {
                     $from_date = $search_param->fromDate;
                 }
@@ -72,7 +76,7 @@ class Transaction extends CI_Controller {
                     }
                 }
             }
-            $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, $from_date, $to_date, $offset, $limit);
+            $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, $cell_no, $from_date, $to_date, $offset, $limit);
             $response['transaction_list'] = $transction_list_array['transaction_list'];
             $response['total_transactions'] = $transction_list_array['total_transactions'];
             echo json_encode($response);
@@ -80,7 +84,7 @@ class Transaction extends CI_Controller {
         }
         $this->load->library('superadmin/org/super_utils');
         $current_date = $this->super_utils->get_current_date();
-        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, $current_date, $current_date, $offset, $limit);
+        $transction_list_array = $this->transaction_library->get_transaction_list($service_id_list, $status_id_list, $transaction_process_types, 0, $current_date, $current_date, $offset, $limit);
         $this->data['transaction_list'] = $transction_list_array['transaction_list'];
         $this->data['total_transactions'] = $transction_list_array['total_transactions'];
         $transction_status_list = $this->transaction_library->get_user_transaction_statuses();

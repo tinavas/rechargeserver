@@ -6,7 +6,22 @@
         $('#end_date').val('<?php echo $current_date ?>');
         $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_PENDING ?>');
     });
-    function search_transaction() {
+    function number_validation(phoneNumber) {
+        var regexp = /^((^\880|0)[1][1|5|6|7|8|9])[0-9]{8}$/;
+        var validPhoneNumber = phoneNumber.match(regexp);
+        if (validPhoneNumber) {
+            return true;
+        }
+        return false;
+    }
+    function search_transaction(searchInfo) {
+        if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
+            if (number_validation(searchInfo.cellNo) == false) {
+                $("#content").html("Please give a valid SIM Number");
+                $('#common_modal').modal('show');
+                return;
+            }
+        }
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
         angular.element($("#search_submit_btn")).scope().getTransactionList(startDate, endDate);
@@ -16,22 +31,24 @@
 <div class="ezttle"><span class="text">Transaction History</span></div>
 <div class="mypage" ng-controller="transctionController" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
     <ul class="list-unstyled paymentHistorySearch">
+        <li>Cell No</li>
+        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="88017XXXXXXXX" ng-model="searchInfo.cellNo"></li>
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
-      <li>Status Type</li>
-            <li> 
-                  <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
-            </li>
-      <li ng-init="setTransactionProcessTypeList('<?php echo htmlspecialchars(json_encode($transaction_process_type_list)) ?>')">
-          Process Type</li>
-            <li> 
-                  <select  ng-model='searchInfo.processId' required ng-options='transactionProcessType.id as transactionProcessType.title for transactionProcessType in transactionProcessTypeList' class="form-control input-xs"></select>
-            </li>
+        <li>Status Type</li>
+        <li> 
+            <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
+        </li>
+        <li ng-init="setTransactionProcessTypeList('<?php echo htmlspecialchars(json_encode($transaction_process_type_list)) ?>')">
+            Process Type</li>
+        <li> 
+            <select  ng-model='searchInfo.processId' required ng-options='transactionProcessType.id as transactionProcessType.title for transactionProcessType in transactionProcessTypeList' class="form-control input-xs"></select>
+        </li>
         <li>Show All</li>
         <li> <input type="checkbox" ng-model="allTransactions"></li>
-        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_transaction()" class="button-custom"></li>
+        <li><input id="search_submit_btn" type="submit" size="18" value="Search" onclick="search_transaction(angular.element(this).scope().searchInfo)" class="button-custom"></li>
     </ul>
     <table class="table table-striped table-hover"> 
         <thead>

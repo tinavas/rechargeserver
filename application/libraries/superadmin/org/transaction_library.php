@@ -41,7 +41,7 @@ class Transaction_library {
         return get_instance()->$var;
     }
 
-    public function get_transaction_list($service_id_list, $status_id_list, $process_id_list, $from_date = 0, $to_date = 0, $offset = 0, $limit = 0) {
+    public function get_transaction_list($service_id_list, $status_id_list, $process_id_list, $cell_no = 0, $from_date = 0, $to_date = 0, $offset = 0, $limit = 0) {
         $this->load->library('superadmin/org/super_utils');
         $from_unix_time = 0;
         if ($from_date != 0) {
@@ -52,11 +52,11 @@ class Transaction_library {
             $to_unix_time = $this->super_utils->server_end_unix_time_of_date($to_date);
         }
         $total_transactions = 0;
-        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $process_id_list, $from_unix_time, $to_unix_time)->result_array();
+        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time)->result_array();
         if (!empty($transaction_summary_array)) {
             $total_transactions = (int) $transaction_summary_array[0]['total_transactions'];
         }
-        $transaction_list = $this->transaction_model->get_transaction_list($service_id_list, $status_id_list, $process_id_list, $from_unix_time, $to_unix_time, $offset, $limit)->result_array();
+        $transaction_list = $this->transaction_model->get_transaction_list($service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time, $offset, $limit)->result_array();
         $transaction_info_list = array();
         if (!empty($transaction_list)) {
             foreach ($transaction_list as $transaction_info) {

@@ -100,8 +100,11 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 4th September 2016
      */
 
-    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $from_date = 0, $to_date = 0) {
+    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0) {
 
+        if ($cell_no != 0) {
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        }
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
             $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
@@ -130,7 +133,7 @@ class Transaction_model extends Ion_auth_model {
      * @author rashida on 4th September 2016
      */
 
-    public function get_transaction_list($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $from_unix_time = 0, $to_unix_time = 0, $offset = 0, $limit = 0) {
+    public function get_transaction_list($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = 0, $from_unix_time = 0, $to_unix_time = 0, $offset = 0, $limit = 0) {
 
         if ($limit > 0) {
             $this->db->limit($limit);
@@ -141,6 +144,9 @@ class Transaction_model extends Ion_auth_model {
         if ($from_unix_time != 0 && $to_unix_time != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_unix_time);
             $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_unix_time);
+        }
+        if ($cell_no != 0) {
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -195,7 +201,5 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_transaction_statuses'])
                         ->get();
     }
-
-
 
 }
