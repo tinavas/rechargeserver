@@ -1,0 +1,269 @@
+/*
+theme: theme 1
+Author: A.K.M. Nazmul Islam
+version: 1.0
+*/
+
+/* -------------------------------- main.css ----------------------------- */
+/*button,
+input[type=submit],
+.ez-button {
+    line-height: 50px;
+    padding: 0 10px;
+    text-align: center;
+    font-size: 22px;
+    font-family: Roboto, sans-serif;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    background: #0072C6;
+    vertical-align: top;
+    border-radius: 4px
+}
+
+button.ez-third-cta:hover,
+input[type=submit].ez-third-cta:hover,
+.ez-button.ez-third-cta:hover {
+    background:#0072C6
+}
+
+button.ez-active-btn:hover,
+input[type=submit].ez-active-btn:hover,
+.ez-button.ez-active-btn:hover {
+    color:#33c541;
+    background:#0072C6
+}
+
+.ez-operator-detected {
+    color:#0072C6;
+    font-size:30px
+}
+
+header,
+#div-header {
+    width:100%;
+    height:84px;
+    position:relative;
+    z-index:4;
+    background:#0072C6!important;
+}
+
+nav#ez-mobile-menu {
+    width:300px;
+    height:100%;
+    background:#0072C6;
+    padding:30px 40px 30px 50px;
+    position:fixed;
+    top:0;
+    right:-300px;
+    z-index:110
+}
+
+nav#ez-mobile-menu .ez-submenu .ez-menu-back-btn {
+    background:#0072C6;
+    color:#8a9597;
+    padding:12px 20px;
+    cursor:pointer
+}
+
+#ez-cookies {
+    width: 314px;
+    color: #fff;
+    position: fixed;
+    right: 0;
+    bottom: 10px;
+    z-index: 1000;
+    padding: 10px 0 10px 10px;
+    border:2px solid #0072C6;
+    background:rgba(0, 26, 110, .8)
+}
+
+#ez-cookie-button {
+    width:44px;
+    float:right;
+    position:absolute;
+    top:2px;
+    right:0;
+    bottom:0;
+    padding-top:5px;
+    background:#0072C6
+}
+
+.ez-mobile-menu li.ez-active div {
+    color:#fff;
+    background:#0072C6
+}
+
+#ez-lanDing-prmotion p {
+    background:#0072C6;
+    color:#fff;
+    font-size:28px;
+    margin-bottom:0!important;
+    padding:20px 25px
+}*/
+
+/* -------------------------------- menu.css ----------------------------- */
+ul#navmenu li a.chld:hover{
+    background:#0072C6 url(../images/caret_h.png) no-repeat right center;
+}
+
+ul#navmenu li.iehover a {
+    background:#0072C6;
+    color: #FFFFFF;
+    border-top:0px solid #2E69AE;
+}
+
+/* -------------------------------- recharge.css ----------------------------- */
+
+.head{
+    z-index:1200;
+    width:100%;
+    min-width:1024px;
+    background-color: #0072C6;
+    border-color: #005798;
+    border-radius: 0;
+    height: 50px;
+}
+
+.navbar-default {
+    background-color: #0072C6;
+    border-color: #005798;
+    border-radius: none;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: #0072C6;
+}
+
+.printhead{
+    margin:0px;
+    text-align:center;
+    margin-top:10px;
+    font-weight:bold;
+    color:#0072C6;
+}
+
+.colorbox.default span.base{
+    background: #0072C6 !important;
+}
+
+
+/* -------------------------------- styles.css ----------------------------- */
+.button-custom{
+    background-color:#0072C6; 
+    border: 1px solid #0072C6;
+    color:#fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 30px !important;
+    border-radius: 4px!important;
+}
+
+.custom_cancel_btn{
+    background-color:#0072C6;
+    border: 1px solid #0072C6!important;
+    color: #fff!important;
+    cursor: pointer!important;
+    font-size: 14px!important;
+    font-weight: normal!important;
+    padding: 8px 30px !important;
+    border-radius: 4px!important;
+    opacity: 1!important;
+    text-shadow: none!important;
+}
+
+
+
+/* -------------------------------- table ----------------------------- */
+.usage{
+    border: 1px solid #E5E5E5;
+}
+.usage h2{
+    background-color: #FAFBFB;
+    border-bottom: 1px solid #E5E5E5;
+    color: #333333;
+}
+.usage h3{
+    background-color: #FAFBFB;
+    border-top: 1px solid #E5E5E5; 
+    color:#333333;
+}
+.usage td{
+    border-bottom: 1px solid #E5E5E5;
+}
+ul.shortcurt li a{
+    color:#898F9C;
+}
+ul.shortcurt li a:hover{
+    color:#333;
+}
+ul.shortcurt li:hover{
+    border:1px solid #898F9C;
+}
+table.table10{
+    border: 1px solid #ccc;
+}
+
+table.table10 thead th{
+    background: #E9ECF1 repeat-x left top;
+    height: 26px;
+    padding: 0px 5px;
+    font-size: 11px;
+}
+
+table.table10 tbody td{
+    border-top:1px solid #EBEBEB;
+    height: 24px;
+    padding: 0px 5px;
+    font-size: 11px;
+}
+table.table10 tfoot tr{
+    border-top:1px solid #EBEBEB;
+    height: 30px;
+    padding: 0px 5px;
+    font-size: 11px;
+    line-height: 3em;
+}
+table.table10 tbody tr:hover ,table.table10 tfoot tr:hover{
+    background-color: #0072C6;
+    color: #FFF;
+    cursor: pointer;
+}
+table.table10 thead tr th a{
+    color: #333;
+}
+table.table10 thead tr th a:hover{
+    text-decoration: none;
+    cursor: text;
+}
+
+/* -------------------------------- custom ----------------------------- */
+
+/*Header background*/
+.ezttle{
+    background-color: #F1F1F1;
+    height: 40px;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/*Marquee section*/
+.marquee{
+    color: #fff;
+    background-color: #22468E;
+}
+
+/*show user profile --> service list*/
+
+.profileCustomResellerList li{
+    padding: 5px;
+/*    border: 1px solid #0072C6;*/
+}
+.profileCustomResellerList li:hover{
+    background-color: #0072C6;
+    cursor: pointer;
+    color: #fff;
+   
+}
