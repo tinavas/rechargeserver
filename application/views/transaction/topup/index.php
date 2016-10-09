@@ -51,17 +51,16 @@ if (isset($error_message)) {
                 $('#common_modal').modal('show');
                 return;
             }
-        } else if (topUpInfo.amount < <?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>) {
+        } else if (topUpInfo.amount < '<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>') {
             $("#content").html("Please give a minimum amount TK. " + '<?php echo TOPUP_MINIMUM_CASH_IN_AMOUNT ?>');
             $('#common_modal').modal('show');
             return;
         }
-        if (topUpInfo.amount > <?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>) {
+        if (topUpInfo.amount > '<?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>') {
             $("#content").html("Please give a maximum amount TK. " + '<?php echo TOPUP_MAXIMUM_CASH_IN_AMOUNT; ?>');
             $('#common_modal').modal('show');
             return;
         }
-
         $("#confirmation_content").html("Are you sure to submit topup?");
         $('#common_confirmation_modal').modal('show');
         $('#modal_confirm_click_id').on("click", function() {
