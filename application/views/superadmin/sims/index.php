@@ -34,9 +34,6 @@
                                     <th style="text-align: center;">Sim Number</th>
                                     <th style="text-align: center;">Description</th>
                                     <th style="text-align: center;">Status</th>
-                                    <th style="text-align: center;">Current balance</th>
-                                    <th style="text-align: center;">Today's uses</th>
-                                    <th style="text-align: center;">No.Trans</th>
                                     <th style="text-align: center;">Balance</th>
                                     <th style="text-align: center;">Show</th>
                                     <th style="text-align: center;">Edit</th>
@@ -46,9 +43,6 @@
                                     <th style="text-align: center;">{{simInfo.description}}</th>
                                     <th style="text-align: center;" ng-if="simInfo.status == '<?php echo SIM_STATUS_ENABLE ?>'">Active</th>
                                     <th style="text-align: center;" ng-if="simInfo.status == '<?php echo SIM_STATUS_DISABLE ?>'">Inactive</th>
-                                    <th style="text-align: center;">{{simInfo.current_balance}}</th>
-                                    <th style="text-align: center;">{{simInfo.todays_uses}}</th>
-                                    <th style="text-align: center;">{{simInfo.no_of_transaction}}</th>
                                     <th style="text-align: center"><a id="update_balance_id" onclick="update_balance(angular.element(this).scope().simInfo.sim_no)">Update</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/show_sim/"; ?>{{simInfo.sim_no}}">Show</a></th>
                                     <th style="text-align: center"><a href="<?php echo base_url() . "superadmin/sim/edit_sim/"; ?>{{simInfo.sim_no}}">Edit</a></th>

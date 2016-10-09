@@ -49,7 +49,7 @@
                                 Block Duration:
                             </label>
                             <div class ="col-md-6" ng-init="setTimeList('<?php echo htmlspecialchars(json_encode($time_list)); ?>')">
-                                <select  for="service_block_time" id="type"  ng-model="serviceInfo.transaction_intervel" class="form-control control-label requiredField" ng-options='timeInfo.time_in_sec as timeInfo.time_in_min for timeInfo in timeList' class="form-control input-xs"></select>
+                                <select  for="service_block_time" id="type"  ng-model="serviceInfo.transaction_interval" class="form-control control-label requiredField" ng-options='timeInfo.time_in_sec as timeInfo.time_in_min for timeInfo in timeList' class="form-control input-xs"></select>
                             </div>
                         </div>
                         <div class="row form-group">

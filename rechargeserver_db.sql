@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `services` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
   `type_id` int(11) unsigned DEFAULT 1,
-  `transaction_intervel` int(11) unsigned DEFAULT 0,
+  `transaction_interval` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_services_service_types1_idx` (`type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;   

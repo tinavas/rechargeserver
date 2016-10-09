@@ -221,7 +221,7 @@ class Super_utils {
      * @author rashida on 26th Sep 2016
      */
 
-    public function get_transaction_intervel_list() {
+    public function get_transaction_interval_list() {
         $time_list = array();
         $obj = new stdClass();
         $obj->time_in_sec = 60;
