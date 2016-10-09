@@ -24,12 +24,12 @@
 <div class="ezttle"><span class="text">Transaction History</span></div>
 <div class="mypage" ng-controller="transctionController" ng-init="setTransactionStatusList('<?php echo htmlspecialchars(json_encode($transction_status_list)) ?>')">
     <ul class="list-unstyled paymentHistorySearch">
-        <li>Cell No</li>
-        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="88017XXXXXXXX" ng-model="searchInfo.cellNo"></li>
         <li>Start Date</li>
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
+        <li>Cell No</li>
+        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="017XXXXXXXX" ng-model="searchInfo.cellNo"></li>
         <li>Status Type</li>
         <li> 
             <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
@@ -54,6 +54,7 @@
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
                 <th><a href="">Status</a></th>
+                <th><a href="">Process</a></th>
                 <th><a href="">Date</a></th>
                 <th><a href="">Action</a></th>
             </tr>
@@ -70,11 +71,10 @@
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
                 <th>{{transctionInfo.status}}</th>
+                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_AUTO; ?>'">Auto</th>
+                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>'">Manual</th>
                 <th>{{transctionInfo.created_on}}</th>
                 <th><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
-<!--                <th ng-if="transctionInfo.process_type_id == '<?php echo TRANSACTION_PROCESS_TYPE_ID_MANUAL; ?>' && transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_PENDING; ?>'"><a href="<?php echo base_url() . "superadmin/transaction/update_transaction/"; ?>{{transctionInfo.transaction_id}}">Edit</a></th>
-                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_FAILED; ?>' || transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_CANCELLED; ?>'">delete</th>
-                <th ng-if="transctionInfo.status_id == '<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL; ?>'">No Action</th>-->
             </tr>
         </tfoot>
     </table>

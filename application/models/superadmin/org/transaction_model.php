@@ -92,22 +92,20 @@ class Transaction_model extends Ion_auth_model {
 
     /*
      * This method will return  transaction summary
+     * @param $user_id_list, user id list
      * @param $service_id_list, service id list
      * @param $status_id_list, service status id list
      * @param $process_id_list, service process type id list
+     * @param $cell_no, cell numer of transaction
      * @param $from_date, start date in unix format
      * @param $to_date, end date in unix format
      * @author rashida on 4th September 2016
      */
 
-    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0) {
+    function get_transaction_summary($user_id_list = array(), $service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = '', $from_date = 0, $to_date = 0) {
 
-        if ($cell_no != 0) {
-            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
-        }
-        if ($from_date != 0 && $to_date != 0) {
-            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
-            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
+        if (!empty($user_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.user_id', $user_id_list);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -118,6 +116,14 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($process_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.process_type_id', $process_id_list);
         }
+        if ($cell_no != '') {
+            $this->db->like($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        }
+        if ($from_date != 0 && $to_date != 0) {
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
+            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
+        }
+        
         return $this->db->select('COUNT(*) as total_transactions')
                         ->from($this->tables['user_transactions'])
                         ->get();
@@ -125,15 +131,17 @@ class Transaction_model extends Ion_auth_model {
 
     /*
      * This method will return  trnsaction list
+     * $param $user_id_list, user id list
      * @param $service_id_list, service id list
      * @param $status_id_list, service status id list
      * @param $process_id_list, service process type id list
+     * @param $cell_no, cell number of a transaction
      * @param $from_date, start date in unix format
      * @param $to_date, end date in unix format
      * @author rashida on 4th September 2016
      */
 
-    public function get_transaction_list($service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = 0, $from_unix_time = 0, $to_unix_time = 0, $offset = 0, $limit = 0) {
+    public function get_transaction_list($user_id_list = array(), $service_id_list = array(), $status_id_list = array(), $process_id_list = array(), $cell_no = '', $from_unix_time = 0, $to_unix_time = 0, $offset = 0, $limit = 0) {
 
         if ($limit > 0) {
             $this->db->limit($limit);
@@ -141,12 +149,8 @@ class Transaction_model extends Ion_auth_model {
         if ($offset > 0) {
             $this->db->offset($offset);
         }
-        if ($from_unix_time != 0 && $to_unix_time != 0) {
-            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_unix_time);
-            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_unix_time);
-        }
-        if ($cell_no != 0) {
-            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        if (!empty($user_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.user_id', $user_id_list);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -157,6 +161,14 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($process_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.process_type_id', $process_id_list);
         }
+        if ($cell_no != '') {
+            $this->db->like($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        }
+        if ($from_unix_time != 0 && $to_unix_time != 0) {
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_unix_time);
+            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_unix_time);
+        }
+        
         $this->db->order_by($this->tables['user_transactions'] . '.id', 'desc');
         return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title,' . $this->tables['service_types'] . '.title as process_type,' . $this->tables['users'] . '.username')
                         ->from($this->tables['user_transactions'])

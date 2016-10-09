@@ -41,7 +41,19 @@ class Transaction_library {
         return get_instance()->$var;
     }
 
-    public function get_transaction_list($service_id_list, $status_id_list, $process_id_list, $cell_no = 0, $from_date = 0, $to_date = 0, $offset = 0, $limit = 0) {
+    /*
+     * This method will return transaction list based on offset and limit, total number of transactions without offset and limit 
+     * @param $user_id_list, user id list
+     * @param $service_id_list, service id list
+     * @param $process_id_list, process id list
+     * @param $cell_no, transaction cell number
+     * @param $from_date, start date of transaction
+     * @param $to_date, end date of transaction
+     * @param $offset, offset
+     * @param $limit, limit
+     * @author nazmul hasan on 9th october 2016
+     */
+    public function get_transaction_list($user_id_list = array(), $service_id_list, $status_id_list, $process_id_list, $cell_no = '', $from_date = 0, $to_date = 0, $offset = 0, $limit = 0) {
         $this->load->library('superadmin/org/super_utils');
         $from_unix_time = 0;
         if ($from_date != 0) {
@@ -52,11 +64,11 @@ class Transaction_library {
             $to_unix_time = $this->super_utils->server_end_unix_time_of_date($to_date);
         }
         $total_transactions = 0;
-        $transaction_summary_array = $this->transaction_model->get_user_transaction_summary($service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time)->result_array();
+        $transaction_summary_array = $this->transaction_model->get_transaction_summary($user_id_list, $service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time)->result_array();
         if (!empty($transaction_summary_array)) {
             $total_transactions = (int) $transaction_summary_array[0]['total_transactions'];
         }
-        $transaction_list = $this->transaction_model->get_transaction_list($service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time, $offset, $limit)->result_array();
+        $transaction_list = $this->transaction_model->get_transaction_list($user_id_list, $service_id_list, $status_id_list, $process_id_list, $cell_no, $from_unix_time, $to_unix_time, $offset, $limit)->result_array();
         $transaction_info_list = array();
         if (!empty($transaction_list)) {
             foreach ($transaction_list as $transaction_info) {
@@ -65,6 +77,7 @@ class Transaction_library {
             }
         }
         $transaction_information = array();
+        //total number of transaction without limit and offset. this value will be used for pagination logic
         $transaction_information['total_transactions'] = $total_transactions;
         $transaction_information['transaction_list'] = $transaction_info_list;
         return $transaction_information;
