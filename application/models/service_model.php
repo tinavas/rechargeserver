@@ -122,7 +122,7 @@ class Service_model extends Ion_auth_model {
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['services'] . '.id', $service_id_list);
         }
-        $this->db->where($this->tables['services'] . '.transaction_intervel >', 0);
+        $this->db->where($this->tables['services'] . '.transaction_interval >', 0);
         return $this->db->select($this->tables['services'] . '.id as service_id,' . $this->tables['services'] . '.*')
                         ->from($this->tables['services'])
                         ->get();

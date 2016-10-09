@@ -708,7 +708,7 @@ class Transaction_model extends Ion_auth_model {
     public function get_trnsaction_list($cell_number_list = array(), $service_List = array()) {
         $result = array();
         foreach ($service_List as $service_info) {
-            $block_unix_time = now() - $service_info['transaction_intervel'];
+            $block_unix_time = now() - $service_info['transaction_interval'];
             //run each where that was passed
             if (isset($this->_ion_where) && !empty($this->_ion_where)) {
                 foreach ($this->_ion_where as $where) {

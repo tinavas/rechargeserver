@@ -77,8 +77,8 @@ class Service extends CI_Controller {
             if (property_exists($serviceInfo, "type_id") != FALSE) {
                 $service_info['type_id'] = $serviceInfo->type_id;
             }
-            if (property_exists($serviceInfo, "transaction_intervel") != FALSE) {
-                $service_info['transaction_intervel'] = $serviceInfo->transaction_intervel;
+            if (property_exists($serviceInfo, "transaction_interval") != FALSE) {
+                $service_info['transaction_interval'] = $serviceInfo->transaction_interval;
             }
 
             $result = $this->service_model->update_service($service_id, $service_info);
@@ -104,7 +104,7 @@ class Service extends CI_Controller {
             $service_type_list[] = $service_type_info;
         }
         $this->load->library('superadmin/org/super_utils');
-        $time_list = $this->super_utils->get_transaction_intervel_list();
+        $time_list = $this->super_utils->get_transaction_interval_list();
         $this->data['app'] = SERVICE_APP;
         $this->data['service_info'] = json_encode($service_info);
         $this->data['service_type_list'] = $service_type_list;
