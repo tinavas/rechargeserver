@@ -571,8 +571,8 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($status_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.status_id', $status_id_list);
         }
-        if ($cell_no != 0) {
-            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        if ($cell_no != '') {
+            $this->db->like($this->tables['user_transactions'] . '.cell_no', $cell_no);
         }
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
