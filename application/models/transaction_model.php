@@ -494,15 +494,17 @@ class Transaction_model extends Ion_auth_model {
 
     /*
      * This method will return user transaction list
+     * @param $user_id_list, user id list
      * @param $service_id_list, service id list of transactions
+     * @param $statu_id_list, status id list
+     * @param $cell_no, cell number of transaction
      * @param $from_date, start date in unix format
      * @param $to_date, end date in unix format
      * @param $limit, limit
      * @param $offset, offset
      * @author nazmul hasan on 24th February 2016
      */
-
-    public function get_user_transaction_list($service_id_list = array(), $status_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
+    public function get_user_transaction_list($user_id_list = array(), $service_id_list = array(), $status_id_list = array(), $cell_no = '', $from_date = 0, $to_date = 0, $limit = 0, $offset = 0) {
         //run each where that was passed
         if (isset($this->_ion_where) && !empty($this->_ion_where)) {
             foreach ($this->_ion_where as $where) {
@@ -516,12 +518,52 @@ class Transaction_model extends Ion_auth_model {
         if ($offset > 0) {
             $this->db->offset($offset);
         }
-        if ($cell_no != 0) {
-            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        if (!empty($user_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.user_id', $user_id_list);
+        }        
+        if (!empty($service_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
+        }
+        if (!empty($status_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.status_id', $status_id_list);
+        }
+        if ($cell_no != '') {
+            $this->db->like($this->tables['user_transactions'] . '.cell_no', $cell_no);
         }
         if ($from_date != 0 && $to_date != 0) {
             $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
             $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
+        }
+        
+        $this->db->order_by($this->tables['user_transactions'] . '.id', 'desc');
+        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title,' . $this->tables['users'] . '.username')
+                        ->from($this->tables['user_transactions'])
+                        ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_transactions'] . '.status_id')
+                        ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
+                        ->join($this->tables['users'], $this->tables['users'] . '.id=' . $this->tables['user_transactions'] . '.user_id')
+                        ->get();
+    }
+    
+    /*
+     * This method will return user transaction summary
+     * @param $user_id_list, user id list
+     * @param $service_id_list, service id list of transactions
+     * @param $stats_id_list, status id list
+     * @param $cell_no, cell number of transaction
+     * @param $from_date, start date in unix format
+     * @param $to_date, end date in unix format
+     * @author rashida on 26th April 2016
+     */
+    function get_user_transaction_summary($user_id_list = array(), $service_id_list = array(), $status_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0) {
+        //run each where that was passed
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        if (!empty($user_id_list)) {
+            $this->db->where_in($this->tables['user_transactions'] . '.user_id', $user_id_list);
         }
         if (!empty($service_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
@@ -529,11 +571,16 @@ class Transaction_model extends Ion_auth_model {
         if (!empty($status_id_list)) {
             $this->db->where_in($this->tables['user_transactions'] . '.status_id', $status_id_list);
         }
-        $this->db->order_by($this->tables['user_transactions'] . '.id', 'desc');
-        return $this->db->select($this->tables['user_transactions'] . '.*,' . $this->tables['user_transaction_statuses'] . '.title as status,' . $this->tables['services'] . '.title as service_title')
+        if ($cell_no != 0) {
+            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
+        }
+        if ($from_date != 0 && $to_date != 0) {
+            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
+            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
+        }
+        
+        return $this->db->select('COUNT(*) as total_transactions, sum(amount) as total_amount')
                         ->from($this->tables['user_transactions'])
-                        ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_transactions'] . '.status_id')
-                        ->join($this->tables['services'], $this->tables['services'] . '.id=' . $this->tables['user_transactions'] . '.service_id')
                         ->get();
     }
 
@@ -572,40 +619,6 @@ class Transaction_model extends Ion_auth_model {
                         ->from($this->tables['user_sms_transactions'])
                         ->join($this->tables['sms_details'], $this->tables['sms_details'] . '.transaction_id=' . $this->tables['user_sms_transactions'] . '.transaction_id')
                         ->join($this->tables['user_transaction_statuses'], $this->tables['user_transaction_statuses'] . '.id=' . $this->tables['user_sms_transactions'] . '.status_id')
-                        ->get();
-    }
-
-    /*
-     * This method will return user transaction summary
-     * @param $service_id_list, service id list of transactions
-     * @param $from_date, start date in unix format
-     * @param $to_date, end date in unix format
-     * @author rashida on 26th April 2016
-     */
-
-    function get_user_transaction_summary($service_id_list = array(), $status_id_list = array(), $cell_no = 0, $from_date = 0, $to_date = 0) {
-        //run each where that was passed
-        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
-            foreach ($this->_ion_where as $where) {
-                $this->db->where($where);
-            }
-            $this->_ion_where = array();
-        }
-        if ($cell_no != 0) {
-            $this->db->where_in($this->tables['user_transactions'] . '.cell_no', $cell_no);
-        }
-        if ($from_date != 0 && $to_date != 0) {
-            $this->db->where($this->tables['user_transactions'] . '.created_on >=', $from_date);
-            $this->db->where($this->tables['user_transactions'] . '.created_on <=', $to_date);
-        }
-        if (!empty($service_id_list)) {
-            $this->db->where_in($this->tables['user_transactions'] . '.service_id', $service_id_list);
-        }
-        if (!empty($status_id_list)) {
-            $this->db->where_in($this->tables['user_transactions'] . '.status_id', $status_id_list);
-        }
-        return $this->db->select('COUNT(*) as total_transactions, sum(amount) as total_amount')
-                        ->from($this->tables['user_transactions'])
                         ->get();
     }
 

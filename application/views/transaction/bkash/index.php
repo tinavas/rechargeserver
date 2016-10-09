@@ -130,7 +130,7 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>Edit</th>
+                                    <!--<th>Edit</th>-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,7 +140,7 @@
                                     <td>{{transactionInfo.amount}}</td>
                                     <td>{{transactionInfo.status}}</td>
                                     <td>{{transactionInfo.created_on}}</td>
-                                    <td ng-if="transactionInfo.editable == 1"><a href="<?php echo base_url() . 'transaction/bkash/'; ?>{{transactionInfo.transaction_id}}">Edit</a></td>
+                                    <!--<td ng-if="transactionInfo.editable == 1"><a href="<?php echo base_url() . 'transaction/bkash/'; ?>{{transactionInfo.transaction_id}}">Edit</a></td>-->
                                 </tr>
                             </tbody>
                         </table>

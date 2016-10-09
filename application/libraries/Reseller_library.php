@@ -89,6 +89,9 @@ class Reseller_library {
         if (0 == $user_id) {
             $user_id = $this->session->userdata('user_id');
         }
+        $this->load->library('Date_utils');
+        $start_time = $this->date_utils->server_start_unix_time_of_today();
+        $end_time = $this->date_utils->server_end_unix_time_of_today();
         $data = array();
         $this->load->library('payment_library');
         $where_payment = array(
@@ -107,13 +110,7 @@ class Reseller_library {
         }
         $data['receive_list'] = $this->payment_library->where($where_payment)->get_payment_history($receive_id_list, array(), 0, 0, DASHBOARD_PAYMENT_LIMIT, 0, 'desc', $where_payment)->result_array();
 
-        $this->load->library('Date_utils');
         $this->load->model('transaction_model');
-        $where_transaction = array(
-            'user_id' => $user_id,
-            'created_on >= ' => $this->date_utils->server_start_unix_time_of_today(),
-            'created_on <= ' => $this->date_utils->server_end_unix_time_of_today(),
-        );
         $today_usages = array();
         $service_id_list = array();
         $this->load->model('service_model');
@@ -136,7 +133,7 @@ class Reseller_library {
                 $today_usages['sms'] = 0;
             }
         }
-        $transaction_list = $this->transaction_model->where($where_transaction)->get_user_transaction_list($service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL))->result_array();
+        $transaction_list = $this->transaction_model->get_user_transaction_list(array($user_id), $service_id_list, array(TRANSACTION_STATUS_ID_PENDING, TRANSACTION_STATUS_ID_PROCESSED, TRANSACTION_STATUS_ID_SUCCESSFUL), '', $start_time, $end_time)->result_array();
         foreach ($transaction_list as $transaction_info) {
             if (SERVICE_TYPE_ID_BKASH_CASHIN == $transaction_info['service_id']) {
                 $today_usages['bkash'] = $today_usages['bkash'] + $transaction_info['amount'];

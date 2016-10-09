@@ -7,13 +7,6 @@
         $('#repeatSelect').val('<?php echo TRANSACTION_STATUS_ID_SUCCESSFUL ?>');
     });
     function search_ucash(searchInfo) {
-         if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
-            if (number_validation(searchInfo.cellNo) == false) {
-                $("#content").html("Please give a valid cell Number");
-                $('#common_modal').modal('show');
-                return;
-            }
-        }
         var startDate = $("#start_date").val();
         var endDate = $("#end_date").val();
         angular.element($("#search_submit_btn")).scope().getUcashTransactionList(startDate, endDate, '<?php echo $user_id; ?>');
@@ -28,6 +21,8 @@
         <li><input id="start_date" type="text" size="18" placeholder="Start Date"  name="from" class="form-control input-xs customInputMargin"></li>
         <li>End Date</li>
         <li><input id="end_date" type="text" size="18" placeholder="End Date"  name="from" class="form-control input-xs customInputMargin"></li>
+        <li>Cell No</li>
+        <li> <input type="text" class="form-control input-xs customInputMargin" placeholder="01XXXXXXXXX" ng-model="searchInfo.cellNo"></li>
         <li>Status Type</li>
         <li>
             <select  ng-model='searchInfo.statusId' required ng-options='transactionStatus.id as transactionStatus.title for transactionStatus in transactionStatusList' class="form-control input-xs"></select>
@@ -40,6 +35,8 @@
         <thead>
             <tr>
                 <th><a href="">Id</a></th>
+                <th><a href="">Username</a></th>
+                <th><a href="">Service</a></th>
                 <th><a href="">Sender</a></th>
                 <th><a href="">Number</a></th>
                 <th><a href="">Amount</a></th>
@@ -54,6 +51,8 @@
 
             <tr ng-repeat="transctionInfo in transctionInfoList">
                 <th>{{transctionInfo.transaction_id}}</th>
+                <th>{{transctionInfo.username}}</th>
+                <th>{{transctionInfo.service_title}}</th>
                 <th>{{transctionInfo.sender_cell_no}}</th>
                 <th>{{transctionInfo.cell_no}}</th>
                 <th>{{transctionInfo.amount}}</th>
