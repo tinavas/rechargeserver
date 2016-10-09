@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/zebra_datePicker_custom.css" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/superadmin/image-crop-styles.css" type="text/css">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">        
+        <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/styles.css" type="text/css">
+        <link href="<?php echo base_url(); ?>resources/css/theme-default.css" rel="stylesheet">
 
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>resources/js/jquery.min.js"></script>
