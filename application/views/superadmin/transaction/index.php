@@ -10,7 +10,7 @@
     function search_transaction(searchInfo) {
         if (typeof searchInfo.cellNo != "undefined" && searchInfo.cellNo.length != 0) {
             if (number_validation(searchInfo.cellNo) == false) {
-                $("#content").html("Please give a valid SIM Number");
+                $("#content").html("Please give a valid cell Number");
                 $('#common_modal').modal('show');
                 return;
             }

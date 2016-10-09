@@ -87,7 +87,6 @@ class Cost_profit_library {
             $start_time = $this->date_utils->server_start_unix_time_of_date($start_date);
             $end_time = $this->date_utils->server_end_unix_time_of_date($end_date);
         }
-
         if (!empty($where)) {
             $this->cost_profit_model->where($where);
         }
@@ -119,6 +118,11 @@ class Cost_profit_library {
             } else if ($user_report_info['status_id'] == TRANSACTION_STATUS_ID_FAILED) {
                 $report_info['failed'] = $user_report_info['total_status_request'];
             }
+            $report_summary['total_request'] = $report_summary['total_request'] + $user_report_info['total_request'];
+            $report_summary['total_pending'] = $report_summary['total_pending'] + $report_info['pending'];
+            $report_summary['total_success'] = $report_summary['total_success'] + $report_info['success'];
+            $report_summary['total_processed'] = $report_summary['total_processed'] + $report_info['processed'];
+            $report_summary['total_failed'] = $report_summary['total_failed'] + $report_info['failed'];
             if (in_array($user_report_info['service_id'], $temp_service_id_list)) {
                 $old_report_info = $report_list[$user_report_info['service_id']];
                 $report_info['total_request'] = $old_report_info['total_request'] + $user_report_info['total_request'];
@@ -145,11 +149,7 @@ class Cost_profit_library {
                 $report_info['per_of_success'] = 0 . "%";
             }
             $report_list[$user_report_info['service_id']] = $report_info;
-            $report_summary['total_request'] = $report_summary['total_request'] + $report_info['total_request'];
-            $report_summary['total_pending'] = $report_summary['total_pending'] + $report_info['pending'];
-            $report_summary['total_success'] = $report_summary['total_success'] + $report_info['success'];
-            $report_summary['total_processed'] = $report_summary['total_processed'] + $report_info['processed'];
-            $report_summary['total_failed'] = $report_summary['total_failed'] + $report_info['failed'];
+
         }
         $report_information['report_list'] = $report_list;
         $report_information['report_summary'] = $report_summary;
@@ -182,10 +182,9 @@ class Cost_profit_library {
         $profit_loss_summary['total_amount'] = 0;
         $profit_loss_summary['total_used_amount'] = 0;
         $profit_loss_summary['total_profit'] = 0;
-      
         foreach ($profit_loss_array as $profit_loss_info) {
             $profit_loss_info['total_status_request'] = 0;
-            if (!empty($report_status_list)) {
+            if (!empty($report_status_list)&& $profit_loss_info['service_id'] == TRANSACTION_STATUS_ID_SUCCESSFUL) {
                 $profit_loss_info['total_status_request'] = $report_status_list[$profit_loss_info['service_id']];
             }
             $profit_loss_info['total_amount'] = $profit_loss_info['total_used_amount'] + $profit_loss_info['total_profit'];

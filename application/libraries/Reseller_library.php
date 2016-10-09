@@ -349,4 +349,17 @@ class Reseller_library {
         return $user_id_list;
     }
 
+    public function get_chiled_reseller_list($user_id, $group_id) {
+        $reseller_list = array();
+        $user_id_list = array();
+        $child_list_array = $this->reseller_model->get_child_user_id_list($user_id)->result_array();
+        foreach ($child_list_array as $child_info) {
+            $user_id_list[] = $child_info['child_user_id'];
+        }
+        if (!empty($user_id_list)) {
+            $reseller_list = $this->reseller_model->get_chiled_reseller_list($group_id, $user_id_list)->result_array();
+        }
+        return $reseller_list;
+    }
+
 }
